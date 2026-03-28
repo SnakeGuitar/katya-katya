@@ -32,6 +32,8 @@ public static class DependencyInjection
 
         // Repositories
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPendingRegistrationRepository, PendingRegistrationRepository>();
+        services.AddScoped<IUserSessionRepository, UserSessionRepository>();
         services.AddScoped<ISocialRepository, SocialRepository>();
         services.AddScoped<IMatchRepository, MatchRepository>();
         services.AddScoped<ICardRepository, CardRepository>();
