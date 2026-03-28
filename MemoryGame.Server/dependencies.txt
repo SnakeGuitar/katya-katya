@@ -1,0 +1,25 @@
+MemoryGame.Domain
+  (ninguna)
+
+MemoryGame.Application
+  MediatR
+  FluentValidation
+  AutoMapper
+
+MemoryGame.Infrastructure
+  Microsoft.EntityFrameworkCore
+  Npgsql.EntityFrameworkCore.PostgreSQL
+  Microsoft.EntityFrameworkCore.Design
+  MailKit
+  BCrypt.Net-Next
+
+MemoryGame.API
+  Microsoft.AspNetCore.Authentication.JwtBearer
+  Swashbuckle.AspNetCore
+  MediatR
+  (SignalR incluido en ASP.NET Core)
+
+*.Tests (Domain, Application, Infrastructure)
+  Moq
+  FluentAssertions
+  Microsoft.EntityFrameworkCore.InMemory
