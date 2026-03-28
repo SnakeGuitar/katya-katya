@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MemoryGame.API/MemoryGame.API.csproj" />
+    <Project Path="src/MemoryGame.Application/MemoryGame.Application.csproj" />
+    <Project Path="src/MemoryGame.Domain/MemoryGame.Domain.csproj" />
+    <Project Path="src/MemoryGame.Infrastructure/MemoryGame.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MemoryGame.Application.Tests/MemoryGame.Application.Tests.csproj" />
+    <Project Path="tests/MemoryGame.Domain.Tests/MemoryGame.Domain.Tests.csproj" />
+    <Project Path="tests/MemoryGame.Infrastructure.Tests/MemoryGame.Infrastructure.Tests.csproj" />
+  </Folder>
+</Solution>
