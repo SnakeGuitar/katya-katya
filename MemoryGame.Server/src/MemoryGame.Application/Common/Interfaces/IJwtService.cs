@@ -7,5 +7,5 @@ public interface IJwtService
     string GenerateAccessToken(User user);
     string GenerateRefreshToken();
     int? GetUserIdFromToken(string token);
-    bool ValidateRefreshToken(string token, int userId);
+    bool IsRefreshTokenEmpty(string token, int userId);
 }
