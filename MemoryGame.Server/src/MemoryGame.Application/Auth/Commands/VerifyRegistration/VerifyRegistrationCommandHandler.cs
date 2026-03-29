@@ -28,10 +28,10 @@ public class VerifyRegistrationCommandHandler : IRequestHandler<VerifyRegistrati
         var email = Email.Create(request.Email);
 
         var pending = await _pendingRegistrationRepository.GetByEmailAsync(email)
-            ?? throw new DomainException("Registration not found.");
+            ?? throw new DomainException(DomainErrors.Auth.RegistrationNotFound);
 
         if (!pending.ValidatePin(request.Pin))
-            throw new DomainException("Invalid or expired PIN.");
+            throw new DomainException(DomainErrors.Auth.PinInvalid);
 
         return true;
     }

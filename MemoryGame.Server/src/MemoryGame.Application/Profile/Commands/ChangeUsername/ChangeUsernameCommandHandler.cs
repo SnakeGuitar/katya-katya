@@ -27,10 +27,10 @@ public class ChangeUsernameCommandHandler : IRequestHandler<ChangeUsernameComman
     public async Task<Unit> Handle(ChangeUsernameCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId)
-            ?? throw new DomainException("User not found.");
+            ?? throw new DomainException(DomainErrors.User.NotFound);
 
         if (await _userRepository.ExistsByUsernameAsync(request.NewUsername))
-            throw new DomainException("Username already taken.");
+            throw new DomainException(DomainErrors.Auth.UsernameAlreadyTaken);
 
         user.ChangeUsername(request.NewUsername);
         _userRepository.Update(user);

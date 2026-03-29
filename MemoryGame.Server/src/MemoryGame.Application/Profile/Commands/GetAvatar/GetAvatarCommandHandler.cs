@@ -24,7 +24,7 @@ public class GetAvatarCommandHandler : IRequestHandler<GetAvatarCommand, byte[]?
     public async Task<byte[]?> Handle(GetAvatarCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId)
-            ?? throw new DomainException("User not found.");
+            ?? throw new DomainException(DomainErrors.User.NotFound);
 
         return user.Avatar;
     }

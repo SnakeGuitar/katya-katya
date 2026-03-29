@@ -26,7 +26,7 @@ public class UpdateAvatarCommandHandler : IRequestHandler<UpdateAvatarCommand, U
     public async Task<Unit> Handle(UpdateAvatarCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId)
-            ?? throw new DomainException("User not found.");
+            ?? throw new DomainException(DomainErrors.User.NotFound);
 
         user.UpdateAvatar(request.AvatarData);
         _userRepository.Update(user);

@@ -37,17 +37,17 @@ public class VerifyGuestUpgradeCommandHandler : IRequestHandler<VerifyGuestUpgra
     public async Task<AuthResponse> Handle(VerifyGuestUpgradeCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId)
-            ?? throw new DomainException("User not found.");
+            ?? throw new DomainException(DomainErrors.User.NotFound);
 
         if (!user.IsGuest)
-            throw new DomainException("User is not a guest account.");
+            throw new DomainException(DomainErrors.User.NotAGuest);
 
         var email = Email.Create(request.Email);
         var pending = await _pendingRegistrationRepository.GetByEmailAsync(email)
-            ?? throw new DomainException("Invalid or expired PIN.");
+            ?? throw new DomainException(DomainErrors.Auth.PinInvalid);
 
         if (!pending.ValidatePin(request.Pin))
-            throw new DomainException("Invalid or expired PIN.");
+            throw new DomainException(DomainErrors.Auth.PinInvalid);
 
         user.PromoteFromGuest(email.Value, pending.HashedPassword!);
         user.VerifyEmail();

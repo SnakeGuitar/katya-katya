@@ -36,13 +36,13 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
     public async Task<AuthResponse> Handle(RefreshSessionCommand request, CancellationToken cancellationToken)
     {
         var session = await _userSessionRepository.GetByTokenAsync(request.RefreshToken)
-            ?? throw new DomainException("Invalid refresh token.");
+            ?? throw new DomainException(DomainErrors.Auth.RefreshTokenInvalid);
 
         if (session.UserId != request.UserId || session.IsExpired())
-            throw new DomainException("Invalid or expired refresh token.");
+            throw new DomainException(DomainErrors.Auth.RefreshTokenInvalid);
 
         var user = await _userRepository.GetByIdAsync(request.UserId)
-            ?? throw new DomainException("User not found.");
+            ?? throw new DomainException(DomainErrors.User.NotFound);
 
         var accessToken = _jwtService.GenerateAccessToken(user);
 

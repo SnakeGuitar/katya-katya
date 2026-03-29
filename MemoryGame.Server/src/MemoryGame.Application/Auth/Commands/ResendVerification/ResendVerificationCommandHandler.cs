@@ -35,7 +35,7 @@ public class ResendVerificationCommandHandler : IRequestHandler<ResendVerificati
         var email = Email.Create(request.Email);
 
         var pending = await _pendingRegistrationRepository.GetByEmailAsync(email)
-            ?? throw new DomainException("Registration not found.");
+            ?? throw new DomainException(DomainErrors.Auth.RegistrationNotFound);
 
         var newPin = GeneratePin();
         pending.UpdatePin(newPin);

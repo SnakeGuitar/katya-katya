@@ -39,16 +39,16 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
     public async Task<AuthResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByUsernameAsync(request.Username)
-            ?? throw new DomainException("Invalid username or password.");
+            ?? throw new DomainException(DomainErrors.Auth.InvalidCredentials);
 
         if (user.IsGuest)
-            throw new DomainException("Guest accounts cannot login with password.");
+            throw new DomainException(DomainErrors.Auth.GuestCannotLogin);
 
         if (!_passwordService.Verify(request.Password, user.PasswordHash))
-            throw new DomainException("Invalid username or password.");
+            throw new DomainException(DomainErrors.Auth.InvalidCredentials);
 
         if (!user.VerifiedEmail)
-            throw new DomainException("Email not verified. Please verify your email first.");
+            throw new DomainException(DomainErrors.Auth.EmailNotVerified);
 
         var accessToken = _jwtService.GenerateAccessToken(user);
         var refreshToken = _jwtService.GenerateRefreshToken();

@@ -41,10 +41,10 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
         var email = Email.Create(request.Email);
 
         if (await _userRepository.ExistsByEmailAsync(email))
-            throw new DomainException("Email already registered.");
+            throw new DomainException(DomainErrors.Auth.EmailAlreadyRegistered);
 
         if (await _userRepository.ExistsByUsernameAsync(request.Username))
-            throw new DomainException("Username already taken.");
+            throw new DomainException(DomainErrors.Auth.UsernameAlreadyTaken);
 
         var pin = GeneratePin();
         var passwordHash = _passwordService.Hash(request.Password);

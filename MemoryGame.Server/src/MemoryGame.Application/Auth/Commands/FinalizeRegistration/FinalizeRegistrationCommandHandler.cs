@@ -42,10 +42,10 @@ public class FinalizeRegistrationCommandHandler : IRequestHandler<FinalizeRegist
         var email = Email.Create(request.Email);
 
         var pending = await _pendingRegistrationRepository.GetByEmailAsync(email)
-            ?? throw new DomainException("Invalid or expired PIN.");
+            ?? throw new DomainException(DomainErrors.Auth.PinInvalid);
 
         if (!pending.ValidatePin(request.Pin))
-            throw new DomainException("Invalid or expired PIN.");
+            throw new DomainException(DomainErrors.Auth.PinInvalid);
 
         var user = User.CreateRegistered(
             username: email.Value.Split('@')[0],

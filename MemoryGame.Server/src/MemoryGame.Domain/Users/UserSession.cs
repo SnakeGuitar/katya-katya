@@ -14,7 +14,7 @@ public class UserSession : BaseEntity
     public static UserSession Create(string token, int userId, TimeSpan duration)
     {
         if (string.IsNullOrWhiteSpace(token))
-            throw new DomainException("Session token cannot be empty.");
+            throw new DomainException(DomainErrors.Session.TokenEmpty);
 
         return new UserSession
         {

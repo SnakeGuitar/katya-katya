@@ -51,10 +51,10 @@ public class User : BaseEntity
     public void UpdatePersonalInfo(string? name, string? lastName)
     {
         if (name is not null && name.Length > 50)
-            throw new DomainException("Name cannot exceed 50 characters.");
+            throw new DomainException(DomainErrors.User.NameTooLong);
 
         if (lastName is not null && lastName.Length > 50)
-            throw new DomainException("Last name cannot exceed 50 characters.");
+            throw new DomainException(DomainErrors.User.LastNameTooLong);
 
         Name = name;
         LastName = lastName;
@@ -62,13 +62,13 @@ public class User : BaseEntity
 
     public void UpdateAvatar(byte[] avatar)
     {
-        Avatar = avatar ?? throw new DomainException("Avatar cannot be null.");
+        Avatar = avatar ?? throw new DomainException(DomainErrors.User.AvatarNull);
     }
 
     public void ChangePassword(string newPasswordHash)
     {
         if (IsGuest)
-            throw new DomainException("Guest users cannot change password.");
+            throw new DomainException(DomainErrors.User.GuestCannotChangePassword);
 
         PasswordHash = newPasswordHash;
     }
@@ -76,7 +76,7 @@ public class User : BaseEntity
     public void VerifyEmail()
     {
         if (VerifiedEmail)
-            throw new DomainException("Email is already verified.");
+            throw new DomainException(DomainErrors.User.EmailAlreadyVerified);
 
         VerifiedEmail = true;
     }
@@ -84,7 +84,7 @@ public class User : BaseEntity
     public void PromoteFromGuest(string email, string passwordHash)
     {
         if (!IsGuest)
-            throw new DomainException("User is not a guest.");
+            throw new DomainException(DomainErrors.User.NotAGuest);
 
         Email = Email.Create(email);
         PasswordHash = passwordHash;
@@ -94,10 +94,10 @@ public class User : BaseEntity
     private static string ValidateUsername(string username)
     {
         if (string.IsNullOrWhiteSpace(username))
-            throw new DomainException("Username cannot be empty.");
+            throw new DomainException(DomainErrors.User.UsernameEmpty);
 
         if (username.Length > 30)
-            throw new DomainException("Username cannot exceed 30 characters.");
+            throw new DomainException(DomainErrors.User.UsernameTooLong);
 
         return username;
     }

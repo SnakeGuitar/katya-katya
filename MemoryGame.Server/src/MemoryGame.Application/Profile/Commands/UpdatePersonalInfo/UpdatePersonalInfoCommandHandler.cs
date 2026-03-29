@@ -26,7 +26,7 @@ public class UpdatePersonalInfoCommandHandler : IRequestHandler<UpdatePersonalIn
     public async Task<Unit> Handle(UpdatePersonalInfoCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId)
-            ?? throw new DomainException("User not found.");
+            ?? throw new DomainException(DomainErrors.User.NotFound);
 
         user.UpdatePersonalInfo(request.Name, request.LastName);
         _userRepository.Update(user);

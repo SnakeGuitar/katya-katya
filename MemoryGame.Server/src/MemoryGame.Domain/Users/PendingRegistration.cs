@@ -16,7 +16,7 @@ public class PendingRegistration : BaseEntity
     public static PendingRegistration Create(string email, string pin, string hashedPassword, TimeSpan validity)
     {
         if (string.IsNullOrWhiteSpace(pin) || pin.Length > 10)
-            throw new DomainException("PIN must be between 1 and 10 characters.");
+            throw new DomainException(DomainErrors.PendingRegistration.PinInvalidFormat);
 
         return new PendingRegistration
         {
@@ -31,7 +31,7 @@ public class PendingRegistration : BaseEntity
     public static PendingRegistration CreateForUpgrade(Email email, string pin, string hashedPassword, int userId)
     {
         if (string.IsNullOrWhiteSpace(pin) || pin.Length > 10)
-            throw new DomainException("PIN must be between 1 and 10 characters.");
+            throw new DomainException(DomainErrors.PendingRegistration.PinInvalidFormat);
 
         return new PendingRegistration
         {
@@ -46,7 +46,7 @@ public class PendingRegistration : BaseEntity
     public void UpdatePin(string newPin)
     {
         if (string.IsNullOrWhiteSpace(newPin) || newPin.Length > 10)
-            throw new DomainException("PIN must be between 1 and 10 characters.");
+            throw new DomainException(DomainErrors.PendingRegistration.PinInvalidFormat);
 
         Pin = newPin;
         ExpirationTime = DateTime.UtcNow.Add(TimeSpan.FromMinutes(15));
