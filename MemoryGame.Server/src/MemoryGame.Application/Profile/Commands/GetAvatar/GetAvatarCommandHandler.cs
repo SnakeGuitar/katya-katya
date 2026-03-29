@@ -6,14 +6,14 @@ using MemoryGame.Domain.Users;
 namespace MemoryGame.Application.Profile.Commands.GetAvatar;
 
 /// <summary>
-/// Maneja <see cref="GetAvatarCommand"/>: recupera los bytes del avatar del usuario.
+/// Handles <see cref="GetAvatarCommand"/>: retrieves the avatar bytes of the user.
 /// </summary>
 public class GetAvatarCommandHandler : IRequestHandler<GetAvatarCommand, byte[]?>
 {
     private readonly IUserRepository _userRepository;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public GetAvatarCommandHandler(IUserRepository userRepository)
     {

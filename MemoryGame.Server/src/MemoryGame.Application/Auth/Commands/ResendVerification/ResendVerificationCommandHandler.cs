@@ -7,8 +7,8 @@ using MemoryGame.Domain.Users.ValueObjects;
 namespace MemoryGame.Application.Auth.Commands.ResendVerification;
 
 /// <summary>
-/// Maneja <see cref="ResendVerificationCommand"/>: genera un nuevo PIN,
-/// actualiza el registro pendiente y reenvía el email de verificación.
+/// Handles <see cref="ResendVerificationCommand"/>: generates a new PIN,
+/// updates the pending registration, and resends the verification email.
 /// </summary>
 public class ResendVerificationCommandHandler : IRequestHandler<ResendVerificationCommand, string>
 {
@@ -17,7 +17,7 @@ public class ResendVerificationCommandHandler : IRequestHandler<ResendVerificati
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public ResendVerificationCommandHandler(
         IPendingRegistrationRepository pendingRegistrationRepository,
@@ -48,7 +48,7 @@ public class ResendVerificationCommandHandler : IRequestHandler<ResendVerificati
     }
 
     /// <summary>
-    /// Genera un PIN numérico de 6 dígitos.
+    /// Generates a 6-digit numeric PIN.
     /// </summary>
     private static string GeneratePin() =>
         Random.Shared.Next(100000, 999999).ToString();

@@ -6,8 +6,8 @@ using MemoryGame.Domain.Users;
 namespace MemoryGame.Application.Profile.Commands.ChangePassword;
 
 /// <summary>
-/// Maneja <see cref="ChangePasswordCommand"/>: verifica la contraseña actual
-/// y la reemplaza con la nueva contraseña hasheada.
+/// Handles <see cref="ChangePasswordCommand"/>: verifies the current password
+/// and replaces it with the new hashed password.
 /// </summary>
 public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, Unit>
 {
@@ -16,7 +16,7 @@ public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordComman
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public ChangePasswordCommandHandler(
         IUserRepository userRepository,

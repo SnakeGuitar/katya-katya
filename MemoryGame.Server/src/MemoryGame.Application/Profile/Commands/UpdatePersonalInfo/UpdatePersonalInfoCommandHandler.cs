@@ -6,7 +6,7 @@ using MemoryGame.Domain.Users;
 namespace MemoryGame.Application.Profile.Commands.UpdatePersonalInfo;
 
 /// <summary>
-/// Maneja <see cref="UpdatePersonalInfoCommand"/>: actualiza el nombre y apellido del usuario.
+/// Handles <see cref="UpdatePersonalInfoCommand"/>: updates the user's first and last name.
 /// </summary>
 public class UpdatePersonalInfoCommandHandler : IRequestHandler<UpdatePersonalInfoCommand, Unit>
 {
@@ -14,7 +14,7 @@ public class UpdatePersonalInfoCommandHandler : IRequestHandler<UpdatePersonalIn
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public UpdatePersonalInfoCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     {

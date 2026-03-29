@@ -6,7 +6,7 @@ using MemoryGame.Domain.Users;
 namespace MemoryGame.Application.Profile.Commands.UpdateAvatar;
 
 /// <summary>
-/// Maneja <see cref="UpdateAvatarCommand"/>: actualiza el avatar del usuario.
+/// Handles <see cref="UpdateAvatarCommand"/>: updates the user's avatar.
 /// </summary>
 public class UpdateAvatarCommandHandler : IRequestHandler<UpdateAvatarCommand, Unit>
 {
@@ -14,7 +14,7 @@ public class UpdateAvatarCommandHandler : IRequestHandler<UpdateAvatarCommand, U
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public UpdateAvatarCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     {

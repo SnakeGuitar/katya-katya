@@ -7,8 +7,8 @@ using MemoryGame.Domain.Users;
 namespace MemoryGame.Application.Auth.Commands.RefreshSession;
 
 /// <summary>
-/// Maneja <see cref="RefreshSessionCommand"/>: valida el refresh token y emite
-/// un nuevo access token sin rotar la sesión.
+/// Handles <see cref="RefreshSessionCommand"/>: validates the refresh token
+/// and issues a new access token without rotating the session.
 /// </summary>
 public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionCommand, AuthResponse>
 {
@@ -18,7 +18,7 @@ public class RefreshSessionCommandHandler : IRequestHandler<RefreshSessionComman
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public RefreshSessionCommandHandler(
         IUserRepository userRepository,

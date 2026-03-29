@@ -7,8 +7,8 @@ using MemoryGame.Domain.Users.ValueObjects;
 namespace MemoryGame.Application.Auth.Commands.UpgradeGuest;
 
 /// <summary>
-/// Maneja <see cref="UpgradeGuestCommand"/>: valida que el usuario sea guest y el email
-/// esté disponible, luego crea el registro pendiente de upgrade y envía el PIN.
+/// Handles <see cref="UpgradeGuestCommand"/>: verifies the user is a guest and the email
+/// is available, then creates the upgrade pending registration and sends the PIN.
 /// </summary>
 public class UpgradeGuestCommandHandler : IRequestHandler<UpgradeGuestCommand, string>
 {
@@ -19,7 +19,7 @@ public class UpgradeGuestCommandHandler : IRequestHandler<UpgradeGuestCommand, s
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public UpgradeGuestCommandHandler(
         IUserRepository userRepository,
@@ -62,7 +62,7 @@ public class UpgradeGuestCommandHandler : IRequestHandler<UpgradeGuestCommand, s
     }
 
     /// <summary>
-    /// Genera un PIN numérico de 6 dígitos.
+    /// Generates a 6-digit numeric PIN.
     /// </summary>
     private static string GeneratePin() =>
         Random.Shared.Next(100000, 999999).ToString();

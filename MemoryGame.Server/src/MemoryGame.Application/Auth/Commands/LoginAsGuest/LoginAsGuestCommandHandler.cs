@@ -6,8 +6,8 @@ using MemoryGame.Domain.Users;
 namespace MemoryGame.Application.Auth.Commands.LoginAsGuest;
 
 /// <summary>
-/// Maneja <see cref="LoginAsGuestCommand"/>: crea una cuenta guest, persiste la sesión
-/// y emite tokens de acceso.
+/// Handles <see cref="LoginAsGuestCommand"/>: creates a guest account,
+/// persists the session, and issues access tokens.
 /// </summary>
 public class LoginAsGuestCommandHandler : IRequestHandler<LoginAsGuestCommand, AuthResponse>
 {
@@ -17,7 +17,7 @@ public class LoginAsGuestCommandHandler : IRequestHandler<LoginAsGuestCommand, A
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public LoginAsGuestCommandHandler(
         IUserRepository userRepository,

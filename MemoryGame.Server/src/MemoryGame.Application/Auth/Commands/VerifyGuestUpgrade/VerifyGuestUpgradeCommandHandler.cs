@@ -8,8 +8,8 @@ using MemoryGame.Domain.Users.ValueObjects;
 namespace MemoryGame.Application.Auth.Commands.VerifyGuestUpgrade;
 
 /// <summary>
-/// Maneja <see cref="VerifyGuestUpgradeCommand"/>: valida el PIN, convierte la cuenta
-/// guest a registrada, elimina el registro pendiente y emite nuevos tokens.
+/// Handles <see cref="VerifyGuestUpgradeCommand"/>: validates the PIN, promotes the guest
+/// account to a registered account, removes the pending registration, and issues new tokens.
 /// </summary>
 public class VerifyGuestUpgradeCommandHandler : IRequestHandler<VerifyGuestUpgradeCommand, AuthResponse>
 {
@@ -19,7 +19,7 @@ public class VerifyGuestUpgradeCommandHandler : IRequestHandler<VerifyGuestUpgra
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public VerifyGuestUpgradeCommandHandler(
         IUserRepository userRepository,

@@ -8,8 +8,8 @@ using MemoryGame.Domain.Users.ValueObjects;
 namespace MemoryGame.Application.Auth.Commands.FinalizeRegistration;
 
 /// <summary>
-/// Maneja <see cref="FinalizeRegistrationCommand"/>: valida el PIN, crea el usuario
-/// con email verificado, elimina el registro pendiente y emite tokens de sesión.
+/// Handles <see cref="FinalizeRegistrationCommand"/>: validates the PIN, creates the user
+/// with a verified email, removes the pending registration, and issues session tokens.
 /// </summary>
 public class FinalizeRegistrationCommandHandler : IRequestHandler<FinalizeRegistrationCommand, AuthResponse>
 {
@@ -20,7 +20,7 @@ public class FinalizeRegistrationCommandHandler : IRequestHandler<FinalizeRegist
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public FinalizeRegistrationCommandHandler(
         IUserRepository userRepository,

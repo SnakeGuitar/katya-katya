@@ -7,8 +7,8 @@ using MemoryGame.Domain.Users;
 namespace MemoryGame.Application.Auth.Commands.Login;
 
 /// <summary>
-/// Maneja <see cref="LoginCommand"/>: autentica al usuario verificando credenciales
-/// y estado de cuenta, luego persiste la sesión y emite tokens.
+/// Handles <see cref="LoginCommand"/>: authenticates the user by verifying credentials
+/// and account state, then persists the session and issues tokens.
 /// </summary>
 public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
 {
@@ -19,7 +19,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public LoginCommandHandler(
         IUserRepository userRepository,

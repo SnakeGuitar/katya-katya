@@ -6,8 +6,8 @@ using MemoryGame.Domain.Users;
 namespace MemoryGame.Application.Profile.Commands.ChangeUsername;
 
 /// <summary>
-/// Maneja <see cref="ChangeUsernameCommand"/>: valida que el nuevo username
-/// no esté en uso y aplica el cambio.
+/// Handles <see cref="ChangeUsernameCommand"/>: validates the new username is not taken
+/// and applies the change.
 /// </summary>
 public class ChangeUsernameCommandHandler : IRequestHandler<ChangeUsernameCommand, Unit>
 {
@@ -15,7 +15,7 @@ public class ChangeUsernameCommandHandler : IRequestHandler<ChangeUsernameComman
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public ChangeUsernameCommandHandler(IUserRepository userRepository, IUnitOfWork unitOfWork)
     {

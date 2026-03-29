@@ -7,15 +7,15 @@ using MemoryGame.Domain.Users.ValueObjects;
 namespace MemoryGame.Application.Auth.Commands.VerifyRegistration;
 
 /// <summary>
-/// Maneja <see cref="VerifyRegistrationCommand"/>: valida que el PIN sea correcto
-/// y no haya expirado sin consumir el registro pendiente.
+/// Handles <see cref="VerifyRegistrationCommand"/>: validates that the PIN is correct
+/// and has not expired without consuming the pending registration.
 /// </summary>
 public class VerifyRegistrationCommandHandler : IRequestHandler<VerifyRegistrationCommand, bool>
 {
     private readonly IPendingRegistrationRepository _pendingRegistrationRepository;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public VerifyRegistrationCommandHandler(IPendingRegistrationRepository pendingRegistrationRepository)
     {

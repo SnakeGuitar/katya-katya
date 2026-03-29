@@ -7,14 +7,14 @@ using MemoryGame.Domain.Users;
 namespace MemoryGame.Application.Profile.Commands.GetProfile;
 
 /// <summary>
-/// Maneja <see cref="GetProfileCommand"/>: recupera el perfil completo del usuario.
+/// Handles <see cref="GetProfileCommand"/>: retrieves the full profile of the user.
 /// </summary>
 public class GetProfileCommandHandler : IRequestHandler<GetProfileCommand, ProfileResponse>
 {
     private readonly IUserRepository _userRepository;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public GetProfileCommandHandler(IUserRepository userRepository)
     {

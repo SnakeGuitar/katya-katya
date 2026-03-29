@@ -5,7 +5,7 @@ using MemoryGame.Domain.Users;
 namespace MemoryGame.Application.Auth.Commands.Logout;
 
 /// <summary>
-/// Maneja <see cref="LogoutCommand"/>: revoca todas las sesiones activas del usuario.
+/// Handles <see cref="LogoutCommand"/>: revokes all active sessions for the user.
 /// </summary>
 public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Unit>
 {
@@ -13,7 +13,7 @@ public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Unit>
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public LogoutCommandHandler(IUserSessionRepository userSessionRepository, IUnitOfWork unitOfWork)
     {

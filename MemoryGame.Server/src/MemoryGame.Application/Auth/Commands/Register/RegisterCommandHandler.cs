@@ -7,8 +7,8 @@ using MemoryGame.Domain.Users.ValueObjects;
 namespace MemoryGame.Application.Auth.Commands.Register;
 
 /// <summary>
-/// Maneja <see cref="RegisterCommand"/>: valida unicidad de email y username,
-/// crea el registro pendiente con PIN y envía el email de verificación.
+/// Handles <see cref="RegisterCommand"/>: validates email and username uniqueness,
+/// creates a pending registration with a PIN, and sends the verification email.
 /// </summary>
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
 {
@@ -19,7 +19,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
     private readonly IUnitOfWork _unitOfWork;
 
     /// <summary>
-    /// Inicializa el handler con sus dependencias.
+    /// Initializes the handler with its dependencies.
     /// </summary>
     public RegisterCommandHandler(
         IUserRepository userRepository,
@@ -64,7 +64,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
     }
 
     /// <summary>
-    /// Genera un PIN numérico de 6 dígitos.
+    /// Generates a 6-digit numeric PIN.
     /// </summary>
     private static string GeneratePin()
     {
