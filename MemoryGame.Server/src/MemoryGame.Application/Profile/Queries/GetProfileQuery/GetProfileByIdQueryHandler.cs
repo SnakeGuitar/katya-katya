@@ -1,28 +1,24 @@
 using MediatR;
-using MemoryGame.Application.Common.Interfaces;
 using MemoryGame.Application.Profile.DTOs;
 using MemoryGame.Domain.Common;
 using MemoryGame.Domain.Users;
 
-namespace MemoryGame.Application.Profile.Commands.GetProfile;
+namespace MemoryGame.Application.Profile.Queries.GetProfileQuery;
 
 /// <summary>
-/// Handles <see cref="GetProfileCommand"/>: retrieves the full profile of the user.
+/// Handles <see cref="GetProfileByIdQuery"/>: retrieves the full profile of the user.
 /// </summary>
-public class GetProfileCommandHandler : IRequestHandler<GetProfileCommand, ProfileResponse>
+public class GetProfileByIdQueryHandler : IRequestHandler<GetProfileByIdQuery, ProfileResponse>
 {
     private readonly IUserRepository _userRepository;
 
-    /// <summary>
-    /// Initializes the handler with its dependencies.
-    /// </summary>
-    public GetProfileCommandHandler(IUserRepository userRepository)
+    public GetProfileByIdQueryHandler(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
 
     /// <inheritdoc/>
-    public async Task<ProfileResponse> Handle(GetProfileCommand request, CancellationToken cancellationToken)
+    public async Task<ProfileResponse> Handle(GetProfileByIdQuery request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId)
             ?? throw new DomainException(DomainErrors.User.NotFound);

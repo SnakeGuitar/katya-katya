@@ -6,4 +6,4 @@ public record UserDto(
     string Email,
     bool IsGuest,
     bool VerifiedEmail
-);
+    );
