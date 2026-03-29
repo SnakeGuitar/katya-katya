@@ -13,7 +13,7 @@ public class GetUserAvatarQueryHandler : IRequestHandler<GetUserAvatarQuery, byt
     /// <summary>
     /// Initializes the handler with its dependencies.
     /// </summary>
-    public GetAvatarCommandHandler(IUserRepository userRepository)
+    public GetUserAvatarQueryHandler(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
