@@ -6,6 +6,10 @@ using MemoryGame.Domain.Users.ValueObjects;
 
 namespace MemoryGame.Application.Auth.Commands.Register;
 
+/// <summary>
+/// Maneja <see cref="RegisterCommand"/>: valida unicidad de email y username,
+/// crea el registro pendiente con PIN y envía el email de verificación.
+/// </summary>
 public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
 {
     private readonly IUserRepository _userRepository;
@@ -14,6 +18,9 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
     private readonly IEmailService _emailService;
     private readonly IUnitOfWork _unitOfWork;
 
+    /// <summary>
+    /// Inicializa el handler con sus dependencias.
+    /// </summary>
     public RegisterCommandHandler(
         IUserRepository userRepository,
         IPendingRegistrationRepository pendingRegistrationRepository,
@@ -28,39 +35,37 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
         _unitOfWork = unitOfWork;
     }
 
+    /// <inheritdoc/>
     public async Task<string> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        // Validar que email no exista
         var email = Email.Create(request.Email);
+
         if (await _userRepository.ExistsByEmailAsync(email))
             throw new DomainException("Email already registered.");
 
-        // Validar que username no exista
         if (await _userRepository.ExistsByUsernameAsync(request.Username))
             throw new DomainException("Username already taken.");
 
-        // Generar PIN de verificación
         var pin = GeneratePin();
         var passwordHash = _passwordService.Hash(request.Password);
 
-        // Crear registro pendiente
         var pendingRegistration = PendingRegistration.Create(
             email: request.Email,
             pin: pin,
             hashedPassword: passwordHash,
             validity: TimeSpan.FromMinutes(15));
 
-        // Guardar registro pendiente
         await _pendingRegistrationRepository.AddAsync(pendingRegistration);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // Enviar email con PIN
         await _emailService.SendVerificationPinAsync(request.Email, pin);
 
-        // TODO: En producción, no retornarías el PIN, solo confirmarías el envío
         return pin;
     }
 
+    /// <summary>
+    /// Genera un PIN numérico de 6 dígitos.
+    /// </summary>
     private static string GeneratePin()
     {
         var random = new Random();

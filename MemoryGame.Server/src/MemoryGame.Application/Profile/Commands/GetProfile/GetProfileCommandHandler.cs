@@ -6,15 +6,22 @@ using MemoryGame.Domain.Users;
 
 namespace MemoryGame.Application.Profile.Commands.GetProfile;
 
+/// <summary>
+/// Maneja <see cref="GetProfileCommand"/>: recupera el perfil completo del usuario.
+/// </summary>
 public class GetProfileCommandHandler : IRequestHandler<GetProfileCommand, ProfileResponse>
 {
     private readonly IUserRepository _userRepository;
 
+    /// <summary>
+    /// Inicializa el handler con sus dependencias.
+    /// </summary>
     public GetProfileCommandHandler(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
 
+    /// <inheritdoc/>
     public async Task<ProfileResponse> Handle(GetProfileCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId)

@@ -5,12 +5,19 @@ using MemoryGame.Domain.Users;
 
 namespace MemoryGame.Application.Profile.Commands.ChangePassword;
 
+/// <summary>
+/// Maneja <see cref="ChangePasswordCommand"/>: verifica la contraseña actual
+/// y la reemplaza con la nueva contraseña hasheada.
+/// </summary>
 public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, Unit>
 {
     private readonly IUserRepository _userRepository;
     private readonly IPasswordService _passwordService;
     private readonly IUnitOfWork _unitOfWork;
 
+    /// <summary>
+    /// Inicializa el handler con sus dependencias.
+    /// </summary>
     public ChangePasswordCommandHandler(
         IUserRepository userRepository,
         IPasswordService passwordService,
@@ -21,6 +28,7 @@ public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordComman
         _unitOfWork = unitOfWork;
     }
 
+    /// <inheritdoc/>
     public async Task<Unit> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId)

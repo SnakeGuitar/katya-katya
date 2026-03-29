@@ -7,6 +7,10 @@ using MemoryGame.Domain.Users.ValueObjects;
 
 namespace MemoryGame.Application.Auth.Commands.VerifyGuestUpgrade;
 
+/// <summary>
+/// Maneja <see cref="VerifyGuestUpgradeCommand"/>: valida el PIN, convierte la cuenta
+/// guest a registrada, elimina el registro pendiente y emite nuevos tokens.
+/// </summary>
 public class VerifyGuestUpgradeCommandHandler : IRequestHandler<VerifyGuestUpgradeCommand, AuthResponse>
 {
     private readonly IUserRepository _userRepository;
@@ -14,6 +18,9 @@ public class VerifyGuestUpgradeCommandHandler : IRequestHandler<VerifyGuestUpgra
     private readonly IPendingRegistrationRepository _pendingRegistrationRepository;
     private readonly IUnitOfWork _unitOfWork;
 
+    /// <summary>
+    /// Inicializa el handler con sus dependencias.
+    /// </summary>
     public VerifyGuestUpgradeCommandHandler(
         IUserRepository userRepository,
         IJwtService jwtService,
@@ -26,16 +33,15 @@ public class VerifyGuestUpgradeCommandHandler : IRequestHandler<VerifyGuestUpgra
         _unitOfWork = unitOfWork;
     }
 
+    /// <inheritdoc/>
     public async Task<AuthResponse> Handle(VerifyGuestUpgradeCommand request, CancellationToken cancellationToken)
     {
-        // Obtener usuario guest
         var user = await _userRepository.GetByIdAsync(request.UserId)
             ?? throw new DomainException("User not found.");
 
         if (!user.IsGuest)
             throw new DomainException("User is not a guest account.");
 
-        // Validar email del PIN
         var email = Email.Create(request.Email);
         var pending = await _pendingRegistrationRepository.GetByEmailAsync(email)
             ?? throw new DomainException("Invalid or expired PIN.");
@@ -43,17 +49,14 @@ public class VerifyGuestUpgradeCommandHandler : IRequestHandler<VerifyGuestUpgra
         if (!pending.ValidatePin(request.Pin))
             throw new DomainException("Invalid or expired PIN.");
 
-        // Actualizar usuario con email y password
         user.PromoteFromGuest(email.Value, pending.HashedPassword!);
         user.VerifyEmail();
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // Eliminar registro pendiente
         _pendingRegistrationRepository.Remove(pending);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // Generar tokens
         var accessToken = _jwtService.GenerateAccessToken(user);
         var refreshToken = _jwtService.GenerateRefreshToken();
 

@@ -7,6 +7,10 @@ using MemoryGame.Domain.Users.ValueObjects;
 
 namespace MemoryGame.Application.Auth.Commands.FinalizeRegistration;
 
+/// <summary>
+/// Maneja <see cref="FinalizeRegistrationCommand"/>: valida el PIN, crea el usuario
+/// con email verificado, elimina el registro pendiente y emite tokens de sesión.
+/// </summary>
 public class FinalizeRegistrationCommandHandler : IRequestHandler<FinalizeRegistrationCommand, AuthResponse>
 {
     private readonly IUserRepository _userRepository;
@@ -15,6 +19,9 @@ public class FinalizeRegistrationCommandHandler : IRequestHandler<FinalizeRegist
     private readonly IJwtService _jwtService;
     private readonly IUnitOfWork _unitOfWork;
 
+    /// <summary>
+    /// Inicializa el handler con sus dependencias.
+    /// </summary>
     public FinalizeRegistrationCommandHandler(
         IUserRepository userRepository,
         IPendingRegistrationRepository pendingRegistrationRepository,
@@ -29,20 +36,19 @@ public class FinalizeRegistrationCommandHandler : IRequestHandler<FinalizeRegist
         _unitOfWork = unitOfWork;
     }
 
+    /// <inheritdoc/>
     public async Task<AuthResponse> Handle(FinalizeRegistrationCommand request, CancellationToken cancellationToken)
     {
         var email = Email.Create(request.Email);
 
-        // Recuperar y validar PendingRegistration
         var pending = await _pendingRegistrationRepository.GetByEmailAsync(email)
             ?? throw new DomainException("Invalid or expired PIN.");
 
         if (!pending.ValidatePin(request.Pin))
             throw new DomainException("Invalid or expired PIN.");
 
-        // Crear usuario
         var user = User.CreateRegistered(
-            username: email.Value.Split('@')[0], // username = parte del email
+            username: email.Value.Split('@')[0],
             email: request.Email,
             passwordHash: pending.HashedPassword!);
 
@@ -51,15 +57,12 @@ public class FinalizeRegistrationCommandHandler : IRequestHandler<FinalizeRegist
         await _userRepository.AddAsync(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // Eliminar registro pendiente
         _pendingRegistrationRepository.Remove(pending);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // Generar tokens
         var accessToken = _jwtService.GenerateAccessToken(user);
         var refreshToken = _jwtService.GenerateRefreshToken();
 
-        // Guardar refreshToken en base de datos (UserSession)
         var session = UserSession.Create(refreshToken, user.Id, TimeSpan.FromDays(7));
         await _userSessionRepository.AddAsync(session);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

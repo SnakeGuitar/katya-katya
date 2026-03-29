@@ -6,6 +6,10 @@ using MemoryGame.Domain.Users;
 
 namespace MemoryGame.Application.Auth.Commands.Login;
 
+/// <summary>
+/// Maneja <see cref="LoginCommand"/>: autentica al usuario verificando credenciales
+/// y estado de cuenta, luego persiste la sesión y emite tokens.
+/// </summary>
 public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
 {
     private readonly IUserRepository _userRepository;
@@ -14,6 +18,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
     private readonly IUserSessionRepository _userSessionRepository;
     private readonly IUnitOfWork _unitOfWork;
 
+    /// <summary>
+    /// Inicializa el handler con sus dependencias.
+    /// </summary>
     public LoginCommandHandler(
         IUserRepository userRepository,
         IPasswordService passwordService,
@@ -28,6 +35,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
         _unitOfWork = unitOfWork;
     }
 
+    /// <inheritdoc/>
     public async Task<AuthResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByUsernameAsync(request.Username)
@@ -42,11 +50,9 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponse>
         if (!user.VerifiedEmail)
             throw new DomainException("Email not verified. Please verify your email first.");
 
-        // Generar tokens
         var accessToken = _jwtService.GenerateAccessToken(user);
         var refreshToken = _jwtService.GenerateRefreshToken();
 
-        // Guardar refreshToken en UserSession
         var session = UserSession.Create(refreshToken, user.Id, TimeSpan.FromDays(7));
         await _userSessionRepository.AddAsync(session);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

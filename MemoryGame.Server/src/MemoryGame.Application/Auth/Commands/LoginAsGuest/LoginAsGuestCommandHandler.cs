@@ -5,6 +5,10 @@ using MemoryGame.Domain.Users;
 
 namespace MemoryGame.Application.Auth.Commands.LoginAsGuest;
 
+/// <summary>
+/// Maneja <see cref="LoginAsGuestCommand"/>: crea una cuenta guest, persiste la sesión
+/// y emite tokens de acceso.
+/// </summary>
 public class LoginAsGuestCommandHandler : IRequestHandler<LoginAsGuestCommand, AuthResponse>
 {
     private readonly IUserRepository _userRepository;
@@ -12,6 +16,9 @@ public class LoginAsGuestCommandHandler : IRequestHandler<LoginAsGuestCommand, A
     private readonly IUserSessionRepository _userSessionRepository;
     private readonly IUnitOfWork _unitOfWork;
 
+    /// <summary>
+    /// Inicializa el handler con sus dependencias.
+    /// </summary>
     public LoginAsGuestCommandHandler(
         IUserRepository userRepository,
         IJwtService jwtService,
@@ -24,19 +31,17 @@ public class LoginAsGuestCommandHandler : IRequestHandler<LoginAsGuestCommand, A
         _unitOfWork = unitOfWork;
     }
 
+    /// <inheritdoc/>
     public async Task<AuthResponse> Handle(LoginAsGuestCommand request, CancellationToken cancellationToken)
     {
-        // Crear usuario guest
         var user = User.CreateGuest(request.GuestUsername);
 
         await _userRepository.AddAsync(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // Generar tokens
         var accessToken = _jwtService.GenerateAccessToken(user);
         var refreshToken = _jwtService.GenerateRefreshToken();
 
-        // Guardar sesión
         var session = UserSession.Create(refreshToken, user.Id, TimeSpan.FromDays(7));
         await _userSessionRepository.AddAsync(session);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

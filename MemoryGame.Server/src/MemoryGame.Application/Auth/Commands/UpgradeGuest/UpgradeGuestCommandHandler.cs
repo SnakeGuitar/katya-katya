@@ -6,6 +6,10 @@ using MemoryGame.Domain.Users.ValueObjects;
 
 namespace MemoryGame.Application.Auth.Commands.UpgradeGuest;
 
+/// <summary>
+/// Maneja <see cref="UpgradeGuestCommand"/>: valida que el usuario sea guest y el email
+/// esté disponible, luego crea el registro pendiente de upgrade y envía el PIN.
+/// </summary>
 public class UpgradeGuestCommandHandler : IRequestHandler<UpgradeGuestCommand, string>
 {
     private readonly IUserRepository _userRepository;
@@ -14,6 +18,9 @@ public class UpgradeGuestCommandHandler : IRequestHandler<UpgradeGuestCommand, s
     private readonly IEmailService _emailService;
     private readonly IUnitOfWork _unitOfWork;
 
+    /// <summary>
+    /// Inicializa el handler con sus dependencias.
+    /// </summary>
     public UpgradeGuestCommandHandler(
         IUserRepository userRepository,
         IPasswordService passwordService,
@@ -28,37 +35,35 @@ public class UpgradeGuestCommandHandler : IRequestHandler<UpgradeGuestCommand, s
         _unitOfWork = unitOfWork;
     }
 
+    /// <inheritdoc/>
     public async Task<string> Handle(UpgradeGuestCommand request, CancellationToken cancellationToken)
     {
-        // Obtener usuario guest
         var user = await _userRepository.GetByIdAsync(request.UserId)
             ?? throw new DomainException("User not found.");
 
         if (!user.IsGuest)
             throw new DomainException("User is not a guest account.");
 
-        // Validar email no exista
         var email = Email.Create(request.Email);
         var existingUser = await _userRepository.GetByEmailAsync(email);
         if (existingUser is not null)
             throw new DomainException("Email already in use.");
 
-        // Generar PIN para verificación
         var pin = GeneratePin();
         var hashedPassword = _passwordService.Hash(request.Password);
 
-        // Crear registro pendiente de upgrade
         var pendingUpgrade = PendingRegistration.CreateForUpgrade(email, pin, hashedPassword, user.Id);
         await _pendingRegistrationRepository.AddAsync(pendingUpgrade);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        // Enviar email de verificación
         await _emailService.SendGuestUpgradeVerificationAsync(email.Value, pin);
 
-        // TODO: En producción, solo devolver "PIN enviado"
         return pin;
     }
 
+    /// <summary>
+    /// Genera un PIN numérico de 6 dígitos.
+    /// </summary>
     private static string GeneratePin() =>
         Random.Shared.Next(100000, 999999).ToString();
 }
