@@ -8,5 +8,6 @@ public record ProfileResponse(
     string Email,
     bool IsGuest,
     bool VerifiedEmail,
-    DateTime RegistrationDate
+    DateTime RegistrationDate,
+    byte[]? Avatar
 );
