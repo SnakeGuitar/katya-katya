@@ -46,4 +46,20 @@ public static class DomainErrors
     {
         public const string PinInvalidFormat           = "PENDING_REGISTRATION_PIN_INVALID_FORMAT";
     }
+
+    /// <summary>Social and friendship errors.</summary>
+    public static class Social
+    {
+        public const string FriendRequestNotFound      = "SOCIAL_FRIEND_REQUEST_NOT_FOUND";
+        public const string FriendRequestAlreadySent   = "SOCIAL_FRIEND_REQUEST_ALREADY_SENT";
+        public const string AlreadyFriends             = "SOCIAL_ALREADY_FRIENDS";
+        public const string NotFriends                 = "SOCIAL_NOT_FRIENDS";
+        public const string SocialNetworkNotFound      = "SOCIAL_NETWORK_NOT_FOUND";
+    }
+
+    /// <summary>Match errors.</summary>
+    public static class Match
+    {
+        public const string NotFound                   = "MATCH_NOT_FOUND";
+    }
 }
