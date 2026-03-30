@@ -1,7 +1,9 @@
 using System.Security.Claims;
+using MemoryGame.Application.Common.Interfaces;
 using MemoryGame.Application.Lobbies.DTOs;
 using MemoryGame.Application.Lobbies.Interfaces;
 using MemoryGame.Application.Lobbies.Models;
+using MemoryGame.Domain.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
@@ -9,12 +11,15 @@ namespace MemoryGame.API.Hubs;
 
 /// <summary>
 /// SignalR hub that replaces the legacy WCF IGameLobbyService and IGameLobbyCallback.
-/// Manages lobby lifecycle, chat, game turns, card flipping, and kick voting.
+/// Manages lobby lifecycle, chat, game turns, card flipping, kick voting, and friend invitations.
 /// </summary>
 [Authorize]
 public class GameLobbyHub : Hub
 {
     private readonly ILobbyManager _lobbyManager;
+    private readonly IPresenceTracker _presenceTracker;
+    private readonly IUserRepository _userRepository;
+    private readonly IEmailService _emailService;
     private readonly ILogger<GameLobbyHub> _logger;
 
     /// <summary>
@@ -26,10 +31,18 @@ public class GameLobbyHub : Hub
     /// <summary>
     /// Initializes the hub with its dependencies.
     /// </summary>
-    public GameLobbyHub(ILobbyManager lobbyManager, ILogger<GameLobbyHub> logger)
+    public GameLobbyHub(
+        ILobbyManager lobbyManager,
+        IPresenceTracker presenceTracker,
+        IUserRepository userRepository,
+        IEmailService emailService,
+        ILogger<GameLobbyHub> logger)
     {
-        _lobbyManager = lobbyManager;
-        _logger = logger;
+        _lobbyManager     = lobbyManager;
+        _presenceTracker  = presenceTracker;
+        _userRepository   = userRepository;
+        _emailService     = emailService;
+        _logger           = logger;
     }
 
     /// <summary>
@@ -260,10 +273,73 @@ public class GameLobbyHub : Hub
     }
 
     /// <summary>
+    /// Invites another player to the caller's current lobby.
+    /// Delivers a real-time notification if the target is online;
+    /// otherwise falls back to an email invitation.
+    /// Client events: LobbyInviteSent (caller), LobbyInviteReceived (target)
+    /// </summary>
+    public async Task InviteFriend(int targetUserId)
+    {
+        var lobby = _lobbyManager.FindLobbyByConnection(Context.ConnectionId);
+        var caller = lobby?.GetPlayer(Context.ConnectionId);
+
+        if (lobby is null || caller is null)
+        {
+            await Clients.Caller.SendAsync("Error", "LOBBY_NOT_IN_LOBBY");
+            return;
+        }
+
+        if (caller.UserId == targetUserId)
+        {
+            await Clients.Caller.SendAsync("Error", "LOBBY_INVITE_SELF");
+            return;
+        }
+
+        var targetUser = await _userRepository.GetByIdAsync(targetUserId);
+        if (targetUser is null)
+        {
+            await Clients.Caller.SendAsync("Error", "USER_NOT_FOUND");
+            return;
+        }
+
+        var targetConnectionId = _presenceTracker.GetConnectionId(targetUserId);
+
+        if (targetConnectionId is not null)
+        {
+            await Clients.Client(targetConnectionId).SendAsync(
+                "LobbyInviteReceived", caller.Username, lobby.GameCode);
+        }
+        else
+        {
+            await _emailService.SendLobbyInviteAsync(
+                targetUser.Email.Value,
+                targetUser.Username,
+                caller.Username,
+                lobby.GameCode);
+        }
+
+        await Clients.Caller.SendAsync("LobbyInviteSent", targetUser.Username, targetConnectionId is not null);
+    }
+
+    /// <summary>
+    /// Registers the caller's presence so other players can send in-game invitations.
+    /// </summary>
+    public override async Task OnConnectedAsync()
+    {
+        var userId = GetUserId();
+        if (userId > 0)
+            _presenceTracker.Track(userId, Context.ConnectionId);
+
+        await base.OnConnectedAsync();
+    }
+
+    /// <summary>
     /// Handles unexpected disconnections by removing the player from their lobby.
     /// </summary>
     public override async Task OnDisconnectedAsync(Exception? exception)
     {
+        _presenceTracker.Untrack(Context.ConnectionId);
+
         var lobby = _lobbyManager.FindLobbyByConnection(Context.ConnectionId);
         if (lobby is not null)
         {
@@ -294,12 +370,14 @@ public class GameLobbyHub : Hub
         await Clients.Group(lobby.GameCode).SendAsync("GameFinished", winner);
     }
 
+    private int GetUserId() =>
+        int.Parse(Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+
     private LobbyPlayer CreatePlayerFromContext(bool isHost)
     {
-        var userId = int.Parse(Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
         var username = Context.User?.FindFirst("username")?.Value ?? "Unknown";
-        var isGuest = Context.User?.FindFirst("isGuest")?.Value == "true";
+        var isGuest  = Context.User?.FindFirst("isGuest")?.Value == "true";
 
-        return new LobbyPlayer(Context.ConnectionId, userId, username, isGuest, isHost);
+        return new LobbyPlayer(Context.ConnectionId, GetUserId(), username, isGuest, isHost);
     }
 }

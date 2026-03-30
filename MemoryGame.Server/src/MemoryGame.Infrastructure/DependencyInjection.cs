@@ -41,8 +41,9 @@ public static class DependencyInjection
         services.AddScoped<ICardRepository, CardRepository>();
         services.AddScoped<IPenaltyRepository, PenaltyRepository>();
 
-        // Lobby (singleton — in-memory state shared across requests)
+        // Lobby (singletons — in-memory state shared across requests)
         services.AddSingleton<ILobbyManager, LobbyManager>();
+        services.AddSingleton<IPresenceTracker, PresenceTracker>();
 
         // Services
         services.AddScoped<IJwtService, JwtService>();

@@ -37,6 +37,16 @@ public class EmailService : IEmailService
         await SendAsync(toEmail, subject, body);
     }
 
+    public async Task SendLobbyInviteAsync(string toEmail, string toUsername, string fromUsername, string gameCode)
+    {
+        var subject = $"Memory Game — {fromUsername} invited you to a game";
+        var body    = $"Hi <strong>{toUsername}</strong>,<br/><br/>" +
+                      $"<strong>{fromUsername}</strong> has invited you to join their lobby.<br/>" +
+                      $"Use game code: <strong>{gameCode}</strong><br/><br/>" +
+                      "Open the game and enter the code in <em>Join Lobby</em> to play.";
+        await SendAsync(toEmail, subject, body);
+    }
+
     private async Task SendAsync(string toEmail, string subject, string htmlBody)
     {
         var message = new MimeMessage();
