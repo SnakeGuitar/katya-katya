@@ -1,4 +1,5 @@
 using System.Text;
+using MemoryGame.API.Hubs;
 using MemoryGame.API.Middleware;
 using MemoryGame.Application;
 using MemoryGame.Infrastructure;
@@ -34,6 +35,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime         = true,
             ClockSkew                = TimeSpan.Zero
         };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hub"))
+                    context.Token = accessToken;
+                return Task.CompletedTask;
+            }
+        };
     });
 
 builder.Services.AddAuthorization();
@@ -53,6 +66,9 @@ builder.Services.AddCors(options =>
             policy.WithOrigins(allowedOrigins).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
     });
 });
+
+// SignalR
+builder.Services.AddSignalR();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -74,5 +90,6 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<GameLobbyHub>("/hub/lobby");
 
 app.Run();

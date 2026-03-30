@@ -9,6 +9,8 @@ using MemoryGame.Domain.Social;
 using MemoryGame.Domain.Users;
 using MemoryGame.Infrastructure.Persistence;
 using MemoryGame.Infrastructure.Repositories;
+using MemoryGame.Application.Lobbies.Interfaces;
+using MemoryGame.Infrastructure.Lobbies;
 using MemoryGame.Infrastructure.Services;
 
 namespace MemoryGame.Infrastructure;
@@ -38,6 +40,9 @@ public static class DependencyInjection
         services.AddScoped<IMatchRepository, MatchRepository>();
         services.AddScoped<ICardRepository, CardRepository>();
         services.AddScoped<IPenaltyRepository, PenaltyRepository>();
+
+        // Lobby (singleton — in-memory state shared across requests)
+        services.AddSingleton<ILobbyManager, LobbyManager>();
 
         // Services
         services.AddScoped<IJwtService, JwtService>();
