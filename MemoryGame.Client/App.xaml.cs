@@ -5,6 +5,7 @@ using MemoryGame.Client.Services;
 using MemoryGame.Client.ViewModels;
 using MemoryGame.Client.ViewModels.MainMenu;
 using MemoryGame.Client.ViewModels.Session;
+using MemoryGame.Client.ViewModels.Settings;
 
 namespace MemoryGame.Client;
 
@@ -31,6 +32,8 @@ public partial class App : Application
         services.AddSingleton<ClientSettings>();
         services.AddSingleton<ISessionService, SessionService>();
         services.AddSingleton<INavigationService, NavigationService>();
+        services.AddSingleton<IWindowService, WindowService>();
+        services.AddSingleton<MusicService>();
         services.AddSingleton(sp => new HubService(
             sp.GetRequiredService<ISessionService>(), HubUrl));
 
@@ -48,6 +51,7 @@ public partial class App : Application
         services.AddTransient<RegisterViewModel>();
         services.AddTransient<VerifyEmailViewModel>();
         services.AddTransient<MainMenuViewModel>();
+        services.AddTransient<SettingsViewModel>();
 
         // Main window
         services.AddSingleton<MainWindow>();
@@ -60,6 +64,8 @@ public partial class App : Application
         var settings = _serviceProvider.GetRequiredService<ClientSettings>();
         LocalizationManager.Instance.SetCulture(settings.LanguageCode);
 
+        _serviceProvider.GetRequiredService<MusicService>();
+
         var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
         mainWindow.DataContext = _serviceProvider.GetRequiredService<MainWindowViewModel>();
 
@@ -71,6 +77,7 @@ public partial class App : Application
 
     protected override async void OnExit(ExitEventArgs e)
     {
+        _serviceProvider.GetRequiredService<MusicService>().Dispose();
         var hub = _serviceProvider.GetRequiredService<HubService>();
         await hub.DisposeAsync();
         await _serviceProvider.DisposeAsync();

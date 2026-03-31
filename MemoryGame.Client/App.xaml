@@ -4,8 +4,10 @@
              xmlns:converters="clr-namespace:MemoryGame.Client.Converters"
              xmlns:sessionVm="clr-namespace:MemoryGame.Client.ViewModels.Session"
              xmlns:mainMenuVm="clr-namespace:MemoryGame.Client.ViewModels.MainMenu"
+             xmlns:settingsVm="clr-namespace:MemoryGame.Client.ViewModels.Settings"
              xmlns:sessionViews="clr-namespace:MemoryGame.Client.Views.Session"
-             xmlns:mainMenuViews="clr-namespace:MemoryGame.Client.Views.MainMenu">
+             xmlns:mainMenuViews="clr-namespace:MemoryGame.Client.Views.MainMenu"
+             xmlns:settingsViews="clr-namespace:MemoryGame.Client.Views.Settings">
 
     <Application.Resources>
         <ResourceDictionary>
@@ -36,6 +38,10 @@
 
             <DataTemplate DataType="{x:Type mainMenuVm:MainMenuViewModel}">
                 <mainMenuViews:MainMenuView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type settingsVm:SettingsViewModel}">
+                <settingsViews:SettingsView />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
