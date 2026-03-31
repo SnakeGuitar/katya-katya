@@ -177,6 +177,7 @@
        ===================================================================== -->
   <data name="TitleScreen_Title"><value>Memory Game</value></data>
   <data name="TitleScreen_Subtitle"><value>Empareja cartas, reta a tus amigos.</value></data>
+  <data name="TitleScreen_AlreadyHaveAccount"><value>¿Ya tienes una cuenta?</value></data>
 
   <!-- =====================================================================
        Login

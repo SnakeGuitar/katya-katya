@@ -373,6 +373,9 @@
 	<data name="TitleScreen_Subtitle">
 		<value>카드를 맞추고 친구와 대결하세요.</value>
 	</data>
+	<data name="TitleScreen_AlreadyHaveAccount">
+		<value>이미 계정이 있으신가요?</value>
+	</data>
 
 	<!-- =====================================================================
        Login

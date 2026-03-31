@@ -177,6 +177,7 @@
        ===================================================================== -->
   <data name="TitleScreen_Title"><value>Memory Game</value></data>
   <data name="TitleScreen_Subtitle"><value>Match cards, challenge friends.</value></data>
+  <data name="TitleScreen_AlreadyHaveAccount"><value>Already have an account?</value></data>
 
   <!-- =====================================================================
        Login

@@ -373,6 +373,9 @@
 	<data name="TitleScreen_Subtitle">
 		<value>カードを合わせて、友達と対戦しよう。</value>
 	</data>
+	<data name="TitleScreen_AlreadyHaveAccount">
+		<value>すでにアカウントをお持ちですか？</value>
+	</data>
 
 	<!-- =====================================================================
        Login

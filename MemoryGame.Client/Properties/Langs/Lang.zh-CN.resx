@@ -373,6 +373,9 @@
 	<data name="TitleScreen_Subtitle">
 		<value>匹配卡片，挑战好友。</value>
 	</data>
+	<data name="TitleScreen_AlreadyHaveAccount">
+		<value>已有账户？</value>
+	</data>
 
 	<!-- =====================================================================
        Login
