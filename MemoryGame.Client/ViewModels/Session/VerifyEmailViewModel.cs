@@ -15,6 +15,7 @@ public partial class VerifyEmailViewModel : ObservableObject
     [ObservableProperty] private string _email = string.Empty;
     [ObservableProperty] private string _pin = string.Empty;
     [ObservableProperty] private string? _errorMessage;
+    [ObservableProperty] private string? _pinResentMessage;
     [ObservableProperty] private bool _isLoading;
 
     public VerifyEmailViewModel(INavigationService navigation, ApiClient api)
@@ -50,7 +51,10 @@ public partial class VerifyEmailViewModel : ObservableObject
     [RelayCommand]
     private async Task ResendPinAsync()
     {
-        await _api.PostAsync("api/auth/resend-verification", new { Email });
+        PinResentMessage = null;
+        var result = await _api.PostAsync("api/auth/resend-verification", new { Email });
+        if (result.IsSuccess)
+            PinResentMessage = Localization.LocalizationManager.Instance["VerifyEmail_PinResentMessage"];
     }
 
     [RelayCommand]

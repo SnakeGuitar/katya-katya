@@ -6,7 +6,7 @@ namespace MemoryGame.Client.Services;
 /// Manages the SignalR hub connection lifecycle.
 /// Connects on login, disconnects on logout.
 /// </summary>
-public class HubService : IAsyncDisposable
+public class HubService : IAsyncDisposable, IDisposable
 {
     private readonly ISessionService _session;
     private readonly string _hubUrl;
@@ -65,5 +65,11 @@ public class HubService : IAsyncDisposable
     public async ValueTask DisposeAsync()
     {
         await DisconnectAsync();
+    }
+
+    public void Dispose()
+    {
+        if (_connection is not null)
+            DisconnectAsync().GetAwaiter().GetResult();
     }
 }

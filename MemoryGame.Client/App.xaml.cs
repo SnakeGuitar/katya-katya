@@ -57,7 +57,6 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
-        // Restore saved language (defaults to English)
         var settings = _serviceProvider.GetRequiredService<ClientSettings>();
         LocalizationManager.Instance.SetCulture(settings.LanguageCode);
 
@@ -74,7 +73,7 @@ public partial class App : Application
     {
         var hub = _serviceProvider.GetRequiredService<HubService>();
         await hub.DisposeAsync();
-        _serviceProvider.Dispose();
+        await _serviceProvider.DisposeAsync();
         base.OnExit(e);
     }
 }
