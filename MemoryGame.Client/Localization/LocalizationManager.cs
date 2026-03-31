@@ -1,6 +1,8 @@
 using System.Globalization;
 using System.Resources;
 using System.Reflection;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace MemoryGame.Client.Localization;
@@ -46,12 +48,34 @@ public sealed class LocalizationManager : ObservableObject
     public string CurrentCultureCode => _culture.Name;
 
     /// <summary>
+    /// Returns the ImageSource for the logo corresponding to the current language.
+    /// Returning ImageSource (not string) is required so WPF binding to Image.Source works
+    /// at runtime — the string TypeConverter only applies at XAML parse time, not via binding.
+    /// </summary>
+    public ImageSource LogoImage
+    {
+        get
+        {
+            var path = _culture.Name switch
+            {
+                "es-MX" => "pack://application:,,,/Resources/Images/Logos/logo-es.png",
+                "ja-JP" => "pack://application:,,,/Resources/Images/Logos/logo-jp.png",
+                "zh-CN" => "pack://application:,,,/Resources/Images/Logos/logo-zh.png",
+                "ko-KR" => "pack://application:,,,/Resources/Images/Logos/logo-ko.png",
+                _       => "pack://application:,,,/Resources/Images/Logos/logo-en.png"
+            };
+            return new BitmapImage(new Uri(path));
+        }
+    }
+
+    /// <summary>
     /// Switches the active language and notifies all XAML bindings to refresh.
     /// </summary>
     public void SetCulture(string cultureCode)
     {
         _culture = CultureInfo.GetCultureInfo(cultureCode);
         OnPropertyChanged("Item[]");
+        OnPropertyChanged(nameof(LogoImage));
     }
 
     /// <summary>
