@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MemoryGame.Client.Localization;
 using MemoryGame.Client.Models;
 using MemoryGame.Client.Services;
 using MemoryGame.Client.ViewModels.MainMenu;
@@ -41,7 +42,7 @@ public partial class LoginViewModel : ObservableObject
 
             if (!result.IsSuccess)
             {
-                ErrorMessage = result.ErrorMessage ?? "Login failed.";
+                ErrorMessage = ErrorResolver.Resolve(result.ErrorCode);
                 return;
             }
 

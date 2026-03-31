@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter</value></resheader>
+
+  <!-- =====================================================================
+       Global Buttons
+       ===================================================================== -->
+  <data name="Global_Button_Login"><value>Log In</value></data>
+  <data name="Global_Button_Register"><value>Register</value></data>
+  <data name="Global_Button_Back"><value>Back</value></data>
+  <data name="Global_Button_Verify"><value>Verify</value></data>
+  <data name="Global_Button_ResendPin"><value>Resend PIN</value></data>
+  <data name="Global_Button_Logout"><value>Log Out</value></data>
+  <data name="Global_Button_Cancel"><value>Cancel</value></data>
+  <data name="Global_Button_Confirm"><value>Confirm</value></data>
+  <data name="Global_Button_Accept"><value>Accept</value></data>
+  <data name="Global_Button_Reject"><value>Reject</value></data>
+  <data name="Global_Button_Send"><value>Send</value></data>
+  <data name="Global_Button_Update"><value>Update</value></data>
+  <data name="Global_Button_Save"><value>Save</value></data>
+  <data name="Global_Button_Play"><value>Play</value></data>
+  <data name="Global_Button_Leave"><value>Leave</value></data>
+  <data name="Global_Button_Invite"><value>Invite</value></data>
+  <data name="Global_Button_Report"><value>Report</value></data>
+  <data name="Global_Button_StartGame"><value>Start Game</value></data>
+  <data name="Global_Button_JoinLobby"><value>Join Lobby</value></data>
+  <data name="Global_Button_CreateLobby"><value>Create Lobby</value></data>
+
+  <!-- =====================================================================
+       Global Labels
+       ===================================================================== -->
+  <data name="Global_Label_Username"><value>Username</value></data>
+  <data name="Global_Label_Password"><value>Password</value></data>
+  <data name="Global_Label_Email"><value>Email</value></data>
+  <data name="Global_Label_ConfirmPassword"><value>Confirm Password</value></data>
+  <data name="Global_Label_Pin"><value>PIN</value></data>
+  <data name="Global_Label_Online"><value>Online</value></data>
+  <data name="Global_Label_Offline"><value>Offline</value></data>
+  <data name="Global_Label_Score"><value>Score</value></data>
+  <data name="Global_Label_Time"><value>Time</value></data>
+  <data name="Global_Label_GameCode"><value>Game Code</value></data>
+  <data name="Global_Label_Players"><value>Players</value></data>
+  <data name="Global_Label_Avatar"><value>Avatar</value></data>
+
+  <!-- =====================================================================
+       Global Titles
+       ===================================================================== -->
+  <data name="Global_Title_Error"><value>Error</value></data>
+  <data name="Global_Title_Success"><value>Success</value></data>
+  <data name="Global_Title_Warning"><value>Warning</value></data>
+  <data name="Global_Title_Information"><value>Information</value></data>
+  <data name="Global_Title_ConnectionError"><value>Connection Error</value></data>
+  <data name="Global_Title_ServerOffline"><value>Server Offline</value></data>
+  <data name="Global_Title_Confirm"><value>Confirm</value></data>
+
+  <!-- =====================================================================
+       Global Messages
+       ===================================================================== -->
+  <data name="Global_Message_Welcome"><value>Welcome, {0}!</value></data>
+  <data name="Global_Message_Reconnecting"><value>Reconnecting to server...</value></data>
+  <data name="Global_Message_Loading"><value>Loading...</value></data>
+
+  <!-- =====================================================================
+       Validation Messages
+       ===================================================================== -->
+  <data name="Validation_Required"><value>This field is required.</value></data>
+  <data name="Validation_InvalidEmail"><value>Enter a valid email address.</value></data>
+  <data name="Validation_PasswordTooShort"><value>Password must be at least 8 characters.</value></data>
+  <data name="Validation_PasswordTooLong"><value>Password cannot exceed 100 characters.</value></data>
+  <data name="Validation_PasswordMissingUpper"><value>Password must contain an uppercase letter.</value></data>
+  <data name="Validation_PasswordMissingLower"><value>Password must contain a lowercase letter.</value></data>
+  <data name="Validation_PasswordMissingDigit"><value>Password must contain a number.</value></data>
+  <data name="Validation_PasswordMissingSpecial"><value>Password must contain a special character.</value></data>
+  <data name="Validation_UsernameTooShort"><value>Username must be at least 3 characters.</value></data>
+  <data name="Validation_UsernameTooLong"><value>Username cannot exceed 30 characters.</value></data>
+  <data name="Validation_PinLength"><value>PIN must be exactly 6 digits.</value></data>
+  <data name="Validation_PasswordsDoNotMatch"><value>Passwords do not match.</value></data>
+
+  <!-- =====================================================================
+       Server Error Codes — AUTH
+       ===================================================================== -->
+  <data name="Error_AUTH_EMAIL_ALREADY_REGISTERED"><value>That email address is already registered.</value></data>
+  <data name="Error_AUTH_EMAIL_ALREADY_IN_USE"><value>That email address is already in use.</value></data>
+  <data name="Error_AUTH_USERNAME_ALREADY_TAKEN"><value>That username is already taken.</value></data>
+  <data name="Error_AUTH_INVALID_CREDENTIALS"><value>Incorrect username or password.</value></data>
+  <data name="Error_AUTH_GUEST_CANNOT_LOGIN"><value>Guest accounts cannot use this feature.</value></data>
+  <data name="Error_AUTH_EMAIL_NOT_VERIFIED"><value>Please verify your email before logging in.</value></data>
+  <data name="Error_AUTH_REGISTRATION_NOT_FOUND"><value>Registration request not found. Please register again.</value></data>
+  <data name="Error_AUTH_PIN_INVALID"><value>The PIN is invalid or has expired.</value></data>
+  <data name="Error_AUTH_REFRESH_TOKEN_INVALID"><value>Your session has expired. Please log in again.</value></data>
+
+  <!-- =====================================================================
+       Server Error Codes — USER
+       ===================================================================== -->
+  <data name="Error_USER_NOT_FOUND"><value>User not found.</value></data>
+  <data name="Error_USER_USERNAME_EMPTY"><value>Username cannot be empty.</value></data>
+  <data name="Error_USER_USERNAME_TOO_LONG"><value>Username is too long (max 30 characters).</value></data>
+  <data name="Error_USER_NAME_TOO_LONG"><value>Name is too long.</value></data>
+  <data name="Error_USER_LAST_NAME_TOO_LONG"><value>Last name is too long.</value></data>
+  <data name="Error_USER_AVATAR_NULL"><value>No avatar was provided.</value></data>
+  <data name="Error_USER_GUEST_CANNOT_CHANGE_PASSWORD"><value>Guest accounts cannot change their password.</value></data>
+  <data name="Error_USER_EMAIL_ALREADY_VERIFIED"><value>Your email is already verified.</value></data>
+  <data name="Error_USER_NOT_A_GUEST"><value>Your account is not a guest account.</value></data>
+  <data name="Error_USER_PASSWORD_INCORRECT"><value>Current password is incorrect.</value></data>
+
+  <!-- =====================================================================
+       Server Error Codes — SESSION
+       ===================================================================== -->
+  <data name="Error_SESSION_TOKEN_EMPTY"><value>Session token is missing.</value></data>
+  <data name="Error_PENDING_REGISTRATION_PIN_INVALID_FORMAT"><value>The PIN format is invalid. Use exactly 6 digits.</value></data>
+
+  <!-- =====================================================================
+       Server Error Codes — SOCIAL
+       ===================================================================== -->
+  <data name="Error_SOCIAL_FRIEND_REQUEST_NOT_FOUND"><value>Friend request not found.</value></data>
+  <data name="Error_SOCIAL_FRIEND_REQUEST_ALREADY_SENT"><value>You already sent a friend request to this user.</value></data>
+  <data name="Error_SOCIAL_ALREADY_FRIENDS"><value>You are already friends with this user.</value></data>
+  <data name="Error_SOCIAL_NOT_FRIENDS"><value>You are not friends with this user.</value></data>
+  <data name="Error_SOCIAL_NETWORK_NOT_FOUND"><value>Social network not found.</value></data>
+
+  <!-- =====================================================================
+       Server Error Codes — MATCH
+       ===================================================================== -->
+  <data name="Error_MATCH_NOT_FOUND"><value>Match not found.</value></data>
+
+  <!-- =====================================================================
+       Server Error Codes — HUB / LOBBY
+       ===================================================================== -->
+  <data name="Error_LOBBY_NOT_FOUND"><value>Lobby not found. The game code may be incorrect.</value></data>
+  <data name="Error_LOBBY_FULL"><value>This lobby is full.</value></data>
+  <data name="Error_LOBBY_GAME_IN_PROGRESS"><value>A game is already in progress in this lobby.</value></data>
+  <data name="Error_LOBBY_NOT_ENOUGH_PLAYERS"><value>At least 2 players are required to start.</value></data>
+  <data name="Error_LOBBY_INVALID_CARD_COUNT"><value>Card count must be an even number between 4 and 36.</value></data>
+  <data name="Error_LOBBY_INVALID_TURN_TIME"><value>Turn time must be between 5 and 120 seconds.</value></data>
+  <data name="Error_LOBBY_CODE_TAKEN"><value>That game code is already taken. Please choose another.</value></data>
+  <data name="Error_LOBBY_NOT_IN_LOBBY"><value>You are not currently in a lobby.</value></data>
+  <data name="Error_LOBBY_INVITE_SELF"><value>You cannot invite yourself.</value></data>
+
+  <!-- =====================================================================
+       Client-side Errors
+       ===================================================================== -->
+  <data name="Error_CONNECTION_ERROR"><value>Could not connect to the server. Check your internet connection.</value></data>
+  <data name="Error_UNKNOWN"><value>An unexpected error occurred. Please try again.</value></data>
+
+  <!-- =====================================================================
+       Title Screen
+       ===================================================================== -->
+  <data name="TitleScreen_Title"><value>Memory Game</value></data>
+  <data name="TitleScreen_Subtitle"><value>Match cards, challenge friends.</value></data>
+
+  <!-- =====================================================================
+       Login
+       ===================================================================== -->
+  <data name="Login_Title"><value>Log In</value></data>
+
+  <!-- =====================================================================
+       Register
+       ===================================================================== -->
+  <data name="Register_Title"><value>Create Account</value></data>
+
+  <!-- =====================================================================
+       Verify Email
+       ===================================================================== -->
+  <data name="VerifyEmail_Title"><value>Verify Email</value></data>
+  <data name="VerifyEmail_Description"><value>Enter the 6-digit PIN sent to your email address.</value></data>
+  <data name="VerifyEmail_PinResentMessage"><value>A new PIN has been sent to your email.</value></data>
+
+  <!-- =====================================================================
+       Main Menu
+       ===================================================================== -->
+  <data name="MainMenu_Button_Singleplayer"><value>Singleplayer</value></data>
+  <data name="MainMenu_Button_Multiplayer"><value>Multiplayer</value></data>
+  <data name="MainMenu_Button_Profile"><value>Profile</value></data>
+  <data name="MainMenu_Button_Friends"><value>Friends</value></data>
+  <data name="MainMenu_Button_Settings"><value>Settings</value></data>
+
+  <!-- =====================================================================
+       Multiplayer / Lobby
+       ===================================================================== -->
+  <data name="MultiplayerMenu_Label_CreateGame"><value>Host a Game</value></data>
+  <data name="MultiplayerMenu_Label_JoinGame"><value>Join a Game</value></data>
+  <data name="MultiplayerMenu_CheckBox_Public"><value>Public lobby</value></data>
+  <data name="Lobby_Label_WaitingPlayers"><value>Waiting for players...</value></data>
+  <data name="Lobby_Notification_PlayerJoined"><value>{0} joined the lobby.</value></data>
+  <data name="Lobby_Notification_PlayerLeft"><value>{0} left the lobby.</value></data>
+  <data name="Lobby_Message_LeaveLobby"><value>Are you sure you want to leave the lobby?</value></data>
+  <data name="KickVote_Message_VoteKickPlayer"><value>Vote to kick {0}?</value></data>
+
+  <!-- =====================================================================
+       Profile
+       ===================================================================== -->
+  <data name="EditProfile_Label_EditProfile"><value>Edit Profile</value></data>
+  <data name="EditProfile_Button_ChangeAvatar"><value>Change Avatar</value></data>
+  <data name="EditProfile_Button_UpdatePassword"><value>Update Password</value></data>
+  <data name="EditProfile_Label_NewUsername"><value>New Username</value></data>
+  <data name="EditProfile_Label_ActualPassword"><value>Current Password</value></data>
+  <data name="EditProfile_Label_NewPassword"><value>New Password</value></data>
+
+  <!-- =====================================================================
+       Friends / Social
+       ===================================================================== -->
+  <data name="Friends_Label_MyFriends"><value>My Friends</value></data>
+  <data name="Friends_Label_PendingRequests"><value>Pending Requests</value></data>
+  <data name="Friends_Label_AddFriend"><value>Add Friend</value></data>
+  <data name="Friends_Button_SendRequest"><value>Send Request</value></data>
+  <data name="Friends_Label_EnterUsername"><value>Enter username</value></data>
+  <data name="Friends_Message_RemoveFriend"><value>Are you sure you want to remove {0} as a friend?</value></data>
+
+  <!-- =====================================================================
+       Match / Singleplayer / Stats
+       ===================================================================== -->
+  <data name="MatchSummary_Label_Win"><value>You won!</value></data>
+  <data name="MatchSummary_Label_Lost"><value>Better luck next time!</value></data>
+  <data name="MatchSummary_Label_Tie"><value>It's a tie!</value></data>
+  <data name="StatsHistory_Title"><value>Match History</value></data>
+  <data name="StatsHistory_Label_Date"><value>Date</value></data>
+  <data name="StatsHistory_Label_Score"><value>Score</value></data>
+  <data name="StatsHistory_Label_Winner"><value>Result</value></data>
+
+  <!-- =====================================================================
+       Settings
+       ===================================================================== -->
+  <data name="Settings_Label_Language"><value>Language</value></data>
+  <data name="Settings_Label_Music"><value>Music</value></data>
+  <data name="Settings_Label_SFX"><value>Sound Effects</value></data>
+  <data name="Settings_Label_Fullscreen"><value>Fullscreen</value></data>
+  <data name="Settings_Language_EnUS"><value>English</value></data>
+  <data name="Settings_Language_EsMX"><value>Spanish (Mexico)</value></data>
+
+  <!-- =====================================================================
+       Report / Moderation
+       ===================================================================== -->
+  <data name="ReportUserDialog_Title_Report"><value>Report Player</value></data>
+  <data name="ReportUserDialog_Message_Report"><value>Why are you reporting {0}?</value></data>
+  <data name="ReportUserDialog_Message_ReportSuccess"><value>Report submitted. Thank you.</value></data>
+</root>

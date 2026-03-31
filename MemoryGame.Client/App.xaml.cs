@@ -1,5 +1,6 @@
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using MemoryGame.Client.Localization;
 using MemoryGame.Client.Services;
 using MemoryGame.Client.ViewModels;
 using MemoryGame.Client.ViewModels.MainMenu;
@@ -27,6 +28,7 @@ public partial class App : Application
     private static void ConfigureServices(IServiceCollection services)
     {
         // Services (singleton — shared state across the app)
+        services.AddSingleton<ClientSettings>();
         services.AddSingleton<ISessionService, SessionService>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton(sp => new HubService(
@@ -54,6 +56,10 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        // Restore saved language (defaults to English)
+        var settings = _serviceProvider.GetRequiredService<ClientSettings>();
+        LocalizationManager.Instance.SetCulture(settings.LanguageCode);
 
         var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
         mainWindow.DataContext = _serviceProvider.GetRequiredService<MainWindowViewModel>();

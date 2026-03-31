@@ -15,4 +15,11 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.5" />
   </ItemGroup>
 
+  <!-- Mark the satellite resource with its culture so the SDK generates the correct assembly -->
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Langs\Lang.es-MX.resx">
+      <Culture>es-MX</Culture>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>
