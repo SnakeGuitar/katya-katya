@@ -1,0 +1,42 @@
+<Application x:Class="MemoryGame.Client.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:converters="clr-namespace:MemoryGame.Client.Converters"
+             xmlns:sessionVm="clr-namespace:MemoryGame.Client.ViewModels.Session"
+             xmlns:mainMenuVm="clr-namespace:MemoryGame.Client.ViewModels.MainMenu"
+             xmlns:sessionViews="clr-namespace:MemoryGame.Client.Views.Session"
+             xmlns:mainMenuViews="clr-namespace:MemoryGame.Client.Views.MainMenu">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Themes/BaseTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converters:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
+
+            <!-- ViewModel → View mapping -->
+            <DataTemplate DataType="{x:Type sessionVm:TitleScreenViewModel}">
+                <sessionViews:TitleScreenView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type sessionVm:LoginViewModel}">
+                <sessionViews:LoginView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type sessionVm:RegisterViewModel}">
+                <sessionViews:RegisterView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type sessionVm:VerifyEmailViewModel}">
+                <sessionViews:VerifyEmailView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type mainMenuVm:MainMenuViewModel}">
+                <mainMenuViews:MainMenuView />
+            </DataTemplate>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

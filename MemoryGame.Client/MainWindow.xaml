@@ -1,0 +1,17 @@
+<Window x:Class="MemoryGame.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Memory Game"
+        Height="600" Width="900"
+        MinHeight="500" MinWidth="700"
+        WindowStartupLocation="CenterScreen">
+
+    <!--
+        The shell displays whichever ViewModel is set as CurrentViewModel
+        via the NavigationService. WPF matches the DataTemplate from App.xaml.
+    -->
+    <ContentControl Content="{Binding Navigation.CurrentViewModel}" />
+</Window>
