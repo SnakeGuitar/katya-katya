@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter</value>
+	</resheader>
+
+	<!-- =====================================================================
+       Global Buttons
+       ===================================================================== -->
+	<data name="Global_Button_Login">
+		<value>ログイン</value>
+	</data>
+	<data name="Global_Button_Register">
+		<value>登録</value>
+	</data>
+	<data name="Global_Button_Back">
+		<value>戻る</value>
+	</data>
+	<data name="Global_Button_Verify">
+		<value>確認</value>
+	</data>
+	<data name="Global_Button_ResendPin">
+		<value>PINを再送信</value>
+	</data>
+	<data name="Global_Button_Logout">
+		<value>ログアウト</value>
+	</data>
+	<data name="Global_Button_Cancel">
+		<value>キャンセル</value>
+	</data>
+	<data name="Global_Button_Confirm">
+		<value>確認</value>
+	</data>
+	<data name="Global_Button_Accept">
+		<value>承認</value>
+	</data>
+	<data name="Global_Button_Reject">
+		<value>拒否</value>
+	</data>
+	<data name="Global_Button_Send">
+		<value>送信</value>
+	</data>
+	<data name="Global_Button_Update">
+		<value>更新</value>
+	</data>
+	<data name="Global_Button_Save">
+		<value>保存</value>
+	</data>
+	<data name="Global_Button_Play">
+		<value>開始</value>
+	</data>
+	<data name="Global_Button_Leave">
+		<value>退出</value>
+	</data>
+	<data name="Global_Button_Invite">
+		<value>招待</value>
+	</data>
+	<data name="Global_Button_Report">
+		<value>報告</value>
+	</data>
+	<data name="Global_Button_StartGame">
+		<value>ゲーム開始</value>
+	</data>
+	<data name="Global_Button_JoinLobby">
+		<value>ロビーに参加</value>
+	</data>
+	<data name="Global_Button_CreateLobby">
+		<value>ロビーを作成</value>
+	</data>
+
+	<!-- =====================================================================
+       Global Labels
+       ===================================================================== -->
+	<data name="Global_Label_Username">
+		<value>ユーザー名</value>
+	</data>
+	<data name="Global_Label_Password">
+		<value>パスワード</value>
+	</data>
+	<data name="Global_Label_Email">
+		<value>メールアドレス</value>
+	</data>
+	<data name="Global_Label_ConfirmPassword">
+		<value>パスワード（確認用）</value>
+	</data>
+	<data name="Global_Label_Pin">
+		<value>PIN</value>
+	</data>
+	<data name="Global_Label_Online">
+		<value>オンライン</value>
+	</data>
+	<data name="Global_Label_Offline">
+		<value>オフライン</value>
+	</data>
+	<data name="Global_Label_Score">
+		<value>スコア</value>
+	</data>
+	<data name="Global_Label_Time">
+		<value>時間</value>
+	</data>
+	<data name="Global_Label_GameCode">
+		<value>ゲームコード</value>
+	</data>
+	<data name="Global_Label_Players">
+		<value>プレイヤー</value>
+	</data>
+	<data name="Global_Label_Avatar">
+		<value>アバター</value>
+	</data>
+
+	<!-- =====================================================================
+       Global Titles
+       ===================================================================== -->
+	<data name="Global_Title_Error">
+		<value>エラー</value>
+	</data>
+	<data name="Global_Title_Success">
+		<value>成功</value>
+	</data>
+	<data name="Global_Title_Warning">
+		<value>警告</value>
+	</data>
+	<data name="Global_Title_Information">
+		<value>情報</value>
+	</data>
+	<data name="Global_Title_ConnectionError">
+		<value>接続エラー</value>
+	</data>
+	<data name="Global_Title_ServerOffline">
+		<value>サーバーオフライン</value>
+	</data>
+	<data name="Global_Title_Confirm">
+		<value>確認</value>
+	</data>
+
+	<!-- =====================================================================
+       Global Messages
+       ===================================================================== -->
+	<data name="Global_Message_Welcome">
+		<value>{0}さん、ようこそ！</value>
+	</data>
+	<data name="Global_Message_Reconnecting">
+		<value>サーバーに再接続中...</value>
+	</data>
+	<data name="Global_Message_Loading">
+		<value>読み込み中...</value>
+	</data>
+
+	<!-- =====================================================================
+       Validation Messages
+       ===================================================================== -->
+	<data name="Validation_Required">
+		<value>この項目は必須です。</value>
+	</data>
+	<data name="Validation_InvalidEmail">
+		<value>有効なメールアドレスを入力してください。</value>
+	</data>
+	<data name="Validation_PasswordTooShort">
+		<value>パスワードは8文字以上で入力してください。</value>
+	</data>
+	<data name="Validation_PasswordTooLong">
+		<value>パスワードは100文字以内で入力してください。</value>
+	</data>
+	<data name="Validation_PasswordMissingUpper">
+		<value>パスワードには大文字を含めてください。</value>
+	</data>
+	<data name="Validation_PasswordMissingLower">
+		<value>パスワードには小文字を含めてください。</value>
+	</data>
+	<data name="Validation_PasswordMissingDigit">
+		<value>パスワードには数字を含めてください。</value>
+	</data>
+	<data name="Validation_PasswordMissingSpecial">
+		<value>パスワードには記号を含めてください。</value>
+	</data>
+	<data name="Validation_UsernameTooShort">
+		<value>ユーザー名は3文字以上で入力してください。</value>
+	</data>
+	<data name="Validation_UsernameTooLong">
+		<value>ユーザー名は30文字以内で入力してください。</value>
+	</data>
+	<data name="Validation_PinLength">
+		<value>PINは6桁の数字で入力してください。</value>
+	</data>
+	<data name="Validation_PasswordsDoNotMatch">
+		<value>パスワードが一致しません。</value>
+	</data>
+
+	<!-- =====================================================================
+       Server Error Codes — AUTH
+       ===================================================================== -->
+	<data name="Error_AUTH_EMAIL_ALREADY_REGISTERED">
+		<value>そのメールアドレスは既に登録されています。</value>
+	</data>
+	<data name="Error_AUTH_EMAIL_ALREADY_IN_USE">
+		<value>そのメールアドレスは既に使用されています。</value>
+	</data>
+	<data name="Error_AUTH_USERNAME_ALREADY_TAKEN">
+		<value>そのユーザー名は既に使用されています。</value>
+	</data>
+	<data name="Error_AUTH_INVALID_CREDENTIALS">
+		<value>ユーザー名またはパスワードが正しくありません。</value>
+	</data>
+	<data name="Error_AUTH_GUEST_CANNOT_LOGIN">
+		<value>ゲストアカウントではこの機能を使用できません。</value>
+	</data>
+	<data name="Error_AUTH_EMAIL_NOT_VERIFIED">
+		<value>ログイン前にメールアドレスの確認をお願いします。</value>
+	</data>
+	<data name="Error_AUTH_REGISTRATION_NOT_FOUND">
+		<value>登録リクエストが見つかりません。もう一度登録してください。</value>
+	</data>
+	<data name="Error_AUTH_PIN_INVALID">
+		<value>PINが無効か、期限が切れています。</value>
+	</data>
+	<data name="Error_AUTH_REFRESH_TOKEN_INVALID">
+		<value>セッションの有効期限が切れました。再度ログインしてください。</value>
+	</data>
+
+	<!-- =====================================================================
+       Server Error Codes — USER
+       ===================================================================== -->
+	<data name="Error_USER_NOT_FOUND">
+		<value>ユーザーが見つかりません。</value>
+	</data>
+	<data name="Error_USER_USERNAME_EMPTY">
+		<value>ユーザー名は空にできません。</value>
+	</data>
+	<data name="Error_USER_USERNAME_TOO_LONG">
+		<value>ユーザー名が長すぎます（最大30文字）。</value>
+	</data>
+	<data name="Error_USER_NAME_TOO_LONG">
+		<value>名が長すぎます。</value>
+	</data>
+	<data name="Error_USER_LAST_NAME_TOO_LONG">
+		<value>姓が長すぎます。</value>
+	</data>
+	<data name="Error_USER_AVATAR_NULL">
+		<value>アバターが指定されていません。</value>
+	</data>
+	<data name="Error_USER_GUEST_CANNOT_CHANGE_PASSWORD">
+		<value>ゲストアカウントはパスワードを変更できません。</value>
+	</data>
+	<data name="Error_USER_EMAIL_ALREADY_VERIFIED">
+		<value>メールアドレスは既に確認済みです。</value>
+	</data>
+	<data name="Error_USER_NOT_A_GUEST">
+		<value>あなたのアカウントはゲストアカウントではありません。</value>
+	</data>
+	<data name="Error_USER_PASSWORD_INCORRECT">
+		<value>現在のパスワードが正しくありません。</value>
+	</data>
+
+	<!-- =====================================================================
+       Server Error Codes — SESSION
+       ===================================================================== -->
+	<data name="Error_SESSION_TOKEN_EMPTY">
+		<value>セッショントークンがありません。</value>
+	</data>
+	<data name="Error_PENDING_REGISTRATION_PIN_INVALID_FORMAT">
+		<value>PINの形式が無効です。6桁の数字で入力してください。</value>
+	</data>
+
+	<!-- =====================================================================
+       Server Error Codes — SOCIAL
+       ===================================================================== -->
+	<data name="Error_SOCIAL_FRIEND_REQUEST_NOT_FOUND">
+		<value>友達リクエストが見つかりません。</value>
+	</data>
+	<data name="Error_SOCIAL_FRIEND_REQUEST_ALREADY_SENT">
+		<value>既にこのユーザーに友達リクエストを送信しています。</value>
+	</data>
+	<data name="Error_SOCIAL_ALREADY_FRIENDS">
+		<value>既にこのユーザーと友達です。</value>
+	</data>
+	<data name="Error_SOCIAL_NOT_FRIENDS">
+		<value>このユーザーとは友達ではありません。</value>
+	</data>
+	<data name="Error_SOCIAL_NETWORK_NOT_FOUND">
+		<value>ソーシャルネットワークが見つかりません。</value>
+	</data>
+
+	<!-- =====================================================================
+       Server Error Codes — MATCH
+       ===================================================================== -->
+	<data name="Error_MATCH_NOT_FOUND">
+		<value>マッチが見つかりません。</value>
+	</data>
+
+	<!-- =====================================================================
+       Server Error Codes — HUB / LOBBY
+       ===================================================================== -->
+	<data name="Error_LOBBY_NOT_FOUND">
+		<value>ロビーが見つかりません。ゲームコードが正しくない可能性があります。</value>
+	</data>
+	<data name="Error_LOBBY_FULL">
+		<value>このロビーは満員です。</value>
+	</data>
+	<data name="Error_LOBBY_GAME_IN_PROGRESS">
+		<value>このロビーでは既にゲームが進行中です。</value>
+	</data>
+	<data name="Error_LOBBY_NOT_ENOUGH_PLAYERS">
+		<value>開始するには少なくとも2人のプレイヤーが必要です。</value>
+	</data>
+	<data name="Error_LOBBY_INVALID_CARD_COUNT">
+		<value>カードの枚数は4から36の間の偶数である必要があります。</value>
+	</data>
+	<data name="Error_LOBBY_INVALID_TURN_TIME">
+		<value>ターン時間は5秒から120秒の間で設定してください。</value>
+	</data>
+	<data name="Error_LOBBY_CODE_TAKEN">
+		<value>そのゲームコードは既に使用されています。別のコードを選択してください。</value>
+	</data>
+	<data name="Error_LOBBY_NOT_IN_LOBBY">
+		<value>現在ロビーにいません。</value>
+	</data>
+	<data name="Error_LOBBY_INVITE_SELF">
+		<value>自分自身を招待することはできません。</value>
+	</data>
+
+	<!-- =====================================================================
+       Client-side Errors
+       ===================================================================== -->
+	<data name="Error_CONNECTION_ERROR">
+		<value>サーバーに接続できませんでした。インターネット接続を確認してください。</value>
+	</data>
+	<data name="Error_UNKNOWN">
+		<value>予期しないエラーが発生しました。もう一度お試しください。</value>
+	</data>
+
+	<!-- =====================================================================
+       Title Screen
+       ===================================================================== -->
+	<data name="TitleScreen_Title">
+		<value>記憶力ゲーム</value>
+	</data>
+	<data name="TitleScreen_Subtitle">
+		<value>カードを合わせて、友達と対戦しよう。</value>
+	</data>
+
+	<!-- =====================================================================
+       Login
+       ===================================================================== -->
+	<data name="Login_Title">
+		<value>ログイン</value>
+	</data>
+
+	<!-- =====================================================================
+       Register
+       ===================================================================== -->
+	<data name="Register_Title">
+		<value>アカウント作成</value>
+	</data>
+
+	<!-- =====================================================================
+       Verify Email
+       ===================================================================== -->
+	<data name="VerifyEmail_Title">
+		<value>メールアドレス確認</value>
+	</data>
+	<data name="VerifyEmail_Description">
+		<value>メールアドレスに送信された6桁のPINを入力してください。</value>
+	</data>
+	<data name="VerifyEmail_PinResentMessage">
+		<value>新しいPINがメールアドレスに送信されました。</value>
+	</data>
+
+	<!-- =====================================================================
+       Main Menu
+       ===================================================================== -->
+	<data name="MainMenu_Button_Singleplayer">
+		<value>一人用</value>
+	</data>
+	<data name="MainMenu_Button_Multiplayer">
+		<value>対戦</value>
+	</data>
+	<data name="MainMenu_Button_Profile">
+		<value>プロフィール</value>
+	</data>
+	<data name="MainMenu_Button_Friends">
+		<value>友達</value>
+	</data>
+	<data name="MainMenu_Button_Settings">
+		<value>設定</value>
+	</data>
+
+	<!-- =====================================================================
+       Multiplayer / Lobby
+       ===================================================================== -->
+	<data name="MultiplayerMenu_Label_CreateGame">
+		<value>ゲームを主催</value>
+	</data>
+	<data name="MultiplayerMenu_Label_JoinGame">
+		<value>ゲームに参加</value>
+	</data>
+	<data name="MultiplayerMenu_CheckBox_Public">
+		<value>公開ロビー</value>
+	</data>
+	<data name="Lobby_Label_WaitingPlayers">
+		<value>プレイヤーを待機中...</value>
+	</data>
+	<data name="Lobby_Notification_PlayerJoined">
+		<value>{0}がロビーに参加しました。</value>
+	</data>
+	<data name="Lobby_Notification_PlayerLeft">
+		<value>{0}がロビーから退出しました。</value>
+	</data>
+	<data name="Lobby_Message_LeaveLobby">
+		<value>本当にロビーから退出しますか？</value>
+	</data>
+	<data name="KickVote_Message_VoteKickPlayer">
+		<value>{0}をキックする投票を行いますか？</value>
+	</data>
+
+	<!-- =====================================================================
+       Profile
+       ===================================================================== -->
+	<data name="EditProfile_Label_EditProfile">
+		<value>プロフィール編集</value>
+	</data>
+	<data name="EditProfile_Button_ChangeAvatar">
+		<value>アバターを変更</value>
+	</data>
+	<data name="EditProfile_Button_UpdatePassword">
+		<value>パスワードを更新</value>
+	</data>
+	<data name="EditProfile_Label_NewUsername">
+		<value>新しいユーザー名</value>
+	</data>
+	<data name="EditProfile_Label_ActualPassword">
+		<value>現在のパスワード</value>
+	</data>
+	<data name="EditProfile_Label_NewPassword">
+		<value>新しいパスワード</value>
+	</data>
+
+	<!-- =====================================================================
+       Friends / Social
+       ===================================================================== -->
+	<data name="Friends_Label_MyFriends">
+		<value>友達一覧</value>
+	</data>
+	<data name="Friends_Label_PendingRequests">
+		<value>保留中のリクエスト</value>
+	</data>
+	<data name="Friends_Label_AddFriend">
+		<value>友達を追加</value>
+	</data>
+	<data name="Friends_Button_SendRequest">
+		<value>リクエストを送信</value>
+	</data>
+	<data name="Friends_Label_EnterUsername">
+		<value>ユーザー名を入力</value>
+	</data>
+	<data name="Friends_Message_RemoveFriend">
+		<value>本当に{0}を友達リストから削除しますか？</value>
+	</data>
+
+	<!-- =====================================================================
+       Match / Singleplayer / Stats
+       ===================================================================== -->
+	<data name="MatchSummary_Label_Win">
+		<value>勝利！</value>
+	</data>
+	<data name="MatchSummary_Label_Lost">
+		<value>次は頑張ろう！</value>
+	</data>
+	<data name="MatchSummary_Label_Tie">
+		<value>引き分け！</value>
+	</data>
+	<data name="StatsHistory_Title">
+		<value>対戦履歴</value>
+	</data>
+	<data name="StatsHistory_Label_Date">
+		<value>日付</value>
+	</data>
+	<data name="StatsHistory_Label_Score">
+		<value>スコア</value>
+	</data>
+	<data name="StatsHistory_Label_Winner">
+		<value>結果</value>
+	</data>
+
+	<!-- =====================================================================
+       Settings
+       ===================================================================== -->
+	<data name="Settings_Label_Language">
+		<value>言語</value>
+	</data>
+	<data name="Settings_Label_Music">
+		<value>音楽</value>
+	</data>
+	<data name="Settings_Label_SFX">
+		<value>効果音</value>
+	</data>
+	<data name="Settings_Label_Fullscreen">
+		<value>全画面表示</value>
+	</data>
+	<data name="Settings_Language_EnUS">
+		<value>英語</value>
+	</data>
+	<data name="Settings_Language_EsMX">
+		<value>スペイン語（メキシコ）</value>
+	</data>
+
+	<!-- =====================================================================
+       Report / Moderation
+       ===================================================================== -->
+	<data name="ReportUserDialog_Title_Report">
+		<value>プレイヤーを報告</value>
+	</data>
+	<data name="ReportUserDialog_Message_Report">
+		<value>{0}を報告する理由を教えてください。</value>
+	</data>
+	<data name="ReportUserDialog_Message_ReportSuccess">
+		<value>報告を送信しました。ありがとうございます。</value>
+	</data>
+</root>
