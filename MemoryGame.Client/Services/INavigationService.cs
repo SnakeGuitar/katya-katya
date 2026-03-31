@@ -4,22 +4,34 @@ namespace MemoryGame.Client.Services;
 
 /// <summary>
 /// Provides view-model-driven navigation within the single-window shell.
+/// Maintains a history stack so any view can go back to where it came from.
 /// </summary>
 public interface INavigationService
 {
-    /// <summary>
-    /// The currently displayed view model, bound to the ContentControl in MainWindow.
-    /// </summary>
+    /// <summary>The currently displayed view model.</summary>
     ObservableObject? CurrentViewModel { get; }
 
+    /// <summary>True when there is a previous entry to return to.</summary>
+    bool CanGoBack { get; }
+
     /// <summary>
-    /// Navigates to the view model of type <typeparamref name="TViewModel"/>.
+    /// Forward navigation — pushes the current view onto the history stack,
+    /// then displays the requested view model.
     /// </summary>
     void NavigateTo<TViewModel>() where TViewModel : ObservableObject;
 
-    /// <summary>
-    /// Navigates to the view model of type <typeparamref name="TViewModel"/>,
-    /// invoking the setup action before displaying it.
-    /// </summary>
+    /// <inheritdoc cref="NavigateTo{TViewModel}()"/>
     void NavigateTo<TViewModel>(Action<TViewModel> setup) where TViewModel : ObservableObject;
+
+    /// <summary>
+    /// Root navigation — clears the history stack and sets the given view as the new root.
+    /// Use for checkpoints where going "back" should not be possible (e.g. post-login, logout).
+    /// </summary>
+    void NavigateToRoot<TViewModel>() where TViewModel : ObservableObject;
+
+    /// <summary>
+    /// Goes back to the previous view model, if one exists.
+    /// Falls back to the title screen if the stack is empty.
+    /// </summary>
+    void GoBack();
 }
