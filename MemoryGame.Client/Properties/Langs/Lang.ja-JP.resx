@@ -538,6 +538,15 @@
 	<data name="Settings_Language_EsMX">
 		<value>スペイン語（メキシコ）</value>
 	</data>
+	<data name="Settings_Language_JaJP">
+		<value>日本語</value>
+	</data>
+	<data name="Settings_Language_ZhCN">
+		<value>中国語（簡体字）</value>
+	</data>
+	<data name="Settings_Language_KoKR">
+		<value>韓国語</value>
+	</data>
 
 	<!-- =====================================================================
        Report / Moderation

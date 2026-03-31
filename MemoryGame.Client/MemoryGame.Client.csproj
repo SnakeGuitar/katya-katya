@@ -15,11 +15,32 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.5" />
   </ItemGroup>
 
-  <!-- Mark the satellite resource with its culture so the SDK generates the correct assembly -->
+  <!-- Mark satellite resources with their culture so the SDK generates the correct assemblies -->
   <ItemGroup>
     <EmbeddedResource Update="Properties\Langs\Lang.es-MX.resx">
       <Culture>es-MX</Culture>
     </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Lang.ja-JP.resx">
+      <Culture>ja-JP</Culture>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Lang.zh-CN.resx">
+      <Culture>zh-CN</Culture>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Langs\Lang.ko-KR.resx">
+      <Culture>ko-KR</Culture>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <!-- Embed images as WPF resources (accessible via pack:// URIs) -->
+  <ItemGroup>
+    <Resource Include="Resources\Images\**\*.png" />
+  </ItemGroup>
+
+  <!-- Copy music files to the output directory -->
+  <ItemGroup>
+    <Content Include="Resources\Music\**\*.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -256,6 +256,9 @@
   <data name="Settings_Label_Fullscreen"><value>Pantalla completa</value></data>
   <data name="Settings_Language_EnUS"><value>Inglés</value></data>
   <data name="Settings_Language_EsMX"><value>Español (México)</value></data>
+  <data name="Settings_Language_JaJP"><value>Japonés</value></data>
+  <data name="Settings_Language_ZhCN"><value>Chino (Simplificado)</value></data>
+  <data name="Settings_Language_KoKR"><value>Coreano</value></data>
 
   <!-- =====================================================================
        Report / Moderation
