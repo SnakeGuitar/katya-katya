@@ -4,7 +4,7 @@ using System.Text.Json;
 namespace MemoryGame.Client.Services;
 
 /// <summary>
-/// Persists user preferences (language, etc.) to a JSON file in AppData.
+/// Persists user preferences to a JSON file in AppData.
 /// </summary>
 public class ClientSettings
 {
@@ -21,10 +21,19 @@ public class ClientSettings
         set { _data.LanguageCode = value; Save(); }
     }
 
-    public ClientSettings()
+    public bool MusicEnabled
     {
-        Load();
+        get => _data.MusicEnabled;
+        set { _data.MusicEnabled = value; Save(); }
     }
+
+    public double MusicVolume
+    {
+        get => _data.MusicVolume;
+        set { _data.MusicVolume = value; Save(); }
+    }
+
+    public ClientSettings() => Load();
 
     private void Load()
     {
@@ -36,10 +45,7 @@ public class ClientSettings
                 _data = JsonSerializer.Deserialize<SettingsData>(json) ?? new SettingsData();
             }
         }
-        catch
-        {
-            _data = new SettingsData();
-        }
+        catch { _data = new SettingsData(); }
     }
 
     private void Save()
@@ -55,5 +61,7 @@ public class ClientSettings
     private sealed class SettingsData
     {
         public string LanguageCode { get; set; } = "en-US";
+        public bool   MusicEnabled { get; set; } = true;
+        public double MusicVolume  { get; set; } = 0.5;
     }
 }
