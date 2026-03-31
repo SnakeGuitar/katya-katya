@@ -58,7 +58,7 @@ public partial class LoginViewModel : ObservableObject
 
             await _hub.ConnectAsync();
 
-            _navigation.NavigateTo<MainMenuViewModel>();
+            _navigation.NavigateToRoot<MainMenuViewModel>();
         }
         finally
         {
@@ -67,10 +67,7 @@ public partial class LoginViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void GoBack()
-    {
-        _navigation.NavigateTo<TitleScreenViewModel>();
-    }
+    private void GoBack() => _navigation.GoBack();
 }
 
 /// <summary>

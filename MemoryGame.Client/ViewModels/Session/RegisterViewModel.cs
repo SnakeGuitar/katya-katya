@@ -57,8 +57,5 @@ public partial class RegisterViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void GoBack()
-    {
-        _navigation.NavigateTo<TitleScreenViewModel>();
-    }
+    private void GoBack() => _navigation.GoBack();
 }

@@ -5,13 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Memory Game"
-        Height="600" Width="900"
-        MinHeight="500" MinWidth="700"
+        Height="720" Width="1280"
+        MinHeight="600" MinWidth="900"
         WindowStartupLocation="CenterScreen">
 
-    <!--
-        The shell displays whichever ViewModel is set as CurrentViewModel
-        via the NavigationService. WPF matches the DataTemplate from App.xaml.
-    -->
-    <ContentControl Content="{Binding Navigation.CurrentViewModel}" />
+    <!-- F11: toggle fullscreen -->
+    <Window.InputBindings>
+        <KeyBinding Key="F11" Command="{Binding ToggleFullscreenCommand}"/>
+    </Window.InputBindings>
+
+    <Grid>
+        <!-- Active view (fills the entire window) -->
+        <ContentControl Content="{Binding Navigation.CurrentViewModel}"/>
+
+        <!-- Global settings button — always on top, top-right corner -->
+        <Button Command="{Binding GoToSettingsCommand}"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Margin="0,14,18,0"
+                Width="56" Height="56"
+                Cursor="Hand"
+                ToolTip="Settings"
+                Background="Transparent"
+                BorderThickness="0">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root"
+                            Background="Transparent"
+                            CornerRadius="28"
+                            Width="56" Height="56">
+                        <Image Source="pack://application:,,,/Resources/Images/Icons/settings-icon.png"
+                               Width="36" Height="36"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               RenderOptions.BitmapScalingMode="HighQuality"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#22000000"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="#44000000"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
 </Window>

@@ -40,7 +40,8 @@ public partial class VerifyEmailViewModel : ObservableObject
                 return;
             }
 
-            _navigation.NavigateTo<LoginViewModel>();
+            // Clear history — going "back" past the login screen after registering makes no sense.
+            _navigation.NavigateToRoot<LoginViewModel>();
         }
         finally
         {
@@ -58,8 +59,5 @@ public partial class VerifyEmailViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void GoBack()
-    {
-        _navigation.NavigateTo<TitleScreenViewModel>();
-    }
+    private void GoBack() => _navigation.GoBack();
 }
