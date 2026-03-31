@@ -209,6 +209,248 @@
     </Style>
 
     <!-- =========================================================
+         Toggle Switch  (CheckBox styled as a pill switch)
+         ========================================================= -->
+    <Style x:Key="ToggleSwitch" TargetType="CheckBox">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border x:Name="Track"
+                                Width="46" Height="24"
+                                CornerRadius="12"
+                                Background="{StaticResource PastelBorder}">
+                            <Grid>
+                                <Ellipse x:Name="Thumb"
+                                         Width="18" Height="18"
+                                         Fill="White"
+                                         HorizontalAlignment="Left"
+                                         Margin="3,0,0,0"/>
+                            </Grid>
+                        </Border>
+                        <ContentPresenter VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Track"  Property="Background"          Value="{StaticResource PastelPrimary}"/>
+                            <Setter TargetName="Thumb"  Property="HorizontalAlignment" Value="Right"/>
+                            <Setter TargetName="Thumb"  Property="Margin"              Value="0,0,3,0"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- =========================================================
+         ComboBox — full ControlTemplate matching the warm rose theme
+         ========================================================= -->
+
+    <!-- Item container: highlight on hover/selected -->
+    <Style x:Key="PastelComboBoxItem" TargetType="ComboBoxItem">
+        <Setter Property="FontFamily"       Value="{StaticResource DefaultFont}"/>
+        <Setter Property="FontSize"         Value="14"/>
+        <Setter Property="Foreground"       Value="{StaticResource PastelText}"/>
+        <Setter Property="Padding"          Value="12,9"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Cursor"           Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBoxItem">
+                    <Border x:Name="Root"
+                            Background="Transparent"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{StaticResource PastelSecondary}"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{StaticResource PastelSecondary}"/>
+                            <Setter Property="Foreground" Value="{StaticResource PastelPrimary}"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="PastelComboBox" TargetType="ComboBox">
+        <Setter Property="Background"       Value="#FFFFFF"/>
+        <Setter Property="Foreground"       Value="{StaticResource PastelText}"/>
+        <Setter Property="BorderBrush"      Value="{StaticResource PastelBorder}"/>
+        <Setter Property="BorderThickness"  Value="1.5"/>
+        <Setter Property="FontSize"         Value="14"/>
+        <Setter Property="FontFamily"       Value="{StaticResource DefaultFont}"/>
+        <Setter Property="Padding"          Value="12,0"/>
+        <Setter Property="Height"           Value="42"/>
+        <Setter Property="Cursor"           Value="Hand"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource PastelComboBoxItem}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid>
+                        <!-- Main selection box -->
+                        <Border x:Name="MainBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{StaticResource InputCornerRadius}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="36"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Selected item display -->
+                                <ContentPresenter x:Name="ContentSite"
+                                                  Grid.Column="0"
+                                                  Content="{TemplateBinding SelectionBoxItem}"
+                                                  ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Left"
+                                                  IsHitTestVisible="False"/>
+
+                                <!-- Chevron arrow -->
+                                <Path x:Name="Arrow"
+                                      Grid.Column="1"
+                                      Data="M 0 0 L 6 6 L 12 0"
+                                      Stroke="{StaticResource PastelTextLight}"
+                                      StrokeThickness="2"
+                                      StrokeLineJoin="Round"
+                                      StrokeStartLineCap="Round"
+                                      StrokeEndLineCap="Round"
+                                      Width="12" Height="7"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Stretch="None"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Toggle button (invisible, covers the whole box to open/close) -->
+                        <ToggleButton IsChecked="{Binding IsDropDownOpen, Mode=TwoWay,
+                                                          RelativeSource={RelativeSource TemplatedParent}}"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      Focusable="False"
+                                      ClickMode="Press">
+                            <ToggleButton.Template>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Border Background="Transparent"/>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                        </ToggleButton>
+
+                        <!-- Dropdown popup -->
+                        <Popup x:Name="PART_Popup"
+                               IsOpen="{TemplateBinding IsDropDownOpen}"
+                               Placement="Bottom"
+                               AllowsTransparency="True"
+                               Focusable="False"
+                               PopupAnimation="Slide">
+                            <Border Background="#FFFFFF"
+                                    BorderBrush="{StaticResource PastelBorder}"
+                                    BorderThickness="1.5"
+                                    CornerRadius="8"
+                                    MinWidth="{Binding ActualWidth,
+                                               RelativeSource={RelativeSource AncestorType=ComboBox}}"
+                                    MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                    Margin="0,3,0,0">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                                              VerticalScrollBarVisibility="Auto">
+                                    <ItemsPresenter/>
+                                </ScrollViewer>
+                            </Border>
+                        </Popup>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <!-- Open: highlight border in primary red -->
+                        <Trigger Property="IsDropDownOpen" Value="True">
+                            <Setter TargetName="MainBorder" Property="BorderBrush"
+                                    Value="{StaticResource PastelPrimary}"/>
+                            <Setter TargetName="Arrow" Property="Stroke"
+                                    Value="{StaticResource PastelPrimary}"/>
+                        </Trigger>
+                        <!-- Mouse over -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MainBorder" Property="BorderBrush"
+                                    Value="{StaticResource PastelPrimary}"/>
+                        </Trigger>
+                        <!-- Disabled -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- =========================================================
+         Slider
+         ========================================================= -->
+    <Style x:Key="PastelSlider" TargetType="Slider">
+        <Setter Property="Foreground" Value="{StaticResource PastelPrimary}"/>
+        <Setter Property="Minimum"    Value="0"/>
+        <Setter Property="Maximum"    Value="1"/>
+        <Setter Property="Height"     Value="20"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Slider">
+                    <Grid VerticalAlignment="Center">
+                        <Track x:Name="PART_Track">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Command="Slider.DecreaseLarge">
+                                    <RepeatButton.Template>
+                                        <ControlTemplate TargetType="RepeatButton">
+                                            <Border Height="5" CornerRadius="2.5"
+                                                    Background="{StaticResource PastelPrimary}"/>
+                                        </ControlTemplate>
+                                    </RepeatButton.Template>
+                                </RepeatButton>
+                            </Track.DecreaseRepeatButton>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Command="Slider.IncreaseLarge">
+                                    <RepeatButton.Template>
+                                        <ControlTemplate TargetType="RepeatButton">
+                                            <Border Height="5" CornerRadius="2.5"
+                                                    Background="{StaticResource PastelBorder}"/>
+                                        </ControlTemplate>
+                                    </RepeatButton.Template>
+                                </RepeatButton>
+                            </Track.IncreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb>
+                                    <Thumb.Template>
+                                        <ControlTemplate TargetType="Thumb">
+                                            <Ellipse Width="18" Height="18"
+                                                     Fill="{StaticResource PastelPrimary}"/>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- =========================================================
+         Section Divider
+         ========================================================= -->
+    <Style x:Key="SectionDivider" TargetType="Rectangle">
+        <Setter Property="Height"  Value="1"/>
+        <Setter Property="Fill"    Value="{StaticResource PastelBorder}"/>
+        <Setter Property="Margin"  Value="0,16,0,16"/>
+    </Style>
+
+    <!-- =========================================================
          Error Text
          ========================================================= -->
     <Style x:Key="PastelErrorText" TargetType="TextBlock">
