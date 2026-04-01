@@ -35,12 +35,12 @@
   <!-- =====================================================================
        Global Buttons
        ===================================================================== -->
-  <data name="Global_Button_Login"><value>Iniciar SesiÃ³n</value></data>
+  <data name="Global_Button_Login"><value>Iniciar Sesión</value></data>
   <data name="Global_Button_Register"><value>Registrarse</value></data>
-  <data name="Global_Button_Back"><value>AtrÃ¡s</value></data>
+  <data name="Global_Button_Back"><value>Atrás</value></data>
   <data name="Global_Button_Verify"><value>Verificar</value></data>
   <data name="Global_Button_ResendPin"><value>Reenviar PIN</value></data>
-  <data name="Global_Button_Logout"><value>Cerrar SesiÃ³n</value></data>
+  <data name="Global_Button_Logout"><value>Cerrar Sesión</value></data>
   <data name="Global_Button_Cancel"><value>Cancelar</value></data>
   <data name="Global_Button_Confirm"><value>Confirmar</value></data>
   <data name="Global_Button_Accept"><value>Aceptar</value></data>
@@ -60,15 +60,15 @@
        Global Labels
        ===================================================================== -->
   <data name="Global_Label_Username"><value>Usuario</value></data>
-  <data name="Global_Label_Password"><value>ContraseÃ±a</value></data>
-  <data name="Global_Label_Email"><value>Correo electrÃ³nico</value></data>
-  <data name="Global_Label_ConfirmPassword"><value>Confirmar contraseÃ±a</value></data>
+  <data name="Global_Label_Password"><value>Contraseña</value></data>
+  <data name="Global_Label_Email"><value>Correo electrónico</value></data>
+  <data name="Global_Label_ConfirmPassword"><value>Confirmar contraseña</value></data>
   <data name="Global_Label_Pin"><value>PIN</value></data>
-  <data name="Global_Label_Online"><value>En lÃ­nea</value></data>
+  <data name="Global_Label_Online"><value>En línea</value></data>
   <data name="Global_Label_Offline"><value>Desconectado</value></data>
   <data name="Global_Label_Score"><value>Puntaje</value></data>
   <data name="Global_Label_Time"><value>Tiempo</value></data>
-  <data name="Global_Label_GameCode"><value>CÃ³digo de partida</value></data>
+  <data name="Global_Label_GameCode"><value>Código de partida</value></data>
   <data name="Global_Label_Players"><value>Jugadores</value></data>
   <data name="Global_Label_Avatar"><value>Avatar</value></data>
 
@@ -76,17 +76,17 @@
        Global Titles
        ===================================================================== -->
   <data name="Global_Title_Error"><value>Error</value></data>
-  <data name="Global_Title_Success"><value>Ã‰xito</value></data>
+  <data name="Global_Title_Success"><value>Éxito</value></data>
   <data name="Global_Title_Warning"><value>Advertencia</value></data>
-  <data name="Global_Title_Information"><value>InformaciÃ³n</value></data>
-  <data name="Global_Title_ConnectionError"><value>Error de conexiÃ³n</value></data>
-  <data name="Global_Title_ServerOffline"><value>Servidor sin conexiÃ³n</value></data>
+  <data name="Global_Title_Information"><value>Información</value></data>
+  <data name="Global_Title_ConnectionError"><value>Error de conexión</value></data>
+  <data name="Global_Title_ServerOffline"><value>Servidor sin conexión</value></data>
   <data name="Global_Title_Confirm"><value>Confirmar</value></data>
 
   <!-- =====================================================================
        Global Messages
        ===================================================================== -->
-  <data name="Global_Message_Welcome"><value>Â¡Bienvenido, {0}!</value></data>
+  <data name="Global_Message_Welcome"><value>¡Bienvenido, {0}!</value></data>
   <data name="Global_Message_Reconnecting"><value>Reconectando al servidor...</value></data>
   <data name="Global_Message_Loading"><value>Cargando...</value></data>
 
@@ -94,53 +94,53 @@
        Validation Messages
        ===================================================================== -->
   <data name="Validation_Required"><value>Este campo es obligatorio.</value></data>
-  <data name="Validation_InvalidEmail"><value>Ingresa un correo electrÃ³nico vÃ¡lido.</value></data>
-  <data name="Validation_PasswordTooShort"><value>La contraseÃ±a debe tener al menos 8 caracteres.</value></data>
-  <data name="Validation_PasswordTooLong"><value>La contraseÃ±a no puede tener mÃ¡s de 100 caracteres.</value></data>
-  <data name="Validation_PasswordMissingUpper"><value>La contraseÃ±a debe contener una letra mayÃºscula.</value></data>
-  <data name="Validation_PasswordMissingLower"><value>La contraseÃ±a debe contener una letra minÃºscula.</value></data>
-  <data name="Validation_PasswordMissingDigit"><value>La contraseÃ±a debe contener un nÃºmero.</value></data>
-  <data name="Validation_PasswordMissingSpecial"><value>La contraseÃ±a debe contener un carÃ¡cter especial.</value></data>
+  <data name="Validation_InvalidEmail"><value>Ingresa un correo electrónico válido.</value></data>
+  <data name="Validation_PasswordTooShort"><value>La contraseña debe tener al menos 8 caracteres.</value></data>
+  <data name="Validation_PasswordTooLong"><value>La contraseña no puede tener más de 100 caracteres.</value></data>
+  <data name="Validation_PasswordMissingUpper"><value>La contraseña debe contener una letra mayúscula.</value></data>
+  <data name="Validation_PasswordMissingLower"><value>La contraseña debe contener una letra minúscula.</value></data>
+  <data name="Validation_PasswordMissingDigit"><value>La contraseña debe contener un número.</value></data>
+  <data name="Validation_PasswordMissingSpecial"><value>La contraseña debe contener un carácter especial.</value></data>
   <data name="Validation_UsernameTooShort"><value>El usuario debe tener al menos 3 caracteres.</value></data>
-  <data name="Validation_UsernameTooLong"><value>El usuario no puede tener mÃ¡s de 30 caracteres.</value></data>
-  <data name="Validation_PinLength"><value>El PIN debe tener exactamente 6 dÃ­gitos.</value></data>
-  <data name="Validation_PasswordsDoNotMatch"><value>Las contraseÃ±as no coinciden.</value></data>
+  <data name="Validation_UsernameTooLong"><value>El usuario no puede tener más de 30 caracteres.</value></data>
+  <data name="Validation_PinLength"><value>El PIN debe tener exactamente 6 dígitos.</value></data>
+  <data name="Validation_PasswordsDoNotMatch"><value>Las contraseñas no coinciden.</value></data>
 
   <!-- =====================================================================
-       Server Error Codes â€” AUTH
+       Server Error Codes — AUTH
        ===================================================================== -->
-  <data name="Error_AUTH_EMAIL_ALREADY_REGISTERED"><value>Ese correo electrÃ³nico ya estÃ¡ registrado.</value></data>
-  <data name="Error_AUTH_EMAIL_ALREADY_IN_USE"><value>Ese correo electrÃ³nico ya estÃ¡ en uso.</value></data>
-  <data name="Error_AUTH_USERNAME_ALREADY_TAKEN"><value>Ese nombre de usuario ya estÃ¡ en uso.</value></data>
-  <data name="Error_AUTH_INVALID_CREDENTIALS"><value>Usuario o contraseÃ±a incorrectos.</value></data>
-  <data name="Error_AUTH_GUEST_CANNOT_LOGIN"><value>Las cuentas de invitado no pueden usar esta funciÃ³n.</value></data>
-  <data name="Error_AUTH_EMAIL_NOT_VERIFIED"><value>Verifica tu correo electrÃ³nico antes de iniciar sesiÃ³n.</value></data>
-  <data name="Error_AUTH_REGISTRATION_NOT_FOUND"><value>Solicitud de registro no encontrada. Por favor regÃ­strate de nuevo.</value></data>
-  <data name="Error_AUTH_PIN_INVALID"><value>El PIN es invÃ¡lido o ha expirado.</value></data>
-  <data name="Error_AUTH_REFRESH_TOKEN_INVALID"><value>Tu sesiÃ³n ha expirado. Por favor inicia sesiÃ³n de nuevo.</value></data>
+  <data name="Error_AUTH_EMAIL_ALREADY_REGISTERED"><value>Ese correo electrónico ya está registrado.</value></data>
+  <data name="Error_AUTH_EMAIL_ALREADY_IN_USE"><value>Ese correo electrónico ya está en uso.</value></data>
+  <data name="Error_AUTH_USERNAME_ALREADY_TAKEN"><value>Ese nombre de usuario ya está en uso.</value></data>
+  <data name="Error_AUTH_INVALID_CREDENTIALS"><value>Usuario o contraseña incorrectos.</value></data>
+  <data name="Error_AUTH_GUEST_CANNOT_LOGIN"><value>Las cuentas de invitado no pueden usar esta función.</value></data>
+  <data name="Error_AUTH_EMAIL_NOT_VERIFIED"><value>Verifica tu correo electrónico antes de iniciar sesión.</value></data>
+  <data name="Error_AUTH_REGISTRATION_NOT_FOUND"><value>Solicitud de registro no encontrada. Por favor regístrate de nuevo.</value></data>
+  <data name="Error_AUTH_PIN_INVALID"><value>El PIN es inválido o ha expirado.</value></data>
+  <data name="Error_AUTH_REFRESH_TOKEN_INVALID"><value>Tu sesión ha expirado. Por favor inicia sesión de nuevo.</value></data>
 
   <!-- =====================================================================
-       Server Error Codes â€” USER
+       Server Error Codes — USER
        ===================================================================== -->
   <data name="Error_USER_NOT_FOUND"><value>Usuario no encontrado.</value></data>
-  <data name="Error_USER_USERNAME_EMPTY"><value>El nombre de usuario no puede estar vacÃ­o.</value></data>
-  <data name="Error_USER_USERNAME_TOO_LONG"><value>El nombre de usuario es muy largo (mÃ¡ximo 30 caracteres).</value></data>
+  <data name="Error_USER_USERNAME_EMPTY"><value>El nombre de usuario no puede estar vacío.</value></data>
+  <data name="Error_USER_USERNAME_TOO_LONG"><value>El nombre de usuario es muy largo (máximo 30 caracteres).</value></data>
   <data name="Error_USER_NAME_TOO_LONG"><value>El nombre es muy largo.</value></data>
   <data name="Error_USER_LAST_NAME_TOO_LONG"><value>El apellido es muy largo.</value></data>
-  <data name="Error_USER_AVATAR_NULL"><value>No se proporcionÃ³ ningÃºn avatar.</value></data>
-  <data name="Error_USER_GUEST_CANNOT_CHANGE_PASSWORD"><value>Las cuentas de invitado no pueden cambiar su contraseÃ±a.</value></data>
-  <data name="Error_USER_EMAIL_ALREADY_VERIFIED"><value>Tu correo electrÃ³nico ya estÃ¡ verificado.</value></data>
+  <data name="Error_USER_AVATAR_NULL"><value>No se proporcionó ningún avatar.</value></data>
+  <data name="Error_USER_GUEST_CANNOT_CHANGE_PASSWORD"><value>Las cuentas de invitado no pueden cambiar su contraseña.</value></data>
+  <data name="Error_USER_EMAIL_ALREADY_VERIFIED"><value>Tu correo electrónico ya está verificado.</value></data>
   <data name="Error_USER_NOT_A_GUEST"><value>Tu cuenta no es una cuenta de invitado.</value></data>
-  <data name="Error_USER_PASSWORD_INCORRECT"><value>La contraseÃ±a actual es incorrecta.</value></data>
+  <data name="Error_USER_PASSWORD_INCORRECT"><value>La contraseña actual es incorrecta.</value></data>
 
   <!-- =====================================================================
-       Server Error Codes â€” SESSION
+       Server Error Codes — SESSION
        ===================================================================== -->
-  <data name="Error_SESSION_TOKEN_EMPTY"><value>El token de sesiÃ³n estÃ¡ vacÃ­o.</value></data>
-  <data name="Error_PENDING_REGISTRATION_PIN_INVALID_FORMAT"><value>El formato del PIN es invÃ¡lido. Usa exactamente 6 dÃ­gitos.</value></data>
+  <data name="Error_SESSION_TOKEN_EMPTY"><value>El token de sesión está vacío.</value></data>
+  <data name="Error_PENDING_REGISTRATION_PIN_INVALID_FORMAT"><value>El formato del PIN es inválido. Usa exactamente 6 dígitos.</value></data>
 
   <!-- =====================================================================
-       Server Error Codes â€” SOCIAL
+       Server Error Codes — SOCIAL
        ===================================================================== -->
   <data name="Error_SOCIAL_FRIEND_REQUEST_NOT_FOUND"><value>Solicitud de amistad no encontrada.</value></data>
   <data name="Error_SOCIAL_FRIEND_REQUEST_ALREADY_SENT"><value>Ya enviaste una solicitud de amistad a este usuario.</value></data>
@@ -149,40 +149,40 @@
   <data name="Error_SOCIAL_NETWORK_NOT_FOUND"><value>Red social no encontrada.</value></data>
 
   <!-- =====================================================================
-       Server Error Codes â€” MATCH
+       Server Error Codes — MATCH
        ===================================================================== -->
   <data name="Error_MATCH_NOT_FOUND"><value>Partida no encontrada.</value></data>
 
   <!-- =====================================================================
-       Server Error Codes â€” HUB / LOBBY
+       Server Error Codes — HUB / LOBBY
        ===================================================================== -->
-  <data name="Error_LOBBY_NOT_FOUND"><value>Sala no encontrada. El cÃ³digo de partida puede ser incorrecto.</value></data>
-  <data name="Error_LOBBY_FULL"><value>Esta sala estÃ¡ llena.</value></data>
+  <data name="Error_LOBBY_NOT_FOUND"><value>Sala no encontrada. El código de partida puede ser incorrecto.</value></data>
+  <data name="Error_LOBBY_FULL"><value>Esta sala está llena.</value></data>
   <data name="Error_LOBBY_GAME_IN_PROGRESS"><value>Ya hay una partida en curso en esta sala.</value></data>
   <data name="Error_LOBBY_NOT_ENOUGH_PLAYERS"><value>Se necesitan al menos 2 jugadores para iniciar.</value></data>
-  <data name="Error_LOBBY_INVALID_CARD_COUNT"><value>El nÃºmero de cartas debe ser par, entre 4 y 36.</value></data>
+  <data name="Error_LOBBY_INVALID_CARD_COUNT"><value>El número de cartas debe ser par, entre 4 y 36.</value></data>
   <data name="Error_LOBBY_INVALID_TURN_TIME"><value>El tiempo por turno debe estar entre 5 y 120 segundos.</value></data>
-  <data name="Error_LOBBY_CODE_TAKEN"><value>Ese cÃ³digo de partida ya estÃ¡ en uso. Elige otro.</value></data>
-  <data name="Error_LOBBY_NOT_IN_LOBBY"><value>No estÃ¡s en ninguna sala actualmente.</value></data>
+  <data name="Error_LOBBY_CODE_TAKEN"><value>Ese código de partida ya está en uso. Elige otro.</value></data>
+  <data name="Error_LOBBY_NOT_IN_LOBBY"><value>No estás en ninguna sala actualmente.</value></data>
   <data name="Error_LOBBY_INVITE_SELF"><value>No puedes invitarte a ti mismo.</value></data>
 
   <!-- =====================================================================
        Client-side Errors
        ===================================================================== -->
-  <data name="Error_CONNECTION_ERROR"><value>No se pudo conectar al servidor. Revisa tu conexiÃ³n a internet.</value></data>
-  <data name="Error_UNKNOWN"><value>OcurriÃ³ un error inesperado. Intenta de nuevo.</value></data>
+  <data name="Error_CONNECTION_ERROR"><value>No se pudo conectar al servidor. Revisa tu conexión a internet.</value></data>
+  <data name="Error_UNKNOWN"><value>Ocurrió un error inesperado. Intenta de nuevo.</value></data>
 
   <!-- =====================================================================
        Title Screen
        ===================================================================== -->
   <data name="TitleScreen_Title"><value>Memory Game</value></data>
   <data name="TitleScreen_Subtitle"><value>Empareja cartas, reta a tus amigos.</value></data>
-  <data name="TitleScreen_AlreadyHaveAccount"><value>Â¿Ya tienes una cuenta?</value></data>
+  <data name="TitleScreen_AlreadyHaveAccount"><value>¿Ya tienes una cuenta?</value></data>
 
   <!-- =====================================================================
        Login
        ===================================================================== -->
-  <data name="Login_Title"><value>Iniciar SesiÃ³n</value></data>
+  <data name="Login_Title"><value>Iniciar Sesión</value></data>
 
   <!-- =====================================================================
        Register
@@ -193,8 +193,8 @@
        Verify Email
        ===================================================================== -->
   <data name="VerifyEmail_Title"><value>Verificar Correo</value></data>
-  <data name="VerifyEmail_Description"><value>Ingresa el PIN de 6 dÃ­gitos enviado a tu correo electrÃ³nico.</value></data>
-  <data name="VerifyEmail_PinResentMessage"><value>Se enviÃ³ un nuevo PIN a tu correo electrÃ³nico.</value></data>
+  <data name="VerifyEmail_Description"><value>Ingresa el PIN de 6 dígitos enviado a tu correo electrónico.</value></data>
+  <data name="VerifyEmail_PinResentMessage"><value>Se envió un nuevo PIN a tu correo electrónico.</value></data>
 
   <!-- =====================================================================
        Main Menu
@@ -203,30 +203,30 @@
   <data name="MainMenu_Button_Multiplayer"><value>Multijugador</value></data>
   <data name="MainMenu_Button_Profile"><value>Perfil</value></data>
   <data name="MainMenu_Button_Friends"><value>Amigos</value></data>
-  <data name="MainMenu_Button_Settings"><value>ConfiguraciÃ³n</value></data>
-  <data name="MainMenu_Button_More"><value>MÃ¡s</value></data>
+  <data name="MainMenu_Button_Settings"><value>Configuración</value></data>
+  <data name="MainMenu_Button_More"><value>Más</value></data>
 
   <!-- =====================================================================
        Multiplayer / Lobby
        ===================================================================== -->
   <data name="MultiplayerMenu_Label_CreateGame"><value>Crear partida</value></data>
   <data name="MultiplayerMenu_Label_JoinGame"><value>Unirse a partida</value></data>
-  <data name="MultiplayerMenu_CheckBox_Public"><value>Sala pÃºblica</value></data>
+  <data name="MultiplayerMenu_CheckBox_Public"><value>Sala pública</value></data>
   <data name="Lobby_Label_WaitingPlayers"><value>Esperando jugadores...</value></data>
-  <data name="Lobby_Notification_PlayerJoined"><value>{0} se uniÃ³ a la sala.</value></data>
-  <data name="Lobby_Notification_PlayerLeft"><value>{0} abandonÃ³ la sala.</value></data>
-  <data name="Lobby_Message_LeaveLobby"><value>Â¿Seguro que quieres salir de la sala?</value></data>
-  <data name="KickVote_Message_VoteKickPlayer"><value>Â¿Votar para expulsar a {0}?</value></data>
+  <data name="Lobby_Notification_PlayerJoined"><value>{0} se unió a la sala.</value></data>
+  <data name="Lobby_Notification_PlayerLeft"><value>{0} abandonó la sala.</value></data>
+  <data name="Lobby_Message_LeaveLobby"><value>¿Seguro que quieres salir de la sala?</value></data>
+  <data name="KickVote_Message_VoteKickPlayer"><value>¿Votar para expulsar a {0}?</value></data>
 
   <!-- =====================================================================
        Profile
        ===================================================================== -->
   <data name="EditProfile_Label_EditProfile"><value>Editar Perfil</value></data>
   <data name="EditProfile_Button_ChangeAvatar"><value>Cambiar Avatar</value></data>
-  <data name="EditProfile_Button_UpdatePassword"><value>Cambiar ContraseÃ±a</value></data>
+  <data name="EditProfile_Button_UpdatePassword"><value>Cambiar Contraseña</value></data>
   <data name="EditProfile_Label_NewUsername"><value>Nuevo usuario</value></data>
-  <data name="EditProfile_Label_ActualPassword"><value>ContraseÃ±a actual</value></data>
-  <data name="EditProfile_Label_NewPassword"><value>Nueva contraseÃ±a</value></data>
+  <data name="EditProfile_Label_ActualPassword"><value>Contraseña actual</value></data>
+  <data name="EditProfile_Label_NewPassword"><value>Nueva contraseña</value></data>
 
   <!-- =====================================================================
        Friends / Social
@@ -236,14 +236,14 @@
   <data name="Friends_Label_AddFriend"><value>Agregar amigo</value></data>
   <data name="Friends_Button_SendRequest"><value>Enviar solicitud</value></data>
   <data name="Friends_Label_EnterUsername"><value>Ingresa el nombre de usuario</value></data>
-  <data name="Friends_Message_RemoveFriend"><value>Â¿Seguro que quieres eliminar a {0} de tus amigos?</value></data>
+  <data name="Friends_Message_RemoveFriend"><value>¿Seguro que quieres eliminar a {0} de tus amigos?</value></data>
 
   <!-- =====================================================================
        Match / Singleplayer / Stats
        ===================================================================== -->
-  <data name="MatchSummary_Label_Win"><value>Â¡Ganaste!</value></data>
-  <data name="MatchSummary_Label_Lost"><value>Â¡MÃ¡s suerte la prÃ³xima vez!</value></data>
-  <data name="MatchSummary_Label_Tie"><value>Â¡Empate!</value></data>
+  <data name="MatchSummary_Label_Win"><value>¡Ganaste!</value></data>
+  <data name="MatchSummary_Label_Lost"><value>¡Más suerte la próxima vez!</value></data>
+  <data name="MatchSummary_Label_Tie"><value>¡Empate!</value></data>
   <data name="StatsHistory_Title"><value>Historial de Partidas</value></data>
   <data name="StatsHistory_Label_Date"><value>Fecha</value></data>
   <data name="StatsHistory_Label_Score"><value>Puntaje</value></data>
@@ -253,12 +253,12 @@
        Settings
        ===================================================================== -->
   <data name="Settings_Label_Language"><value>Idioma</value></data>
-  <data name="Settings_Label_Music"><value>MÃºsica</value></data>
+  <data name="Settings_Label_Music"><value>Música</value></data>
   <data name="Settings_Label_SFX"><value>Efectos de sonido</value></data>
   <data name="Settings_Label_Fullscreen"><value>Pantalla completa</value></data>
-  <data name="Settings_Language_EnUS"><value>InglÃ©s</value></data>
-  <data name="Settings_Language_EsMX"><value>EspaÃ±ol (MÃ©xico)</value></data>
-  <data name="Settings_Language_JaJP"><value>JaponÃ©s</value></data>
+  <data name="Settings_Language_EnUS"><value>Inglés</value></data>
+  <data name="Settings_Language_EsMX"><value>Español (México)</value></data>
+  <data name="Settings_Language_JaJP"><value>Japonés</value></data>
   <data name="Settings_Language_ZhCN"><value>Chino (Simplificado)</value></data>
   <data name="Settings_Language_KoKR"><value>Coreano</value></data>
 
@@ -266,15 +266,18 @@
        Report / Moderation
        ===================================================================== -->
   <data name="ReportUserDialog_Title_Report"><value>Reportar Jugador</value></data>
-  <data name="ReportUserDialog_Message_Report"><value>Â¿Por quÃ© reportas a {0}?</value></data>
+  <data name="ReportUserDialog_Message_Report"><value>¿Por qué reportas a {0}?</value></data>
   <data name="ReportUserDialog_Message_ReportSuccess"><value>Reporte enviado. Gracias.</value></data>
-  <data name="SetupProfile_Title" xml:space="preserve">
-    <value>Configurar Perfil</value>
-  </data>
-  <data name="SetupProfile_Description" xml:space="preserve">
-    <value>Personaliza tu avatar para finalizar tu registro.</value>
-  </data>
-  <data name="SetupProfile_SelectAvatar" xml:space="preserve">
-    <value>Seleccionar Avatar</value>
-  </data>
+<data name="SetupProfile_Title" xml:space="preserve">
+<value>Configurar Perfil</value>
+</data>
+<data name="SetupProfile_Description" xml:space="preserve">
+<value>Personaliza tu avatar para finalizar tu registro.</value>
+</data>
+<data name="SetupProfile_SelectAvatar" xml:space="preserve">
+<value>Seleccionar Avatar</value>
+</data>
+<data name="Global_Button_Guest" xml:space="preserve">
+<value>Continuar como Invitado</value>
+</data>
 </root>

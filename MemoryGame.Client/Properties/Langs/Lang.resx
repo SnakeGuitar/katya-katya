@@ -107,7 +107,7 @@
   <data name="Validation_PasswordsDoNotMatch"><value>Passwords do not match.</value></data>
 
   <!-- =====================================================================
-       Server Error Codes â€” AUTH
+       Server Error Codes — AUTH
        ===================================================================== -->
   <data name="Error_AUTH_EMAIL_ALREADY_REGISTERED"><value>That email address is already registered.</value></data>
   <data name="Error_AUTH_EMAIL_ALREADY_IN_USE"><value>That email address is already in use.</value></data>
@@ -120,7 +120,7 @@
   <data name="Error_AUTH_REFRESH_TOKEN_INVALID"><value>Your session has expired. Please log in again.</value></data>
 
   <!-- =====================================================================
-       Server Error Codes â€” USER
+       Server Error Codes — USER
        ===================================================================== -->
   <data name="Error_USER_NOT_FOUND"><value>User not found.</value></data>
   <data name="Error_USER_USERNAME_EMPTY"><value>Username cannot be empty.</value></data>
@@ -134,13 +134,13 @@
   <data name="Error_USER_PASSWORD_INCORRECT"><value>Current password is incorrect.</value></data>
 
   <!-- =====================================================================
-       Server Error Codes â€” SESSION
+       Server Error Codes — SESSION
        ===================================================================== -->
   <data name="Error_SESSION_TOKEN_EMPTY"><value>Session token is missing.</value></data>
   <data name="Error_PENDING_REGISTRATION_PIN_INVALID_FORMAT"><value>The PIN format is invalid. Use exactly 6 digits.</value></data>
 
   <!-- =====================================================================
-       Server Error Codes â€” SOCIAL
+       Server Error Codes — SOCIAL
        ===================================================================== -->
   <data name="Error_SOCIAL_FRIEND_REQUEST_NOT_FOUND"><value>Friend request not found.</value></data>
   <data name="Error_SOCIAL_FRIEND_REQUEST_ALREADY_SENT"><value>You already sent a friend request to this user.</value></data>
@@ -149,12 +149,12 @@
   <data name="Error_SOCIAL_NETWORK_NOT_FOUND"><value>Social network not found.</value></data>
 
   <!-- =====================================================================
-       Server Error Codes â€” MATCH
+       Server Error Codes — MATCH
        ===================================================================== -->
   <data name="Error_MATCH_NOT_FOUND"><value>Match not found.</value></data>
 
   <!-- =====================================================================
-       Server Error Codes â€” HUB / LOBBY
+       Server Error Codes — HUB / LOBBY
        ===================================================================== -->
   <data name="Error_LOBBY_NOT_FOUND"><value>Lobby not found. The game code may be incorrect.</value></data>
   <data name="Error_LOBBY_FULL"><value>This lobby is full.</value></data>
@@ -268,13 +268,16 @@
   <data name="ReportUserDialog_Title_Report"><value>Report Player</value></data>
   <data name="ReportUserDialog_Message_Report"><value>Why are you reporting {0}?</value></data>
   <data name="ReportUserDialog_Message_ReportSuccess"><value>Report submitted. Thank you.</value></data>
-  <data name="SetupProfile_Title" xml:space="preserve">
-    <value>Setup Profile</value>
-  </data>
-  <data name="SetupProfile_Description" xml:space="preserve">
-    <value>Customize your avatar to finish your registration.</value>
-  </data>
-  <data name="SetupProfile_SelectAvatar" xml:space="preserve">
-    <value>Select Avatar</value>
-  </data>
+<data name="SetupProfile_Title" xml:space="preserve">
+<value>Setup Profile</value>
+</data>
+<data name="SetupProfile_Description" xml:space="preserve">
+<value>Customize your avatar to finish your registration.</value>
+</data>
+<data name="SetupProfile_SelectAvatar" xml:space="preserve">
+<value>Select Avatar</value>
+</data>
+<data name="Global_Button_Guest" xml:space="preserve">
+<value>Continue as Guest</value>
+</data>
 </root>
