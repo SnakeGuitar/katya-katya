@@ -37,6 +37,12 @@ public partial class MainMenuViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private void GoToStoryMode()
+    {
+        // Placeholder to move to Story Mode view
+    }
+
+    [RelayCommand]
     private async Task LogoutAsync()
     {
         await _hub.DisconnectAsync();
