@@ -31,6 +31,7 @@ public partial class App : Application
         // Services (singleton — shared state across the app)
         services.AddSingleton<ClientSettings>();
         services.AddSingleton<ISessionService, SessionService>();
+        services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IWindowService, WindowService>();
         services.AddSingleton<MusicService>();
