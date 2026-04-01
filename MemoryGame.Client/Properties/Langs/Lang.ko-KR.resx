@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 		<xsd:element name="root" msdata:IsDataSet="true">
@@ -44,522 +44,531 @@
        Global Buttons
        ===================================================================== -->
 	<data name="Global_Button_Login">
-		<value>로그인</value>
+		<value>ë¡œê·¸ì¸</value>
 	</data>
 	<data name="Global_Button_Register">
-		<value>등록</value>
+		<value>ë“±ë¡</value>
 	</data>
 	<data name="Global_Button_Back">
-		<value>뒤로</value>
+		<value>ë’¤ë¡œ</value>
 	</data>
 	<data name="Global_Button_Verify">
-		<value>인증</value>
+		<value>ì¸ì¦</value>
 	</data>
 	<data name="Global_Button_ResendPin">
-		<value>PIN 재전송</value>
+		<value>PIN ìž¬ì „ì†¡</value>
 	</data>
 	<data name="Global_Button_Logout">
-		<value>로그아웃</value>
+		<value>ë¡œê·¸ì•„ì›ƒ</value>
 	</data>
 	<data name="Global_Button_Cancel">
-		<value>취소</value>
+		<value>ì·¨ì†Œ</value>
 	</data>
 	<data name="Global_Button_Confirm">
-		<value>확인</value>
+		<value>í™•ì¸</value>
 	</data>
 	<data name="Global_Button_Accept">
-		<value>수락</value>
+		<value>ìˆ˜ë½</value>
 	</data>
 	<data name="Global_Button_Reject">
-		<value>거절</value>
+		<value>ê±°ì ˆ</value>
 	</data>
 	<data name="Global_Button_Send">
-		<value>보내기</value>
+		<value>ë³´ë‚´ê¸°</value>
 	</data>
 	<data name="Global_Button_Update">
-		<value>업데이트</value>
+		<value>ì—…ë°ì´íŠ¸</value>
 	</data>
 	<data name="Global_Button_Save">
-		<value>저장</value>
+		<value>ì €ìž¥</value>
 	</data>
 	<data name="Global_Button_Play">
-		<value>시작</value>
+		<value>ì‹œìž‘</value>
 	</data>
 	<data name="Global_Button_Leave">
-		<value>나가기</value>
+		<value>ë‚˜ê°€ê¸°</value>
 	</data>
 	<data name="Global_Button_Invite">
-		<value>초대</value>
+		<value>ì´ˆëŒ€</value>
 	</data>
 	<data name="Global_Button_Report">
-		<value>신고</value>
+		<value>ì‹ ê³ </value>
 	</data>
 	<data name="Global_Button_StartGame">
-		<value>게임 시작</value>
+		<value>ê²Œìž„ ì‹œìž‘</value>
 	</data>
 	<data name="Global_Button_JoinLobby">
-		<value>로비 참가</value>
+		<value>ë¡œë¹„ ì°¸ê°€</value>
 	</data>
 	<data name="Global_Button_CreateLobby">
-		<value>로비 생성</value>
+		<value>ë¡œë¹„ ìƒì„±</value>
 	</data>
 
 	<!-- =====================================================================
        Global Labels
        ===================================================================== -->
 	<data name="Global_Label_Username">
-		<value>사용자 이름</value>
+		<value>ì‚¬ìš©ìž ì´ë¦„</value>
 	</data>
 	<data name="Global_Label_Password">
-		<value>비밀번호</value>
+		<value>ë¹„ë°€ë²ˆí˜¸</value>
 	</data>
 	<data name="Global_Label_Email">
-		<value>이메일</value>
+		<value>ì´ë©”ì¼</value>
 	</data>
 	<data name="Global_Label_ConfirmPassword">
-		<value>비밀번호 확인</value>
+		<value>ë¹„ë°€ë²ˆí˜¸ í™•ì¸</value>
 	</data>
 	<data name="Global_Label_Pin">
 		<value>PIN</value>
 	</data>
 	<data name="Global_Label_Online">
-		<value>온라인</value>
+		<value>ì˜¨ë¼ì¸</value>
 	</data>
 	<data name="Global_Label_Offline">
-		<value>오프라인</value>
+		<value>ì˜¤í”„ë¼ì¸</value>
 	</data>
 	<data name="Global_Label_Score">
-		<value>점수</value>
+		<value>ì ìˆ˜</value>
 	</data>
 	<data name="Global_Label_Time">
-		<value>시간</value>
+		<value>ì‹œê°„</value>
 	</data>
 	<data name="Global_Label_GameCode">
-		<value>게임 코드</value>
+		<value>ê²Œìž„ ì½”ë“œ</value>
 	</data>
 	<data name="Global_Label_Players">
-		<value>플레이어</value>
+		<value>í”Œë ˆì´ì–´</value>
 	</data>
 	<data name="Global_Label_Avatar">
-		<value>아바타</value>
+		<value>ì•„ë°”íƒ€</value>
 	</data>
 
 	<!-- =====================================================================
        Global Titles
        ===================================================================== -->
 	<data name="Global_Title_Error">
-		<value>오류</value>
+		<value>ì˜¤ë¥˜</value>
 	</data>
 	<data name="Global_Title_Success">
-		<value>성공</value>
+		<value>ì„±ê³µ</value>
 	</data>
 	<data name="Global_Title_Warning">
-		<value>경고</value>
+		<value>ê²½ê³ </value>
 	</data>
 	<data name="Global_Title_Information">
-		<value>정보</value>
+		<value>ì •ë³´</value>
 	</data>
 	<data name="Global_Title_ConnectionError">
-		<value>연결 오류</value>
+		<value>ì—°ê²° ì˜¤ë¥˜</value>
 	</data>
 	<data name="Global_Title_ServerOffline">
-		<value>서버 오프라인</value>
+		<value>ì„œë²„ ì˜¤í”„ë¼ì¸</value>
 	</data>
 	<data name="Global_Title_Confirm">
-		<value>확인</value>
+		<value>í™•ì¸</value>
 	</data>
 
 	<!-- =====================================================================
        Global Messages
        ===================================================================== -->
 	<data name="Global_Message_Welcome">
-		<value>{0}님, 환영합니다!</value>
+		<value>{0}ë‹˜, í™˜ì˜í•©ë‹ˆë‹¤!</value>
 	</data>
 	<data name="Global_Message_Reconnecting">
-		<value>서버에 재연결 중...</value>
+		<value>ì„œë²„ì— ìž¬ì—°ê²° ì¤‘...</value>
 	</data>
 	<data name="Global_Message_Loading">
-		<value>로딩 중...</value>
+		<value>ë¡œë”© ì¤‘...</value>
 	</data>
 
 	<!-- =====================================================================
        Validation Messages
        ===================================================================== -->
 	<data name="Validation_Required">
-		<value>이 필드는 필수입니다.</value>
+		<value>ì´ í•„ë“œëŠ” í•„ìˆ˜ìž…ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Validation_InvalidEmail">
-		<value>유효한 이메일 주소를 입력해 주세요.</value>
+		<value>ìœ íš¨í•œ ì´ë©”ì¼ ì£¼ì†Œë¥¼ ìž…ë ¥í•´ ì£¼ì„¸ìš”.</value>
 	</data>
 	<data name="Validation_PasswordTooShort">
-		<value>비밀번호는 최소 8자 이상이어야 합니다.</value>
+		<value>ë¹„ë°€ë²ˆí˜¸ëŠ” ìµœì†Œ 8ìž ì´ìƒì´ì–´ì•¼ í•©ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Validation_PasswordTooLong">
-		<value>비밀번호는 100자를 초과할 수 없습니다.</value>
+		<value>ë¹„ë°€ë²ˆí˜¸ëŠ” 100ìžë¥¼ ì´ˆê³¼í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Validation_PasswordMissingUpper">
-		<value>비밀번호에는 대문자가 포함되어야 합니다.</value>
+		<value>ë¹„ë°€ë²ˆí˜¸ì—ëŠ” ëŒ€ë¬¸ìžê°€ í¬í•¨ë˜ì–´ì•¼ í•©ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Validation_PasswordMissingLower">
-		<value>비밀번호에는 소문자가 포함되어야 합니다.</value>
+		<value>ë¹„ë°€ë²ˆí˜¸ì—ëŠ” ì†Œë¬¸ìžê°€ í¬í•¨ë˜ì–´ì•¼ í•©ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Validation_PasswordMissingDigit">
-		<value>비밀번호에는 숫자가 포함되어야 합니다.</value>
+		<value>ë¹„ë°€ë²ˆí˜¸ì—ëŠ” ìˆ«ìžê°€ í¬í•¨ë˜ì–´ì•¼ í•©ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Validation_PasswordMissingSpecial">
-		<value>비밀번호에는 특수 문자가 포함되어야 합니다.</value>
+		<value>ë¹„ë°€ë²ˆí˜¸ì—ëŠ” íŠ¹ìˆ˜ ë¬¸ìžê°€ í¬í•¨ë˜ì–´ì•¼ í•©ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Validation_UsernameTooShort">
-		<value>사용자 이름은 최소 3자 이상이어야 합니다.</value>
+		<value>ì‚¬ìš©ìž ì´ë¦„ì€ ìµœì†Œ 3ìž ì´ìƒì´ì–´ì•¼ í•©ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Validation_UsernameTooLong">
-		<value>사용자 이름은 30자를 초과할 수 없습니다.</value>
+		<value>ì‚¬ìš©ìž ì´ë¦„ì€ 30ìžë¥¼ ì´ˆê³¼í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Validation_PinLength">
-		<value>PIN은 정확히 6자리 숫자여야 합니다.</value>
+		<value>PINì€ ì •í™•ížˆ 6ìžë¦¬ ìˆ«ìžì—¬ì•¼ í•©ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Validation_PasswordsDoNotMatch">
-		<value>비밀번호가 일치하지 않습니다.</value>
+		<value>ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.</value>
 	</data>
 
 	<!-- =====================================================================
-       Server Error Codes — AUTH
+       Server Error Codes â€” AUTH
        ===================================================================== -->
 	<data name="Error_AUTH_EMAIL_ALREADY_REGISTERED">
-		<value>해당 이메일 주소는 이미 등록되어 있습니다.</value>
+		<value>í•´ë‹¹ ì´ë©”ì¼ ì£¼ì†ŒëŠ” ì´ë¯¸ ë“±ë¡ë˜ì–´ ìžˆìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_AUTH_EMAIL_ALREADY_IN_USE">
-		<value>해당 이메일 주소는 이미 사용 중입니다.</value>
+		<value>í•´ë‹¹ ì´ë©”ì¼ ì£¼ì†ŒëŠ” ì´ë¯¸ ì‚¬ìš© ì¤‘ìž…ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_AUTH_USERNAME_ALREADY_TAKEN">
-		<value>해당 사용자 이름은 이미 사용 중입니다.</value>
+		<value>í•´ë‹¹ ì‚¬ìš©ìž ì´ë¦„ì€ ì´ë¯¸ ì‚¬ìš© ì¤‘ìž…ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_AUTH_INVALID_CREDENTIALS">
-		<value>사용자 이름 또는 비밀번호가 올바르지 않습니다.</value>
+		<value>ì‚¬ìš©ìž ì´ë¦„ ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_AUTH_GUEST_CANNOT_LOGIN">
-		<value>게스트 계정은 이 기능을 사용할 수 없습니다.</value>
+		<value>ê²ŒìŠ¤íŠ¸ ê³„ì •ì€ ì´ ê¸°ëŠ¥ì„ ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_AUTH_EMAIL_NOT_VERIFIED">
-		<value>로그인 전에 이메일을 인증해 주세요.</value>
+		<value>ë¡œê·¸ì¸ ì „ì— ì´ë©”ì¼ì„ ì¸ì¦í•´ ì£¼ì„¸ìš”.</value>
 	</data>
 	<data name="Error_AUTH_REGISTRATION_NOT_FOUND">
-		<value>등록 요청을 찾을 수 없습니다. 다시 등록해 주세요.</value>
+		<value>ë“±ë¡ ìš”ì²­ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ë‹¤ì‹œ ë“±ë¡í•´ ì£¼ì„¸ìš”.</value>
 	</data>
 	<data name="Error_AUTH_PIN_INVALID">
-		<value>PIN이 유효하지 않거나 만료되었습니다.</value>
+		<value>PINì´ ìœ íš¨í•˜ì§€ ì•Šê±°ë‚˜ ë§Œë£Œë˜ì—ˆìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_AUTH_REFRESH_TOKEN_INVALID">
-		<value>세션이 만료되었습니다. 다시 로그인해 주세요.</value>
+		<value>ì„¸ì…˜ì´ ë§Œë£Œë˜ì—ˆìŠµë‹ˆë‹¤. ë‹¤ì‹œ ë¡œê·¸ì¸í•´ ì£¼ì„¸ìš”.</value>
 	</data>
 
 	<!-- =====================================================================
-       Server Error Codes — USER
+       Server Error Codes â€” USER
        ===================================================================== -->
 	<data name="Error_USER_NOT_FOUND">
-		<value>사용자를 찾을 수 없습니다.</value>
+		<value>ì‚¬ìš©ìžë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_USER_USERNAME_EMPTY">
-		<value>사용자 이름은 비워둘 수 없습니다.</value>
+		<value>ì‚¬ìš©ìž ì´ë¦„ì€ ë¹„ì›Œë‘˜ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_USER_USERNAME_TOO_LONG">
-		<value>사용자 이름이 너무 깁니다 (최대 30자).</value>
+		<value>ì‚¬ìš©ìž ì´ë¦„ì´ ë„ˆë¬´ ê¹ë‹ˆë‹¤ (ìµœëŒ€ 30ìž).</value>
 	</data>
 	<data name="Error_USER_NAME_TOO_LONG">
-		<value>이름이 너무 깁니다.</value>
+		<value>ì´ë¦„ì´ ë„ˆë¬´ ê¹ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_USER_LAST_NAME_TOO_LONG">
-		<value>성이 너무 깁니다.</value>
+		<value>ì„±ì´ ë„ˆë¬´ ê¹ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_USER_AVATAR_NULL">
-		<value>아바타가 제공되지 않았습니다.</value>
+		<value>ì•„ë°”íƒ€ê°€ ì œê³µë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_USER_GUEST_CANNOT_CHANGE_PASSWORD">
-		<value>게스트 계정은 비밀번호를 변경할 수 없습니다.</value>
+		<value>ê²ŒìŠ¤íŠ¸ ê³„ì •ì€ ë¹„ë°€ë²ˆí˜¸ë¥¼ ë³€ê²½í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_USER_EMAIL_ALREADY_VERIFIED">
-		<value>이메일이 이미 인증되었습니다.</value>
+		<value>ì´ë©”ì¼ì´ ì´ë¯¸ ì¸ì¦ë˜ì—ˆìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_USER_NOT_A_GUEST">
-		<value>귀하의 계정은 게스트 계정이 아닙니다.</value>
+		<value>ê·€í•˜ì˜ ê³„ì •ì€ ê²ŒìŠ¤íŠ¸ ê³„ì •ì´ ì•„ë‹™ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_USER_PASSWORD_INCORRECT">
-		<value>현재 비밀번호가 올바르지 않습니다.</value>
+		<value>í˜„ìž¬ ë¹„ë°€ë²ˆí˜¸ê°€ ì˜¬ë°”ë¥´ì§€ ì•ŠìŠµë‹ˆë‹¤.</value>
 	</data>
 
 	<!-- =====================================================================
-       Server Error Codes — SESSION
+       Server Error Codes â€” SESSION
        ===================================================================== -->
 	<data name="Error_SESSION_TOKEN_EMPTY">
-		<value>세션 토큰이 없습니다.</value>
+		<value>ì„¸ì…˜ í† í°ì´ ì—†ìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_PENDING_REGISTRATION_PIN_INVALID_FORMAT">
-		<value>PIN 형식이 유효하지 않습니다. 정확히 6자리 숫자를 사용해 주세요.</value>
+		<value>PIN í˜•ì‹ì´ ìœ íš¨í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤. ì •í™•ížˆ 6ìžë¦¬ ìˆ«ìžë¥¼ ì‚¬ìš©í•´ ì£¼ì„¸ìš”.</value>
 	</data>
 
 	<!-- =====================================================================
-       Server Error Codes — SOCIAL
+       Server Error Codes â€” SOCIAL
        ===================================================================== -->
 	<data name="Error_SOCIAL_FRIEND_REQUEST_NOT_FOUND">
-		<value>친구 요청을 찾을 수 없습니다.</value>
+		<value>ì¹œêµ¬ ìš”ì²­ì„ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_SOCIAL_FRIEND_REQUEST_ALREADY_SENT">
-		<value>이 사용자에게 이미 친구 요청을 보냈습니다.</value>
+		<value>ì´ ì‚¬ìš©ìžì—ê²Œ ì´ë¯¸ ì¹œêµ¬ ìš”ì²­ì„ ë³´ëƒˆìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_SOCIAL_ALREADY_FRIENDS">
-		<value>이 사용자와 이미 친구입니다.</value>
+		<value>ì´ ì‚¬ìš©ìžì™€ ì´ë¯¸ ì¹œêµ¬ìž…ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_SOCIAL_NOT_FRIENDS">
-		<value>이 사용자와 친구가 아닙니다.</value>
+		<value>ì´ ì‚¬ìš©ìžì™€ ì¹œêµ¬ê°€ ì•„ë‹™ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_SOCIAL_NETWORK_NOT_FOUND">
-		<value>소셜 네트워크를 찾을 수 없습니다.</value>
+		<value>ì†Œì…œ ë„¤íŠ¸ì›Œí¬ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.</value>
 	</data>
 
 	<!-- =====================================================================
-       Server Error Codes — MATCH
+       Server Error Codes â€” MATCH
        ===================================================================== -->
 	<data name="Error_MATCH_NOT_FOUND">
-		<value>매치를 찾을 수 없습니다.</value>
+		<value>ë§¤ì¹˜ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.</value>
 	</data>
 
 	<!-- =====================================================================
-       Server Error Codes — HUB / LOBBY
+       Server Error Codes â€” HUB / LOBBY
        ===================================================================== -->
 	<data name="Error_LOBBY_NOT_FOUND">
-		<value>로비를 찾을 수 없습니다. 게임 코드가 올바르지 않을 수 있습니다.</value>
+		<value>ë¡œë¹„ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ê²Œìž„ ì½”ë“œê°€ ì˜¬ë°”ë¥´ì§€ ì•Šì„ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_LOBBY_FULL">
-		<value>이 로비는 가득 찼습니다.</value>
+		<value>ì´ ë¡œë¹„ëŠ” ê°€ë“ ì°¼ìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_LOBBY_GAME_IN_PROGRESS">
-		<value>이 로비에서 이미 게임이 진행 중입니다.</value>
+		<value>ì´ ë¡œë¹„ì—ì„œ ì´ë¯¸ ê²Œìž„ì´ ì§„í–‰ ì¤‘ìž…ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_LOBBY_NOT_ENOUGH_PLAYERS">
-		<value>시작하려면 최소 2명의 플레이어가 필요합니다.</value>
+		<value>ì‹œìž‘í•˜ë ¤ë©´ ìµœì†Œ 2ëª…ì˜ í”Œë ˆì´ì–´ê°€ í•„ìš”í•©ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_LOBBY_INVALID_CARD_COUNT">
-		<value>카드 수는 4에서 36 사이의 짝수여야 합니다.</value>
+		<value>ì¹´ë“œ ìˆ˜ëŠ” 4ì—ì„œ 36 ì‚¬ì´ì˜ ì§ìˆ˜ì—¬ì•¼ í•©ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_LOBBY_INVALID_TURN_TIME">
-		<value>턴 시간은 5초에서 120초 사이여야 합니다.</value>
+		<value>í„´ ì‹œê°„ì€ 5ì´ˆì—ì„œ 120ì´ˆ ì‚¬ì´ì—¬ì•¼ í•©ë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_LOBBY_CODE_TAKEN">
-		<value>해당 게임 코드는 이미 사용 중입니다. 다른 코드를 선택해 주세요.</value>
+		<value>í•´ë‹¹ ê²Œìž„ ì½”ë“œëŠ” ì´ë¯¸ ì‚¬ìš© ì¤‘ìž…ë‹ˆë‹¤. ë‹¤ë¥¸ ì½”ë“œë¥¼ ì„ íƒí•´ ì£¼ì„¸ìš”.</value>
 	</data>
 	<data name="Error_LOBBY_NOT_IN_LOBBY">
-		<value>현재 로비에 없습니다.</value>
+		<value>í˜„ìž¬ ë¡œë¹„ì— ì—†ìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Error_LOBBY_INVITE_SELF">
-		<value>자기 자신을 초대할 수 없습니다.</value>
+		<value>ìžê¸° ìžì‹ ì„ ì´ˆëŒ€í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.</value>
 	</data>
 
 	<!-- =====================================================================
        Client-side Errors
        ===================================================================== -->
 	<data name="Error_CONNECTION_ERROR">
-		<value>서버에 연결할 수 없습니다. 인터넷 연결을 확인해 주세요.</value>
+		<value>ì„œë²„ì— ì—°ê²°í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ì¸í„°ë„· ì—°ê²°ì„ í™•ì¸í•´ ì£¼ì„¸ìš”.</value>
 	</data>
 	<data name="Error_UNKNOWN">
-		<value>예기치 않은 오류가 발생했습니다. 다시 시도해 주세요.</value>
+		<value>ì˜ˆê¸°ì¹˜ ì•Šì€ ì˜¤ë¥˜ê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤. ë‹¤ì‹œ ì‹œë„í•´ ì£¼ì„¸ìš”.</value>
 	</data>
 
 	<!-- =====================================================================
        Title Screen
        ===================================================================== -->
 	<data name="TitleScreen_Title">
-		<value>메모리 게임</value>
+		<value>ë©”ëª¨ë¦¬ ê²Œìž„</value>
 	</data>
 	<data name="TitleScreen_Subtitle">
-		<value>카드를 맞추고 친구와 대결하세요.</value>
+		<value>ì¹´ë“œë¥¼ ë§žì¶”ê³  ì¹œêµ¬ì™€ ëŒ€ê²°í•˜ì„¸ìš”.</value>
 	</data>
 	<data name="TitleScreen_AlreadyHaveAccount">
-		<value>이미 계정이 있으신가요?</value>
+		<value>ì´ë¯¸ ê³„ì •ì´ ìžˆìœ¼ì‹ ê°€ìš”?</value>
 	</data>
 
 	<!-- =====================================================================
        Login
        ===================================================================== -->
 	<data name="Login_Title">
-		<value>로그인</value>
+		<value>ë¡œê·¸ì¸</value>
 	</data>
 
 	<!-- =====================================================================
        Register
        ===================================================================== -->
 	<data name="Register_Title">
-		<value>계정 만들기</value>
+		<value>ê³„ì • ë§Œë“¤ê¸°</value>
 	</data>
 
 	<!-- =====================================================================
        Verify Email
        ===================================================================== -->
 	<data name="VerifyEmail_Title">
-		<value>이메일 인증</value>
+		<value>ì´ë©”ì¼ ì¸ì¦</value>
 	</data>
 	<data name="VerifyEmail_Description">
-		<value>이메일로 전송된 6자리 PIN을 입력해 주세요.</value>
+		<value>ì´ë©”ì¼ë¡œ ì „ì†¡ëœ 6ìžë¦¬ PINì„ ìž…ë ¥í•´ ì£¼ì„¸ìš”.</value>
 	</data>
 	<data name="VerifyEmail_PinResentMessage">
-		<value>새로운 PIN이 이메일로 전송되었습니다.</value>
+		<value>ìƒˆë¡œìš´ PINì´ ì´ë©”ì¼ë¡œ ì „ì†¡ë˜ì—ˆìŠµë‹ˆë‹¤.</value>
 	</data>
 
 	<!-- =====================================================================
        Main Menu
        ===================================================================== -->
 	<data name="MainMenu_Button_Singleplayer">
-		<value>싱글플레이</value>
+		<value>ì‹±ê¸€í”Œë ˆì´</value>
 	</data>
 	<data name="MainMenu_Button_Multiplayer">
-		<value>멀티플레이</value>
+		<value>ë©€í‹°í”Œë ˆì´</value>
 	</data>
 	<data name="MainMenu_Button_Profile">
-		<value>프로필</value>
+		<value>í”„ë¡œí•„</value>
 	</data>
 	<data name="MainMenu_Button_Friends">
-		<value>친구</value>
+		<value>ì¹œêµ¬</value>
 	</data>
-	<data name="MainMenu_Button_Settings"><value>설정</value></data>
-	<data name="MainMenu_Button_More"><value>더보기</value></data>
+	<data name="MainMenu_Button_Settings"><value>ì„¤ì •</value></data>
+	<data name="MainMenu_Button_More"><value>ë”ë³´ê¸°</value></data>
 
 	<!-- =====================================================================
        Multiplayer / Lobby
        ===================================================================== -->
 	<data name="MultiplayerMenu_Label_CreateGame">
-		<value>게임 호스트</value>
+		<value>ê²Œìž„ í˜¸ìŠ¤íŠ¸</value>
 	</data>
 	<data name="MultiplayerMenu_Label_JoinGame">
-		<value>게임 참가</value>
+		<value>ê²Œìž„ ì°¸ê°€</value>
 	</data>
 	<data name="MultiplayerMenu_CheckBox_Public">
-		<value>공개 로비</value>
+		<value>ê³µê°œ ë¡œë¹„</value>
 	</data>
 	<data name="Lobby_Label_WaitingPlayers">
-		<value>플레이어 대기 중...</value>
+		<value>í”Œë ˆì´ì–´ ëŒ€ê¸° ì¤‘...</value>
 	</data>
 	<data name="Lobby_Notification_PlayerJoined">
-		<value>{0}님이 로비에 참가했습니다.</value>
+		<value>{0}ë‹˜ì´ ë¡œë¹„ì— ì°¸ê°€í–ˆìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Lobby_Notification_PlayerLeft">
-		<value>{0}님이 로비에서 나갔습니다.</value>
+		<value>{0}ë‹˜ì´ ë¡œë¹„ì—ì„œ ë‚˜ê°”ìŠµë‹ˆë‹¤.</value>
 	</data>
 	<data name="Lobby_Message_LeaveLobby">
-		<value>정말로 로비에서 나가시겠습니까?</value>
+		<value>ì •ë§ë¡œ ë¡œë¹„ì—ì„œ ë‚˜ê°€ì‹œê² ìŠµë‹ˆê¹Œ?</value>
 	</data>
 	<data name="KickVote_Message_VoteKickPlayer">
-		<value>{0}님을 추방하는 투표에 참여하시겠습니까?</value>
+		<value>{0}ë‹˜ì„ ì¶”ë°©í•˜ëŠ” íˆ¬í‘œì— ì°¸ì—¬í•˜ì‹œê² ìŠµë‹ˆê¹Œ?</value>
 	</data>
 
 	<!-- =====================================================================
        Profile
        ===================================================================== -->
 	<data name="EditProfile_Label_EditProfile">
-		<value>프로필 편집</value>
+		<value>í”„ë¡œí•„ íŽ¸ì§‘</value>
 	</data>
 	<data name="EditProfile_Button_ChangeAvatar">
-		<value>아바타 변경</value>
+		<value>ì•„ë°”íƒ€ ë³€ê²½</value>
 	</data>
 	<data name="EditProfile_Button_UpdatePassword">
-		<value>비밀번호 업데이트</value>
+		<value>ë¹„ë°€ë²ˆí˜¸ ì—…ë°ì´íŠ¸</value>
 	</data>
 	<data name="EditProfile_Label_NewUsername">
-		<value>새 사용자 이름</value>
+		<value>ìƒˆ ì‚¬ìš©ìž ì´ë¦„</value>
 	</data>
 	<data name="EditProfile_Label_ActualPassword">
-		<value>현재 비밀번호</value>
+		<value>í˜„ìž¬ ë¹„ë°€ë²ˆí˜¸</value>
 	</data>
 	<data name="EditProfile_Label_NewPassword">
-		<value>새 비밀번호</value>
+		<value>ìƒˆ ë¹„ë°€ë²ˆí˜¸</value>
 	</data>
 
 	<!-- =====================================================================
        Friends / Social
        ===================================================================== -->
 	<data name="Friends_Label_MyFriends">
-		<value>내 친구</value>
+		<value>ë‚´ ì¹œêµ¬</value>
 	</data>
 	<data name="Friends_Label_PendingRequests">
-		<value>대기 중인 요청</value>
+		<value>ëŒ€ê¸° ì¤‘ì¸ ìš”ì²­</value>
 	</data>
 	<data name="Friends_Label_AddFriend">
-		<value>친구 추가</value>
+		<value>ì¹œêµ¬ ì¶”ê°€</value>
 	</data>
 	<data name="Friends_Button_SendRequest">
-		<value>요청 보내기</value>
+		<value>ìš”ì²­ ë³´ë‚´ê¸°</value>
 	</data>
 	<data name="Friends_Label_EnterUsername">
-		<value>사용자 이름 입력</value>
+		<value>ì‚¬ìš©ìž ì´ë¦„ ìž…ë ¥</value>
 	</data>
 	<data name="Friends_Message_RemoveFriend">
-		<value>정말로 {0}님을 친구 목록에서 삭제하시겠습니까?</value>
+		<value>ì •ë§ë¡œ {0}ë‹˜ì„ ì¹œêµ¬ ëª©ë¡ì—ì„œ ì‚­ì œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?</value>
 	</data>
 
 	<!-- =====================================================================
        Match / Singleplayer / Stats
        ===================================================================== -->
 	<data name="MatchSummary_Label_Win">
-		<value>승리!</value>
+		<value>ìŠ¹ë¦¬!</value>
 	</data>
 	<data name="MatchSummary_Label_Lost">
-		<value>다음에는 좋은 결과가 있기를!</value>
+		<value>ë‹¤ìŒì—ëŠ” ì¢‹ì€ ê²°ê³¼ê°€ ìžˆê¸°ë¥¼!</value>
 	</data>
 	<data name="MatchSummary_Label_Tie">
-		<value>무승부!</value>
+		<value>ë¬´ìŠ¹ë¶€!</value>
 	</data>
 	<data name="StatsHistory_Title">
-		<value>매치 기록</value>
+		<value>ë§¤ì¹˜ ê¸°ë¡</value>
 	</data>
 	<data name="StatsHistory_Label_Date">
-		<value>날짜</value>
+		<value>ë‚ ì§œ</value>
 	</data>
 	<data name="StatsHistory_Label_Score">
-		<value>점수</value>
+		<value>ì ìˆ˜</value>
 	</data>
 	<data name="StatsHistory_Label_Winner">
-		<value>결과</value>
+		<value>ê²°ê³¼</value>
 	</data>
 
 	<!-- =====================================================================
        Settings
        ===================================================================== -->
 	<data name="Settings_Label_Language">
-		<value>언어</value>
+		<value>ì–¸ì–´</value>
 	</data>
 	<data name="Settings_Label_Music">
-		<value>음악</value>
+		<value>ìŒì•…</value>
 	</data>
 	<data name="Settings_Label_SFX">
-		<value>효과음</value>
+		<value>íš¨ê³¼ìŒ</value>
 	</data>
 	<data name="Settings_Label_Fullscreen">
-		<value>전체 화면</value>
+		<value>ì „ì²´ í™”ë©´</value>
 	</data>
 	<data name="Settings_Language_EnUS">
-		<value>영어</value>
+		<value>ì˜ì–´</value>
 	</data>
 	<data name="Settings_Language_EsMX">
-		<value>스페인어 (멕시코)</value>
+		<value>ìŠ¤íŽ˜ì¸ì–´ (ë©•ì‹œì½”)</value>
 	</data>
 	<data name="Settings_Language_JaJP">
-		<value>일본어</value>
+		<value>ì¼ë³¸ì–´</value>
 	</data>
 	<data name="Settings_Language_ZhCN">
-		<value>중국어 (간체)</value>
+		<value>ì¤‘êµ­ì–´ (ê°„ì²´)</value>
 	</data>
 	<data name="Settings_Language_KoKR">
-		<value>한국어</value>
+		<value>í•œêµ­ì–´</value>
 	</data>
 
 	<!-- =====================================================================
        Report / Moderation
        ===================================================================== -->
 	<data name="ReportUserDialog_Title_Report">
-		<value>플레이어 신고</value>
+		<value>í”Œë ˆì´ì–´ ì‹ ê³ </value>
 	</data>
 	<data name="ReportUserDialog_Message_Report">
-		<value>{0}님을 신고하는 이유는 무엇인가요?</value>
+		<value>{0}ë‹˜ì„ ì‹ ê³ í•˜ëŠ” ì´ìœ ëŠ” ë¬´ì—‡ì¸ê°€ìš”?</value>
 	</data>
 	<data name="ReportUserDialog_Message_ReportSuccess">
-		<value>신고가 제출되었습니다. 감사합니다.</value>
+		<value>ì‹ ê³ ê°€ ì œì¶œë˜ì—ˆìŠµë‹ˆë‹¤. ê°ì‚¬í•©ë‹ˆë‹¤.</value>
 	</data>
+  <data name="SetupProfile_Title" xml:space="preserve">
+    <value>프로필 설정</value>
+  </data>
+  <data name="SetupProfile_Description" xml:space="preserve">
+    <value>아바타를 사용자 정의하여 등록을 완료하세요.</value>
+  </data>
+  <data name="SetupProfile_SelectAvatar" xml:space="preserve">
+    <value>아바타 선택</value>
+  </data>
 </root>
