@@ -280,4 +280,10 @@
 <data name="Global_Button_Guest" xml:space="preserve">
 <value>Continue as Guest</value>
 </data>
+<data name="GuestLogin_Title" xml:space="preserve">
+<value>Guest Login</value>
+</data>
+<data name="GuestLogin_Description" xml:space="preserve">
+<value>Pick a username to play as a guest.</value>
+</data>
 </root>

@@ -280,4 +280,10 @@
 <data name="Global_Button_Guest" xml:space="preserve">
 <value>Continuar como Invitado</value>
 </data>
+<data name="GuestLogin_Title" xml:space="preserve">
+<value>Inicio como Invitado</value>
+</data>
+<data name="GuestLogin_Description" xml:space="preserve">
+<value>Elige un nombre de usuario para jugar como invitado.</value>
+</data>
 </root>

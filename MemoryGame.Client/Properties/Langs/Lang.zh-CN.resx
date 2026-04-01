@@ -578,4 +578,10 @@
 <data name="Global_Button_Guest" xml:space="preserve">
 <value>以游客身份继续</value>
 </data>
+<data name="GuestLogin_Title" xml:space="preserve">
+<value>游客登录</value>
+</data>
+<data name="GuestLogin_Description" xml:space="preserve">
+<value>选择一个用户名以游客身份游玩。</value>
+</data>
 </root>
