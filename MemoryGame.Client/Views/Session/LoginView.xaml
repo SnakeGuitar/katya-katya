@@ -69,33 +69,10 @@
 
                     <Button Height="46"
                             Margin="0,0,0,16"
+                            Style="{StaticResource PastelButton}"
                             Command="{Binding LoginCommand}"
-                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}">
-                        <Button.Content>
-                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Login]}"
-                                       FontFamily="{StaticResource DefaultFont}"
-                                       FontSize="14" FontWeight="SemiBold"
-                                       Foreground="White"/>
-                        </Button.Content>
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border CornerRadius="10" Padding="20,0">
-                                    <Border.Background>
-                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                            <GradientStop Color="#FFC84747" Offset="0"/>
-                                            <GradientStop Color="#FF963B3B" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Border.Background>
-                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Opacity" Value="0.55"/>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
+                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Login]}"/>
 
                     <Button HorizontalAlignment="Center"
                             Command="{Binding GoBackCommand}"

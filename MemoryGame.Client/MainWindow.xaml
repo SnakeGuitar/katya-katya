@@ -6,7 +6,7 @@
         mc:Ignorable="d"
         Title="Memory Game"
         Height="720" Width="1280"
-        MinHeight="600" MinWidth="900"
+        MinHeight="768" MinWidth="900"
         WindowStartupLocation="CenterScreen">
 
     <!-- F11: toggle fullscreen -->

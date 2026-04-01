@@ -30,30 +30,9 @@
 
             <Button Height="40"
                     Margin="0,0,0,16"
+                    Style="{StaticResource PastelButton}"
                     Command="{Binding GoToRegisterCommand}"
-                    Foreground="White"
-                    BorderBrush="{x:Null}">
-                <Button.Content>
-                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance},
-                                              Path=[Global_Button_Register]}"
-                               FontFamily="{StaticResource DefaultFont}"
-                               FontSize="14" FontWeight="SemiBold"
-                               Foreground="White"/>
-                </Button.Content>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="10" Padding="20,0">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Color="#FFC84747" Offset="0"/>
-                                    <GradientStop Color="#FF963B3B" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Register]}"/>
 
             <Button Height="34"
                     Command="{Binding GoToLoginCommand}"

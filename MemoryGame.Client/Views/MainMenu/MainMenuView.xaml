@@ -9,134 +9,64 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Resources/Images/Backgrounds/background-minimalistic.png"
+            <ImageBrush ImageSource="/Resources/Images/Backgrounds/katya-main.png"
                         Stretch="UniformToFill"/>
         </Grid.Background>
 
-        <StackPanel VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Width="260">
+        <StackPanel HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Width="500">
 
-            <!-- Welcome -->
-            <TextBlock Text="{Binding WelcomeMessage}"
-                       FontFamily="{StaticResource DefaultFont}"
-                       FontSize="18" FontWeight="SemiBold"
-                       Foreground="{StaticResource PastelText}"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,32"/>
+            <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=LogoImage}"
+                   Height="280"
+                   HorizontalAlignment="Center"
+                   Stretch="Uniform"
+                   Margin="0,0,0,20"/>
 
-            <!-- Singleplayer -->
-            <Button Height="46" Margin="0,0,0,12">
-                <Button.Content>
-                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Singleplayer]}"
-                               FontFamily="{StaticResource DefaultFont}" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
-                </Button.Content>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="10" Padding="20,0">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Color="#FFC84747" Offset="0"/>
-                                    <GradientStop Color="#FF963B3B" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+            <Border Margin="60,0,60,0"
+                    CornerRadius="{StaticResource CardCornerRadius}"
+                    Background="{StaticResource CardBackground}"
+                    Padding="32,28,32,24">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="4" BlurRadius="20"
+                                      Color="#C84747" Opacity="0.12"/>
+                </Border.Effect>
 
-            <!-- Multiplayer -->
-            <Button Height="46" Margin="0,0,0,12">
-                <Button.Content>
-                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Multiplayer]}"
-                               FontFamily="{StaticResource DefaultFont}" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
-                </Button.Content>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="10" Padding="20,0">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Color="#FFC84747" Offset="0"/>
-                                    <GradientStop Color="#FF963B3B" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                <StackPanel>
 
-            <!-- Profile -->
-            <Button Height="46" Margin="0,0,0,12">
-                <Button.Content>
-                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Profile]}"
-                               FontFamily="{StaticResource DefaultFont}" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
-                </Button.Content>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="10" Padding="20,0">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Color="#FFC84747" Offset="0"/>
-                                    <GradientStop Color="#FF963B3B" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    <TextBlock Text="{Binding WelcomeMessage}"
+                               Style="{StaticResource PastelTextBlock}"
+                               FontSize="17" FontWeight="SemiBold"
+                               Foreground="{StaticResource PastelPrimary}"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,0,0,20"
+                               TextWrapping="Wrap"/>
 
-            <!-- Friends -->
-            <Button Height="46" Margin="0,0,0,12">
-                <Button.Content>
-                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Friends]}"
-                               FontFamily="{StaticResource DefaultFont}" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
-                </Button.Content>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="10" Padding="20,0">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Color="#FFC84747" Offset="0"/>
-                                    <GradientStop Color="#FF963B3B" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    <Button Height="48" Margin="0,0,0,12"
+                            Style="{StaticResource PastelButton}"
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Singleplayer]}"/>
 
-            <!-- Settings (wired to command) -->
-            <Button Height="46"
-                    Margin="0,0,0,24"
-                    Command="{Binding GoToSettingsCommand}">
-                <Button.Content>
-                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Settings]}"
-                               FontFamily="{StaticResource DefaultFont}" FontSize="14" FontWeight="SemiBold" Foreground="White"/>
-                </Button.Content>
-                <Button.Template>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="10" Padding="20,0">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                    <GradientStop Color="#FFC84747" Offset="0"/>
-                                    <GradientStop Color="#FF963B3B" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
+                    <Button Height="48" Margin="0,0,0,12"
+                            Style="{StaticResource PastelButton}"
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Multiplayer]}"/>
 
-            <!-- Logout link -->
-            <Button HorizontalAlignment="Center"
-                    Command="{Binding LogoutCommand}"
-                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Logout]}"
-                    Style="{StaticResource LinkButton}"/>
+                    <Button Height="48" Margin="0,0,0,12"
+                            Style="{StaticResource PastelButton}"
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Profile]}"/>
+
+                    <Button Height="48" Margin="0,0,0,20"
+                            Style="{StaticResource PastelButton}"
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Friends]}"/>
+
+                    <Rectangle Style="{StaticResource SectionDivider}" Margin="20,0,20,4"/>
+
+                    <Button HorizontalAlignment="Center"
+                            Command="{Binding LogoutCommand}"
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Logout]}"
+                            Style="{StaticResource LinkButton}"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </Grid>
 </UserControl>
