@@ -54,7 +54,7 @@
                     <Button Height="48" Margin="0,0,0,20"
                             Style="{StaticResource PastelButton}"
                             Command="{Binding GoToMoreCommand}"
-                            Content="More"/>
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_More]}"/>
 
                     <Rectangle Style="{StaticResource SectionDivider}" Margin="20,0,20,4"/>
 

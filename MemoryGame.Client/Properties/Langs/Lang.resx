@@ -204,6 +204,7 @@
   <data name="MainMenu_Button_Profile"><value>Profile</value></data>
   <data name="MainMenu_Button_Friends"><value>Friends</value></data>
   <data name="MainMenu_Button_Settings"><value>Settings</value></data>
+  <data name="MainMenu_Button_More"><value>More</value></data>
 
   <!-- =====================================================================
        Multiplayer / Lobby

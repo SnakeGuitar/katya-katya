@@ -55,7 +55,7 @@
                         <Button Style="{StaticResource PastelDropdownButton}" Command="{Binding GoToProfileCommand}" Margin="0,0,0,4" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Profile], FallbackValue=Profile}"/>
                         <Button Style="{StaticResource PastelDropdownButton}" Command="{Binding GoToFriendsCommand}" Margin="0,0,0,4" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Friends], FallbackValue=Friends}"/>
                         <Rectangle Style="{StaticResource SectionDivider}" Margin="8,4,8,8" Height="1"/>
-                        <Button Style="{StaticResource PastelDropdownButton}" Command="{Binding GoToSettingsCommand}" Margin="0,0,0,0" Content="Settings"/>
+                        <Button Style="{StaticResource PastelDropdownButton}" Command="{Binding GoToSettingsCommand}" Margin="0,0,0,0" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Settings], FallbackValue=Settings}"/>
                     </StackPanel>
                 </Border>
             </Popup>

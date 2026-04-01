@@ -422,6 +422,9 @@
 	<data name="MainMenu_Button_Settings">
 		<value>设置</value>
 	</data>
+	<data name="MainMenu_Button_More">
+		<value>更多</value>
+	</data>
 
 	<!-- =====================================================================
        Multiplayer / Lobby

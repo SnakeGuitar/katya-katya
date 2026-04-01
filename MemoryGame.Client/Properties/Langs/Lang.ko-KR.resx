@@ -419,9 +419,8 @@
 	<data name="MainMenu_Button_Friends">
 		<value>친구</value>
 	</data>
-	<data name="MainMenu_Button_Settings">
-		<value>설정</value>
-	</data>
+	<data name="MainMenu_Button_Settings"><value>설정</value></data>
+	<data name="MainMenu_Button_More"><value>더보기</value></data>
 
 	<!-- =====================================================================
        Multiplayer / Lobby

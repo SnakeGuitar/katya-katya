@@ -422,6 +422,9 @@
 	<data name="MainMenu_Button_Settings">
 		<value>設定</value>
 	</data>
+	<data name="MainMenu_Button_More">
+		<value>もっと</value>
+	</data>
 
 	<!-- =====================================================================
        Multiplayer / Lobby
