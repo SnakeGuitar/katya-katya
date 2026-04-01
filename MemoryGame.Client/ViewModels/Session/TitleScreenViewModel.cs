@@ -27,4 +27,10 @@ public partial class TitleScreenViewModel : ObservableObject
     {
         _navigation.NavigateTo<RegisterViewModel>();
     }
+
+    [RelayCommand]
+    private void GoToGuestLogin()
+    {
+        _navigation.NavigateTo<GuestLoginViewModel>();
+    }
 }
