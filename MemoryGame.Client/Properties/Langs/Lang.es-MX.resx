@@ -286,4 +286,10 @@
 <data name="GuestLogin_Description" xml:space="preserve">
 <value>Elige un nombre de usuario para jugar como invitado.</value>
 </data>
+<data name="Menu_Error_RequiresLogin" xml:space="preserve">
+<value>Por favor inicia sesión o regístrate para acceder a esta sección.</value>
+</data>
+<data name="Menu_Error_RequiresFullAccount" xml:space="preserve">
+<value>Debes registrar una cuenta completa para acceder a esta sección.</value>
+</data>
 </root>

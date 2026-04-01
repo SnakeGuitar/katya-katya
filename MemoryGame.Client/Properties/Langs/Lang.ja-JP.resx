@@ -584,4 +584,10 @@
 <data name="GuestLogin_Description" xml:space="preserve">
 <value>ゲストとしてプレイするユーザー名を選択してください。</value>
 </data>
+<data name="Menu_Error_RequiresLogin" xml:space="preserve">
+<value>このセクションにアクセスするには、ログインするか登録してください。</value>
+</data>
+<data name="Menu_Error_RequiresFullAccount" xml:space="preserve">
+<value>このセクションにアクセスするには、フルアカウントを登録する必要があります。</value>
+</data>
 </root>

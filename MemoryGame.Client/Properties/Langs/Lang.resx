@@ -286,4 +286,10 @@
 <data name="GuestLogin_Description" xml:space="preserve">
 <value>Pick a username to play as a guest.</value>
 </data>
+<data name="Menu_Error_RequiresLogin" xml:space="preserve">
+<value>Please log in or register to access this section.</value>
+</data>
+<data name="Menu_Error_RequiresFullAccount" xml:space="preserve">
+<value>You must register a full account to access this section.</value>
+</data>
 </root>

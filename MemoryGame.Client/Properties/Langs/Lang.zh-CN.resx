@@ -584,4 +584,10 @@
 <data name="GuestLogin_Description" xml:space="preserve">
 <value>选择一个用户名以游客身份游玩。</value>
 </data>
+<data name="Menu_Error_RequiresLogin" xml:space="preserve">
+<value>请登录或注册以访问此部分。</value>
+</data>
+<data name="Menu_Error_RequiresFullAccount" xml:space="preserve">
+<value>您必须注册一个完整的帐户才能访问此部分。</value>
+</data>
 </root>
