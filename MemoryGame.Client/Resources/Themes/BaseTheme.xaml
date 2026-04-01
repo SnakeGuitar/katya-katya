@@ -14,20 +14,20 @@
     <SolidColorBrush x:Key="PastelBorder"           Color="#EDD5D5"/>
     <SolidColorBrush x:Key="PastelError"            Color="#C84747"/>
     <SolidColorBrush x:Key="PastelSuccess"          Color="#B8F0D0"/>
-    <SolidColorBrush x:Key="CardBackground"         Color="#EEFFFFFF"/>
+    <SolidColorBrush x:Key="CardBackground"         Color="#D1F9F0F0"/>
     <SolidColorBrush x:Key="LinkText"               Color="#AF1010"/>
     <SolidColorBrush x:Key="LinkTextHover"          Color="#8A0D0D"/>
 
-    <!-- Primary gradient (matches mockup) -->
+    <!-- Primary gradient — soft warm rose -->
     <LinearGradientBrush x:Key="PrimaryGradient" StartPoint="0.5,0" EndPoint="0.5,1">
-        <GradientStop Color="#C84747" Offset="0"/>
-        <GradientStop Color="#963B3B" Offset="1"/>
+        <GradientStop Color="#E07070" Offset="0"/>
+        <GradientStop Color="#C04848" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- Primary gradient hover (slightly darker) -->
     <LinearGradientBrush x:Key="PrimaryGradientHover" StartPoint="0.5,0" EndPoint="0.5,1">
-        <GradientStop Color="#B53F3F" Offset="0"/>
-        <GradientStop Color="#7A2F2F" Offset="1"/>
+        <GradientStop Color="#CC5555" Offset="0"/>
+        <GradientStop Color="#A03030" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- =========================================================
@@ -38,7 +38,7 @@
     <!-- =========================================================
          Corner Radii
          ========================================================= -->
-    <CornerRadius x:Key="ButtonCornerRadius">10</CornerRadius>
+    <CornerRadius x:Key="ButtonCornerRadius">24</CornerRadius>
     <CornerRadius x:Key="InputCornerRadius">8</CornerRadius>
     <CornerRadius x:Key="CardCornerRadius">18</CornerRadius>
 
