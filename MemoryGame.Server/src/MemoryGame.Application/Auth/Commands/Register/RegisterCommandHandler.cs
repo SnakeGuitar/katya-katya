@@ -46,6 +46,12 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
         if (await _userRepository.ExistsByUsernameAsync(request.Username))
             throw new DomainException(DomainErrors.Auth.UsernameAlreadyTaken);
 
+        var existingPending = await _pendingRegistrationRepository.GetByEmailAsync(email);
+        if (existingPending != null)
+        {
+            _pendingRegistrationRepository.Remove(existingPending);
+        }
+
         var pin = GeneratePin();
         var passwordHash = _passwordService.Hash(request.Password);
 
