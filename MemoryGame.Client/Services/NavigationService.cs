@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using MemoryGame.Client.ViewModels.Session;
 
 namespace MemoryGame.Client.Services;
 

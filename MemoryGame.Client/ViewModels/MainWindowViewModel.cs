@@ -68,8 +68,7 @@ public partial class MainWindowViewModel : ObservableObject
     {
         if (_session.IsLoggedIn && _session.Current?.IsGuest == true)
         {
-            _session.EndSession();
-            _navigation.NavigateToRoot<RegisterViewModel>();
+            _navigation.NavigateTo<RegisterViewModel>();
         }
     }
 
