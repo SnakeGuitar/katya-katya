@@ -14,8 +14,8 @@ namespace MemoryGame.Client;
 /// </summary>
 public partial class App : Application
 {
-    private const string ApiBaseUrl = "https://localhost:5001/";
-    private const string HubUrl = "https://localhost:5001/hub/lobby";
+    private const string ApiBaseUrl = "http://localhost:5059/";
+    private const string HubUrl = "http://localhost:5059/hub/lobby";
 
     private readonly ServiceProvider _serviceProvider;
 
