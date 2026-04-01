@@ -1,16 +1,21 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MemoryGame.Client.Models;
 using MemoryGame.Client.Services;
+using MemoryGame.Client.ViewModels.MainMenu;
 
 namespace MemoryGame.Client.ViewModels.Session;
 
 /// <summary>
 /// Handles email verification PIN entry after registration.
+/// After a successful PIN, the user is automatically logged in.
 /// </summary>
 public partial class VerifyEmailViewModel : ObservableObject
 {
     private readonly INavigationService _navigation;
-    private readonly ApiClient _api;
+    private readonly ApiClient          _api;
+    private readonly ISessionService    _session;
+    private readonly HubService         _hub;
 
     [ObservableProperty] private string _email = string.Empty;
     [ObservableProperty] private string _pin = string.Empty;
@@ -18,10 +23,16 @@ public partial class VerifyEmailViewModel : ObservableObject
     [ObservableProperty] private string? _pinResentMessage;
     [ObservableProperty] private bool _isLoading;
 
-    public VerifyEmailViewModel(INavigationService navigation, ApiClient api)
+    public VerifyEmailViewModel(
+        INavigationService navigation,
+        ApiClient          api,
+        ISessionService    session,
+        HubService         hub)
     {
         _navigation = navigation;
-        _api = api;
+        _api        = api;
+        _session    = session;
+        _hub        = hub;
     }
 
     [RelayCommand]
@@ -32,7 +43,8 @@ public partial class VerifyEmailViewModel : ObservableObject
 
         try
         {
-            var result = await _api.PostAsync("api/auth/verify-email", new { Email, Pin });
+            var result = await _api.PostAsync<FinalizeRegistrationResponse>(
+                "api/auth/finalize-registration", new { Email, Pin });
 
             if (!result.IsSuccess)
             {
@@ -40,8 +52,21 @@ public partial class VerifyEmailViewModel : ObservableObject
                 return;
             }
 
-            // Clear history — going "back" past the login screen after registering makes no sense.
-            _navigation.NavigateToRoot<LoginViewModel>();
+            var data = result.Data!;
+
+            _session.StartSession(new UserSession
+            {
+                UserId       = data.User.Id,
+                Username     = data.User.Username,
+                Email        = data.User.Email,
+                IsGuest      = data.User.IsGuest,
+                AccessToken  = data.AccessToken,
+                RefreshToken = data.RefreshToken
+            });
+
+            await _hub.ConnectAsync();
+
+            _navigation.NavigateToRoot<MainMenuViewModel>();
         }
         finally
         {
@@ -61,3 +86,22 @@ public partial class VerifyEmailViewModel : ObservableObject
     [RelayCommand]
     private void GoBack() => _navigation.GoBack();
 }
+
+/// <summary>
+/// It represents the response from the API when finalizing registration. 
+/// It contains the access token, refresh token, and user information.
+/// </summary>
+public record FinalizeRegistrationResponse(
+    string          AccessToken,
+    string          RefreshToken,
+    FinalizeUserDto User);
+
+/// <summary>
+/// It represents the user information returned from the API when finalizing registration.
+/// </summary>
+public record FinalizeUserDto(
+    int    Id,
+    string Username,
+    string Email,
+    bool   IsGuest,
+    bool   VerifiedEmail);
