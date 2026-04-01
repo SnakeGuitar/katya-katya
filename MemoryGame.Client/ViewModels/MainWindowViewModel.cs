@@ -27,6 +27,19 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void GoToSettings() => _navigation.NavigateTo<SettingsViewModel>();
 
+    /// <summary>Bound to the global profile button in MainWindow.xaml.</summary>
+    [RelayCommand]
+    private void GoToProfile() 
+    {
+        // Try navigation if ProfileViewModel is added later. Currently might be just ui placeholder if the class doesn't exist yet.
+    }
+
+    /// <summary>Bound to the global friends button in MainWindow.xaml dropdown.</summary>
+    [RelayCommand]
+    private void GoToFriends()
+    {
+    }
+
     /// <summary>Bound to the F11 KeyBinding in MainWindow.xaml.</summary>
     [RelayCommand]
     private void ToggleFullscreen() => _window.ToggleFullscreen();

@@ -32,6 +32,11 @@ public partial class MainMenuViewModel : ObservableObject
     private void GoToSettings() => _navigation.NavigateTo<SettingsViewModel>();
 
     [RelayCommand]
+    private void GoToMore() 
+    {
+    }
+
+    [RelayCommand]
     private async Task LogoutAsync()
     {
         await _hub.DisconnectAsync();

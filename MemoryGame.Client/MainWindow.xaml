@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:loc="clr-namespace:MemoryGame.Client.Localization"
         mc:Ignorable="d"
         Title="Memory Game"
         Height="720" Width="1280"
@@ -18,38 +19,46 @@
         <!-- Active view (fills the entire window) -->
         <ContentControl Content="{Binding Navigation.CurrentViewModel}"/>
 
-        <!-- Global settings button — always on top, top-right corner -->
-        <Button Command="{Binding GoToSettingsCommand}"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Top"
-                Margin="0,14,18,0"
-                Width="56" Height="56"
-                Cursor="Hand"
-                ToolTip="Settings"
-                Background="Transparent"
-                BorderThickness="0">
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border x:Name="Root"
-                            Background="Transparent"
-                            CornerRadius="28"
-                            Width="56" Height="56">
-                        <Image Source="pack://application:,,,/Resources/Images/Icons/settings-icon.png"
-                               Width="36" Height="36"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               RenderOptions.BitmapScalingMode="HighQuality"/>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Root" Property="Background" Value="#22000000"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="Root" Property="Background" Value="#44000000"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+        <!-- Global header Menu — always on top, top-right corner -->
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,14,18,0">
+            <ToggleButton x:Name="MenuToggleBtn"
+                          Width="56" Height="56" Cursor="Hand" ToolTip="Menu"
+                          Background="Transparent" BorderThickness="0">
+                <ToggleButton.Template>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Root" Background="Transparent" CornerRadius="28" Width="56" Height="56">
+                            <Image Source="pack://application:,,,/Resources/Images/Icons/menu-icon.png"
+                                   Width="36" Height="36" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Root" Property="Background" Value="#22000000"/></Trigger>
+                            <Trigger Property="IsChecked" Value="True"><Setter TargetName="Root" Property="Background" Value="#44000000"/></Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </ToggleButton.Template>
+            </ToggleButton>
+
+            <!-- Dropdown Popup -->
+            <Popup IsOpen="{Binding IsChecked, ElementName=MenuToggleBtn, Mode=TwoWay}"
+                   PlacementTarget="{Binding ElementName=MenuToggleBtn}"
+                   Placement="Bottom" HorizontalOffset="-104" VerticalOffset="8"
+                   StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
+                <Border Background="{StaticResource CardBackground}"
+                        CornerRadius="{StaticResource CardCornerRadius}"
+                        Padding="24,20"
+                        DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=Popup}}">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.14" Color="#3D1C1C"/>
+                    </Border.Effect>
+                    <StackPanel Width="160">
+                        <Button Style="{StaticResource PastelDropdownButton}" Command="{Binding GoToProfileCommand}" Margin="0,0,0,4" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Profile], FallbackValue=Profile}"/>
+                        <Button Style="{StaticResource PastelDropdownButton}" Command="{Binding GoToFriendsCommand}" Margin="0,0,0,4" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Friends], FallbackValue=Friends}"/>
+                        <Rectangle Style="{StaticResource SectionDivider}" Margin="8,4,8,8" Height="1"/>
+                        <Button Style="{StaticResource PastelDropdownButton}" Command="{Binding GoToSettingsCommand}" Margin="0,0,0,0" Content="Settings"/>
+                    </StackPanel>
+                </Border>
+            </Popup>
+        </Grid>
     </Grid>
 </Window>

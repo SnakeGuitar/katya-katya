@@ -51,13 +51,10 @@
                             Style="{StaticResource PastelButton}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Multiplayer]}"/>
 
-                    <Button Height="48" Margin="0,0,0,12"
-                            Style="{StaticResource PastelButton}"
-                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Profile]}"/>
-
                     <Button Height="48" Margin="0,0,0,20"
                             Style="{StaticResource PastelButton}"
-                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Friends]}"/>
+                            Command="{Binding GoToMoreCommand}"
+                            Content="More"/>
 
                     <Rectangle Style="{StaticResource SectionDivider}" Margin="20,0,20,4"/>
 
