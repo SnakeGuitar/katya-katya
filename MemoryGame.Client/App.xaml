@@ -32,8 +32,16 @@
                 <sessionViews:RegisterView />
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type sessionVm:GuestLoginViewModel}">
+                <sessionViews:GuestLoginView />
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type sessionVm:VerifyEmailViewModel}">
                 <sessionViews:VerifyEmailView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type sessionVm:SetupProfileViewModel}">
+                <sessionViews:SetupProfileView />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type mainMenuVm:MainMenuViewModel}">

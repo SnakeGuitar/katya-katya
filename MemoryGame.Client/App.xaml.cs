@@ -48,8 +48,10 @@ public partial class App : Application
         services.AddTransient<MainWindowViewModel>();
         services.AddTransient<TitleScreenViewModel>();
         services.AddTransient<LoginViewModel>();
+        services.AddTransient<GuestLoginViewModel>();
         services.AddTransient<RegisterViewModel>();
         services.AddTransient<VerifyEmailViewModel>();
+        services.AddTransient<SetupProfileViewModel>();
         services.AddTransient<MainMenuViewModel>();
         services.AddTransient<SettingsViewModel>();
 
