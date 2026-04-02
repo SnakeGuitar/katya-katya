@@ -9,9 +9,11 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Resources/Images/Backgrounds/background-minimalistic.png"
+            <ImageBrush ImageSource="/Resources/Images/Backgrounds/background-minimalistic.png"
                         Stretch="UniformToFill"/>
         </Grid.Background>
+
+        <Canvas x:Name="PetalCanvas" IsHitTestVisible="False"/>
 
         <Rectangle Width="200" Height="200"
                    HorizontalAlignment="Center"

@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryGame.Client.Services;
+using MemoryGame.Client.ViewModels.Gallery;
 using MemoryGame.Client.ViewModels.Session;
 using MemoryGame.Client.ViewModels.Settings;
 
@@ -32,9 +33,7 @@ public partial class MainMenuViewModel : ObservableObject
     private void GoToSettings() => _navigation.NavigateTo<SettingsViewModel>();
 
     [RelayCommand]
-    private void GoToMore() 
-    {
-    }
+    private void GoToMore() => _navigation.NavigateTo<GalleryViewModel>();
 
     [RelayCommand]
     private void GoToStoryMode()
