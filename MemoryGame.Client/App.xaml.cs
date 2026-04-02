@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MemoryGame.Client.Localization;
 using MemoryGame.Client.Services;
 using MemoryGame.Client.ViewModels;
+using MemoryGame.Client.ViewModels.Gallery;
 using MemoryGame.Client.ViewModels.MainMenu;
 using MemoryGame.Client.ViewModels.Session;
 using MemoryGame.Client.ViewModels.Settings;
@@ -56,6 +57,7 @@ public partial class App : Application
         services.AddTransient<SetupProfileViewModel>();
         services.AddTransient<MainMenuViewModel>();
         services.AddTransient<SettingsViewModel>();
+        services.AddTransient<GalleryViewModel>();
 
         // Main window
         services.AddSingleton<MainWindow>();

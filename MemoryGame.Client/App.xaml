@@ -5,9 +5,11 @@
              xmlns:sessionVm="clr-namespace:MemoryGame.Client.ViewModels.Session"
              xmlns:mainMenuVm="clr-namespace:MemoryGame.Client.ViewModels.MainMenu"
              xmlns:settingsVm="clr-namespace:MemoryGame.Client.ViewModels.Settings"
+             xmlns:galleryVm="clr-namespace:MemoryGame.Client.ViewModels.Gallery"
              xmlns:sessionViews="clr-namespace:MemoryGame.Client.Views.Session"
              xmlns:mainMenuViews="clr-namespace:MemoryGame.Client.Views.MainMenu"
-             xmlns:settingsViews="clr-namespace:MemoryGame.Client.Views.Settings">
+             xmlns:settingsViews="clr-namespace:MemoryGame.Client.Views.Settings"
+             xmlns:galleryViews="clr-namespace:MemoryGame.Client.Views.Gallery">
 
     <Application.Resources>
         <ResourceDictionary>
@@ -54,6 +56,10 @@
 
             <DataTemplate DataType="{x:Type settingsVm:SettingsViewModel}">
                 <settingsViews:SettingsView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type galleryVm:GalleryViewModel}">
+                <galleryViews:GalleryView />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
