@@ -11,6 +11,9 @@ public interface INavigationService
     /// <summary>The currently displayed view model.</summary>
     ObservableObject? CurrentViewModel { get; }
 
+    /// <summary>True when the pending navigation was requested with a fade transition.</summary>
+    bool IsAnimatedTransition { get; }
+
     /// <summary>True when there is a previous entry to return to.</summary>
     bool CanGoBack { get; }
 
@@ -28,6 +31,14 @@ public interface INavigationService
     /// Use for checkpoints where going "back" should not be possible (e.g. post-login, logout).
     /// </summary>
     void NavigateToRoot<TViewModel>() where TViewModel : ObservableObject;
+
+    /// <inheritdoc cref="NavigateToRoot{TViewModel}()"/>
+    void NavigateToRoot<TViewModel>(Action<TViewModel> setup) where TViewModel : ObservableObject;
+
+    /// <summary>
+    /// Same as <see cref="NavigateToRoot{TViewModel}()"/> but signals the shell to play a fade transition.
+    /// </summary>
+    void NavigateToRootWithFade<TViewModel>() where TViewModel : ObservableObject;
 
     /// <summary>
     /// Goes back to the previous view model, if one exists.

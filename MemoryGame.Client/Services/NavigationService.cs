@@ -16,6 +16,8 @@ public partial class NavigationService : ObservableObject, INavigationService
 
     public bool CanGoBack => _history.Count > 0;
 
+    public bool IsAnimatedTransition { get; private set; }
+
     public NavigationService(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
@@ -24,6 +26,7 @@ public partial class NavigationService : ObservableObject, INavigationService
     /// <inheritdoc/>
     public void NavigateTo<TViewModel>() where TViewModel : ObservableObject
     {
+        IsAnimatedTransition = false;
         var viewModel = Resolve<TViewModel>();
         Push(viewModel);
     }
@@ -31,6 +34,7 @@ public partial class NavigationService : ObservableObject, INavigationService
     /// <inheritdoc/>
     public void NavigateTo<TViewModel>(Action<TViewModel> setup) where TViewModel : ObservableObject
     {
+        IsAnimatedTransition = false;
         var viewModel = Resolve<TViewModel>();
         setup(viewModel);
         Push(viewModel);
@@ -39,14 +43,35 @@ public partial class NavigationService : ObservableObject, INavigationService
     /// <inheritdoc/>
     public void NavigateToRoot<TViewModel>() where TViewModel : ObservableObject
     {
+        IsAnimatedTransition = false;
         _history.Clear();
         OnPropertyChanged(nameof(CanGoBack));
         CurrentViewModel = Resolve<TViewModel>();
     }
 
     /// <inheritdoc/>
+    public void NavigateToRootWithFade<TViewModel>() where TViewModel : ObservableObject
+    {
+        IsAnimatedTransition = true;
+        _history.Clear();
+        OnPropertyChanged(nameof(CanGoBack));
+        CurrentViewModel = Resolve<TViewModel>();
+    }
+
+    /// <inheritdoc/>
+    public void NavigateToRoot<TViewModel>(Action<TViewModel> setup) where TViewModel : ObservableObject
+    {
+        var viewModel = Resolve<TViewModel>();
+        setup(viewModel);
+        _history.Clear();
+        OnPropertyChanged(nameof(CanGoBack));
+        CurrentViewModel = viewModel;
+    }
+
+    /// <inheritdoc/>
     public void GoBack()
     {
+        IsAnimatedTransition = false;
         if (_history.TryPop(out var previous))
         {
             OnPropertyChanged(nameof(CanGoBack));
