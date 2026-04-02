@@ -38,6 +38,11 @@
     <Resource Include="Resources\Images\**\*.ico" />
   </ItemGroup>
 
+  <!-- Embed custom fonts as WPF resources -->
+  <ItemGroup>
+    <Resource Include="Resources\Fonts\**\*.ttf" />
+  </ItemGroup>
+
   <!-- Copy music files to the output directory -->
   <ItemGroup>
     <Content Include="Resources\Music\**\*.mp3">
