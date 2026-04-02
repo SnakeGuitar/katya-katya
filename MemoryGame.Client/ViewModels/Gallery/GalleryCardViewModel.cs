@@ -38,4 +38,13 @@ public partial class GalleryCardViewModel : ObservableObject
         _index  = (_index + 1) % _variants.Count;
         Current = _variants[_index];
     }
+
+    /// <summary>Goes to the previous variant, wrapping to the end.</summary>
+    [RelayCommand]
+    private void CycleBack()
+    {
+        _index = _index - 1;
+        if (_index < 0) _index = _variants.Count - 1;
+        Current = _variants[_index];
+    }
 }

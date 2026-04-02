@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using MemoryGame.Client.ViewModels.Gallery;
@@ -14,14 +15,16 @@ public partial class GalleryView : UserControl
     private void OnOverlayBackgroundMouseDown(object sender, MouseButtonEventArgs e)
     {
         if (DataContext is GalleryViewModel vm)
+        {
             vm.CloseCardCommand.Execute(null);
+        }
     }
 
-    private void OnExpandedImageMouseDown(object sender, MouseButtonEventArgs e)
+    private void OnCloseExpandedButtonClicked(object sender, RoutedEventArgs e)
     {
         if (DataContext is GalleryViewModel vm)
-            vm.SelectedCard?.CycleCommand.Execute(null);
-
-        e.Handled = true;
+        {
+            vm.CloseCardCommand.Execute(null);
+        }
     }
 }

@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:loc="clr-namespace:MemoryGame.Client.Localization"
+             xmlns:behaviors="clr-namespace:MemoryGame.Client.Behaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
@@ -17,7 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="64"/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
@@ -30,20 +31,56 @@
                    FontFamily="{StaticResource DefaultFont}"
                    Foreground="{StaticResource PastelText}"/>
 
+        <!-- Back button -->
+        <Button Grid.Row="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Margin="40,0"
+                Command="{Binding GoBackCommand}"
+                Width="44" Height="44"
+                Cursor="Hand"
+                Background="#33FFFFFF"
+                BorderThickness="0">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}" CornerRadius="22">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.2" Color="#3D1C1C"/>
+                        </Border.Effect>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#66FFFFFF"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+            <Image Source="pack://application:,,,/Resources/Images/Icons/return-icon.png" Stretch="Uniform" Margin="11"/>
+        </Button>
+
         <!-- Card grid -->
-        <ScrollViewer Grid.Row="1"
-                      VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Disabled"
-                      Padding="32,16,32,0">
-            <ItemsControl ItemsSource="{Binding Cards}" HorizontalAlignment="Center">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel HorizontalAlignment="Center"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+        <Border Grid.Row="1"
+                Background="{StaticResource CardBackground}"
+                CornerRadius="{StaticResource CardCornerRadius}"
+                Margin="40,10,40,20"
+                Padding="0,16">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.14" Color="#3D1C1C"/>
+            </Border.Effect>
+
+            <ScrollViewer Style="{StaticResource PastelScrollViewer}"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding Cards}" HorizontalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel HorizontalAlignment="Center" MaxWidth="1184"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Width="220" Height="300"
+                        <Border Width="260" Height="350"
                                 Margin="18,20"
                                 CornerRadius="{StaticResource CardCornerRadius}"
                                 Cursor="Hand"
@@ -96,7 +133,7 @@
 
                                 <!-- Variant label -->
                                 <Border Grid.Row="1"
-                                        Background="#CC000000"
+                                        Background="#66000000"
                                         CornerRadius="0,0,18,18"
                                         Padding="0,6">
                                     <TextBlock Text="{Binding Current.Label}"
@@ -110,18 +147,11 @@
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
 
-        <!-- Back button -->
-        <Button Grid.Row="2"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Margin="32,0"
-                Style="{StaticResource PastelButton}"
-                Width="110" Height="38"
-                Command="{Binding GoBackCommand}"
-                Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"/>
+
 
         <!-- ═══════════════════════════════════════════════════════════════════
              Expansion overlay — visible only when a card is selected
@@ -134,15 +164,16 @@
                        MouseLeftButtonDown="OnOverlayBackgroundMouseDown"/>
 
             <!-- Centered card container -->
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="360">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="60">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <!-- Close (×) button — top-right above the card -->
-                <Button Grid.Row="0"
-                        HorizontalAlignment="Right"
+                <Grid Grid.Row="0" Margin="0,0,0,10">
+
+                    <!-- Close (×) button — top-right above the card -->
+                    <Button HorizontalAlignment="Right"
                         Margin="0,0,0,6"
                         Width="34" Height="34"
                         Content="×"
@@ -151,7 +182,8 @@
                         Background="#88000000"
                         BorderThickness="0"
                         Cursor="Hand"
-                        Command="{Binding CloseCardCommand}">
+                        Command="{Binding CloseCardCommand}"
+                        Click="OnCloseExpandedButtonClicked">
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border x:Name="Root" Background="{TemplateBinding Background}"
@@ -166,28 +198,57 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
+                </Grid>
+
+                <!-- Expanded card layout with arrows -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Button Grid.Column="0" Content="&lt;" Command="{Binding SelectedCard.CycleBackCommand}"
+                            Background="#66000000" Foreground="White" Width="44" Height="44" BorderThickness="0"
+                            Margin="0,0,16,0" VerticalAlignment="Center" Cursor="Hand" FontSize="20" FontWeight="Bold">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="Root" Background="{TemplateBinding Background}" CornerRadius="22">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,2,2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Root" Property="Background" Value="#AA000000"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
 
                 <!-- Expanded card -->
-                <Border Grid.Row="1"
+                <Border Grid.Column="1"
                         CornerRadius="{StaticResource CardCornerRadius}">
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="0" BlurRadius="48"
                                           Color="#000000" Opacity="0.55"/>
                     </Border.Effect>
                     <Grid>
-                        <!-- Card image — click to cycle variant -->
+                        <!-- Card image — drag to move -->
                         <Border CornerRadius="{StaticResource CardCornerRadius}" ClipToBounds="True">
-                            <Image Source="{Binding SelectedCard.Current.ImagePath}"
-                                   Stretch="Uniform"
-                                   MaxHeight="460"
-                                   RenderOptions.BitmapScalingMode="HighQuality"
-                                   Cursor="Hand"
-                                   MouseLeftButtonDown="OnExpandedImageMouseDown"/>
+                            <ScrollViewer x:Name="ExpandedScrollViewer" Style="{StaticResource PastelScrollViewer}" 
+                                          HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                                          behaviors:ZoomPanBehavior.IsEnabled="True"
+                                          behaviors:ZoomPanBehavior.ResetZoomTrigger="{Binding SelectedCard.Current}">
+                                <Image Source="{Binding SelectedCard.Current.ImagePath}"
+                                       Stretch="Uniform"
+                                       RenderOptions.BitmapScalingMode="HighQuality"
+                                       Cursor="SizeAll" />
+                            </ScrollViewer>
                         </Border>
 
                         <!-- Variant label + hint strip at the bottom -->
                         <Border VerticalAlignment="Bottom"
-                                Background="#CC000000"
+                                Background="#80000000"
                                 CornerRadius="0,0,18,18"
                                 Padding="0,8,0,10">
                             <StackPanel>
@@ -207,6 +268,24 @@
                         </Border>
                     </Grid>
                 </Border>
+                
+                    <Button Grid.Column="2" Content="&gt;" Command="{Binding SelectedCard.CycleCommand}"
+                            Background="#66000000" Foreground="White" Width="44" Height="44" BorderThickness="0"
+                            Margin="16,0,0,0" VerticalAlignment="Center" Cursor="Hand" FontSize="20" FontWeight="Bold">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="Root" Background="{TemplateBinding Background}" CornerRadius="22">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0,0,2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="Root" Property="Background" Value="#AA000000"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>
