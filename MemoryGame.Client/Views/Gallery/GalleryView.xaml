@@ -1,0 +1,213 @@
+<UserControl x:Class="MemoryGame.Client.Views.Gallery.GalleryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:MemoryGame.Client.Localization"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="1280" d:DesignHeight="720">
+
+    <Grid>
+        <!-- Background -->
+        <Grid.Background>
+            <ImageBrush ImageSource="/Resources/Images/Backgrounds/background-minimalistic.png"
+                        Stretch="UniformToFill"/>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="64"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Gallery_Title]}"
+                   FontSize="32"
+                   FontWeight="Bold"
+                   FontFamily="{StaticResource DefaultFont}"
+                   Foreground="{StaticResource PastelText}"/>
+
+        <!-- Card grid -->
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      Padding="32,16,32,0">
+            <ItemsControl ItemsSource="{Binding Cards}" HorizontalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="220" Height="300"
+                                Margin="18,20"
+                                CornerRadius="{StaticResource CardCornerRadius}"
+                                Cursor="Hand"
+                                RenderTransformOrigin="0.5,1.0">
+                            <Border.RenderTransform>
+                                <RotateTransform Angle="{Binding Rotation}"/>
+                            </Border.RenderTransform>
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect ShadowDepth="6" BlurRadius="16"
+                                                              Color="#3D1C1C" Opacity="0.18"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                            <Setter Property="Effect">
+                                                <Setter.Value>
+                                                    <DropShadowEffect ShadowDepth="12" BlurRadius="28"
+                                                                      Color="#3D1C1C" Opacity="0.28"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <Border.InputBindings>
+                                <MouseBinding MouseAction="LeftClick"
+                                              Command="{Binding DataContext.SelectCardCommand,
+                                                        RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                              CommandParameter="{Binding}"/>
+                            </Border.InputBindings>
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- Card image -->
+                                <Border Grid.Row="0" Grid.RowSpan="2"
+                                        CornerRadius="{StaticResource CardCornerRadius}"
+                                        ClipToBounds="True">
+                                    <Image Source="{Binding Current.ImagePath}"
+                                           Stretch="UniformToFill"
+                                           RenderOptions.BitmapScalingMode="HighQuality"/>
+                                </Border>
+
+                                <!-- Variant label -->
+                                <Border Grid.Row="1"
+                                        Background="#CC000000"
+                                        CornerRadius="0,0,18,18"
+                                        Padding="0,6">
+                                    <TextBlock Text="{Binding Current.Label}"
+                                               Foreground="White"
+                                               FontSize="13"
+                                               FontWeight="SemiBold"
+                                               FontFamily="{StaticResource DefaultFont}"
+                                               HorizontalAlignment="Center"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Back button -->
+        <Button Grid.Row="2"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Margin="32,0"
+                Style="{StaticResource PastelButton}"
+                Width="110" Height="38"
+                Command="{Binding GoBackCommand}"
+                Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"/>
+
+        <!-- ═══════════════════════════════════════════════════════════════════
+             Expansion overlay — visible only when a card is selected
+             ═══════════════════════════════════════════════════════════════════ -->
+        <Grid Grid.Row="0" Grid.RowSpan="3"
+              Visibility="{Binding SelectedCard, Converter={StaticResource NullToCollapsedConverter}}">
+
+            <!-- Dimmed background — click to close -->
+            <Rectangle Fill="#CC000000"
+                       MouseLeftButtonDown="OnOverlayBackgroundMouseDown"/>
+
+            <!-- Centered card container -->
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="360">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Close (×) button — top-right above the card -->
+                <Button Grid.Row="0"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,0,6"
+                        Width="34" Height="34"
+                        Content="×"
+                        FontSize="20"
+                        Foreground="White"
+                        Background="#88000000"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Command="{Binding CloseCardCommand}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Root" Background="{TemplateBinding Background}"
+                                    CornerRadius="17">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Root" Property="Background" Value="#CC000000"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <!-- Expanded card -->
+                <Border Grid.Row="1"
+                        CornerRadius="{StaticResource CardCornerRadius}">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="0" BlurRadius="48"
+                                          Color="#000000" Opacity="0.55"/>
+                    </Border.Effect>
+                    <Grid>
+                        <!-- Card image — click to cycle variant -->
+                        <Border CornerRadius="{StaticResource CardCornerRadius}" ClipToBounds="True">
+                            <Image Source="{Binding SelectedCard.Current.ImagePath}"
+                                   Stretch="Uniform"
+                                   MaxHeight="460"
+                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                   Cursor="Hand"
+                                   MouseLeftButtonDown="OnExpandedImageMouseDown"/>
+                        </Border>
+
+                        <!-- Variant label + hint strip at the bottom -->
+                        <Border VerticalAlignment="Bottom"
+                                Background="#CC000000"
+                                CornerRadius="0,0,18,18"
+                                Padding="0,8,0,10">
+                            <StackPanel>
+                                <TextBlock Text="{Binding SelectedCard.Current.Label}"
+                                           Foreground="White"
+                                           FontSize="15"
+                                           FontWeight="SemiBold"
+                                           FontFamily="{StaticResource DefaultFont}"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Gallery_Hint_Cycle]}"
+                                           Foreground="#99FFFFFF"
+                                           FontSize="11"
+                                           FontFamily="{StaticResource DefaultFont}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,3,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
