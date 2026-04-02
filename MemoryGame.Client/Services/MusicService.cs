@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Windows.Media;
 
 namespace MemoryGame.Client.Services;
@@ -25,12 +25,12 @@ public class MusicService : IDisposable
         {
             var all = Directory.GetFiles(musicDir, "*.mp3");
 
-            var misty = all.FirstOrDefault(t =>
-                Path.GetFileName(t).Contains("Misty Heart", StringComparison.OrdinalIgnoreCase));
+            var sujioegaku = all.FirstOrDefault(t =>
+                Path.GetFileName(t).Contains("すじをえがく", StringComparison.OrdinalIgnoreCase));
 
-            _tracks = misty is null
+            _tracks = sujioegaku is null
                 ? all
-                : [misty, .. all.Where(t => t != misty)];
+                : [sujioegaku, .. all.Where(t => t != sujioegaku)];
 
             _trackNames = _tracks
                 .Select(t => Path.GetFileNameWithoutExtension(t))
