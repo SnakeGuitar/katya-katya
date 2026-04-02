@@ -33,6 +33,12 @@ public class ClientSettings
         set { _data.MusicVolume = value; Save(); }
     }
 
+    public string ThemeName
+    {
+        get => _data.ThemeName;
+        set { _data.ThemeName = value; Save(); }
+    }
+
     public ClientSettings() => Load();
 
     private void Load()
@@ -61,7 +67,8 @@ public class ClientSettings
     private sealed class SettingsData
     {
         public string LanguageCode { get; set; } = "en-US";
-        public bool   MusicEnabled { get; set; } = true;
-        public double MusicVolume  { get; set; } = 0.5;
+        public bool   MusicEnabled  { get; set; } = true;
+        public double MusicVolume   { get; set; } = 0.5;
+        public string ThemeName     { get; set; } = "Pastel";
     }
 }
