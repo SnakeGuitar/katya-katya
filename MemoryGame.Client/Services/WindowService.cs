@@ -4,22 +4,23 @@ namespace MemoryGame.Client.Services;
 
 public class WindowService : IWindowService
 {
-    public bool IsFullscreen =>
-        Application.Current.MainWindow?.WindowStyle == WindowStyle.None;
+    private bool _isFullscreen;
+
+    public bool IsFullscreen => _isFullscreen;
 
     public void SetFullscreen(bool fullscreen)
     {
         var window = Application.Current.MainWindow;
         if (window is null) return;
 
+        _isFullscreen = fullscreen;
+        
         if (fullscreen)
         {
-            window.WindowStyle = WindowStyle.None;
             window.WindowState = WindowState.Maximized;
         }
         else
         {
-            window.WindowStyle = WindowStyle.SingleBorderWindow;
             window.WindowState = WindowState.Normal;
         }
     }

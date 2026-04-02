@@ -178,6 +178,7 @@ public static class ZoomPanBehavior
 
         scrollViewer.SetValue(LastMousePositionProperty, e.GetPosition(scrollViewer));
         content.CaptureMouse();
+        e.Handled = true;
     }
 
     /// <summary>
@@ -200,6 +201,7 @@ public static class ZoomPanBehavior
             scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - deltaY);
 
             scrollViewer.SetValue(LastMousePositionProperty, currentPosition);
+            e.Handled = true;
         }
     }
 
@@ -213,6 +215,7 @@ public static class ZoomPanBehavior
         
         content?.ReleaseMouseCapture();
         scrollViewer.SetValue(LastMousePositionProperty, null);
+        e.Handled = true;
     }
 
     /// <summary>

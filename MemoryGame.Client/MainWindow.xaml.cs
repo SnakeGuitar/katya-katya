@@ -56,4 +56,19 @@ public partial class MainWindow : Window
         PageContent.BeginAnimation(OpacityProperty, animation);
         return tcs.Task;
     }
+
+    private void OnMacCloseClicked(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
+    private void OnMacMinimizeClicked(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
+
+    private void OnMacMaximizeClicked(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+    }
 }

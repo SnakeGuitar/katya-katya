@@ -16,13 +16,13 @@
         </Grid.Background>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="40"/> <!-- Spacer for MacOS Traffic Lights Area -->
+            <RowDefinition Height="80"/> <!-- Header & Back Button -->
             <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <TextBlock Grid.Row="0"
+        <TextBlock Grid.Row="1"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Gallery_Title]}"
@@ -31,36 +31,55 @@
                    FontFamily="{StaticResource DefaultFont}"
                    Foreground="{StaticResource PastelText}"/>
 
-        <!-- Back button -->
-        <Button Grid.Row="0"
+        <!-- Back button (Aligned below traffic lights) -->
+        <Button Grid.Row="1"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Margin="40,0"
+                Margin="18,0,0,0"
                 Command="{Binding GoBackCommand}"
-                Width="44" Height="44"
+                Width="48" Height="48"
                 Cursor="Hand"
-                Background="#33FFFFFF"
+                Background="{StaticResource PastelPrimary}"
                 BorderThickness="0">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" CornerRadius="22">
+                    <Border x:Name="Root" Background="{TemplateBinding Background}" CornerRadius="24">
                         <Border.Effect>
-                            <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.2" Color="#3D1C1C"/>
+                            <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.3" Color="#C84747"/>
                         </Border.Effect>
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#66FFFFFF"/>
+                            <Setter TargetName="Root" Property="Background" Value="{StaticResource PastelPrimaryHover}"/>
+                            <Setter TargetName="Root" Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="1.1" ScaleY="1.1" CenterX="24" CenterY="24"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.95" ScaleY="0.95" CenterX="24" CenterY="24"/>
+                                </Setter.Value>
+                            </Setter>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Button.Template>
-            <Image Source="pack://application:,,,/Resources/Images/Icons/return-icon.png" Stretch="Uniform" Margin="11"/>
+            <Image Source="pack://application:,,,/Resources/Images/Icons/return-icon.png" 
+                   Stretch="Uniform" Margin="14"
+                   RenderOptions.BitmapScalingMode="HighQuality">
+                <!-- Apply a white color filter to the icon if it's black/dark -->
+                <Image.Effect>
+                    <DropShadowEffect ShadowDepth="0" Color="White" BlurRadius="1" Opacity="1"/>
+                </Image.Effect>
+            </Image>
         </Button>
 
         <!-- Card grid -->
-        <Border Grid.Row="1"
+        <Border Grid.Row="2"
                 Background="{StaticResource CardBackground}"
                 CornerRadius="{StaticResource CardCornerRadius}"
                 Margin="40,10,40,20"

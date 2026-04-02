@@ -8,19 +8,103 @@
         Title="Memory Game"
         Height="720" Width="1280"
         MinHeight="768" MinWidth="900"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Icon="Resources/Images/logo-en.ico">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="46" CornerRadius="16" GlassFrameThickness="0" ResizeBorderThickness="8"/>
+    </WindowChrome.WindowChrome>
 
     <!-- F11: toggle fullscreen -->
     <Window.InputBindings>
         <KeyBinding Key="F11" Command="{Binding ToggleFullscreenCommand}"/>
     </Window.InputBindings>
 
-    <Grid>
-        <!-- Active view (fills the entire window) — content is swapped in code-behind with a fade transition -->
+    <Border x:Name="MainWindowBorder" Background="{StaticResource PastelBackground}" CornerRadius="14" ClipToBounds="True">
+        <Border.Style>
+            <Style TargetType="Border">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Maximized">
+                        <Setter Property="CornerRadius" Value="0"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Border.Style>
+        <Grid>
+            <!-- Traffic Light MacOS buttons (Top-Left) -->
+            <StackPanel x:Name="TrafficLights" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,18,0,0" Panel.ZIndex="100"
+                        WindowChrome.IsHitTestVisibleInChrome="True">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Maximized">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <Button Width="14" Height="14" Background="#FF5F56" BorderThickness="0" Cursor="Hand" Margin="0,0,8,0" Click="OnMacCloseClicked" ToolTip="Cerrar">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="BtnBorder" Background="{TemplateBinding Background}" CornerRadius="7">
+                                <TextBlock x:Name="Icon" Text="×" FontSize="10" Foreground="#44000000" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Margin="0,0,0,1"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=StackPanel}}" Value="True">
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="BtnBorder" Property="Background" Value="#E04E45"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Width="14" Height="14" Background="#FFBD2E" BorderThickness="0" Cursor="Hand" Margin="0,0,8,0" Click="OnMacMinimizeClicked" ToolTip="Minimizar">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="BtnBorder" Background="{TemplateBinding Background}" CornerRadius="7">
+                                <TextBlock x:Name="Icon" Text="–" FontSize="10" Foreground="#44000000" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Margin="0,1,0,0"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=StackPanel}}" Value="True">
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="BtnBorder" Property="Background" Value="#E6A925"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Width="14" Height="14" Background="#27C93F" BorderThickness="0" Cursor="Hand" Click="OnMacMaximizeClicked" ToolTip="Maximizar">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="BtnBorder" Background="{TemplateBinding Background}" CornerRadius="7">
+                                <TextBlock x:Name="Icon" Text="+" FontSize="9" Foreground="#44000000" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource AncestorType=StackPanel}}" Value="True">
+                                    <Setter TargetName="Icon" Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="BtnBorder" Property="Background" Value="#1FB335"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+
+            <!-- Active view (fills the entire window) — content is swapped in code-behind with a fade transition -->
         <ContentControl x:Name="PageContent"/>
 
-        <!-- Global header Menu — always on top, top-right corner -->
-        <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,14,18,0">
+        <!-- Global header Menu — Aligned with back buttons (Row 1 of views) -->
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,52,18,0"
+              WindowChrome.IsHitTestVisibleInChrome="True">
             <ToggleButton x:Name="MenuToggleBtn"
                           Width="56" Height="56" Cursor="Hand" ToolTip="Menu"
                           Background="Transparent" BorderThickness="0">
@@ -64,5 +148,6 @@
                 </Border>
             </Popup>
         </Grid>
-    </Grid>
+        </Grid>
+    </Border>
 </Window>
