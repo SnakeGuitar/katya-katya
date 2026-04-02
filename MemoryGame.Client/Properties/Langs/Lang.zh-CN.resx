@@ -590,4 +590,10 @@
 <data name="Menu_Error_RequiresFullAccount" xml:space="preserve">
 <value>您必须注册一个完整的帐户才能访问此部分。</value>
 </data>
+
+  <!-- =====================================================================
+       Gallery
+       ===================================================================== -->
+  <data name="Gallery_Title"><value>卡牌收藏</value></data>
+  <data name="Gallery_Hint_Cycle"><value>点击图片切换版本</value></data>
 </root>

@@ -590,4 +590,10 @@
 <data name="Menu_Error_RequiresFullAccount" xml:space="preserve">
 <value>このセクションにアクセスするには、フルアカウントを登録する必要があります。</value>
 </data>
+
+  <!-- =====================================================================
+       Gallery
+       ===================================================================== -->
+  <data name="Gallery_Title"><value>カードコレクション</value></data>
+  <data name="Gallery_Hint_Cycle"><value>画像をクリックしてバージョンを切り替え</value></data>
 </root>

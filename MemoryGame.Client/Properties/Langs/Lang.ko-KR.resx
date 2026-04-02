@@ -586,4 +586,10 @@
 <data name="Menu_Error_RequiresFullAccount" xml:space="preserve">
 <value>이 섹션에 액세스하려면 전체 계정을 등록해야 합니다.</value>
 </data>
+
+  <!-- =====================================================================
+       Gallery
+       ===================================================================== -->
+  <data name="Gallery_Title"><value>카드 컬렉션</value></data>
+  <data name="Gallery_Hint_Cycle"><value>이미지를 클릭하여 버전 전환</value></data>
 </root>

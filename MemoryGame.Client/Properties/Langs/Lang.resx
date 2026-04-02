@@ -292,4 +292,10 @@
 <data name="Menu_Error_RequiresFullAccount" xml:space="preserve">
 <value>You must register a full account to access this section.</value>
 </data>
+
+  <!-- =====================================================================
+       Gallery
+       ===================================================================== -->
+  <data name="Gallery_Title"><value>Card Collection</value></data>
+  <data name="Gallery_Hint_Cycle"><value>Click image to cycle versions</value></data>
 </root>
