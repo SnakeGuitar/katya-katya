@@ -47,6 +47,7 @@ public partial class App : Application
 
         // ViewModels (transient — new instance each navigation)
         services.AddTransient<MainWindowViewModel>();
+        services.AddTransient<SplashScreenViewModel>();
         services.AddTransient<TitleScreenViewModel>();
         services.AddTransient<LoginViewModel>();
         services.AddTransient<GuestLoginViewModel>();
@@ -73,7 +74,7 @@ public partial class App : Application
         mainWindow.DataContext = _serviceProvider.GetRequiredService<MainWindowViewModel>();
 
         var navigation = _serviceProvider.GetRequiredService<INavigationService>();
-        navigation.NavigateTo<TitleScreenViewModel>();
+        navigation.NavigateTo<SplashScreenViewModel>();
 
         mainWindow.Show();
     }

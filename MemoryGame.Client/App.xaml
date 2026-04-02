@@ -20,6 +20,10 @@
             <converters:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
 
             <!-- ViewModel → View mapping -->
+            <DataTemplate DataType="{x:Type sessionVm:SplashScreenViewModel}">
+                <sessionViews:SplashScreenView />
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type sessionVm:TitleScreenViewModel}">
                 <sessionViews:TitleScreenView />
             </DataTemplate>
