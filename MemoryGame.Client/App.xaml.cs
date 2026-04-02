@@ -36,6 +36,7 @@ public partial class App : Application
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IWindowService, WindowService>();
         services.AddSingleton<MusicService>();
+        services.AddSingleton<ThemeService>();
         services.AddSingleton(sp => new HubService(
             sp.GetRequiredService<ISessionService>(), HubUrl));
 
@@ -69,6 +70,7 @@ public partial class App : Application
 
         var settings = _serviceProvider.GetRequiredService<ClientSettings>();
         LocalizationManager.Instance.SetCulture(settings.LanguageCode);
+        _serviceProvider.GetRequiredService<ThemeService>().ApplyStoredTheme();
 
         _serviceProvider.GetRequiredService<MusicService>();
 
