@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\Images\logo-en.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,9 +32,10 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <!-- Embed images as WPF resources (accessible via pack:// URIs) -->
+  <!-- Embed images and icons as WPF resources (accessible via pack:// URIs) -->
   <ItemGroup>
     <Resource Include="Resources\Images\**\*.png" />
+    <Resource Include="Resources\Images\**\*.ico" />
   </ItemGroup>
 
   <!-- Copy music files to the output directory -->
