@@ -100,7 +100,7 @@ public partial class SetupProfileViewModel : ObservableObject
 
             await _hub.ConnectAsync();
 
-            _navigation.NavigateToRoot<MainMenuViewModel>();
+            _navigation.NavigateToRootWithFade<MainMenuViewModel>();
         }
         finally
         {

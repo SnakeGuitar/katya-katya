@@ -47,6 +47,6 @@ public partial class MainMenuViewModel : ObservableObject
     {
         await _hub.DisconnectAsync();
         _session.EndSession();
-        _navigation.NavigateToRoot<TitleScreenViewModel>();
+        _navigation.NavigateToRootWithFade<TitleScreenViewModel>();
     }
 }

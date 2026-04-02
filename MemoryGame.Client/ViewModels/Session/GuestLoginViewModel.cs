@@ -71,7 +71,7 @@ public partial class GuestLoginViewModel : ObservableObject
 
             await _hub.ConnectAsync();
 
-            _navigation.NavigateToRoot<MainMenuViewModel>();
+            _navigation.NavigateToRootWithFade<MainMenuViewModel>();
         }
         finally
         {
