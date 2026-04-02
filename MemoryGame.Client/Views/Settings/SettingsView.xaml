@@ -66,6 +66,17 @@
 
                     <Rectangle Style="{StaticResource SectionDivider}"/>
 
+                    <!-- ── Theme ────────────────────────────────── -->
+                    <TextBlock Text="Theme"
+                               Style="{StaticResource PastelLabel}"
+                               Margin="0,0,0,8"/>
+                    <ComboBox ItemsSource="{Binding Source={x:Static vm:SettingsViewModel.Themes}}"
+                              SelectedItem="{Binding SelectedTheme}"
+                              Style="{StaticResource PastelComboBox}"
+                              Margin="0,0,0,0"/>
+
+                    <Rectangle Style="{StaticResource SectionDivider}"/>
+
                     <!-- ── Music ────────────────────────────────── -->
                     <Grid Margin="0,0,0,14">
                         <Grid.ColumnDefinitions>
