@@ -10,8 +10,11 @@
 
     <Grid>
         <!-- Static background image (with everything including background) -->
-        <Image Source="/Resources/Images/Backgrounds/katya-main-background-only.png" 
+        <Image Source="/Resources/Images/Backgrounds/katya-main-background-only.png"
                Stretch="UniformToFill"/>
+
+        <!-- Petal canvas — falls in front of background, behind the character -->
+        <Canvas x:Name="PetalCanvas" IsHitTestVisible="False"/>
 
         <!-- Foreground cutout character image that animates when hovered over -->
         <controls:AlphaHitTestImage Source="/Resources/Images/Backgrounds/katya-main-no-background.png" 
