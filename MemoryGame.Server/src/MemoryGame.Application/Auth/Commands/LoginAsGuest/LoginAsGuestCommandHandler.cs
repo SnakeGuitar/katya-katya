@@ -34,9 +34,22 @@ public class LoginAsGuestCommandHandler : IRequestHandler<LoginAsGuestCommand, A
     /// <inheritdoc/>
     public async Task<AuthResponse> Handle(LoginAsGuestCommand request, CancellationToken cancellationToken)
     {
-        var user = User.CreateGuest(request.GuestUsername);
+        var existingUser = await _userRepository.GetByUsernameAsync(request.GuestUsername);
+        User user;
 
-        await _userRepository.AddAsync(user);
+        if (existingUser != null)
+        {
+            if (!existingUser.IsGuest)
+                throw new MemoryGame.Domain.Common.DomainException(MemoryGame.Domain.Common.DomainErrors.Auth.UsernameAlreadyTaken);
+
+            user = existingUser;
+        }
+        else
+        {
+            user = User.CreateGuest(request.GuestUsername);
+            await _userRepository.AddAsync(user);
+        }
+
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         var accessToken = _jwtService.GenerateAccessToken(user);
