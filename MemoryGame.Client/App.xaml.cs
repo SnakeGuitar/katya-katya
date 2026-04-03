@@ -5,8 +5,10 @@ using MemoryGame.Client.Services;
 using MemoryGame.Client.ViewModels;
 using MemoryGame.Client.ViewModels.Gallery;
 using MemoryGame.Client.ViewModels.MainMenu;
+using MemoryGame.Client.ViewModels.Profile;
 using MemoryGame.Client.ViewModels.Session;
 using MemoryGame.Client.ViewModels.Settings;
+using MemoryGame.Client.ViewModels.Social;
 
 namespace MemoryGame.Client;
 
@@ -57,8 +59,12 @@ public partial class App : Application
         services.AddTransient<VerifyEmailViewModel>();
         services.AddTransient<SetupProfileViewModel>();
         services.AddTransient<MainMenuViewModel>();
+        services.AddTransient<MoreMenuViewModel>();
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<GalleryViewModel>();
+        services.AddTransient<ProfileViewModel>();
+        services.AddTransient<EditProfileViewModel>();
+        services.AddTransient<FriendsViewModel>();
 
         // Main window
         services.AddSingleton<MainWindow>();

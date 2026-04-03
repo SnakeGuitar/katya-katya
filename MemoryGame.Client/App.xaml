@@ -6,10 +6,14 @@
              xmlns:mainMenuVm="clr-namespace:MemoryGame.Client.ViewModels.MainMenu"
              xmlns:settingsVm="clr-namespace:MemoryGame.Client.ViewModels.Settings"
              xmlns:galleryVm="clr-namespace:MemoryGame.Client.ViewModels.Gallery"
+             xmlns:profileVm="clr-namespace:MemoryGame.Client.ViewModels.Profile"
+             xmlns:socialVm="clr-namespace:MemoryGame.Client.ViewModels.Social"
              xmlns:sessionViews="clr-namespace:MemoryGame.Client.Views.Session"
              xmlns:mainMenuViews="clr-namespace:MemoryGame.Client.Views.MainMenu"
              xmlns:settingsViews="clr-namespace:MemoryGame.Client.Views.Settings"
-             xmlns:galleryViews="clr-namespace:MemoryGame.Client.Views.Gallery">
+             xmlns:galleryViews="clr-namespace:MemoryGame.Client.Views.Gallery"
+             xmlns:profileViews="clr-namespace:MemoryGame.Client.Views.Profile"
+             xmlns:socialViews="clr-namespace:MemoryGame.Client.Views.Social">
 
     <Application.Resources>
         <ResourceDictionary>
@@ -20,6 +24,7 @@
             <!-- Converters -->
             <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
             <converters:NullToCollapsedConverter x:Key="NullToCollapsedConverter" />
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
             <!-- ViewModel → View mapping -->
             <DataTemplate DataType="{x:Type sessionVm:SplashScreenViewModel}">
@@ -60,6 +65,22 @@
 
             <DataTemplate DataType="{x:Type galleryVm:GalleryViewModel}">
                 <galleryViews:GalleryView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type mainMenuVm:MoreMenuViewModel}">
+                <mainMenuViews:MoreMenuView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type profileVm:ProfileViewModel}">
+                <profileViews:ProfileView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type profileVm:EditProfileViewModel}">
+                <profileViews:EditProfileView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type socialVm:FriendsViewModel}">
+                <socialViews:FriendsView />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
