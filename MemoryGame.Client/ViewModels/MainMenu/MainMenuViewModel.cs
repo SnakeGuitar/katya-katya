@@ -1,7 +1,8 @@
+using System;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryGame.Client.Services;
-using MemoryGame.Client.ViewModels.Gallery;
 using MemoryGame.Client.ViewModels.Session;
 using MemoryGame.Client.ViewModels.Settings;
 
@@ -16,11 +17,25 @@ public partial class MainMenuViewModel : ObservableObject
     private readonly ISessionService _session;
     private readonly HubService _hub;
 
+    private readonly string[] _moodImages =
+    {
+        "/Resources/Images/Backgrounds/katya-moods/main/katya-main-no-background.png",
+        "/Resources/Images/Backgrounds/katya-moods/in-love/katya-in-love-no-background.png",
+        "/Resources/Images/Backgrounds/katya-moods/shy/katya-shy-2-no-background.png"
+    };
+
+    [ObservableProperty]
+    private string _currentMoodImage;
+
     public MainMenuViewModel(INavigationService navigation, ISessionService session, HubService hub)
     {
         _navigation = navigation;
         _session = session;
         _hub = hub;
+
+        var index = new Random().Next(0, 3);
+        _currentMoodImage = _moodImages[index];
+
     }
 
     public string Username => _session.Current?.Username ?? "Player";
@@ -33,7 +48,7 @@ public partial class MainMenuViewModel : ObservableObject
     private void GoToSettings() => _navigation.NavigateTo<SettingsViewModel>();
 
     [RelayCommand]
-    private void GoToMore() => _navigation.NavigateTo<GalleryViewModel>();
+    private void GoToMore() => _navigation.NavigateTo<MoreMenuViewModel>();
 
     [RelayCommand]
     private void GoToStoryMode()

@@ -6,6 +6,7 @@ using MemoryGame.Client.ViewModels.Settings;
 using System.Windows;
 using MemoryGame.Client.Localization;
 using MemoryGame.Client.ViewModels.Session;
+using MemoryGame.Client.ViewModels.Profile;
 
 namespace MemoryGame.Client.ViewModels;
 
@@ -54,6 +55,7 @@ public partial class MainWindowViewModel : ObservableObject
     private void GoToProfile() 
     {
         if (!CheckCanAccessProtectedSection()) return;
+        _navigation.NavigateTo<ProfileViewModel>();
     }
 
     /// <summary>Bound to the global friends button in MainWindow.xaml dropdown.</summary>
@@ -61,6 +63,7 @@ public partial class MainWindowViewModel : ObservableObject
     private void GoToFriends()
     {
         if (!CheckCanAccessProtectedSection()) return;
+        _navigation.NavigateTo<Social.FriendsViewModel>();
     }
 
     [RelayCommand]
