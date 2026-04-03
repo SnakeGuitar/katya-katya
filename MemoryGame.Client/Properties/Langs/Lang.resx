@@ -221,22 +221,41 @@
   <!-- =====================================================================
        Profile
        ===================================================================== -->
+  <data name="Profile_Title"><value>Profile</value></data>
+  <data name="Profile_Label_Name"><value>Name</value></data>
+  <data name="Profile_Label_RegistrationDate"><value>Registered</value></data>
+  <data name="Profile_Label_SocialNetworks"><value>Social Networks</value></data>
+  <data name="Profile_Label_NoInfo"><value>Not provided</value></data>
   <data name="EditProfile_Label_EditProfile"><value>Edit Profile</value></data>
   <data name="EditProfile_Button_ChangeAvatar"><value>Change Avatar</value></data>
   <data name="EditProfile_Button_UpdatePassword"><value>Update Password</value></data>
   <data name="EditProfile_Label_NewUsername"><value>New Username</value></data>
   <data name="EditProfile_Label_ActualPassword"><value>Current Password</value></data>
   <data name="EditProfile_Label_NewPassword"><value>New Password</value></data>
+  <data name="EditProfile_Label_PersonalInfo"><value>Personal Info</value></data>
+  <data name="EditProfile_Label_ChangeUsername"><value>Change Username</value></data>
+  <data name="EditProfile_Message_AvatarUpdated"><value>Avatar updated successfully.</value></data>
+  <data name="EditProfile_Message_InfoUpdated"><value>Personal info updated.</value></data>
+  <data name="EditProfile_Message_UsernameUpdated"><value>Username updated. Please log in again.</value></data>
+  <data name="EditProfile_Message_PasswordUpdated"><value>Password updated.</value></data>
+  <data name="EditProfile_Message_SocialAdded"><value>Social network added.</value></data>
+  <data name="EditProfile_Message_SocialRemoved"><value>Social network removed.</value></data>
 
   <!-- =====================================================================
        Friends / Social
        ===================================================================== -->
+  <data name="Friends_Title"><value>Friends</value></data>
   <data name="Friends_Label_MyFriends"><value>My Friends</value></data>
   <data name="Friends_Label_PendingRequests"><value>Pending Requests</value></data>
   <data name="Friends_Label_AddFriend"><value>Add Friend</value></data>
   <data name="Friends_Button_SendRequest"><value>Send Request</value></data>
   <data name="Friends_Label_EnterUsername"><value>Enter username</value></data>
+  <data name="Friends_Label_FriendsSince"><value>Friends since {0}</value></data>
   <data name="Friends_Message_RemoveFriend"><value>Are you sure you want to remove {0} as a friend?</value></data>
+  <data name="Friends_Message_RequestSent"><value>Friend request sent to {0}.</value></data>
+  <data name="Friends_Label_NoFriends"><value>No friends yet. Send a request to get started!</value></data>
+  <data name="Friends_Label_NoRequests"><value>No pending requests.</value></data>
+  <data name="Error_SOCIAL_CANNOT_ADD_SELF"><value>You cannot add yourself as a friend.</value></data>
 
   <!-- =====================================================================
        Match / Singleplayer / Stats
