@@ -17,11 +17,28 @@ public class WindowService : IWindowService
         
         if (fullscreen)
         {
-            window.WindowState = WindowState.Maximized;
+            window.WindowState = WindowState.Normal;
+            window.ResizeMode  = ResizeMode.NoResize;
+            window.Topmost     = true;
+            
+            window.Left   = 0;
+            window.Top    = 0;
+            window.Width  = SystemParameters.PrimaryScreenWidth;
+            window.Height = SystemParameters.PrimaryScreenHeight;
         }
         else
         {
-            window.WindowState = WindowState.Normal;
+            window.Topmost      = false;
+            window.ResizeMode   = ResizeMode.CanResize;
+            window.WindowState  = WindowState.Normal;
+  
+            window.Width  = 1280;
+            window.Height = 720;
+            
+            var screenWidth  = SystemParameters.PrimaryScreenWidth;
+            var screenHeight = SystemParameters.PrimaryScreenHeight;
+            window.Left = (screenWidth - window.Width) / 2;
+            window.Top  = (screenHeight - window.Height) / 2;
         }
     }
 
