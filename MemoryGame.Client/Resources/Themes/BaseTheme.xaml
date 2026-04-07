@@ -31,9 +31,10 @@
     </LinearGradientBrush>
 
     <!-- =========================================================
-         Typography
+         Typography  —  Fredoka (display/headings) + Nunito (UI/body)
          ========================================================= -->
-    <FontFamily x:Key="DefaultFont">Segoe UI, Tahoma, Geneva, Verdana, sans-serif</FontFamily>
+    <FontFamily x:Key="DefaultFont">pack://application:,,,/Resources/Fonts/#Nunito</FontFamily>
+    <FontFamily x:Key="DisplayFont">pack://application:,,,/Resources/Fonts/#Fredoka</FontFamily>
 
     <!-- =========================================================
          Corner Radii
@@ -54,6 +55,7 @@
         <Setter Property="FontFamily"   Value="{StaticResource DefaultFont}"/>
         <Setter Property="Cursor"       Value="Hand"/>
         <Setter Property="Padding"      Value="20,0"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -167,17 +169,21 @@
         <Setter Property="Foreground"  Value="{StaticResource PastelText}"/>
         <Setter Property="FontFamily"  Value="{StaticResource DefaultFont}"/>
         <Setter Property="FontSize"    Value="14"/>
+        <Setter Property="FontWeight"  Value="Regular"/>
     </Style>
 
+    <!-- Fredoka Bold for headings -->
     <Style x:Key="PastelHeading" TargetType="TextBlock" BasedOn="{StaticResource PastelTextBlock}">
-        <Setter Property="FontSize"   Value="26"/>
-        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily"  Value="{StaticResource DisplayFont}"/>
+        <Setter Property="FontSize"    Value="26"/>
+        <Setter Property="FontWeight"  Value="Bold"/>
     </Style>
 
+    <!-- Nunito SemiBold for labels / captions -->
     <Style x:Key="PastelLabel" TargetType="TextBlock" BasedOn="{StaticResource PastelTextBlock}">
-        <Setter Property="FontSize"   Value="12"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="{StaticResource PastelTextLight}"/>
+        <Setter Property="FontSize"    Value="12"/>
+        <Setter Property="FontWeight"  Value="SemiBold"/>
+        <Setter Property="Foreground"  Value="{StaticResource PastelTextLight}"/>
     </Style>
 
     <!-- =========================================================
