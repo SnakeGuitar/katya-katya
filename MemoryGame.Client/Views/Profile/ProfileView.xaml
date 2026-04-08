@@ -21,7 +21,7 @@
 
         <!-- Centered content -->
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center"
-              MaxWidth="820">
+              MaxWidth="900" Margin="40">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -32,8 +32,8 @@
             <Border Grid.Row="0"
                     Background="{StaticResource CardBackground}"
                     CornerRadius="{StaticResource CardCornerRadius}"
-                    Padding="40,36"
-                    Margin="20">
+                    Padding="50,48"
+                    Margin="24">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.14" Color="#3D1C1C"/>
                 </Border.Effect>
@@ -45,7 +45,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- LEFT: Avatar + action buttons -->
-                    <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="0,0,36,0">
+                    <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="0,0,50,0">
                         <!-- Avatar -->
                         <Border Width="140" Height="140"
                                 CornerRadius="70"
@@ -71,7 +71,7 @@
                         </Border>
 
                         <!-- Edit Profile -->
-                        <Button Margin="0,16,0,0"
+                        <Button Margin="0,24,0,0"
                                 HorizontalAlignment="Center"
                                 Style="{StaticResource PastelButtonSecondary}"
                                 Height="36" Padding="20,0"
@@ -88,82 +88,101 @@
                     </StackPanel>
 
                     <!-- RIGHT: User info -->
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <Grid Grid.Column="1" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/> <!-- Username -->
+                            <RowDefinition Height="Auto"/> <!-- Spacer -->
+                            <RowDefinition Height="Auto"/> <!-- Name -->
+                            <RowDefinition Height="Auto"/> <!-- Email -->
+                            <RowDefinition Height="Auto"/> <!-- Reg Date -->
+                            <RowDefinition Height="Auto"/> <!-- Socials -->
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
                         <!-- Username (large heading) -->
-                        <TextBlock Text="{Binding Username}"
+                        <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
+                                   Text="{Binding Username}"
                                    Style="{StaticResource PastelHeading}"
-                                   FontSize="32"
-                                   Margin="0,0,0,16"
+                                   FontSize="36"
+                                   Margin="0,0,0,24"
                                    TextTrimming="CharacterEllipsis"/>
 
                         <!-- Name -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Label_Name]}"
-                                       Style="{StaticResource PastelLabel}"
-                                       FontSize="13"
-                                       Margin="0,0,8,0"
-                                       VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding FullName}"
-                                       Style="{StaticResource PastelTextBlock}"
-                                       FontSize="15"
-                                       Foreground="{StaticResource PastelPrimary}"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
+                        <TextBlock Grid.Row="2" Grid.Column="0"
+                                   Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Label_Name]}"
+                                   Style="{StaticResource PastelLabel}"
+                                   FontSize="14"
+                                   Margin="0,0,16,12"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1"
+                                   Text="{Binding FullName}"
+                                   Style="{StaticResource PastelTextBlock}"
+                                   FontSize="16"
+                                   Foreground="{StaticResource PastelPrimary}"
+                                   Margin="0,0,0,12"
+                                   VerticalAlignment="Center"/>
 
                         <!-- Email -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Email]}"
-                                       Style="{StaticResource PastelLabel}"
-                                       FontSize="13"
-                                       Margin="0,0,8,0"
-                                       VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding Email}"
-                                       Style="{StaticResource PastelTextBlock}"
-                                       FontSize="15"
-                                       Foreground="{StaticResource PastelPrimary}"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
+                        <TextBlock Grid.Row="3" Grid.Column="0"
+                                   Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Email]}"
+                                   Style="{StaticResource PastelLabel}"
+                                   FontSize="14"
+                                   Margin="0,0,16,12"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1"
+                                   Text="{Binding Email}"
+                                   Style="{StaticResource PastelTextBlock}"
+                                   FontSize="16"
+                                   Foreground="{StaticResource PastelPrimary}"
+                                   Margin="0,0,0,12"
+                                   VerticalAlignment="Center"/>
 
                         <!-- Registration Date -->
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Label_RegistrationDate]}"
-                                       Style="{StaticResource PastelLabel}"
-                                       FontSize="13"
-                                       Margin="0,0,8,0"
-                                       VerticalAlignment="Center"/>
-                            <TextBlock Text="{Binding RegistrationDate}"
-                                       Style="{StaticResource PastelTextBlock}"
-                                       FontSize="15"
-                                       Foreground="{StaticResource PastelPrimary}"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
+                        <TextBlock Grid.Row="4" Grid.Column="0"
+                                   Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Label_RegistrationDate]}"
+                                   Style="{StaticResource PastelLabel}"
+                                   FontSize="14"
+                                   Margin="0,0,16,12"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1"
+                                   Text="{Binding RegistrationDate}"
+                                   Style="{StaticResource PastelTextBlock}"
+                                   FontSize="16"
+                                   Foreground="{StaticResource PastelPrimary}"
+                                   Margin="0,0,0,12"
+                                   VerticalAlignment="Center"/>
 
                         <!-- Social Networks -->
-                        <StackPanel Margin="0,8,0,0"
+                        <StackPanel Grid.Row="5" Grid.ColumnSpan="2"
+                                    Margin="0,12,0,0"
                                     Visibility="{Binding HasSocialNetworks, Converter={StaticResource BoolToVisibilityConverter}}">
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Label_SocialNetworks]}"
                                        Style="{StaticResource PastelLabel}"
-                                       FontSize="13"
-                                       Margin="0,0,0,6"/>
+                                       FontSize="14"
+                                       Margin="0,0,0,8"/>
 
                             <ItemsControl ItemsSource="{Binding SocialNetworks}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal" Margin="8,2,0,2">
+                                        <StackPanel Orientation="Horizontal" Margin="12,4,0,4">
                                             <TextBlock Text="•"
                                                        Style="{StaticResource PastelTextBlock}"
                                                        Foreground="{StaticResource PastelPrimary}"
-                                                       Margin="0,0,6,0"/>
+                                                       Margin="0,0,8,0"/>
                                             <TextBlock Text="{Binding Account}"
                                                        Style="{StaticResource PastelTextBlock}"
                                                        Foreground="{StaticResource PastelPrimary}"
-                                                       FontSize="14"/>
+                                                       FontSize="15"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </StackPanel>
-                    </StackPanel>
+                    </Grid>
                 </Grid>
             </Border>
 
@@ -171,17 +190,17 @@
             <StackPanel Grid.Row="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
-                        Margin="0,0,0,20">
+                        Margin="0,20,0,20">
 
                 <Button Style="{StaticResource PastelButton}"
-                        Height="42" Padding="28,0"
-                        Margin="0,0,12,0"
+                        Height="46" Padding="32,0"
+                        Margin="0,0,16,0"
                         Command="{Binding GoToFriendsCommand}"
                         Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Friends]}"/>
 
                 <Button Style="{StaticResource PastelButtonSecondary}"
-                        Height="42" Padding="28,0"
-                        Margin="0,0,12,0"
+                        Height="46" Padding="32,0"
+                        Margin="0,0,16,0"
                         Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[StatsHistory_Title]}"/>
 
                 <Button HorizontalAlignment="Center"
