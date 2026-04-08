@@ -42,7 +42,7 @@
                         <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.14" Color="#3D1C1C"/>
                     </Border.Effect>
 
-                    <Grid>
+                    <Grid Margin="0,0,0,-15">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="24"/>
