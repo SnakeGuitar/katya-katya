@@ -3,7 +3,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryGame.Client.Localization;
 using MemoryGame.Client.Models;
-using MemoryGame.Client.Services;
+using MemoryGame.Client.Services.Core;
+using MemoryGame.Client.Services.Interfaces;
+using MemoryGame.Client.Services.Media;
+using MemoryGame.Client.Services.Network;
+using MemoryGame.Client.Services.UI;
 
 namespace MemoryGame.Client.ViewModels.Social;
 
@@ -147,7 +151,7 @@ public partial class FriendsViewModel : ObservableObject
             LocalizationManager.Instance["Global_Title_Confirm"],
             DialogButton.YesNo, DialogIcon.Question);
 
-        if (confirm != Services.DialogResult.Yes) return;
+        if (confirm != DialogResult.Yes) return;
 
         var result = await _api.DeleteAsync($"api/social/friends/{friend.UserId}");
         if (result.IsSuccess)

@@ -2,7 +2,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryGame.Client.Localization;
 using MemoryGame.Client.Models;
-using MemoryGame.Client.Services;
+using MemoryGame.Client.Services.Core;
+using MemoryGame.Client.Services.Interfaces;
+using MemoryGame.Client.Services.Media;
+using MemoryGame.Client.Services.Network;
+using MemoryGame.Client.Services.UI;
 using MemoryGame.Client.ViewModels.MainMenu;
 
 namespace MemoryGame.Client.ViewModels.Session;
