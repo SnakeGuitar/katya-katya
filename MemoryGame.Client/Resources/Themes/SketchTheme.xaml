@@ -103,7 +103,7 @@
         <Setter Property="BorderThickness"  Value="2"/>
         <Setter Property="FontSize"         Value="14"/>
         <Setter Property="FontFamily"       Value="{StaticResource DefaultFont}"/>
-        <Setter Property="Padding"          Value="12,10"/>
+        <Setter Property="Padding"          Value="10,6"/>
         <Setter Property="CaretBrush"       Value="{StaticResource PastelText}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -111,9 +111,9 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{StaticResource InputCornerRadius}">
+                            CornerRadius="{StaticResource InputCornerRadius}"
+                            Padding="{TemplateBinding Padding}">
                         <ScrollViewer x:Name="PART_ContentHost"
-                                      Margin="5,0,5,0"
                                       VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
@@ -136,7 +136,7 @@
         <Setter Property="BorderThickness"  Value="2"/>
         <Setter Property="FontSize"         Value="14"/>
         <Setter Property="FontFamily"       Value="{StaticResource DefaultFont}"/>
-        <Setter Property="Padding"          Value="12,10"/>
+        <Setter Property="Padding"          Value="10,6"/>
         <Setter Property="CaretBrush"       Value="{StaticResource PastelText}"/>
         <Setter Property="Template">
             <Setter.Value>
@@ -144,9 +144,9 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{StaticResource InputCornerRadius}">
+                            CornerRadius="{StaticResource InputCornerRadius}"
+                            Padding="{TemplateBinding Padding}">
                         <ScrollViewer x:Name="PART_ContentHost"
-                                      Margin="5,0,5,0"
                                       VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
