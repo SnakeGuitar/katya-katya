@@ -1,7 +1,11 @@
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using MemoryGame.Client.Localization;
-using MemoryGame.Client.Services;
+using MemoryGame.Client.Services.Core;
+using MemoryGame.Client.Services.Interfaces;
+using MemoryGame.Client.Services.Media;
+using MemoryGame.Client.Services.Network;
+using MemoryGame.Client.Services.UI;
 using MemoryGame.Client.ViewModels;
 using MemoryGame.Client.ViewModels.Gallery;
 using MemoryGame.Client.ViewModels.MainMenu;
@@ -41,6 +45,9 @@ public partial class App : Application
         services.AddSingleton<ThemeService>();
         services.AddSingleton(sp => new HubService(
             sp.GetRequiredService<ISessionService>(), HubUrl));
+        services.AddSingleton<ILobbyService, LobbyService>();
+        services.AddSingleton<IGameService, GameService>();
+        services.AddSingleton<IChatService, ChatService>();
 
         // HTTP client
         services.AddHttpClient<ApiClient>(client =>
