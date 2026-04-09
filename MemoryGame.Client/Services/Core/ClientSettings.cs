@@ -1,7 +1,7 @@
 using System.IO;
 using System.Text.Json;
 
-namespace MemoryGame.Client.Services;
+namespace MemoryGame.Client.Services.Core;
 
 /// <summary>
 /// Persists user preferences to a JSON file in AppData.

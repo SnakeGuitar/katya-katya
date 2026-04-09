@@ -1,6 +1,7 @@
 using MemoryGame.Client.Models;
 
-namespace MemoryGame.Client.Services;
+namespace MemoryGame.Client.Services.Core;
+using MemoryGame.Client.Services.Interfaces;
 
 /// <summary>
 /// In-memory session holder. Registered as singleton.
