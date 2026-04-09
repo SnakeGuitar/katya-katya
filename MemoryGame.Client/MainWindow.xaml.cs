@@ -1,7 +1,11 @@
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Animation;
-using MemoryGame.Client.Services;
+using MemoryGame.Client.Services.Core;
+using MemoryGame.Client.Services.Interfaces;
+using MemoryGame.Client.Services.Media;
+using MemoryGame.Client.Services.Network;
+using MemoryGame.Client.Services.UI;
 using MemoryGame.Client.ViewModels;
 
 namespace MemoryGame.Client;
