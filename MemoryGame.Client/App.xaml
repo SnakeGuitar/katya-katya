@@ -8,12 +8,14 @@
              xmlns:galleryVm="clr-namespace:MemoryGame.Client.ViewModels.Gallery"
              xmlns:profileVm="clr-namespace:MemoryGame.Client.ViewModels.Profile"
              xmlns:socialVm="clr-namespace:MemoryGame.Client.ViewModels.Social"
+             xmlns:lobbyVm="clr-namespace:MemoryGame.Client.ViewModels.Lobby"
              xmlns:sessionViews="clr-namespace:MemoryGame.Client.Views.Session"
              xmlns:mainMenuViews="clr-namespace:MemoryGame.Client.Views.MainMenu"
              xmlns:settingsViews="clr-namespace:MemoryGame.Client.Views.Settings"
              xmlns:galleryViews="clr-namespace:MemoryGame.Client.Views.Gallery"
              xmlns:profileViews="clr-namespace:MemoryGame.Client.Views.Profile"
-             xmlns:socialViews="clr-namespace:MemoryGame.Client.Views.Social">
+             xmlns:socialViews="clr-namespace:MemoryGame.Client.Views.Social"
+             xmlns:lobbyViews="clr-namespace:MemoryGame.Client.Views.Lobby">
 
     <Application.Resources>
         <ResourceDictionary>
@@ -81,6 +83,18 @@
 
             <DataTemplate DataType="{x:Type socialVm:FriendsViewModel}">
                 <socialViews:FriendsView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type lobbyVm:LobbyMenuViewModel}">
+                <lobbyViews:LobbyMenuView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type lobbyVm:HostLobbyViewModel}">
+                <lobbyViews:HostLobbyView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type lobbyVm:LobbyViewModel}">
+                <lobbyViews:LobbyView />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
