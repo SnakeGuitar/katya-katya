@@ -37,12 +37,12 @@
                 <Border Background="{StaticResource CardBackground}"
                         CornerRadius="{StaticResource CardCornerRadius}"
                         Padding="36,32"
-                        Margin="0,0,0,20" Width="829" Height="538">
+                        Margin="0,0,0,20">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.14" Color="#3D1C1C"/>
                     </Border.Effect>
 
-                    <Grid Margin="0,0,0,-15">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="24"/>
@@ -59,7 +59,7 @@
 
                             <StackPanel Orientation="Horizontal"
                                         HorizontalAlignment="Center"
-                                        Margin="0,0,0,8" Height="96">
+                                        Margin="0,0,0,8">
                                 <!-- Avatar preview -->
                                 <Border Width="90" Height="90"
                                         CornerRadius="45"
@@ -83,7 +83,7 @@
 
                                 <Button VerticalAlignment="Center"
                                         Style="{StaticResource PastelButtonSecondary}"
-                                        Height="36" Padding="16,0"
+                                        Padding="16,6"
                                         Command="{Binding ChangeAvatarCommand}"
                                         Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Button_ChangeAvatar]}" Width="229"/>
                             </StackPanel>
@@ -93,14 +93,13 @@
                             <!-- ── Personal Info ── -->
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_PersonalInfo]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,8" Height="30"/>
+                                       Margin="0,0,0,8"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Label_Name]}"
                                        Style="{StaticResource PastelLabel}"
                                        Margin="0,0,0,4"/>
                             <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource PastelTextBox}"
-                                     Height="38"
                                      Margin="0,0,0,8"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Username]}"
@@ -108,11 +107,10 @@
                                        Margin="0,0,0,4"/>
                             <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource PastelTextBox}"
-                                     Height="38"
                                      Margin="0,0,0,8"/>
 
                             <Button Style="{StaticResource PastelButton}"
-                                    Height="36" Padding="20,0"
+                                    Padding="20,8"
                                     HorizontalAlignment="Right"
                                     Command="{Binding UpdatePersonalInfoCommand}"
                                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Update]}" Width="150"/>
@@ -164,13 +162,12 @@
                                 <TextBox Grid.Column="0"
                                          Text="{Binding NewSocialAccount, UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource PastelTextBox}"
-                                         Height="38"
                                          Margin="0,0,8,0"/>
 
                                 <Button Grid.Column="1"
                                         Content="+"
                                         Style="{StaticResource PastelButton}"
-                                        Width="40" Height="38"
+                                        Width="40"
                                         Padding="0"
                                         FontSize="18"
                                         Command="{Binding AddSocialCommand}"/>
@@ -187,14 +184,13 @@
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_NewUsername]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,4" Height="26"/>
+                                       Margin="0,0,0,4"/>
                             <TextBox Text="{Binding NewUsername, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource PastelTextBox}"
-                                     Height="38"
                                      Margin="0,0,0,8"/>
 
                             <Button Style="{StaticResource PastelButton}"
-                                    Height="36" Padding="20,0"
+                                    Padding="20,8"
                                     HorizontalAlignment="Right"
                                     Command="{Binding UpdateUsernameCommand}"
                                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Update]}" Width="150"/>
@@ -210,20 +206,18 @@
                                        Style="{StaticResource PastelLabel}"
                                        Margin="0,0,0,4"/>
                             <PasswordBox Style="{StaticResource PastelPasswordBox}"
-                                         Height="38"
                                          Margin="0,0,0,8"
                                          PasswordChanged="CurrentPassword_PasswordChanged"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_NewPassword]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,4" Height="19"/>
+                                       Margin="0,0,0,4"/>
                             <PasswordBox Style="{StaticResource PastelPasswordBox}"
-                                         Height="38"
                                          Margin="0,0,0,8"
                                          PasswordChanged="NewPassword_PasswordChanged"/>
 
                             <Button Style="{StaticResource PastelButton}"
-                                    Height="36" Padding="20,0"
+                                    Padding="20,8"
                                     HorizontalAlignment="Right"
                                     Command="{Binding UpdatePasswordCommand}"
                                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Update]}" Width="150"/>

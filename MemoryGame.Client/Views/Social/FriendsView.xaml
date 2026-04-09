@@ -145,11 +145,10 @@
 
                                     <TextBox Text="{Binding SearchUsername, UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource PastelTextBox}"
-                                             Height="40"
                                              Margin="0,0,0,12"/>
 
                                     <Button Style="{StaticResource PastelButton}"
-                                            Height="38" Padding="20,0"
+                                            Padding="20,8"
                                             HorizontalAlignment="Right"
                                             Command="{Binding SendRequestCommand}"
                                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Friends_Button_SendRequest]}"/>

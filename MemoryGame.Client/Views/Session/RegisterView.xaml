@@ -55,28 +55,28 @@
                                    Margin="0,0,0,6"/>
                         <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource PastelTextBox}"
-                                 Height="40" Margin="0,0,0,14"/>
+                                 Margin="0,0,0,14"/>
 
                         <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Email]}"
                                    Style="{StaticResource PastelLabel}"
                                    Margin="0,0,0,6"/>
                         <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource PastelTextBox}"
-                                 Height="40" Margin="0,0,0,14"/>
+                                 Margin="0,0,0,14"/>
 
                         <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Password]}"
                                    Style="{StaticResource PastelLabel}"
                                    Margin="0,0,0,6"/>
                         <PasswordBox x:Name="PasswordBox"
                                      Style="{StaticResource PastelPasswordBox}"
-                                     Height="40" Margin="0,0,0,14"/>
+                                     Margin="0,0,0,14"/>
 
                         <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_ConfirmPassword]}"
                                    Style="{StaticResource PastelLabel}"
                                    Margin="0,0,0,6"/>
                         <PasswordBox x:Name="ConfirmPasswordBox"
                                      Style="{StaticResource PastelPasswordBox}"
-                                     Height="40" Margin="0,0,0,18"/>
+                                     Margin="0,0,0,18"/>
 
                         <TextBlock Text="{Binding ErrorMessage}"
                                    Style="{StaticResource PastelErrorText}"

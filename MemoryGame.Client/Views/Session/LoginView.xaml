@@ -53,14 +53,14 @@
                                Margin="0,0,0,6"/>
                     <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource PastelTextBox}"
-                             Height="42" Margin="0,0,0,16"/>
+                             Margin="0,0,0,16"/>
 
                     <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Password]}"
                                Style="{StaticResource PastelLabel}"
                                Margin="0,0,0,6"/>
                     <PasswordBox x:Name="PasswordBox"
                                  Style="{StaticResource PastelPasswordBox}"
-                                 Height="42" Margin="0,0,0,16"/>
+                                 Margin="0,0,0,16"/>
 
                     <TextBlock Text="{Binding ErrorMessage}"
                                Style="{StaticResource PastelErrorText}"
