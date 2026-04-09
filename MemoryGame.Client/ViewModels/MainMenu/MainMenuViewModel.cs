@@ -7,6 +7,7 @@ using MemoryGame.Client.Services.Interfaces;
 using MemoryGame.Client.Services.Media;
 using MemoryGame.Client.Services.Network;
 using MemoryGame.Client.Services.UI;
+using MemoryGame.Client.ViewModels.Lobby;
 using MemoryGame.Client.ViewModels.Session;
 using MemoryGame.Client.ViewModels.Settings;
 
@@ -50,6 +51,9 @@ public partial class MainMenuViewModel : ObservableObject
 
     [RelayCommand]
     private void GoToSettings() => _navigation.NavigateTo<SettingsViewModel>();
+
+    [RelayCommand]
+    private void GoToMultiplayer() => _navigation.NavigateTo<LobbyMenuViewModel>();
 
     [RelayCommand]
     private void GoToMore() => _navigation.NavigateTo<MoreMenuViewModel>();
