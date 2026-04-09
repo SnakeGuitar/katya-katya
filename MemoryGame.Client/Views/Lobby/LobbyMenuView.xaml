@@ -1,0 +1,233 @@
+<UserControl x:Class="MemoryGame.Client.Views.Lobby.LobbyMenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:MemoryGame.Client.Localization"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="1280" d:DesignHeight="720">
+
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Resources/Images/Backgrounds/background-minimalistic.png"
+                        Stretch="UniformToFill"/>
+        </Grid.Background>
+
+        <Grid Margin="50,30"
+              HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Title -->
+            <TextBlock Grid.Row="0"
+                       Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Multiplayer]}"
+                       Style="{StaticResource PastelHeading}"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,20"/>
+
+            <!-- Two-column layout -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="480"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- ═══════════════════════════════════════════════════
+                     LEFT COLUMN: Create + Join by code
+                     ═══════════════════════════════════════════════════ -->
+                <StackPanel Grid.Column="0">
+
+                    <!-- CREATE GAME -->
+                    <Border CornerRadius="{StaticResource CardCornerRadius}"
+                            Background="{StaticResource CardBackground}"
+                            Padding="24,20" Margin="0,0,0,16">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="3" BlurRadius="20" Color="#3D1C1C" Opacity="0.12"/>
+                        </Border.Effect>
+
+                        <StackPanel>
+                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_CreateGame]}"
+                                       Style="{StaticResource PastelTextBlock}"
+                                       FontSize="16" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PastelPrimary}"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,12"/>
+
+                            <CheckBox IsChecked="{Binding IsPublic}"
+                                      Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_CheckBox_Public]}"
+                                      HorizontalAlignment="Center"
+                                      FontFamily="{StaticResource DefaultFont}"
+                                      FontSize="13"
+                                      Foreground="{StaticResource PastelText}"
+                                      Margin="0,0,0,12"
+                                      IsEnabled="{Binding IsGuest, Converter={StaticResource InverseBoolConverter}}"/>
+
+                            <Button Style="{StaticResource PastelButton}"
+                                    Command="{Binding CreateLobbyCommand}"
+                                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_CreateLobby]}"
+                                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
+
+                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Menu_Error_RequiresFullAccount]}"
+                                       Style="{StaticResource PastelTextBlock}"
+                                       FontSize="11" Foreground="#C84747"
+                                       HorizontalAlignment="Center"
+                                       TextWrapping="Wrap" TextAlignment="Center"
+                                       Margin="0,6,0,0"
+                                       Visibility="{Binding IsGuest, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- JOIN BY CODE -->
+                    <Border CornerRadius="{StaticResource CardCornerRadius}"
+                            Background="{StaticResource CardBackground}"
+                            Padding="24,20">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="3" BlurRadius="20" Color="#3D1C1C" Opacity="0.12"/>
+                        </Border.Effect>
+
+                        <StackPanel>
+                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_JoinGame]}"
+                                       Style="{StaticResource PastelTextBlock}"
+                                       FontSize="16" FontWeight="SemiBold"
+                                       Foreground="{StaticResource PastelPrimary}"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,12"/>
+
+                            <Grid Margin="0,0,0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBox Text="{Binding JoinCode, UpdateSourceTrigger=PropertyChanged}"
+                                         MaxLength="6"
+                                         Style="{StaticResource PastelTextBox}"/>
+
+                                <Button Grid.Column="2"
+                                        Style="{StaticResource PastelButton}"
+                                        Command="{Binding JoinByCodeCommand}"
+                                        Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_JoinLobby]}"
+                                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
+                            </Grid>
+
+                            <TextBlock Text="{Binding JoinCodeError}"
+                                       Style="{StaticResource PastelTextBlock}"
+                                       FontSize="11" Foreground="#C84747"
+                                       Margin="0,4,0,0"
+                                       Visibility="{Binding JoinCodeError, Converter={StaticResource NullToCollapsedConverter}}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- ═══════════════════════════════════════════════════
+                     RIGHT COLUMN: Public lobbies
+                     ═══════════════════════════════════════════════════ -->
+                <Border Grid.Column="2"
+                        CornerRadius="{StaticResource CardCornerRadius}"
+                        Background="{StaticResource CardBackground}"
+                        Padding="24,20">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="3" BlurRadius="20" Color="#3D1C1C" Opacity="0.12"/>
+                    </Border.Effect>
+
+                    <DockPanel>
+                        <!-- Header -->
+                        <TextBlock DockPanel.Dock="Top"
+                                   Text="Public Lobbies"
+                                   Style="{StaticResource PastelTextBlock}"
+                                   FontSize="16" FontWeight="SemiBold"
+                                   Foreground="{StaticResource PastelPrimary}"
+                                   Margin="0,0,0,12"/>
+
+                        <!-- Empty state -->
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_WaitingPlayers]}"
+                                   FontSize="13" Opacity="0.5"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource PastelTextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding PublicLobbies.Count}" Value="0">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <!-- Lobby list -->
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding PublicLobbies}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Margin="0,0,0,6"
+                                                Command="{Binding DataContext.JoinPublicLobbyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}"
+                                                Cursor="Hand">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border x:Name="Root"
+                                                            Background="{StaticResource PastelSecondary}"
+                                                            CornerRadius="8"
+                                                            Padding="14,10">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding GameCode}"
+                                                                           FontFamily="{StaticResource DefaultFont}"
+                                                                           FontWeight="Bold" FontSize="15"
+                                                                           Foreground="{StaticResource PastelText}"/>
+                                                                <TextBlock FontFamily="{StaticResource DefaultFont}"
+                                                                           FontSize="11" Opacity="0.6"
+                                                                           Foreground="{StaticResource PastelText}">
+                                                                    <Run Text="Host: "/><Run Text="{Binding HostUsername, Mode=OneWay}"/>
+                                                                </TextBlock>
+                                                            </StackPanel>
+
+                                                            <Border Grid.Column="1"
+                                                                    BorderBrush="{StaticResource PastelPrimary}"
+                                                                    BorderThickness="1" CornerRadius="4"
+                                                                    Padding="8,3" VerticalAlignment="Center">
+                                                                <TextBlock FontFamily="{StaticResource DefaultFont}"
+                                                                           FontWeight="SemiBold" FontSize="13"
+                                                                           Foreground="{StaticResource PastelText}">
+                                                                    <Run Text="{Binding CurrentPlayers, Mode=OneWay}"/><Run Text="/"/><Run Text="{Binding MaxPlayers, Mode=OneWay}"/>
+                                                                </TextBlock>
+                                                            </Border>
+                                                        </Grid>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="Root" Property="Background" Value="{StaticResource PastelAccent}"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </DockPanel>
+                </Border>
+            </Grid>
+
+            <!-- Back -->
+            <Button Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    Margin="0,20,0,0"
+                    Command="{Binding GoBackCommand}"
+                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"
+                    Style="{StaticResource LinkButton}"/>
+        </Grid>
+    </Grid>
+</UserControl>
