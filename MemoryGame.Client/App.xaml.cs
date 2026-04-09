@@ -12,6 +12,7 @@ using MemoryGame.Client.ViewModels.MainMenu;
 using MemoryGame.Client.ViewModels.Profile;
 using MemoryGame.Client.ViewModels.Session;
 using MemoryGame.Client.ViewModels.Settings;
+using MemoryGame.Client.ViewModels.Lobby;
 using MemoryGame.Client.ViewModels.Social;
 
 namespace MemoryGame.Client;
@@ -72,6 +73,9 @@ public partial class App : Application
         services.AddTransient<ProfileViewModel>();
         services.AddTransient<EditProfileViewModel>();
         services.AddTransient<FriendsViewModel>();
+        services.AddTransient<LobbyMenuViewModel>();
+        services.AddTransient<HostLobbyViewModel>();
+        services.AddTransient<LobbyViewModel>();
 
         // Main window
         services.AddSingleton<MainWindow>();
