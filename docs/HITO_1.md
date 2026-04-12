@@ -149,29 +149,26 @@ dotnet sln add tests/MemoryGame.Infrastructure.Tests/MemoryGame.Infrastructure.T
 ### Configurar referencias entre proyectos
 
 ```bash
-dotnet add src/MemoryGame.Application/MemoryGame.Application.csproj \
-    reference src/MemoryGame.Domain/MemoryGame.Domain.csproj
+# Proyectos base
+# Dependencias de Application e Infrastructure hacia Domain
+dotnet add src/MemoryGame.Application/MemoryGame.Application.csproj reference src/MemoryGame.Domain/MemoryGame.Domain.csproj
 
-dotnet add src/MemoryGame.Infrastructure/MemoryGame.Infrastructure.csproj \
-    reference src/MemoryGame.Domain/MemoryGame.Domain.csproj
+dotnet add src/MemoryGame.Infrastructure/MemoryGame.Infrastructure.csproj reference src/MemoryGame.Domain/MemoryGame.Domain.csproj
 
-dotnet add src/MemoryGame.Infrastructure/MemoryGame.Infrastructure.csproj \
-    reference src/MemoryGame.Application/MemoryGame.Application.csproj
+# Infrastructure depende de Application
+dotnet add src/MemoryGame.Infrastructure/MemoryGame.Infrastructure.csproj reference src/MemoryGame.Application/MemoryGame.Application.csproj
 
-dotnet add src/MemoryGame.API/MemoryGame.API.csproj \
-    reference src/MemoryGame.Application/MemoryGame.Application.csproj
+# API depende de Application e Infrastructure
+dotnet add src/MemoryGame.API/MemoryGame.API.csproj reference src/MemoryGame.Application/MemoryGame.Application.csproj
 
-dotnet add src/MemoryGame.API/MemoryGame.API.csproj \
-    reference src/MemoryGame.Infrastructure/MemoryGame.Infrastructure.csproj
+dotnet add src/MemoryGame.API/MemoryGame.API.csproj reference src/MemoryGame.Infrastructure/MemoryGame.Infrastructure.csproj
 
-dotnet add tests/MemoryGame.Domain.Tests/MemoryGame.Domain.Tests.csproj \
-    reference src/MemoryGame.Domain/MemoryGame.Domain.csproj
+# Proyectos de pruebas
+dotnet add tests/MemoryGame.Domain.Tests/MemoryGame.Domain.Tests.csproj reference src/MemoryGame.Domain/MemoryGame.Domain.csproj
 
-dotnet add tests/MemoryGame.Application.Tests/MemoryGame.Application.Tests.csproj \
-    reference src/MemoryGame.Application/MemoryGame.Application.csproj
+dotnet add tests/MemoryGame.Application.Tests/MemoryGame.Application.Tests.csproj reference src/MemoryGame.Application/MemoryGame.Application.csproj
 
-dotnet add tests/MemoryGame.Infrastructure.Tests/MemoryGame.Infrastructure.Tests.csproj \
-    reference src/MemoryGame.Infrastructure/MemoryGame.Infrastructure.csproj
+dotnet add tests/MemoryGame.Infrastructure.Tests/MemoryGame.Infrastructure.Tests.csproj reference src/MemoryGame.Infrastructure/MemoryGame.Infrastructure.csproj
 ```
 
 ### Instalar paquetes NuGet
