@@ -1,12 +1,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MemoryGame.Client.Helpers;
 using MemoryGame.Client.Localization;
 using MemoryGame.Client.Models;
-using MemoryGame.Client.Services.Core;
 using MemoryGame.Client.Services.Interfaces;
-using MemoryGame.Client.Services.Media;
 using MemoryGame.Client.Services.Network;
-using MemoryGame.Client.Services.UI;
 using MemoryGame.Client.ViewModels.Session;
 using MemoryGame.Client.ViewModels.Social;
 
@@ -24,6 +22,7 @@ public partial class ProfileViewModel : ObservableObject
     private readonly ApiClient _api;
     private readonly IDialogService _dialog;
     private readonly HubService _hub;
+    private readonly ProfileLoader _profileLoader;
 
     [ObservableProperty] private string _username = string.Empty;
     [ObservableProperty] private string _fullName = string.Empty;
@@ -39,13 +38,15 @@ public partial class ProfileViewModel : ObservableObject
         ISessionService session,
         ApiClient api,
         IDialogService dialog,
-        HubService hub)
+        HubService hub,
+        ProfileLoader profileLoader)
     {
         _navigation = navigation;
         _session = session;
         _api = api;
         _dialog = dialog;
         _hub = hub;
+        _profileLoader = profileLoader;
 
         _ = LoadProfileAsync();
     }
@@ -55,10 +56,11 @@ public partial class ProfileViewModel : ObservableObject
         IsLoading = true;
         try
         {
-            var result = await _api.GetAsync<ProfileResponse>("api/profile");
-            if (result is { IsSuccess: true, Data: not null })
+            await _profileLoader.LoadAllAsync();
+
+            if (_profileLoader.Profile is not null)
             {
-                var profile = result.Data;
+                var profile = _profileLoader.Profile;
                 Username = profile.Username;
                 Email = profile.Email;
                 AvatarBytes = profile.Avatar;
@@ -69,11 +71,9 @@ public partial class ProfileViewModel : ObservableObject
                     ? LocalizationManager.Instance["Profile_Label_NoInfo"]
                     : name;
 
-                // Load social networks
-                var socialsResult = await _api.GetAsync<SocialNetworkDto[]>("api/social/networks");
-                if (socialsResult is { IsSuccess: true, Data: not null })
+                if (_profileLoader.SocialNetworks is not null)
                 {
-                    SocialNetworks = socialsResult.Data.ToList();
+                    SocialNetworks = _profileLoader.SocialNetworks.ToList();
                     HasSocialNetworks = SocialNetworks.Count > 0;
                 }
             }
@@ -83,6 +83,7 @@ public partial class ProfileViewModel : ObservableObject
             IsLoading = false;
         }
     }
+
 
     [RelayCommand]
     private void GoToEditProfile() => _navigation.NavigateTo<EditProfileViewModel>();

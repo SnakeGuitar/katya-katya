@@ -1,5 +1,6 @@
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using MemoryGame.Client.Helpers;
 using MemoryGame.Client.Localization;
 using MemoryGame.Client.Services.Core;
 using MemoryGame.Client.Services.Interfaces;
@@ -56,6 +57,8 @@ public partial class App : Application
             client.BaseAddress = new Uri(ApiBaseUrl);
             client.Timeout = TimeSpan.FromSeconds(15);
         });
+
+        services.AddTransient<ProfileLoader>();
 
         // ViewModels (transient — new instance each navigation)
         services.AddTransient<MainWindowViewModel>();

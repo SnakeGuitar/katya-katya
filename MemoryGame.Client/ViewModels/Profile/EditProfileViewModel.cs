@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MemoryGame.Client.Helpers;
 using MemoryGame.Client.Localization;
 using MemoryGame.Client.Models;
 using MemoryGame.Client.Services.Core;
@@ -25,6 +26,7 @@ public partial class EditProfileViewModel : ObservableObject
     private readonly ApiClient _api;
     private readonly IDialogService _dialog;
     private readonly HubService _hub;
+    private readonly ProfileLoader _profileLoader;
 
     // Avatar
     [ObservableProperty] private byte[]? _avatarBytes;
@@ -54,13 +56,15 @@ public partial class EditProfileViewModel : ObservableObject
         ISessionService session,
         ApiClient api,
         IDialogService dialog,
-        HubService hub)
+        HubService hub,
+        ProfileLoader profileLoader)
     {
         _navigation = navigation;
         _session = session;
         _api = api;
         _dialog = dialog;
         _hub = hub;
+        _profileLoader = profileLoader;
 
         _ = LoadProfileDataAsync();
     }
@@ -70,21 +74,21 @@ public partial class EditProfileViewModel : ObservableObject
         IsLoading = true;
         try
         {
-            var profileResult = await _api.GetAsync<ProfileResponse>("api/profile");
-            if (profileResult is { IsSuccess: true, Data: not null })
+            await _profileLoader.LoadAllAsync();
+
+            if (_profileLoader.Profile is not null)
             {
-                var p = profileResult.Data;
+                var p = _profileLoader.Profile;
                 AvatarBytes = p.Avatar;
                 FirstName = p.Name ?? string.Empty;
                 LastName = p.LastName ?? string.Empty;
                 NewUsername = p.Username;
             }
 
-            var socialsResult = await _api.GetAsync<SocialNetworkDto[]>("api/social/networks");
-            if (socialsResult is { IsSuccess: true, Data: not null })
+            if (_profileLoader.SocialNetworks is not null)
             {
                 SocialNetworks.Clear();
-                foreach (var s in socialsResult.Data)
+                foreach (var s in _profileLoader.SocialNetworks)
                     SocialNetworks.Add(s);
             }
         }
