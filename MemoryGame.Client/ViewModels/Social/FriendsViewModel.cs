@@ -8,75 +8,67 @@ using MemoryGame.Client.Services.Interfaces;
 using MemoryGame.Client.Services.Media;
 using MemoryGame.Client.Services.Network;
 using MemoryGame.Client.Services.UI;
+using MemoryGame.Client.ViewModels.Common;
 
 namespace MemoryGame.Client.ViewModels.Social;
+
 
 /// <summary>
 /// Friends list + friend requests management.
 /// Mirrors the legacy FriendsMenu with two tabs: My Friends / Requests.
 /// </summary>
-public partial class FriendsViewModel : ObservableObject
+public partial class FriendsViewModel : BaseViewModel
 {
-    private readonly INavigationService _navigation;
     private readonly ISessionService _session;
     private readonly ApiClient _api;
-    private readonly IDialogService _dialog;
 
     public ObservableCollection<FriendDto> Friends { get; } = [];
     public ObservableCollection<FriendRequestDto> PendingRequests { get; } = [];
 
     [ObservableProperty] private string _searchUsername = string.Empty;
-    [ObservableProperty] private bool _isLoading;
     [ObservableProperty] private bool _hasFriends;
     [ObservableProperty] private bool _hasRequests;
+
 
     public FriendsViewModel(
         INavigationService navigation,
         ISessionService session,
         ApiClient api,
-        IDialogService dialog)
+        IDialogService dialog) : base(navigation, dialog)
     {
-        _navigation = navigation;
         _session = session;
         _api = api;
-        _dialog = dialog;
 
         _ = LoadDataAsync();
     }
 
-    private async Task LoadDataAsync()
+
+    private Task LoadDataAsync() => RunAsync(async () =>
     {
-        IsLoading = true;
-        try
+        var friendsTask = _api.GetAsync<FriendDto[]>("api/social/friends");
+        var requestsTask = _api.GetAsync<FriendRequestDto[]>("api/social/friends/requests");
+
+        await Task.WhenAll(friendsTask, requestsTask);
+
+        Friends.Clear();
+        var friendsResult = friendsTask.Result;
+        if (friendsResult is { IsSuccess: true, Data: not null })
         {
-            var friendsTask = _api.GetAsync<FriendDto[]>("api/social/friends");
-            var requestsTask = _api.GetAsync<FriendRequestDto[]>("api/social/friends/requests");
-
-            await Task.WhenAll(friendsTask, requestsTask);
-
-            Friends.Clear();
-            var friendsResult = friendsTask.Result;
-            if (friendsResult is { IsSuccess: true, Data: not null })
-            {
-                foreach (var f in friendsResult.Data)
-                    Friends.Add(f);
-            }
-            HasFriends = Friends.Count > 0;
-
-            PendingRequests.Clear();
-            var requestsResult = requestsTask.Result;
-            if (requestsResult is { IsSuccess: true, Data: not null })
-            {
-                foreach (var r in requestsResult.Data)
-                    PendingRequests.Add(r);
-            }
-            HasRequests = PendingRequests.Count > 0;
+            foreach (var f in friendsResult.Data)
+                Friends.Add(f);
         }
-        finally
+        HasFriends = Friends.Count > 0;
+
+        PendingRequests.Clear();
+        var requestsResult = requestsTask.Result;
+        if (requestsResult is { IsSuccess: true, Data: not null })
         {
-            IsLoading = false;
+            foreach (var r in requestsResult.Data)
+                PendingRequests.Add(r);
         }
-    }
+        HasRequests = PendingRequests.Count > 0;
+    });
+
 
     // ── Send friend request ─────────────────────────────────
 
@@ -88,7 +80,7 @@ public partial class FriendsViewModel : ObservableObject
 
         if (username == _session.Current?.Username)
         {
-            _dialog.ShowMessage(
+            Dialog.ShowMessage(
                 LocalizationManager.Instance["Error_SOCIAL_CANNOT_ADD_SELF"],
                 LocalizationManager.Instance["Global_Title_Error"],
                 DialogButton.OK, DialogIcon.Error);
@@ -100,7 +92,7 @@ public partial class FriendsViewModel : ObservableObject
 
         if (result.IsSuccess)
         {
-            _dialog.ShowMessage(
+            Dialog.ShowMessage(
                 LocalizationManager.Instance.Format("Friends_Message_RequestSent", username),
                 LocalizationManager.Instance["Global_Title_Success"],
                 DialogButton.OK, DialogIcon.Information);
@@ -108,11 +100,9 @@ public partial class FriendsViewModel : ObservableObject
         }
         else
         {
-            _dialog.ShowMessage(
-                ErrorResolver.Resolve(result.ErrorCode),
-                LocalizationManager.Instance["Global_Title_Error"],
-                DialogButton.OK, DialogIcon.Error);
+            await HandleResponseAsync(result);
         }
+
     }
 
     // ── Accept / Reject requests ────────────────────────────
@@ -123,10 +113,8 @@ public partial class FriendsViewModel : ObservableObject
         var result = await _api.PostAsync("api/social/friends/request/answer",
             new { RequestId = requestId, Accept = true });
 
-        if (result.IsSuccess)
+        if (await HandleResponseAsync(result))
             await LoadDataAsync();
-        else
-            ShowApiError(result.ErrorCode);
     }
 
     [RelayCommand]
@@ -135,18 +123,17 @@ public partial class FriendsViewModel : ObservableObject
         var result = await _api.PostAsync("api/social/friends/request/answer",
             new { RequestId = requestId, Accept = false });
 
-        if (result.IsSuccess)
+        if (await HandleResponseAsync(result))
             await LoadDataAsync();
-        else
-            ShowApiError(result.ErrorCode);
     }
+
 
     // ── Remove friend ───────────────────────────────────────
 
     [RelayCommand]
     private async Task RemoveFriendAsync(FriendDto friend)
     {
-        var confirm = _dialog.ShowMessage(
+        var confirm = Dialog.ShowMessage(
             LocalizationManager.Instance.Format("Friends_Message_RemoveFriend", friend.Username),
             LocalizationManager.Instance["Global_Title_Confirm"],
             DialogButton.YesNo, DialogIcon.Question);
@@ -154,22 +141,8 @@ public partial class FriendsViewModel : ObservableObject
         if (confirm != DialogResult.Yes) return;
 
         var result = await _api.DeleteAsync($"api/social/friends/{friend.UserId}");
-        if (result.IsSuccess)
+        if (await HandleResponseAsync(result))
             await LoadDataAsync();
-        else
-            ShowApiError(result.ErrorCode);
-    }
-
-    // ── Navigation ──────────────────────────────────────────
-
-    [RelayCommand]
-    private void GoBack() => _navigation.GoBack();
-
-    private void ShowApiError(string? errorCode)
-    {
-        _dialog.ShowMessage(
-            ErrorResolver.Resolve(errorCode),
-            LocalizationManager.Instance["Global_Title_Error"],
-            DialogButton.OK, DialogIcon.Error);
     }
 }
+

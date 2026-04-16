@@ -8,71 +8,61 @@ using MemoryGame.Client.Services.Media;
 using MemoryGame.Client.Services.Network;
 using MemoryGame.Client.Services.UI;
 using MemoryGame.Client.ViewModels.MainMenu;
+using MemoryGame.Client.ViewModels.Common;
 
 namespace MemoryGame.Client.ViewModels.Session;
+
 
 /// <summary>
 /// Handles user login via the REST API.
 /// </summary>
-public partial class LoginViewModel : ObservableObject
+public partial class LoginViewModel : BaseViewModel
 {
-    private readonly INavigationService _navigation;
     private readonly ApiClient _api;
     private readonly ISessionService _session;
     private readonly HubService _hub;
 
     [ObservableProperty] private string _username = string.Empty;
     [ObservableProperty] private string _password = string.Empty;
-    [ObservableProperty] private string? _errorMessage;
-    [ObservableProperty] private bool _isLoading;
 
-    public LoginViewModel(INavigationService navigation, ApiClient api, ISessionService session, HubService hub)
+
+    public LoginViewModel(INavigationService navigation, IDialogService dialog, ApiClient api, ISessionService session, HubService hub)
+        : base(navigation, dialog)
     {
-        _navigation = navigation;
         _api = api;
         _session = session;
         _hub = hub;
     }
 
+
     [RelayCommand]
-    private async Task LoginAsync()
+    private Task LoginAsync() => RunAsync(async () =>
     {
         ErrorMessage = null;
-        IsLoading = true;
+        var result = await _api.PostAsync<LoginResponse>("api/auth/login", new { Username, Password });
 
-        try
+        if (!result.IsSuccess)
         {
-            var result = await _api.PostAsync<LoginResponse>("api/auth/login", new { Username, Password });
-
-            if (!result.IsSuccess)
-            {
-                ErrorMessage = ErrorResolver.Resolve(result.ErrorCode);
-                return;
-            }
-
-            _session.StartSession(new UserSession
-            {
-                UserId = result.Data!.UserId,
-                Username = result.Data.Username,
-                Email = result.Data.Email,
-                IsGuest = result.Data.IsGuest,
-                AccessToken = result.Data.AccessToken,
-                RefreshToken = result.Data.RefreshToken
-            });
-
-            await _hub.ConnectAsync();
-
-            _navigation.NavigateToRootWithFade<MainMenuViewModel>();
+            ErrorMessage = ErrorResolver.Resolve(result.ErrorCode);
+            return;
         }
-        finally
+
+        _session.StartSession(new UserSession
         {
-            IsLoading = false;
-        }
-    }
+            UserId = result.Data!.UserId,
+            Username = result.Data.Username,
+            Email = result.Data.Email,
+            IsGuest = result.Data.IsGuest,
+            AccessToken = result.Data.AccessToken,
+            RefreshToken = result.Data.RefreshToken
+        });
 
-    [RelayCommand]
-    private void GoBack() => _navigation.GoBack();
+        await _hub.ConnectAsync();
+
+        Navigation.NavigateToRootWithFade<MainMenuViewModel>();
+    });
 }
+
 
 /// <summary>
 /// DTO matching the server's login response.

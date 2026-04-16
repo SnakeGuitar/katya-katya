@@ -6,31 +6,33 @@ using MemoryGame.Client.Services.Media;
 using MemoryGame.Client.Services.Network;
 using MemoryGame.Client.Services.UI;
 
+using MemoryGame.Client.ViewModels.Common;
+
 namespace MemoryGame.Client.ViewModels.Session;
+
+
 
 /// <summary>
 /// Handles user registration via the REST API.
 /// </summary>
-public partial class RegisterViewModel : ObservableObject
+public partial class RegisterViewModel : BaseViewModel
 {
-    private readonly INavigationService _navigation;
     private readonly ApiClient _api;
 
     [ObservableProperty] private string _username = string.Empty;
     [ObservableProperty] private string _email = string.Empty;
     [ObservableProperty] private string _password = string.Empty;
     [ObservableProperty] private string _confirmPassword = string.Empty;
-    [ObservableProperty] private string? _errorMessage;
-    [ObservableProperty] private bool _isLoading;
 
-    public RegisterViewModel(INavigationService navigation, ApiClient api)
+
+    public RegisterViewModel(INavigationService navigation, IDialogService dialog, ApiClient api) : base(navigation, dialog)
     {
-        _navigation = navigation;
         _api = api;
     }
 
+
     [RelayCommand]
-    private async Task RegisterAsync()
+    private Task RegisterAsync() => RunAsync(async () =>
     {
         ErrorMessage = null;
 
@@ -40,26 +42,15 @@ public partial class RegisterViewModel : ObservableObject
             return;
         }
 
-        IsLoading = true;
+        var result = await _api.PostAsync("api/auth/register", new { Username, Email, Password });
 
-        try
+        if (!result.IsSuccess)
         {
-            var result = await _api.PostAsync("api/auth/register", new { Username, Email, Password });
-
-            if (!result.IsSuccess)
-            {
-                ErrorMessage = result.ErrorMessage ?? "Registration failed.";
-                return;
-            }
-
-            _navigation.NavigateTo<VerifyEmailViewModel>(vm => vm.Email = Email);
+            ErrorMessage = result.ErrorMessage ?? "Registration failed.";
+            return;
         }
-        finally
-        {
-            IsLoading = false;
-        }
-    }
 
-    [RelayCommand]
-    private void GoBack() => _navigation.GoBack();
+        Navigation.NavigateTo<VerifyEmailViewModel>(vm => vm.Email = Email);
+    });
 }
+

@@ -10,16 +10,17 @@ using MemoryGame.Client.Services.Network;
 using MemoryGame.Client.Services.UI;
 using MemoryGame.Client.ViewModels.MainMenu;
 using Microsoft.Win32;
+using MemoryGame.Client.ViewModels.Common;
 
 namespace MemoryGame.Client.ViewModels.Session;
+
 
 /// <summary>
 /// Lets the user pick a profile picture after email verification,
 /// then finalizes registration and starts the session.
 /// </summary>
-public partial class SetupProfileViewModel : ObservableObject
+public partial class SetupProfileViewModel : BaseViewModel
 {
-    private readonly INavigationService _navigation;
     private readonly ApiClient _api;
     private readonly ISessionService _session;
     private readonly HubService _hub;
@@ -28,20 +29,20 @@ public partial class SetupProfileViewModel : ObservableObject
     [ObservableProperty] private string _pin = string.Empty;
     [ObservableProperty] private byte[]? _avatarBytes;
     [ObservableProperty] private string? _avatarPreviewPath;
-    [ObservableProperty] private string? _errorMessage;
-    [ObservableProperty] private bool _isLoading;
+
 
     public SetupProfileViewModel(
         INavigationService navigation,
+        IDialogService dialog,
         ApiClient api,
         ISessionService session,
-        HubService hub)
+        HubService hub) : base(navigation, dialog)
     {
-        _navigation = navigation;
         _api = api;
         _session = session;
         _hub = hub;
     }
+
 
     [RelayCommand]
     private void SelectAvatar()
@@ -69,49 +70,39 @@ public partial class SetupProfileViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task FinalizeAsync()
+    private Task FinalizeAsync() => RunAsync(async () =>
     {
         ErrorMessage = null;
-        IsLoading = true;
 
-        try
+        var result = await _api.PostAsync<FinalizeRegistrationResponse>(
+            "api/auth/finalize-registration", new { Email, Pin });
+
+        if (!result.IsSuccess)
         {
-            var result = await _api.PostAsync<FinalizeRegistrationResponse>(
-                "api/auth/finalize-registration", new { Email, Pin });
-
-            if (!result.IsSuccess)
-            {
-                ErrorMessage = result.ErrorMessage ?? "Registration failed.";
-                return;
-            }
-
-            var data = result.Data!;
-
-            _session.StartSession(new UserSession
-            {
-                UserId = data.User.Id,
-                Username = data.User.Username,
-                Email = data.User.Email,
-                IsGuest = data.User.IsGuest,
-                AccessToken = data.AccessToken,
-                RefreshToken = data.RefreshToken
-            });
-
-            if (AvatarBytes is { Length: > 0 })
-            {
-                await _api.PutAsync("api/profile/avatar", new { AvatarData = AvatarBytes });
-            }
-
-            await _hub.ConnectAsync();
-
-            _navigation.NavigateToRootWithFade<MainMenuViewModel>();
+            ErrorMessage = result.ErrorMessage ?? "Registration failed.";
+            return;
         }
-        finally
+
+        var data = result.Data!;
+
+        _session.StartSession(new UserSession
         {
-            IsLoading = false;
-        }
-    }
+            UserId = data.User.Id,
+            Username = data.User.Username,
+            Email = data.User.Email,
+            IsGuest = data.User.IsGuest,
+            AccessToken = data.AccessToken,
+            RefreshToken = data.RefreshToken
+        });
 
-    [RelayCommand]
-    private void GoBack() => _navigation.GoBack();
+        if (AvatarBytes is { Length: > 0 })
+        {
+            await _api.PutAsync("api/profile/avatar", new { AvatarData = AvatarBytes });
+        }
+
+        await _hub.ConnectAsync();
+
+        Navigation.NavigateToRootWithFade<MainMenuViewModel>();
+    });
 }
+

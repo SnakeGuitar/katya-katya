@@ -12,6 +12,7 @@ using MemoryGame.Client.Services.Network;
 using MemoryGame.Client.Services.UI;
 using MemoryGame.Client.ViewModels.Session;
 using Microsoft.Win32;
+using MemoryGame.Client.ViewModels.Common;
 
 namespace MemoryGame.Client.ViewModels.Profile;
 
@@ -19,14 +20,13 @@ namespace MemoryGame.Client.ViewModels.Profile;
 /// Edit profile: avatar, personal info, social networks, username, password.
 /// Mirrors the legacy EditProfile two-column layout.
 /// </summary>
-public partial class EditProfileViewModel : ObservableObject
+public partial class EditProfileViewModel : BaseViewModel
 {
-    private readonly INavigationService _navigation;
     private readonly ISessionService _session;
-    private readonly IDialogService _dialog;
     private readonly HubService _hub;
     private readonly ProfileLoader _profileLoader;
     private readonly IProfileService _profileService;
+
 
     // Avatar
     [ObservableProperty] private byte[]? _avatarBytes;
@@ -47,54 +47,42 @@ public partial class EditProfileViewModel : ObservableObject
     [ObservableProperty] private string _currentPassword = string.Empty;
     [ObservableProperty] private string _newPassword = string.Empty;
 
-    // State
-    [ObservableProperty] private string? _errorMessage;
-    [ObservableProperty] private bool _isLoading;
-
     public EditProfileViewModel(
+
         INavigationService navigation,
         ISessionService session,
         IProfileService profileService,
         IDialogService dialog,
         HubService hub,
-        ProfileLoader profileLoader)
+        ProfileLoader profileLoader) : base(navigation, dialog)
     {
-        _navigation = navigation;
         _session = session;
         _profileService = profileService;
-        _dialog = dialog;
         _hub = hub;
         _profileLoader = profileLoader;
 
         _ = LoadProfileDataAsync();
     }
 
-    private async Task LoadProfileDataAsync()
+    private Task LoadProfileDataAsync() => RunAsync(async () =>
     {
-        IsLoading = true;
-        try
-        {
-            await _profileLoader.LoadAllAsync();
+        await _profileLoader.LoadAllAsync();
 
-            AvatarBytes = _profileLoader.Avatar;
-            FirstName = _profileLoader.Name;
-            LastName = _profileLoader.LastName;
-            NewUsername = _profileLoader.Username;
+        AvatarBytes = _profileLoader.Avatar;
+        FirstName = _profileLoader.Name;
+        LastName = _profileLoader.LastName;
+        NewUsername = _profileLoader.Username;
 
-            if (_profileLoader.SocialNetworks is not null)
-            {
-                SocialNetworks.Clear();
-                foreach (var s in _profileLoader.SocialNetworks)
-                    SocialNetworks.Add(s);
-            }
-        }
-        finally
+        if (_profileLoader.SocialNetworks is not null)
         {
-            IsLoading = false;
+            SocialNetworks.Clear();
+            foreach (var s in _profileLoader.SocialNetworks)
+                SocialNetworks.Add(s);
         }
-    }
+    });
 
     // ── Avatar ──────────────────────────────────────────────
+
 
     [RelayCommand]
     private async Task ChangeAvatarAsync()
@@ -121,9 +109,10 @@ public partial class EditProfileViewModel : ObservableObject
         }
         catch
         {
-            _dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
+            Dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
                 LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
+
     }
 
     // ── Personal Info ───────────────────────────────────────
@@ -193,9 +182,10 @@ public partial class EditProfileViewModel : ObservableObject
             // Username change requires re-login
             await _hub.DisconnectAsync();
             _session.EndSession();
-            _navigation.NavigateToRootWithFade<TitleScreenViewModel>();
+            Navigation.NavigateToRootWithFade<TitleScreenViewModel>();
         }
     }
+
 
     // ── Password ────────────────────────────────────────────
 
@@ -214,43 +204,10 @@ public partial class EditProfileViewModel : ObservableObject
         }
     }
 
-    // ── Navigation ──────────────────────────────────────────
-
-    [RelayCommand]
-    private void GoBack() => _navigation.GoBack();
-
     // ── Utilities ───────────────────────────────────────────
 
-    private async Task<bool> HandleResponseAsync(Task<ApiResponse> task, string? successKey = null)
-        => await HandleResponseAsync(await task, successKey);
-
-    private async Task<bool> HandleResponseAsync(ApiResponse result, string? successKey = null)
-    {
-        if (result.IsSuccess)
-        {
-            if (successKey != null)
-            {
-                _dialog.ShowMessage(LocalizationManager.Instance[successKey],
-                    LocalizationManager.Instance["Global_Title_Success"],
-                    DialogButton.OK, DialogIcon.Information);
-            }
-            return true;
-        }
-
-        _dialog.ShowMessage(ErrorResolver.Resolve(result.ErrorCode),
-            LocalizationManager.Instance["Global_Title_Error"],
-            DialogButton.OK, DialogIcon.Error);
-        return false;
-    }
-
-    private void ShowWarning(string key)
-    {
-        _dialog.ShowMessage(LocalizationManager.Instance[key],
-            LocalizationManager.Instance["Global_Title_Warning"],
-            DialogButton.OK, DialogIcon.Warning);
-    }
-
     private void ClearPasswords()
+
     {
         CurrentPassword = string.Empty;
         NewPassword = string.Empty;

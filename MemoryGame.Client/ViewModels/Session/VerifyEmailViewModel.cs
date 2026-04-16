@@ -6,65 +6,61 @@ using MemoryGame.Client.Services.Media;
 using MemoryGame.Client.Services.Network;
 using MemoryGame.Client.Services.UI;
 
+using MemoryGame.Client.ViewModels.Common;
+
 namespace MemoryGame.Client.ViewModels.Session;
+
+
 
 /// <summary>
 /// Handles email verification PIN entry after registration.
 /// After a successful PIN, the user is automatically logged in.
 /// </summary>
-public partial class VerifyEmailViewModel : ObservableObject
+public partial class VerifyEmailViewModel : BaseViewModel
 {
-    private readonly INavigationService _navigation;
-    private readonly ApiClient          _api;
+    private readonly ApiClient _api;
 
     [ObservableProperty] private string _email = string.Empty;
     [ObservableProperty] private string _pin = string.Empty;
-    [ObservableProperty] private string? _errorMessage;
     [ObservableProperty] private string? _pinResentMessage;
-    [ObservableProperty] private bool _isLoading;
+
 
     public VerifyEmailViewModel(
         INavigationService navigation,
-        ApiClient          api)
+        IDialogService dialog,
+        ApiClient api) : base(navigation, dialog)
     {
-        _navigation = navigation;
-        _api        = api;
+        _api = api;
     }
+
 
     [RelayCommand]
-    private async Task VerifyAsync()
+    private Task VerifyAsync() => RunAsync(async () =>
     {
         ErrorMessage = null;
-        IsLoading = true;
 
-        try
+        var result = await _api.PostAsync<VerifyRegistrationResponse>(
+            "api/auth/verify-registration", new { Email, Pin });
+
+        if (!result.IsSuccess)
         {
-            var result = await _api.PostAsync<VerifyRegistrationResponse>(
-                "api/auth/verify-registration", new { Email, Pin });
-
-            if (!result.IsSuccess)
-            {
-                ErrorMessage = result.ErrorMessage ?? "Verification failed.";
-                return;
-            }
-
-            if (!result.Data!.Valid)
-            {
-                ErrorMessage = Localization.LocalizationManager.Instance["VerifyEmail_InvalidPin"];
-                return;
-            }
-
-            _navigation.NavigateTo<SetupProfileViewModel>(vm =>
-            {
-                vm.Email = Email;
-                vm.Pin = Pin;
-            });
+            ErrorMessage = result.ErrorMessage ?? "Verification failed.";
+            return;
         }
-        finally
+
+        if (!result.Data!.Valid)
         {
-            IsLoading = false;
+            ErrorMessage = Localization.LocalizationManager.Instance["VerifyEmail_InvalidPin"];
+            return;
         }
-    }
+
+        Navigation.NavigateTo<SetupProfileViewModel>(vm =>
+        {
+            vm.Email = Email;
+            vm.Pin = Pin;
+        });
+    });
+
 
     [RelayCommand]
     private async Task ResendPinAsync()
@@ -74,10 +70,8 @@ public partial class VerifyEmailViewModel : ObservableObject
         if (result.IsSuccess)
             PinResentMessage = Localization.LocalizationManager.Instance["VerifyEmail_PinResentMessage"];
     }
-
-    [RelayCommand]
-    private void GoBack() => _navigation.GoBack();
 }
+
 
 /// <summary>
 /// Response from the verify-registration endpoint.
