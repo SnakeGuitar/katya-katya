@@ -23,10 +23,10 @@ public partial class EditProfileViewModel : ObservableObject
 {
     private readonly INavigationService _navigation;
     private readonly ISessionService _session;
-    private readonly ApiClient _api;
     private readonly IDialogService _dialog;
     private readonly HubService _hub;
     private readonly ProfileLoader _profileLoader;
+    private readonly IProfileService _profileService;
 
     // Avatar
     [ObservableProperty] private byte[]? _avatarBytes;
@@ -54,14 +54,14 @@ public partial class EditProfileViewModel : ObservableObject
     public EditProfileViewModel(
         INavigationService navigation,
         ISessionService session,
-        ApiClient api,
+        IProfileService profileService,
         IDialogService dialog,
         HubService hub,
         ProfileLoader profileLoader)
     {
         _navigation = navigation;
         _session = session;
-        _api = api;
+        _profileService = profileService;
         _dialog = dialog;
         _hub = hub;
         _profileLoader = profileLoader;
@@ -76,14 +76,10 @@ public partial class EditProfileViewModel : ObservableObject
         {
             await _profileLoader.LoadAllAsync();
 
-            if (_profileLoader.Profile is not null)
-            {
-                var p = _profileLoader.Profile;
-                AvatarBytes = p.Avatar;
-                FirstName = p.Name ?? string.Empty;
-                LastName = p.LastName ?? string.Empty;
-                NewUsername = p.Username;
-            }
+            AvatarBytes = _profileLoader.Avatar;
+            FirstName = _profileLoader.Name;
+            LastName = _profileLoader.LastName;
+            NewUsername = _profileLoader.Username;
 
             if (_profileLoader.SocialNetworks is not null)
             {
@@ -115,31 +111,18 @@ public partial class EditProfileViewModel : ObservableObject
         try
         {
             var bytes = await File.ReadAllBytesAsync(dialog.FileName);
+            var result = await _profileService.UpdateAvatarAsync(bytes);
 
-            var result = await _api.PutAsync("api/profile/avatar", new { AvatarData = bytes });
-            if (result.IsSuccess)
+            if (await HandleResponseAsync(result, "EditProfile_Message_AvatarUpdated"))
             {
                 AvatarBytes = bytes;
                 AvatarPreviewPath = dialog.FileName;
-                _dialog.ShowMessage(
-                    LocalizationManager.Instance["EditProfile_Message_AvatarUpdated"],
-                    LocalizationManager.Instance["Global_Title_Success"],
-                    DialogButton.OK, DialogIcon.Information);
-            }
-            else
-            {
-                _dialog.ShowMessage(
-                    ErrorResolver.Resolve(result.ErrorCode),
-                    LocalizationManager.Instance["Global_Title_Error"],
-                    DialogButton.OK, DialogIcon.Error);
             }
         }
         catch
         {
-            _dialog.ShowMessage(
-                LocalizationManager.Instance["Error_UNKNOWN"],
-                LocalizationManager.Instance["Global_Title_Error"],
-                DialogButton.OK, DialogIcon.Error);
+            _dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
+                LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
     }
 
@@ -153,28 +136,11 @@ public partial class EditProfileViewModel : ObservableObject
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(last))
         {
-            _dialog.ShowMessage(
-                LocalizationManager.Instance["Validation_Required"],
-                LocalizationManager.Instance["Global_Title_Warning"],
-                DialogButton.OK, DialogIcon.Warning);
+            ShowWarning("Validation_Required");
             return;
         }
 
-        var result = await _api.PutAsync("api/profile/personal-info", new { Name = name, LastName = last });
-        if (result.IsSuccess)
-        {
-            _dialog.ShowMessage(
-                LocalizationManager.Instance["EditProfile_Message_InfoUpdated"],
-                LocalizationManager.Instance["Global_Title_Success"],
-                DialogButton.OK, DialogIcon.Information);
-        }
-        else
-        {
-            _dialog.ShowMessage(
-                ErrorResolver.Resolve(result.ErrorCode),
-                LocalizationManager.Instance["Global_Title_Error"],
-                DialogButton.OK, DialogIcon.Error);
-        }
+        await HandleResponseAsync(_profileService.UpdatePersonalInfoAsync(name, last), "EditProfile_Message_InfoUpdated");
     }
 
     // ── Social Networks ─────────────────────────────────────
@@ -185,7 +151,7 @@ public partial class EditProfileViewModel : ObservableObject
         var account = NewSocialAccount.Trim();
         if (string.IsNullOrEmpty(account)) return;
 
-        var result = await _api.PostAsync<SocialNetworkDto>("api/social/networks", new { Account = account });
+        var result = await _profileService.AddSocialNetworkAsync(account);
         if (result is { IsSuccess: true, Data: not null })
         {
             SocialNetworks.Add(result.Data);
@@ -193,29 +159,18 @@ public partial class EditProfileViewModel : ObservableObject
         }
         else
         {
-            _dialog.ShowMessage(
-                ErrorResolver.Resolve(result.ErrorCode),
-                LocalizationManager.Instance["Global_Title_Error"],
-                DialogButton.OK, DialogIcon.Error);
+            await HandleResponseAsync(result);
         }
     }
 
     [RelayCommand]
     private async Task RemoveSocialAsync(int socialId)
     {
-        var result = await _api.DeleteAsync($"api/social/networks/{socialId}");
-        if (result.IsSuccess)
+        if (await HandleResponseAsync(_profileService.RemoveSocialNetworkAsync(socialId)))
         {
             var item = SocialNetworks.FirstOrDefault(s => s.Id == socialId);
             if (item is not null)
                 SocialNetworks.Remove(item);
-        }
-        else
-        {
-            _dialog.ShowMessage(
-                ErrorResolver.Resolve(result.ErrorCode),
-                LocalizationManager.Instance["Global_Title_Error"],
-                DialogButton.OK, DialogIcon.Error);
         }
     }
 
@@ -227,35 +182,18 @@ public partial class EditProfileViewModel : ObservableObject
         var username = NewUsername.Trim();
         if (string.IsNullOrWhiteSpace(username))
         {
-            _dialog.ShowMessage(
-                LocalizationManager.Instance["Validation_Required"],
-                LocalizationManager.Instance["Global_Title_Warning"],
-                DialogButton.OK, DialogIcon.Warning);
+            ShowWarning("Validation_Required");
             return;
         }
 
-        if (username == _session.Current?.Username)
-            return;
+        if (username == _session.Current?.Username) return;
 
-        var result = await _api.PutAsync("api/profile/username", new { NewUsername = username });
-        if (result.IsSuccess)
+        if (await HandleResponseAsync(_profileService.UpdateUsernameAsync(username), "EditProfile_Message_UsernameUpdated"))
         {
-            _dialog.ShowMessage(
-                LocalizationManager.Instance["EditProfile_Message_UsernameUpdated"],
-                LocalizationManager.Instance["Global_Title_Success"],
-                DialogButton.OK, DialogIcon.Information);
-
             // Username change requires re-login
             await _hub.DisconnectAsync();
             _session.EndSession();
             _navigation.NavigateToRootWithFade<TitleScreenViewModel>();
-        }
-        else
-        {
-            _dialog.ShowMessage(
-                ErrorResolver.Resolve(result.ErrorCode),
-                LocalizationManager.Instance["Global_Title_Error"],
-                DialogButton.OK, DialogIcon.Error);
         }
     }
 
@@ -266,31 +204,13 @@ public partial class EditProfileViewModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(CurrentPassword) || string.IsNullOrWhiteSpace(NewPassword))
         {
-            _dialog.ShowMessage(
-                LocalizationManager.Instance["Validation_Required"],
-                LocalizationManager.Instance["Global_Title_Warning"],
-                DialogButton.OK, DialogIcon.Warning);
+            ShowWarning("Validation_Required");
             return;
         }
 
-        var result = await _api.PutAsync("api/profile/password",
-            new { CurrentPassword, NewPassword });
-
-        if (result.IsSuccess)
+        if (await HandleResponseAsync(_profileService.UpdatePasswordAsync(CurrentPassword, NewPassword), "EditProfile_Message_PasswordUpdated"))
         {
-            _dialog.ShowMessage(
-                LocalizationManager.Instance["EditProfile_Message_PasswordUpdated"],
-                LocalizationManager.Instance["Global_Title_Success"],
-                DialogButton.OK, DialogIcon.Information);
-            CurrentPassword = string.Empty;
-            NewPassword = string.Empty;
-        }
-        else
-        {
-            _dialog.ShowMessage(
-                ErrorResolver.Resolve(result.ErrorCode),
-                LocalizationManager.Instance["Global_Title_Error"],
-                DialogButton.OK, DialogIcon.Error);
+            ClearPasswords();
         }
     }
 
@@ -298,4 +218,42 @@ public partial class EditProfileViewModel : ObservableObject
 
     [RelayCommand]
     private void GoBack() => _navigation.GoBack();
+
+    // ── Utilities ───────────────────────────────────────────
+
+    private async Task<bool> HandleResponseAsync(Task<ApiResponse> task, string? successKey = null)
+        => await HandleResponseAsync(await task, successKey);
+
+    private async Task<bool> HandleResponseAsync(ApiResponse result, string? successKey = null)
+    {
+        if (result.IsSuccess)
+        {
+            if (successKey != null)
+            {
+                _dialog.ShowMessage(LocalizationManager.Instance[successKey],
+                    LocalizationManager.Instance["Global_Title_Success"],
+                    DialogButton.OK, DialogIcon.Information);
+            }
+            return true;
+        }
+
+        _dialog.ShowMessage(ErrorResolver.Resolve(result.ErrorCode),
+            LocalizationManager.Instance["Global_Title_Error"],
+            DialogButton.OK, DialogIcon.Error);
+        return false;
+    }
+
+    private void ShowWarning(string key)
+    {
+        _dialog.ShowMessage(LocalizationManager.Instance[key],
+            LocalizationManager.Instance["Global_Title_Warning"],
+            DialogButton.OK, DialogIcon.Warning);
+    }
+
+    private void ClearPasswords()
+    {
+        CurrentPassword = string.Empty;
+        NewPassword = string.Empty;
+    }
 }
+

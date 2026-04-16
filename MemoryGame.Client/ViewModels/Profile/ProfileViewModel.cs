@@ -58,24 +58,20 @@ public partial class ProfileViewModel : ObservableObject
         {
             await _profileLoader.LoadAllAsync();
 
-            if (_profileLoader.Profile is not null)
+            Username = _profileLoader.Username;
+            Email = _profileLoader.Email;
+            AvatarBytes = _profileLoader.Avatar;
+            RegistrationDate = _profileLoader.RegistrationDate.ToString("MMMM dd, yyyy");
+
+            var name = $"{_profileLoader.Name} {_profileLoader.LastName}".Trim();
+            FullName = string.IsNullOrEmpty(name)
+                ? LocalizationManager.Instance["Profile_Label_NoInfo"]
+                : name;
+
+            if (_profileLoader.SocialNetworks is not null)
             {
-                var profile = _profileLoader.Profile;
-                Username = profile.Username;
-                Email = profile.Email;
-                AvatarBytes = profile.Avatar;
-                RegistrationDate = profile.RegistrationDate.ToString("MMMM dd, yyyy");
-
-                var name = $"{profile.Name} {profile.LastName}".Trim();
-                FullName = string.IsNullOrEmpty(name)
-                    ? LocalizationManager.Instance["Profile_Label_NoInfo"]
-                    : name;
-
-                if (_profileLoader.SocialNetworks is not null)
-                {
-                    SocialNetworks = _profileLoader.SocialNetworks.ToList();
-                    HasSocialNetworks = SocialNetworks.Count > 0;
-                }
+                SocialNetworks = _profileLoader.SocialNetworks.ToList();
+                HasSocialNetworks = SocialNetworks.Count > 0;
             }
         }
         finally

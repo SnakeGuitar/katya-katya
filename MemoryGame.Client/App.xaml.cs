@@ -59,6 +59,7 @@ public partial class App : Application
         });
 
         services.AddTransient<ProfileLoader>();
+        services.AddSingleton<IProfileService, ProfileService>();
 
         // ViewModels (transient — new instance each navigation)
         services.AddTransient<MainWindowViewModel>();

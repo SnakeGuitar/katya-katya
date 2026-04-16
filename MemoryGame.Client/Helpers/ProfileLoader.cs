@@ -9,8 +9,15 @@ public partial class ProfileLoader : ObservableObject
     private readonly ApiClient _api;
 
     [ObservableProperty] private bool _isLoading;
+    [ObservableProperty] private byte[]? _avatar;
+    [ObservableProperty] private string _name = string.Empty;
+    [ObservableProperty] private string _lastName = string.Empty;
+    [ObservableProperty] private string _username = string.Empty;
+    [ObservableProperty] private string _email = string.Empty;
+    [ObservableProperty] private DateTime _registrationDate;
 
     public ProfileResponse? Profile { get; private set; }
+
     public SocialNetworkDto[]? SocialNetworks { get; private set; }
 
     public ProfileLoader(ApiClient api)
@@ -32,7 +39,15 @@ public partial class ProfileLoader : ObservableObject
             var sRes = await socialsTask;
 
             if (pRes is { IsSuccess: true, Data: not null })
+            {
                 Profile = pRes.Data;
+                Avatar = Profile.Avatar;
+                Name = Profile.Name ?? string.Empty;
+                LastName = Profile.LastName ?? string.Empty;
+                Username = Profile.Username;
+                Email = Profile.Email;
+                RegistrationDate = Profile.RegistrationDate;
+            }
 
             if (sRes is { IsSuccess: true, Data: not null })
                 SocialNetworks = sRes.Data;
