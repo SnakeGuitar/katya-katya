@@ -31,6 +31,7 @@ internal sealed class PastelThemeAssets : IThemeAssets
         "/Resources/Images/Backgrounds/katya-moods/main/katya-main-no-background.png",
         "/Resources/Images/Backgrounds/katya-moods/in-love/katya-in-love-no-background.png",
         "/Resources/Images/Backgrounds/katya-moods/shy/katya-shy-2-no-background.png",
+        "/Resources/Images/Backgrounds/katya-moods/sitting/katya-sit-no-background.png",
     ];
 
     public IReadOnlyList<Color> PetalColors { get; } =
