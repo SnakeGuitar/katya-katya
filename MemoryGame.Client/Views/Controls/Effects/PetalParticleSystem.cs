@@ -3,8 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using CommunityToolkit.Mvvm.Messaging;
-using MemoryGame.Client.Messages;
+using MemoryGame.Client.Services.UI;
 
 namespace MemoryGame.Client.Views.Controls.Effects;
 
@@ -18,33 +17,6 @@ namespace MemoryGame.Client.Views.Controls.Effects;
 /// </remarks>
 public sealed class PetalParticleSystem : ParticleSystem
 {
-    private static readonly Color[] PastelColors =
-    [
-        Color.FromArgb(210, 255, 200, 215),
-        Color.FromArgb(190, 255, 220, 235),
-        Color.FromArgb(220, 240, 175, 200),
-        Color.FromArgb(180, 255, 245, 248),
-        Color.FromArgb(200, 255, 170, 190),
-    ];
-
-    private static readonly Color[] SketchColors =
-    [
-        Color.FromArgb(190, 235, 235, 235),
-        Color.FromArgb(170, 210, 210, 210),
-        Color.FromArgb(200, 250, 250, 250),
-        Color.FromArgb(160, 180, 180, 180),
-        Color.FromArgb(140, 120, 120, 120),
-    ];
-
-    private static Color[] _activeColors = PastelColors;
-    private static readonly object _registrationToken = new();
-
-    static PetalParticleSystem()
-    {
-        WeakReferenceMessenger.Default.Register<ThemeChangedMessage>(
-            _registrationToken,
-            (_, msg) => _activeColors = msg.ThemeName == "Sketch" ? SketchColors : PastelColors);
-    }
 
     /// <summary>
     /// Spawns one petal at a random position along the top edge of <paramref name="canvas"/>.
@@ -72,7 +44,7 @@ public sealed class PetalParticleSystem : ParticleSystem
         {
             Width  = w,
             Height = h,
-            Fill   = new SolidColorBrush(_activeColors[Rng.Next(_activeColors.Length)]),
+            Fill   = new SolidColorBrush(PickColor()),
             Opacity = opacity,
             RenderTransformOrigin = new Point(0.5, 0.5),
             RenderTransform = new RotateTransform(initAngle),
@@ -116,5 +88,11 @@ public sealed class PetalParticleSystem : ParticleSystem
             });
 
         ScheduleRemoval(canvas, petal, duration + TimeSpan.FromMilliseconds(300));
+    }
+
+    private static Color PickColor()
+    {
+        var palette = ThemeService.CurrentAssets.PetalColors;
+        return palette[Rng.Next(palette.Count)];
     }
 }

@@ -1,5 +1,6 @@
 using System.IO;
 using System.Text.Json;
+using MemoryGame.Client.Services.UI;
 
 namespace MemoryGame.Client.Services.Core;
 
@@ -69,6 +70,6 @@ public class ClientSettings
         public string LanguageCode { get; set; } = "en-US";
         public bool   MusicEnabled  { get; set; } = true;
         public double MusicVolume   { get; set; } = 0.5;
-        public string ThemeName     { get; set; } = "Pastel";
+        public string ThemeName     { get; set; } = ThemeIds.Pastel;
     }
 }

@@ -6,6 +6,7 @@ using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using MemoryGame.Client.Messages;
+using MemoryGame.Client.Services.UI;
 
 namespace MemoryGame.Client.Localization;
 
@@ -22,15 +23,11 @@ public sealed class LocalizationManager : ObservableObject
         Assembly.GetExecutingAssembly());
 
     private CultureInfo _culture = CultureInfo.GetCultureInfo("en-US");
-    private string _themeName = "Pastel";
 
     private LocalizationManager()
     {
-        WeakReferenceMessenger.Default.Register<ThemeChangedMessage>(this, (_, msg) =>
-        {
-            _themeName = msg.ThemeName;
-            OnPropertyChanged(nameof(LogoImage));
-        });
+        WeakReferenceMessenger.Default.Register<ThemeChangedMessage>(this, (_, _) =>
+            OnPropertyChanged(nameof(LogoImage)));
     }
 
     /// <summary>
@@ -66,7 +63,6 @@ public sealed class LocalizationManager : ObservableObject
     {
         get
         {
-            var prefix = _themeName == "Sketch" ? "sketch-logo" : "logo";
             var lang = _culture.Name switch
             {
                 "es-MX" => "es",
@@ -75,8 +71,7 @@ public sealed class LocalizationManager : ObservableObject
                 "ko-KR" => "ko",
                 _       => "en"
             };
-            var path = $"pack://application:,,,/Resources/Images/Logos/{prefix}-{lang}.png";
-            return new BitmapImage(new Uri(path));
+            return new BitmapImage(new Uri(ThemeService.CurrentAssets.LogoPath(lang)));
         }
     }
 

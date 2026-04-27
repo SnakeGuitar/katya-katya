@@ -1,19 +1,28 @@
 using System.Windows;
+using CommunityToolkit.Mvvm.Messaging;
+using MemoryGame.Client.Messages;
+using MemoryGame.Client.Services.Core;
 
 namespace MemoryGame.Client.Services.UI;
-using MemoryGame.Client.Services.Core;
 
 /// <summary>
 /// Swaps the active UI theme at runtime by replacing the first merged
 /// ResourceDictionary in Application.Resources with the chosen theme file.
-/// Supports "Pastel" (default) and "Sketch".
+/// Also exposes the active <see cref="IThemeAssets"/> so consumers don't need to
+/// branch on the theme name themselves.
 /// </summary>
 public class ThemeService
 {
     private static readonly Dictionary<string, Uri> ThemeUris = new()
     {
-        ["Pastel"] = new Uri("Resources/Themes/BaseTheme.xaml",  UriKind.Relative),
-        ["Sketch"] = new Uri("Resources/Themes/SketchTheme.xaml", UriKind.Relative),
+        [ThemeIds.Pastel] = new Uri("Resources/Themes/BaseTheme.xaml",   UriKind.Relative),
+        [ThemeIds.Sketch] = new Uri("Resources/Themes/SketchTheme.xaml", UriKind.Relative),
+    };
+
+    private static readonly Dictionary<string, IThemeAssets> Assets = new()
+    {
+        [ThemeIds.Pastel] = new PastelThemeAssets(),
+        [ThemeIds.Sketch] = new SketchThemeAssets(),
     };
 
     private readonly ClientSettings _settings;
@@ -21,12 +30,20 @@ public class ThemeService
     public ThemeService(ClientSettings settings)
     {
         _settings = settings;
+        Current = ThemeUris.ContainsKey(settings.ThemeName) ? settings.ThemeName : ThemeIds.Pastel;
     }
+
+    /// <summary>The active theme id. Updated by <see cref="Apply"/>.</summary>
+    public static string Current { get; private set; } = ThemeIds.Pastel;
+
+    /// <summary>The asset registry for the active theme.</summary>
+    public static IThemeAssets CurrentAssets => Assets[Current];
+
+    /// <summary>Available theme names.</summary>
+    public static IReadOnlyList<string> Themes { get; } = [.. ThemeUris.Keys];
 
     /// <summary>Applies the theme stored in <see cref="ClientSettings.ThemeName"/>.</summary>
     public void ApplyStoredTheme() => Apply(_settings.ThemeName);
-
-    public event Action? ThemeChanged;
 
     /// <summary>Applies a theme by name and persists the choice.</summary>
     public void Apply(string themeName)
@@ -41,11 +58,8 @@ public class ThemeService
         else
             mergedDicts.Add(new ResourceDictionary { Source = uri });
 
+        Current = themeName;
         _settings.ThemeName = themeName;
-        ThemeChanged?.Invoke();
-        CommunityToolkit.Mvvm.Messaging.IMessengerExtensions.Send(CommunityToolkit.Mvvm.Messaging.WeakReferenceMessenger.Default, new Messages.ThemeChangedMessage(themeName));
+        WeakReferenceMessenger.Default.Send(new ThemeChangedMessage(themeName));
     }
-
-    /// <summary>Available theme names.</summary>
-    public static IReadOnlyList<string> Themes { get; } = [.. ThemeUris.Keys];
 }
