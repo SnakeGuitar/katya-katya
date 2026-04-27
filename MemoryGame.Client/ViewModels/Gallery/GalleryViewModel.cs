@@ -68,10 +68,10 @@ public partial class GalleryViewModel : ObservableObject
                 new("Sketch", $"{Cards}/yumiko-1/yumiko-1-original.png"),
             ],
             [
-                new("Sketch", $"{Cards}/akari-1/akari-1-original.png"),
+                new("Sitting", $"{Cards}/katya-sit/katya-sit-down.png"),
             ],
             [
-                new("Sitting", "/Resources/Images/katya-sit-down.png"),
+                new("Sketch", $"{Cards}/akari-1/akari-1-original.png"),
             ],
         };
 
@@ -100,14 +100,13 @@ public partial class GalleryViewModel : ObservableObject
         {
             int    col      = i % cols;
             int    row      = i / cols;
-            double maxHeight = 340 + rng.NextDouble() * 40;       // 340–380
-            double maxWidth  = 280;
+            double width    = 240 + rng.NextDouble() * 70;        // 240–310
             double x        = baseX + col * slotW + (rng.NextDouble() - 0.5) * jitterXY;
             double y        = baseY + row * slotH + (rng.NextDouble() - 0.5) * jitterXY;
             double rotation = (rng.NextDouble() - 0.5) * 2 * tiltDeg;
             int    zIndex   = rng.Next(100);
 
-            result[i] = new GalleryCardViewModel(sets[i], x, y, maxWidth, maxHeight, rotation, zIndex);
+            result[i] = new GalleryCardViewModel(sets[i], x, y, width, rotation, zIndex);
         }
 
         return result;
