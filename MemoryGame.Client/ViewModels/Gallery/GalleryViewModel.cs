@@ -40,7 +40,7 @@ public partial class GalleryViewModel : ObservableObject
     private static IReadOnlyList<GalleryCardViewModel> BuildCards()
     {
         const string Cards = "/Resources/Images/Cards";
-        const string Moods = "/Resources/Images/Backgrounds/katya-moods";
+        const string KM = $"{Cards}/katya-moods";
 
         // Variants per card. First entry is shown by default.
         var sets = new CardVariant[][]
@@ -50,25 +50,28 @@ public partial class GalleryViewModel : ObservableObject
                 new("Sketch", $"{Cards}/katya-1/katya-1-original-border.png"),
             ],
             [
-                new("Color",  $"{Moods}/main/katya-main-no-background.png"),
-                new("Sketch", $"{Moods}/main/sketch-katya-main-no-background.png"),
+                new("Color",  $"{KM}/main/katya-main-no-background.png"),
+                new("Sketch", $"{KM}/main/sketch-katya-main-no-background.png"),
             ],
             [
-                new("Color",  $"{Moods}/in-love/katya-in-love-no-background.png"),
-                new("Sketch", $"{Moods}/in-love/sketch-katya-in-love-no-background.png"),
+                new("Color",  $"{KM}/in-love/katya-in-love-no-background.png"),
+                new("Sketch", $"{KM}/in-love/sketch-katya-in-love-no-background.png"),
             ],
             [
-                new("Color",  $"{Moods}/shy/katya-shy-2-no-background.png"),
-                new("Sketch", $"{Moods}/shy/sketch-katya-shy-no-background.png"),
+                new("Color",  $"{KM}/shy/katya-shy-2-no-background.png"),
+                new("Sketch", $"{KM}/shy/sketch-katya-shy-no-background.png"),
             ],
             [
-                new("Sketch", $"{Moods}/standing/sketch-katya-standing-no-background.png"),
+                new("Color",  $"{KM}/happy/katya-happy.png"),
+            ],
+            [
+                new("Sitting", $"{KM}/sitting/katya-sit-no-background.png"),
+            ],
+            [
+                new("Sketch", $"{KM}/standing/sketch-katya-standing-no-background.png"),
             ],
             [
                 new("Sketch", $"{Cards}/yumiko-1/yumiko-1-original.png"),
-            ],
-            [
-                new("Sitting", $"{Cards}/katya-sit/katya-sit-no-background.png"),
             ],
             [
                 new("Sketch", $"{Cards}/akari-1/akari-1-original.png"),
