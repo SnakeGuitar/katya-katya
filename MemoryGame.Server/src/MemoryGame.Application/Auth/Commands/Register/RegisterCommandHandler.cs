@@ -57,6 +57,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, string>
 
         var pendingRegistration = PendingRegistration.Create(
             email: request.Email,
+            username: request.Username,
             pin: pin,
             hashedPassword: passwordHash,
             validity: TimeSpan.FromMinutes(15));

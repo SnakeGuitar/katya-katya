@@ -7,13 +7,14 @@ public class PendingRegistration : BaseEntity
 {
     public Email Email { get; private set; } = null!;
     public string Pin { get; private set; } = null!;
+    public string? Username { get; private set; }
     public string? HashedPassword { get; private set; }
     public DateTime ExpirationTime { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
     private PendingRegistration() { }
 
-    public static PendingRegistration Create(string email, string pin, string hashedPassword, TimeSpan validity)
+    public static PendingRegistration Create(string email, string username, string pin, string hashedPassword, TimeSpan validity)
     {
         if (string.IsNullOrWhiteSpace(pin) || pin.Length > 10)
             throw new DomainException(DomainErrors.PendingRegistration.PinInvalidFormat);
@@ -21,6 +22,7 @@ public class PendingRegistration : BaseEntity
         return new PendingRegistration
         {
             Email = Email.Create(email),
+            Username = username,
             Pin = pin,
             HashedPassword = hashedPassword,
             CreatedAt = DateTime.UtcNow,

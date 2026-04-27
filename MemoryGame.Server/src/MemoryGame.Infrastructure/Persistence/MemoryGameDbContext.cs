@@ -122,6 +122,10 @@ public class MemoryGameDbContext : DbContext
                 .IsRequired()
                 .HasMaxLength(10);
 
+            entity.Property(e => e.Username)
+                .HasMaxLength(30)
+                .IsRequired(false);
+
             entity.Property(e => e.HashedPassword);
 
             entity.Property(e => e.ExpirationTime)

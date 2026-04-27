@@ -48,7 +48,7 @@ public class FinalizeRegistrationCommandHandler : IRequestHandler<FinalizeRegist
             throw new DomainException(DomainErrors.Auth.PinInvalid);
 
         var user = User.CreateRegistered(
-            username: email.Value.Split('@')[0],
+            username: pending.Username ?? email.Value.Split('@')[0],
             email: request.Email,
             passwordHash: pending.HashedPassword!);
 
