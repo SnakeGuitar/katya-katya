@@ -65,16 +65,10 @@ public partial class MainMenuViewModel : ObservableObject, CommunityToolkit.Mvvm
 
     public void Receive(Messages.ThemeChangedMessage message)
     {
-        if (message.ThemeName == "Sketch")
-        {
-            CurrentMoodImage = _sketchMoodImages[new Random().Next(_sketchMoodImages.Length)];
-            ImageScale = 1.6;
-        }
-        else
-        {
-            CurrentMoodImage = _moodImages[new Random().Next(_moodImages.Length)];
-            ImageScale = 1.0;
-        }
+        CurrentMoodImage = message.ThemeName == "Sketch"
+            ? _sketchMoodImages[Random.Shared.Next(_sketchMoodImages.Length)]
+            : _moodImages[Random.Shared.Next(_moodImages.Length)];
+        ImageScale = 1.0;
     }
 
     public string Username => _session.Current?.Username ?? "Player";
