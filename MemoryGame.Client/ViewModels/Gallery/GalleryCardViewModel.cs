@@ -10,25 +10,48 @@ public record CardVariant(string Label, string ImagePath);
 
 /// <summary>
 /// Represents one card in the gallery. Holds all its variants and cycles
-/// through them on each <see cref="CycleCommand"/> invocation.
+/// through them on each <see cref="CycleCommand"/> invocation. Position, size,
+/// and tilt are computed by the parent gallery so cards lay out as scattered
+/// stickers on a Canvas.
 /// </summary>
 public partial class GalleryCardViewModel : ObservableObject
 {
-    private static readonly Random Rng = new();
-
     private readonly IReadOnlyList<CardVariant> _variants;
     private int _index;
 
     [ObservableProperty]
     private CardVariant _current;
 
-    /// <summary>Slight random tilt applied to the card tile (-4° to +4°).</summary>
-    public double Rotation { get; } = Rng.NextDouble() * 8 - 4;
+    /// <summary>Canvas.Left position.</summary>
+    public double X { get; }
 
-    public GalleryCardViewModel(IReadOnlyList<CardVariant> variants)
+    /// <summary>Canvas.Top position.</summary>
+    public double Y { get; }
+
+    /// <summary>Maximum render width for the sticker image (Stretch=Uniform fits within this).</summary>
+    public double MaxWidth { get; }
+
+    /// <summary>Maximum render height for the sticker image.</summary>
+    public double MaxHeight { get; }
+
+    /// <summary>Tilt in degrees applied to the sticker.</summary>
+    public double Rotation { get; }
+
+    /// <summary>Initial Z-order so some stickers sit above others.</summary>
+    public int ZIndex { get; }
+
+    public GalleryCardViewModel(IReadOnlyList<CardVariant> variants,
+                                double x, double y, double maxWidth, double maxHeight,
+                                double rotation, int zIndex)
     {
-        _variants = variants;
-        _current  = variants[0];
+        _variants  = variants;
+        _current   = variants[0];
+        X          = x;
+        Y          = y;
+        MaxWidth   = maxWidth;
+        MaxHeight  = maxHeight;
+        Rotation   = rotation;
+        ZIndex     = zIndex;
     }
 
     /// <summary>Advances to the next variant, wrapping back to the first.</summary>
