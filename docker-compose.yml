@@ -23,6 +23,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
       ConnectionStrings__Default: ${CONNECTION_STRING}
+      ASPNETCORE_URLS: http://+:5000
     ports:
       - "5000:5000"
     depends_on:
