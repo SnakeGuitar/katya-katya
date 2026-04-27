@@ -100,13 +100,14 @@ public partial class GalleryViewModel : ObservableObject
         {
             int    col      = i % cols;
             int    row      = i / cols;
-            double width    = 240 + rng.NextDouble() * 70;        // 240–310
+            double maxHeight = 340 + rng.NextDouble() * 40;       // 340–380
+            double maxWidth  = 280;
             double x        = baseX + col * slotW + (rng.NextDouble() - 0.5) * jitterXY;
             double y        = baseY + row * slotH + (rng.NextDouble() - 0.5) * jitterXY;
             double rotation = (rng.NextDouble() - 0.5) * 2 * tiltDeg;
             int    zIndex   = rng.Next(100);
 
-            result[i] = new GalleryCardViewModel(sets[i], x, y, width, rotation, zIndex);
+            result[i] = new GalleryCardViewModel(sets[i], x, y, maxWidth, maxHeight, rotation, zIndex);
         }
 
         return result;
