@@ -9,12 +9,12 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Resources/Images/Backgrounds/background-minimalistic.png"
+            <ImageBrush ImageSource="{DynamicResource GlobalBackgroundSource}"
                         Stretch="UniformToFill"/>
         </Grid.Background>
 
-        <Grid Margin="50,30"
-              HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid
+              HorizontalAlignment="Center" VerticalAlignment="Center" Height="492">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -84,7 +84,7 @@
                     <!-- JOIN BY CODE -->
                     <Border CornerRadius="{StaticResource CardCornerRadius}"
                             Background="{StaticResource CardBackground}"
-                            Padding="24,20">
+                            Padding="24,20" Height="220">
                         <Border.Effect>
                             <DropShadowEffect ShadowDepth="3" BlurRadius="20" Color="#3D1C1C" Opacity="0.12"/>
                         </Border.Effect>
@@ -106,20 +106,20 @@
 
                                 <TextBox Text="{Binding JoinCode, UpdateSourceTrigger=PropertyChanged}"
                                          MaxLength="6"
-                                         Style="{StaticResource PastelTextBox}"/>
+                                         Style="{StaticResource PastelTextBox}" Grid.ColumnSpan="2" Margin="0,0,3,0"/>
 
-                                <Button Grid.Column="2"
+                                <Button
                                         Style="{StaticResource PastelButton}"
                                         Command="{Binding JoinByCodeCommand}"
                                         Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_JoinLobby]}"
-                                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
+                                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" Grid.ColumnSpan="2" Margin="2,77,5,-77"/>
                             </Grid>
 
                             <TextBlock Text="{Binding JoinCodeError}"
                                        Style="{StaticResource PastelTextBlock}"
                                        FontSize="11" Foreground="#C84747"
                                        Margin="0,4,0,0"
-                                       Visibility="{Binding JoinCodeError, Converter={StaticResource NullToCollapsedConverter}}"/>
+                                       Visibility="{Binding JoinCodeError, Converter={StaticResource NullToCollapsedConverter}}" RenderTransformOrigin="0.5,0.348"/>
                         </StackPanel>
                     </Border>
                 </StackPanel>

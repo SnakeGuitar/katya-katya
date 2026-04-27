@@ -43,29 +43,43 @@ public partial class GalleryViewModel : ObservableObject
 
     private static IReadOnlyList<GalleryCardViewModel> BuildCards()
     {
-        // Helper: build a card entry from a folder that follows the naming convention
-        // Cards/<id>/<id>-no-background.png  +  Cards/<id>/<id>-original.png
-        static GalleryCardViewModel Card(string id) => new(
-        [
-            new("Color",    $"/Resources/Images/Cards/{id}/{id}-no-background.png"),
-            new("Original", $"/Resources/Images/Cards/{id}/{id}-original.png"),
-        ]);
+        static GalleryCardViewModel Card(params CardVariant[] variants) => new(variants);
 
-        // TODO: replace placeholder ids with real asset folders as they are added
+        const string Cards = "/Resources/Images/Cards";
+        const string Moods = "/Resources/Images/Backgrounds/katya-moods";
+
         return
         [
-            Card("katya-1"),
-            Card("katya-1"), // africa
-            Card("katya-1"), // ana
-            Card("katya-1"), // ari
-            Card("katya-1"), // blanca
-            Card("katya-1"), // emily
-            Card("katya-1"), // fer
-            Card("katya-1"), // lala
-            Card("katya-1"), // linda
-            Card("katya-1"), // paul
-            Card("katya-1"), // saddy
-            Card("katya-1"), // sara
+            Card(
+                new CardVariant("Color",    $"{Cards}/katya-1/katya-1-no-background.png"),
+                new CardVariant("Original", $"{Cards}/katya-1/katya-1-original.png")),
+
+            Card(
+                new CardVariant("Color",    $"{Moods}/main/katya-main-no-background.png"),
+                new CardVariant("Original", $"{Moods}/main/katya-main.png"),
+                new CardVariant("Sketch",   $"{Moods}/main/sketch-katya-main-no-background.png")),
+
+            Card(
+                new CardVariant("Color",    $"{Moods}/in-love/katya-in-love-no-background.png"),
+                new CardVariant("Original", $"{Moods}/in-love/katya-in-love.png"),
+                new CardVariant("Sketch",   $"{Moods}/in-love/sketch-katya-in-love-no-background.png")),
+
+            Card(
+                new CardVariant("Color",    $"{Moods}/shy/katya-shy-2-no-background.png"),
+                new CardVariant("Original", $"{Moods}/shy/katya-shy-3.png"),
+                new CardVariant("Sketch",   $"{Moods}/shy/sketch-katya-shy-no-background.png")),
+
+            Card(
+                new CardVariant("Sketch",   $"{Moods}/standing/sketch-katya-standing-no-background.png")),
+
+            Card(
+                new CardVariant("Original", $"{Moods}/happy/katya-happy.png")),
+
+            Card(
+                new CardVariant("Original", $"{Cards}/yumiko-1/yumiko-1-original.png")),
+
+            Card(
+                new CardVariant("Original", $"{Cards}/akari-1/akari-1-original.png")),
         ];
     }
 }

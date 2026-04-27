@@ -4,23 +4,30 @@
     <!-- =========================================================
          Sketch / Wireframe Palette
          ========================================================= -->
-    <SolidColorBrush x:Key="PastelBackground"      Color="#F5F0E8"/>
-    <SolidColorBrush x:Key="PastelPrimary"          Color="#2B2420"/>
-    <SolidColorBrush x:Key="PastelPrimaryHover"     Color="#1A1512"/>
-    <SolidColorBrush x:Key="PastelSecondary"        Color="#DDD8CC"/>
-    <SolidColorBrush x:Key="PastelAccent"           Color="#8B7355"/>
-    <SolidColorBrush x:Key="PastelText"             Color="#1A1512"/>
-    <SolidColorBrush x:Key="PastelTextLight"        Color="#6B6050"/>
-    <SolidColorBrush x:Key="PastelBorder"           Color="#8B8070"/>
-    <SolidColorBrush x:Key="PastelError"            Color="#8B2020"/>
-    <SolidColorBrush x:Key="PastelSuccess"          Color="#3A6B3A"/>
-    <SolidColorBrush x:Key="CardBackground"         Color="#EDE8DC"/>
-    <SolidColorBrush x:Key="LinkText"               Color="#5A3E28"/>
-    <SolidColorBrush x:Key="LinkTextHover"          Color="#2B1E10"/>
+    <SolidColorBrush x:Key="PastelBackground"      Color="#FAFAFA"/>
+    <SolidColorBrush x:Key="PastelPrimary"          Color="#111111"/>
+    <SolidColorBrush x:Key="PastelPrimaryHover"     Color="#000000"/>
+    <SolidColorBrush x:Key="PastelSecondary"        Color="#EAEAEA"/>
+    <SolidColorBrush x:Key="PastelAccent"           Color="#333333"/>
+    <SolidColorBrush x:Key="PastelText"             Color="#000000"/>
+    <SolidColorBrush x:Key="PastelTextLight"        Color="#555555"/>
+    <SolidColorBrush x:Key="PastelBorder"           Color="#111111"/>
+    <SolidColorBrush x:Key="PastelError"            Color="#B00020"/>
+    <SolidColorBrush x:Key="PastelSuccess"          Color="#1B5E20"/>
+    <SolidColorBrush x:Key="CardBackground"         Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="LinkText"               Color="#000000"/>
+    <SolidColorBrush x:Key="LinkTextHover"          Color="#555555"/>
 
     <!-- Sketch "gradient" -->
-    <SolidColorBrush x:Key="PrimaryGradient"        Color="#2B2420"/>
-    <SolidColorBrush x:Key="PrimaryGradientHover"   Color="#1A1512"/>
+    <SolidColorBrush x:Key="PrimaryGradient"        Color="#111111"/>
+    <SolidColorBrush x:Key="PrimaryGradientHover"   Color="#000000"/>
+
+    <!-- Global Backgrounds -->
+    <ImageSource x:Key="GlobalBackgroundSource">pack://application:,,,/Resources/Images/Backgrounds/background-sketch.png</ImageSource>
+    <ImageSource x:Key="GlobalMainBackgroundSource">pack://application:,,,/Resources/Images/Backgrounds/background-sketch.png</ImageSource>
+
+    <!-- Icons -->
+    <ImageSource x:Key="MenuIconSource">pack://application:,,,/Resources/Images/Icons/sketch-menu-icon.png</ImageSource>
 
     <!-- =========================================================
          Fonts
@@ -40,7 +47,7 @@
          ========================================================= -->
     <Style x:Key="PastelButton" TargetType="Button">
         <Setter Property="Background"      Value="{StaticResource PrimaryGradient}"/>
-        <Setter Property="Foreground"      Value="#F5F0E8"/>
+        <Setter Property="Foreground"      Value="#FFFFFF"/>
         <Setter Property="BorderBrush"     Value="{StaticResource PastelPrimary}"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="FontSize"        Value="14"/>
@@ -89,7 +96,7 @@
     <!-- Accent Button -->
     <Style x:Key="PastelButtonAccent" TargetType="Button" BasedOn="{StaticResource PastelButton}">
         <Setter Property="Background"  Value="{StaticResource PastelAccent}"/>
-        <Setter Property="Foreground"  Value="#F5F0E8"/>
+        <Setter Property="Foreground"  Value="#FFFFFF"/>
         <Setter Property="BorderBrush" Value="{StaticResource PastelAccent}"/>
     </Style>
 
@@ -97,7 +104,7 @@
          TextBox
          ========================================================= -->
     <Style x:Key="PastelTextBox" TargetType="TextBox">
-        <Setter Property="Background"       Value="#FAF7F0"/>
+        <Setter Property="Background"       Value="#FFFFFF"/>
         <Setter Property="Foreground"       Value="{StaticResource PastelText}"/>
         <Setter Property="BorderBrush"      Value="{StaticResource PastelBorder}"/>
         <Setter Property="BorderThickness"  Value="2"/>
@@ -130,7 +137,7 @@
          PasswordBox
          ========================================================= -->
     <Style x:Key="PastelPasswordBox" TargetType="PasswordBox">
-        <Setter Property="Background"       Value="#FAF7F0"/>
+        <Setter Property="Background"       Value="#FFFFFF"/>
         <Setter Property="Foreground"       Value="{StaticResource PastelText}"/>
         <Setter Property="BorderBrush"      Value="{StaticResource PastelBorder}"/>
         <Setter Property="BorderThickness"  Value="2"/>
@@ -234,7 +241,7 @@
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="Root" Property="Background" Value="{StaticResource PastelAccent}"/>
-                            <Setter Property="Foreground" Value="#F5F0E8"/>
+                            <Setter Property="Foreground" Value="#FFFFFF"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -271,7 +278,7 @@
                         <Trigger Property="IsChecked" Value="True">
                             <Setter TargetName="Track"  Property="Background"           Value="{StaticResource PastelPrimary}"/>
                             <Setter TargetName="Track"  Property="BorderBrush"          Value="{StaticResource PastelPrimary}"/>
-                            <Setter TargetName="Thumb"  Property="Fill"                 Value="#F5F0E8"/>
+                            <Setter TargetName="Thumb"  Property="Fill"                 Value="#FFFFFF"/>
                             <Setter TargetName="Thumb"  Property="HorizontalAlignment"  Value="Right"/>
                             <Setter TargetName="Thumb"  Property="Margin"               Value="0,0,2,0"/>
                         </Trigger>
@@ -318,7 +325,7 @@
          ComboBox
          ========================================================= -->
     <Style x:Key="PastelComboBox" TargetType="ComboBox">
-        <Setter Property="Background"       Value="#FAF7F0"/>
+        <Setter Property="Background"       Value="#FFFFFF"/>
         <Setter Property="Foreground"       Value="{StaticResource PastelText}"/>
         <Setter Property="BorderBrush"      Value="{StaticResource PastelBorder}"/>
         <Setter Property="BorderThickness"  Value="2"/>
@@ -382,7 +389,7 @@
                                AllowsTransparency="True"
                                Focusable="False"
                                PopupAnimation="Slide">
-                            <Border Background="#FAF7F0"
+                            <Border Background="#FFFFFF"
                                     BorderBrush="{StaticResource PastelBorder}"
                                     BorderThickness="2"
                                     CornerRadius="3"

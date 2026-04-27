@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using MemoryGame.Client.Messages;
 
 namespace MemoryGame.Client.Localization;
 
@@ -20,8 +22,16 @@ public sealed class LocalizationManager : ObservableObject
         Assembly.GetExecutingAssembly());
 
     private CultureInfo _culture = CultureInfo.GetCultureInfo("en-US");
+    private string _themeName = "Pastel";
 
-    private LocalizationManager() { }
+    private LocalizationManager()
+    {
+        WeakReferenceMessenger.Default.Register<ThemeChangedMessage>(this, (_, msg) =>
+        {
+            _themeName = msg.ThemeName;
+            OnPropertyChanged(nameof(LogoImage));
+        });
+    }
 
     /// <summary>
     /// Returns the localized string for the given key.
@@ -56,14 +66,16 @@ public sealed class LocalizationManager : ObservableObject
     {
         get
         {
-            var path = _culture.Name switch
+            var prefix = _themeName == "Sketch" ? "sketch-logo" : "logo";
+            var lang = _culture.Name switch
             {
-                "es-MX" => "pack://application:,,,/Resources/Images/Logos/logo-es.png",
-                "ja-JP" => "pack://application:,,,/Resources/Images/Logos/logo-jp.png",
-                "zh-CN" => "pack://application:,,,/Resources/Images/Logos/logo-zh.png",
-                "ko-KR" => "pack://application:,,,/Resources/Images/Logos/logo-ko.png",
-                _       => "pack://application:,,,/Resources/Images/Logos/logo-en.png"
+                "es-MX" => "es",
+                "ja-JP" => "jp",
+                "zh-CN" => "zh",
+                "ko-KR" => "ko",
+                _       => "en"
             };
+            var path = $"pack://application:,,,/Resources/Images/Logos/{prefix}-{lang}.png";
             return new BitmapImage(new Uri(path));
         }
     }

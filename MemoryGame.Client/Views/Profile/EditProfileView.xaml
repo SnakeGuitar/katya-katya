@@ -14,30 +14,84 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Resources/Images/Backgrounds/background-minimalistic.png"
+            <ImageBrush ImageSource="{DynamicResource GlobalBackgroundSource}"
                         Stretch="UniformToFill"/>
         </Grid.Background>
 
-        <ScrollViewer VerticalScrollBarVisibility="Auto"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/> <!-- Spacer for MacOS Traffic Lights Area -->
+            <RowDefinition Height="80"/> <!-- Header & Back Button -->
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <!-- Back button (Gallery style) -->
+        <Button Grid.Row="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Margin="24,0,0,0"
+                Command="{Binding GoBackCommand}"
+                Width="48" Height="48"
+                Cursor="Hand"
+                Background="{StaticResource PastelPrimary}"
+                BorderThickness="0">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Root" Background="{TemplateBinding Background}" CornerRadius="24">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.3" Color="#C84747"/>
+                        </Border.Effect>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Root" Property="Background" Value="{StaticResource PastelPrimaryHover}"/>
+                            <Setter TargetName="Root" Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="1.1" ScaleY="1.1" CenterX="24" CenterY="24"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Root" Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.95" ScaleY="0.95" CenterX="24" CenterY="24"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+            <Image Source="pack://application:,,,/Resources/Images/Icons/return-icon.png" 
+                   Stretch="Uniform" Margin="14"
+                   RenderOptions.BitmapScalingMode="HighQuality">
+                <Image.Effect>
+                    <DropShadowEffect ShadowDepth="0" Color="White" BlurRadius="1" Opacity="1"/>
+                </Image.Effect>
+            </Image>
+        </Button>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="1"
+                   Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_EditProfile]}"
+                   Style="{StaticResource PastelHeading}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+
+        <ScrollViewer Grid.Row="2"
+                      VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled"
                       Style="{StaticResource PastelScrollViewer}">
 
             <StackPanel HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        MaxWidth="880"
-                        Margin="20,40,20,40">
-
-                <!-- Title -->
-                <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_EditProfile]}"
-                           Style="{StaticResource PastelHeading}"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,20"/>
+                        VerticalAlignment="Top"
+                        Margin="20,20,20,40">
 
                 <!-- ══ Main Card ══ -->
                 <Border Background="{StaticResource CardBackground}"
                         CornerRadius="{StaticResource CardCornerRadius}"
-                        Padding="36,32"
-                        Margin="0,0,0,20">
+                        Padding="64,48"
+                        Margin="0,0,0,24" Width="857">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.14" Color="#3D1C1C"/>
                     </Border.Effect>
@@ -45,7 +99,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="64"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
@@ -55,11 +109,11 @@
                             <!-- ── Avatar Section ── -->
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Avatar]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,10"/>
+                                       Margin="0,0,0,12"/>
 
                             <StackPanel Orientation="Horizontal"
                                         HorizontalAlignment="Center"
-                                        Margin="0,0,0,8">
+                                        Margin="0,0,0,12">
                                 <!-- Avatar preview -->
                                 <Border Width="90" Height="90"
                                         CornerRadius="45"
@@ -88,26 +142,26 @@
                                         Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Button_ChangeAvatar]}" Width="229"/>
                             </StackPanel>
 
-                            <Rectangle Style="{StaticResource SectionDivider}"/>
+                            <Rectangle Style="{StaticResource SectionDivider}" Margin="0,24,0,24"/>
 
                             <!-- ── Personal Info ── -->
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_PersonalInfo]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,8"/>
+                                       Margin="0,0,0,12"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Label_Name]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,4"/>
+                                       Margin="0,0,0,6"/>
                             <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource PastelTextBox}"
-                                     Margin="0,0,0,8"/>
+                                     Margin="0,0,0,12"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Username]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,4"/>
+                                       Margin="0,0,0,6"/>
                             <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource PastelTextBox}"
-                                     Margin="0,0,0,8"/>
+                                     Margin="0,0,0,16"/>
 
                             <Button Style="{StaticResource PastelButton}"
                                     Padding="20,8"
@@ -115,18 +169,18 @@
                                     Command="{Binding UpdatePersonalInfoCommand}"
                                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Update]}" Width="150"/>
 
-                            <Rectangle Style="{StaticResource SectionDivider}"/>
+                            <Rectangle Style="{StaticResource SectionDivider}" Margin="0,24,0,24"/>
 
                             <!-- ── Social Networks ── -->
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Label_SocialNetworks]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,8"/>
+                                       Margin="0,0,0,12"/>
 
                             <ItemsControl ItemsSource="{Binding SocialNetworks}"
-                                          Margin="0,0,0,8">
+                                          Margin="0,0,0,12">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid Margin="0,0,0,4">
+                                        <Grid Margin="0,0,0,8">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
@@ -180,14 +234,14 @@
                             <!-- ── Change Username ── -->
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_ChangeUsername]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,8"/>
+                                       Margin="0,0,0,12"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_NewUsername]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,4"/>
+                                       Margin="0,0,0,6"/>
                             <TextBox Text="{Binding NewUsername, UpdateSourceTrigger=PropertyChanged}"
                                      Style="{StaticResource PastelTextBox}"
-                                     Margin="0,0,0,8"/>
+                                     Margin="0,0,0,16"/>
 
                             <Button Style="{StaticResource PastelButton}"
                                     Padding="20,8"
@@ -195,25 +249,25 @@
                                     Command="{Binding UpdateUsernameCommand}"
                                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Update]}" Width="150"/>
 
-                            <Rectangle Style="{StaticResource SectionDivider}" Margin="0,20,0,20"/>
+                            <Rectangle Style="{StaticResource SectionDivider}" Margin="0,24,0,24"/>
 
                             <!-- ── Change Password ── -->
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Button_UpdatePassword]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,8"/>
+                                       Margin="0,0,0,12"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_ActualPassword]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,4"/>
+                                       Margin="0,0,0,6"/>
                             <PasswordBox Style="{StaticResource PastelPasswordBox}"
-                                         Margin="0,0,0,8"
+                                         Margin="0,0,0,12"
                                          PasswordChanged="CurrentPassword_PasswordChanged"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_NewPassword]}"
                                        Style="{StaticResource PastelLabel}"
-                                       Margin="0,0,0,4"/>
+                                       Margin="0,0,0,6"/>
                             <PasswordBox Style="{StaticResource PastelPasswordBox}"
-                                         Margin="0,0,0,8"
+                                         Margin="0,0,0,16"
                                          PasswordChanged="NewPassword_PasswordChanged"/>
 
                             <Button Style="{StaticResource PastelButton}"
@@ -224,12 +278,6 @@
                         </StackPanel>
                     </Grid>
                 </Border>
-
-                <!-- Back button -->
-                <Button HorizontalAlignment="Center"
-                        Command="{Binding GoBackCommand}"
-                        Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"
-                        Style="{StaticResource LinkButton}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

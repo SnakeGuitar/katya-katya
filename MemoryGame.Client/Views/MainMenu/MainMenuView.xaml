@@ -10,7 +10,7 @@
 
     <Grid>
         <!-- Static background image (with everything including background) -->
-        <Image Source="/Resources/Images/Backgrounds/katya-main-background-only.png"
+        <Image Source="{DynamicResource GlobalMainBackgroundSource}"
                Stretch="UniformToFill"/>
 
         <!-- Petal canvas — falls in front of background, behind the character -->
@@ -71,50 +71,55 @@
                 </StackPanel>
             </Border>
         </StackPanel>
-        <controls:AlphaHitTestImage Source="{Binding CurrentMoodImage}" 
-               Stretch="UniformToFill" 
-               Cursor="Hand"
-               ToolTip="Story Mode"
-               RenderTransformOrigin="0.5,0.5">
-            <controls:AlphaHitTestImage.InputBindings>
-                <MouseBinding MouseAction="LeftClick" Command="{Binding GoToStoryModeCommand}" />
-            </controls:AlphaHitTestImage.InputBindings>
-            <controls:AlphaHitTestImage.RenderTransform>
-                <ScaleTransform ScaleX="1" ScaleY="1"/>
-            </controls:AlphaHitTestImage.RenderTransform>
-            <controls:AlphaHitTestImage.Style>
-                <Style TargetType="{x:Type controls:AlphaHitTestImage}">
-                    <Style.Triggers>
-                        <!-- When the mouse is inside the MainMenuView, zoom in -->
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Trigger.EnterActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" To="1.05" Duration="0:0:0.4">
-                                            <DoubleAnimation.EasingFunction>
-                                                <QuadraticEase EasingMode="EaseOut"/>
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" To="1.05" Duration="0:0:0.4">
-                                            <DoubleAnimation.EasingFunction>
-                                                <QuadraticEase EasingMode="EaseOut"/>
-                                            </DoubleAnimation.EasingFunction>
-                                        </DoubleAnimation>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.EnterActions>
-                            <Trigger.ExitActions>
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" To="1.0" Duration="0:0:0.3"/>
-                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" To="1.0" Duration="0:0:0.3"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </Trigger.ExitActions>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </controls:AlphaHitTestImage.Style>
-        </controls:AlphaHitTestImage>
+        <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" RenderTransformOrigin="1,1">
+            <Grid.RenderTransform>
+                <ScaleTransform ScaleX="{Binding ImageScale}" ScaleY="{Binding ImageScale}"/>
+            </Grid.RenderTransform>
+            <controls:AlphaHitTestImage Source="{Binding CurrentMoodImage}" 
+                   Stretch="Uniform" 
+                   Cursor="Hand"
+                   ToolTip="Story Mode"
+                   RenderTransformOrigin="0.5,0.5">
+                <controls:AlphaHitTestImage.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding GoToStoryModeCommand}" />
+                </controls:AlphaHitTestImage.InputBindings>
+                <controls:AlphaHitTestImage.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </controls:AlphaHitTestImage.RenderTransform>
+                <controls:AlphaHitTestImage.Style>
+                    <Style TargetType="{x:Type controls:AlphaHitTestImage}">
+                        <Style.Triggers>
+                            <!-- When the mouse is inside the MainMenuView, zoom in -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" To="1.05" Duration="0:0:0.4">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" To="1.05" Duration="0:0:0.4">
+                                                <DoubleAnimation.EasingFunction>
+                                                    <QuadraticEase EasingMode="EaseOut"/>
+                                                </DoubleAnimation.EasingFunction>
+                                            </DoubleAnimation>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" To="1.0" Duration="0:0:0.3"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" To="1.0" Duration="0:0:0.3"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </controls:AlphaHitTestImage.Style>
+            </controls:AlphaHitTestImage>
+        </Grid>
     </Grid>
 </UserControl>

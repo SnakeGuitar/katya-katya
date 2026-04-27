@@ -38,7 +38,7 @@
 
         <Grid>
             <Grid.Background>
-                <ImageBrush ImageSource="/Resources/Images/Backgrounds/katya-main-background-only.png"/>
+                <ImageBrush ImageSource="{DynamicResource GlobalMainBackgroundSource}"/>
             </Grid.Background>
             <Grid.Effect>
                 <BlurEffect/>

@@ -9,7 +9,7 @@
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Resources/Images/Backgrounds/background-minimalistic.png"
+            <ImageBrush ImageSource="{DynamicResource GlobalBackgroundSource}"
                         Stretch="UniformToFill"/>
         </Grid.Background>
 

@@ -26,6 +26,8 @@ public class ThemeService
     /// <summary>Applies the theme stored in <see cref="ClientSettings.ThemeName"/>.</summary>
     public void ApplyStoredTheme() => Apply(_settings.ThemeName);
 
+    public event Action? ThemeChanged;
+
     /// <summary>Applies a theme by name and persists the choice.</summary>
     public void Apply(string themeName)
     {
@@ -40,6 +42,8 @@ public class ThemeService
             mergedDicts.Add(new ResourceDictionary { Source = uri });
 
         _settings.ThemeName = themeName;
+        ThemeChanged?.Invoke();
+        CommunityToolkit.Mvvm.Messaging.IMessengerExtensions.Send(CommunityToolkit.Mvvm.Messaging.WeakReferenceMessenger.Default, new Messages.ThemeChangedMessage(themeName));
     }
 
     /// <summary>Available theme names.</summary>

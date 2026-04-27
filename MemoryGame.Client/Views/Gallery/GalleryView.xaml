@@ -11,7 +11,7 @@
     <Grid>
         <!-- Background -->
         <Grid.Background>
-            <ImageBrush ImageSource="/Resources/Images/Backgrounds/background-minimalistic.png"
+            <ImageBrush ImageSource="{DynamicResource GlobalBackgroundSource}"
                         Stretch="UniformToFill"/>
         </Grid.Background>
 

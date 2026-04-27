@@ -24,6 +24,13 @@
         <GradientStop Color="#C04848" Offset="1"/>
     </LinearGradientBrush>
 
+    <!-- Global Backgrounds -->
+    <ImageSource x:Key="GlobalBackgroundSource">pack://application:,,,/Resources/Images/Backgrounds/background-minimalistic.png</ImageSource>
+    <ImageSource x:Key="GlobalMainBackgroundSource">pack://application:,,,/Resources/Images/Backgrounds/katya-main-background-only.png</ImageSource>
+
+    <!-- Icons -->
+    <ImageSource x:Key="MenuIconSource">pack://application:,,,/Resources/Images/Icons/menu-icon.png</ImageSource>
+
     <!-- Primary gradient hover (slightly darker) -->
     <LinearGradientBrush x:Key="PrimaryGradientHover" StartPoint="0.5,0" EndPoint="0.5,1">
         <GradientStop Color="#CC5555" Offset="0"/>

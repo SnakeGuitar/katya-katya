@@ -3,6 +3,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using CommunityToolkit.Mvvm.Messaging;
+using MemoryGame.Client.Messages;
 
 namespace MemoryGame.Client.Views.Controls.Effects;
 
@@ -16,8 +18,7 @@ namespace MemoryGame.Client.Views.Controls.Effects;
 /// </remarks>
 public sealed class PetalParticleSystem : ParticleSystem
 {
-    /// <summary>Rose-palette colors sampled at random for each petal.</summary>
-    private static readonly Color[] Colors =
+    private static readonly Color[] PastelColors =
     [
         Color.FromArgb(210, 255, 200, 215),
         Color.FromArgb(190, 255, 220, 235),
@@ -25,6 +26,25 @@ public sealed class PetalParticleSystem : ParticleSystem
         Color.FromArgb(180, 255, 245, 248),
         Color.FromArgb(200, 255, 170, 190),
     ];
+
+    private static readonly Color[] SketchColors =
+    [
+        Color.FromArgb(190, 235, 235, 235),
+        Color.FromArgb(170, 210, 210, 210),
+        Color.FromArgb(200, 250, 250, 250),
+        Color.FromArgb(160, 180, 180, 180),
+        Color.FromArgb(140, 120, 120, 120),
+    ];
+
+    private static Color[] _activeColors = PastelColors;
+    private static readonly object _registrationToken = new();
+
+    static PetalParticleSystem()
+    {
+        WeakReferenceMessenger.Default.Register<ThemeChangedMessage>(
+            _registrationToken,
+            (_, msg) => _activeColors = msg.ThemeName == "Sketch" ? SketchColors : PastelColors);
+    }
 
     /// <summary>
     /// Spawns one petal at a random position along the top edge of <paramref name="canvas"/>.
@@ -52,7 +72,7 @@ public sealed class PetalParticleSystem : ParticleSystem
         {
             Width  = w,
             Height = h,
-            Fill   = new SolidColorBrush(Colors[Rng.Next(Colors.Length)]),
+            Fill   = new SolidColorBrush(_activeColors[Rng.Next(_activeColors.Length)]),
             Opacity = opacity,
             RenderTransformOrigin = new Point(0.5, 0.5),
             RenderTransform = new RotateTransform(initAngle),

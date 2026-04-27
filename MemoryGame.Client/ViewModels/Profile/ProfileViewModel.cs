@@ -69,7 +69,6 @@ public partial class ProfileViewModel : BaseViewModel
     });
 
     [RelayCommand]
-
     private void GoToEditProfile() => Navigation.NavigateTo<EditProfileViewModel>();
 
     [RelayCommand]

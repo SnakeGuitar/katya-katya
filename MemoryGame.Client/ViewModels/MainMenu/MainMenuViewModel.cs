@@ -16,7 +16,7 @@ namespace MemoryGame.Client.ViewModels.MainMenu;
 /// <summary>
 /// Main menu after login. Provides navigation to all game sections.
 /// </summary>
-public partial class MainMenuViewModel : ObservableObject
+public partial class MainMenuViewModel : ObservableObject, CommunityToolkit.Mvvm.Messaging.IRecipient<Messages.ThemeChangedMessage>
 {
     private readonly INavigationService _navigation;
     private readonly ISessionService _session;
@@ -29,18 +29,52 @@ public partial class MainMenuViewModel : ObservableObject
         "/Resources/Images/Backgrounds/katya-moods/shy/katya-shy-2-no-background.png"
     };
 
+    private readonly string[] _sketchMoodImages =
+    {
+        "/Resources/Images/Backgrounds/katya-moods/main/sketch-katya-main-no-background.png",
+        "/Resources/Images/Backgrounds/katya-moods/in-love/sketch-katya-in-love-no-background.png",
+        "/Resources/Images/Backgrounds/katya-moods/shy/sketch-katya-shy-no-background.png",
+        "/Resources/Images/Backgrounds/katya-moods/standing/sketch-katya-standing-no-background.png"
+    };
+
     [ObservableProperty]
     private string _currentMoodImage;
 
-    public MainMenuViewModel(INavigationService navigation, ISessionService session, HubService hub)
+    [ObservableProperty]
+    private double _imageScale = 1.0;
+
+    public MainMenuViewModel(INavigationService navigation, ISessionService session, HubService hub, ClientSettings settings)
     {
         _navigation = navigation;
         _session = session;
         _hub = hub;
 
-        var index = new Random().Next(0, 3);
-        _currentMoodImage = _moodImages[index];
+        if (settings.ThemeName == "Sketch")
+        {
+            _currentMoodImage = _sketchMoodImages[new Random().Next(_sketchMoodImages.Length)];
+            _imageScale = 1.0;
+        }
+        else
+        {
+            _currentMoodImage = _moodImages[new Random().Next(_moodImages.Length)];
+            _imageScale = 1.0;
+        }
 
+        CommunityToolkit.Mvvm.Messaging.IMessengerExtensions.Register(CommunityToolkit.Mvvm.Messaging.WeakReferenceMessenger.Default, this);
+    }
+
+    public void Receive(Messages.ThemeChangedMessage message)
+    {
+        if (message.ThemeName == "Sketch")
+        {
+            CurrentMoodImage = _sketchMoodImages[new Random().Next(_sketchMoodImages.Length)];
+            ImageScale = 1.6;
+        }
+        else
+        {
+            CurrentMoodImage = _moodImages[new Random().Next(_moodImages.Length)];
+            ImageScale = 1.0;
+        }
     }
 
     public string Username => _session.Current?.Username ?? "Player";
