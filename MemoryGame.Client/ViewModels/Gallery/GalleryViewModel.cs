@@ -68,7 +68,7 @@ public partial class GalleryViewModel : ObservableObject
                 new("Sketch", $"{Cards}/yumiko-1/yumiko-1-original.png"),
             ],
             [
-                new("Sitting", $"{Cards}/katya-sit/katya-sit-down.png"),
+                new("Sitting", $"{Cards}/katya-sit/katya-sit-no-background.png"),
             ],
             [
                 new("Sketch", $"{Cards}/akari-1/akari-1-original.png"),
