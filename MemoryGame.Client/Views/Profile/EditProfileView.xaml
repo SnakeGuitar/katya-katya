@@ -33,7 +33,7 @@
                 Command="{Binding GoBackCommand}"
                 Width="48" Height="48"
                 Cursor="Hand"
-                Background="{StaticResource PastelPrimary}"
+                Background="{DynamicResource PastelPrimary}"
                 BorderThickness="0">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
@@ -45,7 +45,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Root" Property="Background" Value="{StaticResource PastelPrimaryHover}"/>
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource PastelPrimaryHover}"/>
                             <Setter TargetName="Root" Property="RenderTransform">
                                 <Setter.Value>
                                     <ScaleTransform ScaleX="1.1" ScaleY="1.1" CenterX="24" CenterY="24"/>
@@ -74,22 +74,22 @@
         <!-- Title -->
         <TextBlock Grid.Row="1"
                    Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_EditProfile]}"
-                   Style="{StaticResource PastelHeading}"
+                   Style="{DynamicResource PastelHeading}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"/>
 
         <ScrollViewer Grid.Row="2"
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled"
-                      Style="{StaticResource PastelScrollViewer}">
+                      Style="{DynamicResource PastelScrollViewer}">
 
             <StackPanel HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         Margin="20,20,20,40">
 
                 <!-- ══ Main Card ══ -->
-                <Border Background="{StaticResource CardBackground}"
-                        CornerRadius="{StaticResource CardCornerRadius}"
+                <Border Background="{DynamicResource CardBackground}"
+                        CornerRadius="{DynamicResource CardCornerRadius}"
                         Padding="64,48"
                         Margin="0,0,0,24" Width="857">
                     <Border.Effect>
@@ -108,7 +108,7 @@
 
                             <!-- ── Avatar Section ── -->
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Avatar]}"
-                                       Style="{StaticResource PastelLabel}"
+                                       Style="{DynamicResource PastelLabel}"
                                        Margin="0,0,0,12"/>
 
                             <StackPanel Orientation="Horizontal"
@@ -117,7 +117,7 @@
                                 <!-- Avatar preview -->
                                 <Border Width="90" Height="90"
                                         CornerRadius="45"
-                                        BorderBrush="{StaticResource PastelPrimary}"
+                                        BorderBrush="{DynamicResource PastelPrimary}"
                                         BorderThickness="2"
                                         Background="#10C84747"
                                         Margin="0,0,16,0">
@@ -136,44 +136,44 @@
                                 </Border>
 
                                 <Button VerticalAlignment="Center"
-                                        Style="{StaticResource PastelButtonSecondary}"
+                                        Style="{DynamicResource PastelButtonSecondary}"
                                         Padding="16,6"
                                         Command="{Binding ChangeAvatarCommand}"
                                         Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Button_ChangeAvatar]}" Width="229"/>
                             </StackPanel>
 
-                            <Rectangle Style="{StaticResource SectionDivider}" Margin="0,24,0,24"/>
+                            <Rectangle Style="{DynamicResource SectionDivider}" Margin="0,24,0,24"/>
 
                             <!-- ── Personal Info ── -->
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_PersonalInfo]}"
-                                       Style="{StaticResource PastelLabel}"
+                                       Style="{DynamicResource PastelLabel}"
                                        Margin="0,0,0,12"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Label_Name]}"
-                                       Style="{StaticResource PastelLabel}"
+                                       Style="{DynamicResource PastelLabel}"
                                        Margin="0,0,0,6"/>
                             <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource PastelTextBox}"
+                                     Style="{DynamicResource PastelTextBox}"
                                      Margin="0,0,0,12"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Username]}"
-                                       Style="{StaticResource PastelLabel}"
+                                       Style="{DynamicResource PastelLabel}"
                                        Margin="0,0,0,6"/>
                             <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource PastelTextBox}"
+                                     Style="{DynamicResource PastelTextBox}"
                                      Margin="0,0,0,16"/>
 
-                            <Button Style="{StaticResource PastelButton}"
+                            <Button Style="{DynamicResource PastelButton}"
                                     Padding="20,8"
                                     HorizontalAlignment="Right"
                                     Command="{Binding UpdatePersonalInfoCommand}"
                                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Update]}" Width="150"/>
 
-                            <Rectangle Style="{StaticResource SectionDivider}" Margin="0,24,0,24"/>
+                            <Rectangle Style="{DynamicResource SectionDivider}" Margin="0,24,0,24"/>
 
                             <!-- ── Social Networks ── -->
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Label_SocialNetworks]}"
-                                       Style="{StaticResource PastelLabel}"
+                                       Style="{DynamicResource PastelLabel}"
                                        Margin="0,0,0,12"/>
 
                             <ItemsControl ItemsSource="{Binding SocialNetworks}"
@@ -188,14 +188,14 @@
 
                                             <TextBlock Grid.Column="0"
                                                        Text="{Binding Account}"
-                                                       Style="{StaticResource PastelTextBlock}"
-                                                       Foreground="{StaticResource PastelPrimary}"
+                                                       Style="{DynamicResource PastelTextBlock}"
+                                                       Foreground="{DynamicResource PastelPrimary}"
                                                        VerticalAlignment="Center"
                                                        TextTrimming="CharacterEllipsis"/>
 
                                             <Button Grid.Column="1"
                                                     Content="✕"
-                                                    Style="{StaticResource PastelButtonDanger}"
+                                                    Style="{DynamicResource PastelButtonDanger}"
                                                     Width="30" Height="28"
                                                     Padding="0"
                                                     FontSize="11"
@@ -215,12 +215,12 @@
 
                                 <TextBox Grid.Column="0"
                                          Text="{Binding NewSocialAccount, UpdateSourceTrigger=PropertyChanged}"
-                                         Style="{StaticResource PastelTextBox}"
+                                         Style="{DynamicResource PastelTextBox}"
                                          Margin="0,0,8,0"/>
 
                                 <Button Grid.Column="1"
                                         Content="+"
-                                        Style="{StaticResource PastelButton}"
+                                        Style="{DynamicResource PastelButton}"
                                         Width="40"
                                         Padding="0"
                                         FontSize="18"
@@ -233,44 +233,44 @@
 
                             <!-- ── Change Username ── -->
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_ChangeUsername]}"
-                                       Style="{StaticResource PastelLabel}"
+                                       Style="{DynamicResource PastelLabel}"
                                        Margin="0,0,0,12"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_NewUsername]}"
-                                       Style="{StaticResource PastelLabel}"
+                                       Style="{DynamicResource PastelLabel}"
                                        Margin="0,0,0,6"/>
                             <TextBox Text="{Binding NewUsername, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource PastelTextBox}"
+                                     Style="{DynamicResource PastelTextBox}"
                                      Margin="0,0,0,16"/>
 
-                            <Button Style="{StaticResource PastelButton}"
+                            <Button Style="{DynamicResource PastelButton}"
                                     Padding="20,8"
                                     HorizontalAlignment="Right"
                                     Command="{Binding UpdateUsernameCommand}"
                                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Update]}" Width="150"/>
 
-                            <Rectangle Style="{StaticResource SectionDivider}" Margin="0,24,0,24"/>
+                            <Rectangle Style="{DynamicResource SectionDivider}" Margin="0,24,0,24"/>
 
                             <!-- ── Change Password ── -->
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Button_UpdatePassword]}"
-                                       Style="{StaticResource PastelLabel}"
+                                       Style="{DynamicResource PastelLabel}"
                                        Margin="0,0,0,12"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_ActualPassword]}"
-                                       Style="{StaticResource PastelLabel}"
+                                       Style="{DynamicResource PastelLabel}"
                                        Margin="0,0,0,6"/>
-                            <PasswordBox Style="{StaticResource PastelPasswordBox}"
+                            <PasswordBox Style="{DynamicResource PastelPasswordBox}"
                                          Margin="0,0,0,12"
                                          PasswordChanged="CurrentPassword_PasswordChanged"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_NewPassword]}"
-                                       Style="{StaticResource PastelLabel}"
+                                       Style="{DynamicResource PastelLabel}"
                                        Margin="0,0,0,6"/>
-                            <PasswordBox Style="{StaticResource PastelPasswordBox}"
+                            <PasswordBox Style="{DynamicResource PastelPasswordBox}"
                                          Margin="0,0,0,16"
                                          PasswordChanged="NewPassword_PasswordChanged"/>
 
-                            <Button Style="{StaticResource PastelButton}"
+                            <Button Style="{DynamicResource PastelButton}"
                                     Padding="20,8"
                                     HorizontalAlignment="Right"
                                     Command="{Binding UpdatePasswordCommand}"

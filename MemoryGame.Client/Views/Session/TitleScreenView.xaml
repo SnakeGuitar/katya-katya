@@ -32,20 +32,20 @@
 
             <Button Height="40"
                     Margin="0,0,0,16"
-                    Style="{StaticResource PastelButton}"
+                    Style="{DynamicResource PastelButton}"
                     Command="{Binding GoToLoginCommand}"
                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Login]}"/>
 
             <Button Height="40"
                     Margin="0,0,0,16"
-                    Style="{StaticResource PastelButton}"
+                    Style="{DynamicResource PastelButton}"
                     Command="{Binding GoToRegisterCommand}"
                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Register]}"/>
 
             <Button Height="34"
                     Command="{Binding GoToGuestLoginCommand}"
                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Guest]}"
-                    Style="{StaticResource LinkButton}"/>
+                    Style="{DynamicResource LinkButton}"/>
         </StackPanel>
     </Grid>
 </UserControl>

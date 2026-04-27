@@ -31,8 +31,8 @@
             </Rectangle>
 
             <Border Grid.Column="1"
-                    Background="{StaticResource CardBackground}"
-                    CornerRadius="{StaticResource CardCornerRadius}"
+                    Background="{DynamicResource CardBackground}"
+                    CornerRadius="{DynamicResource CardCornerRadius}"
                     Width="360"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
@@ -44,12 +44,12 @@
 
                 <StackPanel>
                     <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[VerifyEmail_Title]}"
-                               Style="{StaticResource PastelHeading}"
+                               Style="{DynamicResource PastelHeading}"
                                HorizontalAlignment="Center"
                                Margin="0,0,0,14"/>
 
                     <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[VerifyEmail_Description]}"
-                               Style="{StaticResource PastelTextBlock}"
+                               Style="{DynamicResource PastelTextBlock}"
                                TextAlignment="Center"
                                TextWrapping="Wrap"
                                FontSize="13"
@@ -57,7 +57,7 @@
 
                     <TextBox Text="{Binding Pin, UpdateSourceTrigger=PropertyChanged}"
                              MaxLength="6"
-                             Style="{StaticResource PastelTextBox}"
+                             Style="{DynamicResource PastelTextBox}"
                              FontSize="32" FontWeight="Bold"
                              FontFamily="Courier New"
                              TextAlignment="Center"
@@ -65,21 +65,21 @@
                              Margin="0,0,0,16"/>
 
                     <TextBlock Text="{Binding PinResentMessage}"
-                               Style="{StaticResource PastelTextBlock}"
+                               Style="{DynamicResource PastelTextBlock}"
                                FontSize="12"
-                               Foreground="{StaticResource PastelSuccess}"
+                               Foreground="{DynamicResource PastelSuccess}"
                                TextAlignment="Center"
                                Margin="0,0,0,12"
                                Visibility="{Binding PinResentMessage, Converter={StaticResource NullToCollapsedConverter}}"/>
 
                     <TextBlock Text="{Binding ErrorMessage}"
-                               Style="{StaticResource PastelErrorText}"
+                               Style="{DynamicResource PastelErrorText}"
                                Margin="0,0,0,14"
                                Visibility="{Binding ErrorMessage, Converter={StaticResource NullToCollapsedConverter}}"/>
 
                     <Button Height="46"
                             Margin="0,0,0,14"
-                            Style="{StaticResource PastelButton}"
+                            Style="{DynamicResource PastelButton}"
                             Command="{Binding VerifyCommand}"
                             IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Verify]}"/>
@@ -88,12 +88,12 @@
                             HorizontalAlignment="Center"
                             Command="{Binding ResendPinCommand}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_ResendPin]}"
-                            Style="{StaticResource LinkButton}"/>
+                            Style="{DynamicResource LinkButton}"/>
 
                     <Button HorizontalAlignment="Center"
                             Command="{Binding GoBackCommand}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"
-                            Style="{StaticResource LinkButton}"/>
+                            Style="{DynamicResource LinkButton}"/>
                 </StackPanel>
             </Border>
         </Grid>

@@ -31,8 +31,8 @@
             </Rectangle>
 
             <Border Grid.Column="1"
-                    Background="{StaticResource CardBackground}"
-                    CornerRadius="{StaticResource CardCornerRadius}"
+                    Background="{DynamicResource CardBackground}"
+                    CornerRadius="{DynamicResource CardCornerRadius}"
                     Width="370"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
@@ -44,12 +44,12 @@
 
                 <StackPanel>
                     <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SetupProfile_Title]}"
-                               Style="{StaticResource PastelHeading}"
+                               Style="{DynamicResource PastelHeading}"
                                HorizontalAlignment="Center"
                                Margin="0,0,0,8"/>
 
                     <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SetupProfile_Description]}"
-                               Style="{StaticResource PastelTextBlock}"
+                               Style="{DynamicResource PastelTextBlock}"
                                TextAlignment="Center"
                                TextWrapping="Wrap"
                                FontSize="13"
@@ -58,7 +58,7 @@
                     <!-- Avatar preview + select button -->
                     <Border Width="120" Height="120"
                             CornerRadius="60"
-                            BorderBrush="{StaticResource PastelPrimary}"
+                            BorderBrush="{DynamicResource PastelPrimary}"
                             BorderThickness="3"
                             HorizontalAlignment="Center"
                             Margin="0,0,0,12"
@@ -94,16 +94,16 @@
                             Margin="0,0,0,24"
                             Command="{Binding SelectAvatarCommand}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SetupProfile_SelectAvatar]}"
-                            Style="{StaticResource LinkButton}"/>
+                            Style="{DynamicResource LinkButton}"/>
 
                     <TextBlock Text="{Binding ErrorMessage}"
-                               Style="{StaticResource PastelErrorText}"
+                               Style="{DynamicResource PastelErrorText}"
                                Margin="0,0,0,14"
                                Visibility="{Binding ErrorMessage, Converter={StaticResource NullToCollapsedConverter}}"/>
 
                     <Button Height="46"
                             Margin="0,0,0,16"
-                            Style="{StaticResource PastelButton}"
+                            Style="{DynamicResource PastelButton}"
                             Command="{Binding FinalizeCommand}"
                             IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Continue]}"/>
@@ -111,7 +111,7 @@
                     <Button HorizontalAlignment="Center"
                             Command="{Binding GoBackCommand}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"
-                            Style="{StaticResource LinkButton}"/>
+                            Style="{DynamicResource LinkButton}"/>
                 </StackPanel>
             </Border>
         </Grid>

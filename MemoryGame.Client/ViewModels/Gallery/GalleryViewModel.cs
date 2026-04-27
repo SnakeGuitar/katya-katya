@@ -73,9 +73,6 @@ public partial class GalleryViewModel : ObservableObject
                 new CardVariant("Sketch",   $"{Moods}/standing/sketch-katya-standing-no-background.png")),
 
             Card(
-                new CardVariant("Original", $"{Moods}/happy/katya-happy.png")),
-
-            Card(
                 new CardVariant("Original", $"{Cards}/yumiko-1/yumiko-1-original.png")),
 
             Card(

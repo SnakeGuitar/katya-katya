@@ -11,9 +11,9 @@
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         ShowInTaskbar="False">
 
-    <Border Background="{StaticResource CardBackground}"
-            CornerRadius="{StaticResource CardCornerRadius}"
-            BorderBrush="{StaticResource PastelBorder}"
+    <Border Background="{DynamicResource CardBackground}"
+            CornerRadius="{DynamicResource CardCornerRadius}"
+            BorderBrush="{DynamicResource PastelBorder}"
             BorderThickness="1"
             Margin="10">
         <Border.Effect>
@@ -30,7 +30,7 @@
             <!-- Title -->
             <TextBlock Grid.Row="0"
                        Text="{Binding Title}"
-                       Style="{StaticResource PastelLabel}"
+                       Style="{DynamicResource PastelLabel}"
                        FontSize="13"
                        Margin="0,0,0,10"
                        HorizontalAlignment="Left"/>
@@ -38,7 +38,7 @@
             <!-- Message -->
             <TextBlock Grid.Row="1"
                        Text="{Binding Message}"
-                       Style="{StaticResource PastelTextBlock}"
+                       Style="{DynamicResource PastelTextBlock}"
                        TextWrapping="Wrap"
                        FontSize="14"
                        VerticalAlignment="Center"
@@ -53,28 +53,28 @@
                 <Button Content="OK"
                         Command="{Binding OKCommand}"
                         Visibility="{Binding OKVisibility}"
-                        Style="{StaticResource PastelButton}"
+                        Style="{DynamicResource PastelButton}"
                         MinWidth="80" Height="36"
                         Margin="8,0,0,0"/>
 
                 <Button Content="Cancel"
                         Command="{Binding CancelCommand}"
                         Visibility="{Binding CancelVisibility}"
-                        Style="{StaticResource PastelButtonSecondary}"
+                        Style="{DynamicResource PastelButtonSecondary}"
                         MinWidth="80" Height="36"
                         Margin="8,0,0,0"/>
 
                 <Button Content="Yes"
                         Command="{Binding YesCommand}"
                         Visibility="{Binding YesNoVisibility}"
-                        Style="{StaticResource PastelButton}"
+                        Style="{DynamicResource PastelButton}"
                         MinWidth="80" Height="36"
                         Margin="8,0,0,0"/>
 
                 <Button Content="No"
                         Command="{Binding NoCommand}"
                         Visibility="{Binding YesNoVisibility}"
-                        Style="{StaticResource PastelButtonSecondary}"
+                        Style="{DynamicResource PastelButtonSecondary}"
                         MinWidth="80" Height="36"
                         Margin="8,0,0,0"/>
             </StackPanel>

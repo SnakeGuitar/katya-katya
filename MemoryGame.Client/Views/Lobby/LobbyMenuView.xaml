@@ -24,7 +24,7 @@
             <!-- Title -->
             <TextBlock Grid.Row="0"
                        Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Multiplayer]}"
-                       Style="{StaticResource PastelHeading}"
+                       Style="{DynamicResource PastelHeading}"
                        HorizontalAlignment="Center"
                        Margin="0,0,0,20"/>
 
@@ -42,8 +42,8 @@
                 <StackPanel Grid.Column="0">
 
                     <!-- CREATE GAME -->
-                    <Border CornerRadius="{StaticResource CardCornerRadius}"
-                            Background="{StaticResource CardBackground}"
+                    <Border CornerRadius="{DynamicResource CardCornerRadius}"
+                            Background="{DynamicResource CardBackground}"
                             Padding="24,20" Margin="0,0,0,16">
                         <Border.Effect>
                             <DropShadowEffect ShadowDepth="3" BlurRadius="20" Color="#3D1C1C" Opacity="0.12"/>
@@ -51,28 +51,28 @@
 
                         <StackPanel>
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_CreateGame]}"
-                                       Style="{StaticResource PastelTextBlock}"
+                                       Style="{DynamicResource PastelTextBlock}"
                                        FontSize="16" FontWeight="SemiBold"
-                                       Foreground="{StaticResource PastelPrimary}"
+                                       Foreground="{DynamicResource PastelPrimary}"
                                        HorizontalAlignment="Center"
                                        Margin="0,0,0,12"/>
 
                             <CheckBox IsChecked="{Binding IsPublic}"
                                       Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_CheckBox_Public]}"
                                       HorizontalAlignment="Center"
-                                      FontFamily="{StaticResource DefaultFont}"
+                                      FontFamily="{DynamicResource DefaultFont}"
                                       FontSize="13"
-                                      Foreground="{StaticResource PastelText}"
+                                      Foreground="{DynamicResource PastelText}"
                                       Margin="0,0,0,12"
                                       IsEnabled="{Binding IsGuest, Converter={StaticResource InverseBoolConverter}}"/>
 
-                            <Button Style="{StaticResource PastelButton}"
+                            <Button Style="{DynamicResource PastelButton}"
                                     Command="{Binding CreateLobbyCommand}"
                                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_CreateLobby]}"
                                     IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Menu_Error_RequiresFullAccount]}"
-                                       Style="{StaticResource PastelTextBlock}"
+                                       Style="{DynamicResource PastelTextBlock}"
                                        FontSize="11" Foreground="#C84747"
                                        HorizontalAlignment="Center"
                                        TextWrapping="Wrap" TextAlignment="Center"
@@ -82,8 +82,8 @@
                     </Border>
 
                     <!-- JOIN BY CODE -->
-                    <Border CornerRadius="{StaticResource CardCornerRadius}"
-                            Background="{StaticResource CardBackground}"
+                    <Border CornerRadius="{DynamicResource CardCornerRadius}"
+                            Background="{DynamicResource CardBackground}"
                             Padding="24,20" Height="220">
                         <Border.Effect>
                             <DropShadowEffect ShadowDepth="3" BlurRadius="20" Color="#3D1C1C" Opacity="0.12"/>
@@ -91,9 +91,9 @@
 
                         <StackPanel>
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_JoinGame]}"
-                                       Style="{StaticResource PastelTextBlock}"
+                                       Style="{DynamicResource PastelTextBlock}"
                                        FontSize="16" FontWeight="SemiBold"
-                                       Foreground="{StaticResource PastelPrimary}"
+                                       Foreground="{DynamicResource PastelPrimary}"
                                        HorizontalAlignment="Center"
                                        Margin="0,0,0,12"/>
 
@@ -106,17 +106,17 @@
 
                                 <TextBox Text="{Binding JoinCode, UpdateSourceTrigger=PropertyChanged}"
                                          MaxLength="6"
-                                         Style="{StaticResource PastelTextBox}" Grid.ColumnSpan="2" Margin="0,0,3,0"/>
+                                         Style="{DynamicResource PastelTextBox}" Grid.ColumnSpan="2" Margin="0,0,3,0"/>
 
                                 <Button
-                                        Style="{StaticResource PastelButton}"
+                                        Style="{DynamicResource PastelButton}"
                                         Command="{Binding JoinByCodeCommand}"
                                         Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_JoinLobby]}"
                                         IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" Grid.ColumnSpan="2" Margin="2,77,5,-77"/>
                             </Grid>
 
                             <TextBlock Text="{Binding JoinCodeError}"
-                                       Style="{StaticResource PastelTextBlock}"
+                                       Style="{DynamicResource PastelTextBlock}"
                                        FontSize="11" Foreground="#C84747"
                                        Margin="0,4,0,0"
                                        Visibility="{Binding JoinCodeError, Converter={StaticResource NullToCollapsedConverter}}" RenderTransformOrigin="0.5,0.348"/>
@@ -128,8 +128,8 @@
                      RIGHT COLUMN: Public lobbies
                      ═══════════════════════════════════════════════════ -->
                 <Border Grid.Column="2"
-                        CornerRadius="{StaticResource CardCornerRadius}"
-                        Background="{StaticResource CardBackground}"
+                        CornerRadius="{DynamicResource CardCornerRadius}"
+                        Background="{DynamicResource CardBackground}"
                         Padding="24,20">
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="3" BlurRadius="20" Color="#3D1C1C" Opacity="0.12"/>
@@ -139,9 +139,9 @@
                         <!-- Header -->
                         <TextBlock DockPanel.Dock="Top"
                                    Text="Public Lobbies"
-                                   Style="{StaticResource PastelTextBlock}"
+                                   Style="{DynamicResource PastelTextBlock}"
                                    FontSize="16" FontWeight="SemiBold"
-                                   Foreground="{StaticResource PastelPrimary}"
+                                   Foreground="{DynamicResource PastelPrimary}"
                                    Margin="0,0,0,12"/>
 
                         <!-- Empty state -->
@@ -149,7 +149,7 @@
                                    FontSize="13" Opacity="0.5"
                                    HorizontalAlignment="Center" VerticalAlignment="Center">
                             <TextBlock.Style>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource PastelTextBlock}">
+                                <Style TargetType="TextBlock" BasedOn="{DynamicResource PastelTextBlock}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding PublicLobbies.Count}" Value="0">
@@ -172,7 +172,7 @@
                                             <Button.Template>
                                                 <ControlTemplate TargetType="Button">
                                                     <Border x:Name="Root"
-                                                            Background="{StaticResource PastelSecondary}"
+                                                            Background="{DynamicResource PastelSecondary}"
                                                             CornerRadius="8"
                                                             Padding="14,10">
                                                         <Grid>
@@ -183,23 +183,23 @@
 
                                                             <StackPanel>
                                                                 <TextBlock Text="{Binding GameCode}"
-                                                                           FontFamily="{StaticResource DefaultFont}"
+                                                                           FontFamily="{DynamicResource DefaultFont}"
                                                                            FontWeight="Bold" FontSize="15"
-                                                                           Foreground="{StaticResource PastelText}"/>
-                                                                <TextBlock FontFamily="{StaticResource DefaultFont}"
+                                                                           Foreground="{DynamicResource PastelText}"/>
+                                                                <TextBlock FontFamily="{DynamicResource DefaultFont}"
                                                                            FontSize="11" Opacity="0.6"
-                                                                           Foreground="{StaticResource PastelText}">
+                                                                           Foreground="{DynamicResource PastelText}">
                                                                     <Run Text="Host: "/><Run Text="{Binding HostUsername, Mode=OneWay}"/>
                                                                 </TextBlock>
                                                             </StackPanel>
 
                                                             <Border Grid.Column="1"
-                                                                    BorderBrush="{StaticResource PastelPrimary}"
+                                                                    BorderBrush="{DynamicResource PastelPrimary}"
                                                                     BorderThickness="1" CornerRadius="4"
                                                                     Padding="8,3" VerticalAlignment="Center">
-                                                                <TextBlock FontFamily="{StaticResource DefaultFont}"
+                                                                <TextBlock FontFamily="{DynamicResource DefaultFont}"
                                                                            FontWeight="SemiBold" FontSize="13"
-                                                                           Foreground="{StaticResource PastelText}">
+                                                                           Foreground="{DynamicResource PastelText}">
                                                                     <Run Text="{Binding CurrentPlayers, Mode=OneWay}"/><Run Text="/"/><Run Text="{Binding MaxPlayers, Mode=OneWay}"/>
                                                                 </TextBlock>
                                                             </Border>
@@ -207,7 +207,7 @@
                                                     </Border>
                                                     <ControlTemplate.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
-                                                            <Setter TargetName="Root" Property="Background" Value="{StaticResource PastelAccent}"/>
+                                                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource PastelAccent}"/>
                                                         </Trigger>
                                                     </ControlTemplate.Triggers>
                                                 </ControlTemplate>
@@ -227,7 +227,7 @@
                     Margin="0,20,0,0"
                     Command="{Binding GoBackCommand}"
                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"
-                    Style="{StaticResource LinkButton}"/>
+                    Style="{DynamicResource LinkButton}"/>
         </Grid>
     </Grid>
 </UserControl>

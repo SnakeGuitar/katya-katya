@@ -28,8 +28,8 @@
                    Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Gallery_Title]}"
                    FontSize="32"
                    FontWeight="Bold"
-                   FontFamily="{StaticResource DefaultFont}"
-                   Foreground="{StaticResource PastelText}"/>
+                   FontFamily="{DynamicResource DefaultFont}"
+                   Foreground="{DynamicResource PastelText}"/>
 
         <!-- Back button (Aligned below traffic lights) -->
         <Button Grid.Row="1"
@@ -39,7 +39,7 @@
                 Command="{Binding GoBackCommand}"
                 Width="48" Height="48"
                 Cursor="Hand"
-                Background="{StaticResource PastelPrimary}"
+                Background="{DynamicResource PastelPrimary}"
                 BorderThickness="0">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
@@ -51,7 +51,7 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Root" Property="Background" Value="{StaticResource PastelPrimaryHover}"/>
+                            <Setter TargetName="Root" Property="Background" Value="{DynamicResource PastelPrimaryHover}"/>
                             <Setter TargetName="Root" Property="RenderTransform">
                                 <Setter.Value>
                                     <ScaleTransform ScaleX="1.1" ScaleY="1.1" CenterX="24" CenterY="24"/>
@@ -80,15 +80,15 @@
 
         <!-- Card grid -->
         <Border Grid.Row="2"
-                Background="{StaticResource CardBackground}"
-                CornerRadius="{StaticResource CardCornerRadius}"
+                Background="{DynamicResource CardBackground}"
+                CornerRadius="{DynamicResource CardCornerRadius}"
                 Margin="40,10,40,20"
                 Padding="0,16">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.14" Color="#3D1C1C"/>
             </Border.Effect>
 
-            <ScrollViewer Style="{StaticResource PastelScrollViewer}"
+            <ScrollViewer Style="{DynamicResource PastelScrollViewer}"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl ItemsSource="{Binding Cards}" HorizontalAlignment="Center">
@@ -101,7 +101,7 @@
                     <DataTemplate>
                         <Border Width="260" Height="350"
                                 Margin="18,20"
-                                CornerRadius="{StaticResource CardCornerRadius}"
+                                CornerRadius="{DynamicResource CardCornerRadius}"
                                 Cursor="Hand"
                                 RenderTransformOrigin="0.5,1.0">
                             <Border.RenderTransform>
@@ -143,10 +143,11 @@
 
                                 <!-- Card image -->
                                 <Border Grid.Row="0" Grid.RowSpan="2"
-                                        CornerRadius="{StaticResource CardCornerRadius}"
+                                        CornerRadius="{DynamicResource CardCornerRadius}"
                                         ClipToBounds="True">
                                     <Image Source="{Binding Current.ImagePath}"
-                                           Stretch="UniformToFill"
+                                           Stretch="Uniform"
+                                           Margin="6"
                                            RenderOptions.BitmapScalingMode="HighQuality"/>
                                 </Border>
 
@@ -159,7 +160,7 @@
                                                Foreground="White"
                                                FontSize="13"
                                                FontWeight="SemiBold"
-                                               FontFamily="{StaticResource DefaultFont}"
+                                               FontFamily="{DynamicResource DefaultFont}"
                                                HorizontalAlignment="Center"/>
                                 </Border>
                             </Grid>
@@ -246,15 +247,15 @@
 
                 <!-- Expanded card -->
                 <Border Grid.Column="1"
-                        CornerRadius="{StaticResource CardCornerRadius}">
+                        CornerRadius="{DynamicResource CardCornerRadius}">
                     <Border.Effect>
                         <DropShadowEffect ShadowDepth="0" BlurRadius="48"
                                           Color="#000000" Opacity="0.55"/>
                     </Border.Effect>
                     <Grid>
                         <!-- Card image — drag to move -->
-                        <Border CornerRadius="{StaticResource CardCornerRadius}" ClipToBounds="True">
-                            <ScrollViewer x:Name="ExpandedScrollViewer" Style="{StaticResource PastelScrollViewer}" 
+                        <Border CornerRadius="{DynamicResource CardCornerRadius}" ClipToBounds="True">
+                            <ScrollViewer x:Name="ExpandedScrollViewer" Style="{DynamicResource PastelScrollViewer}" 
                                           HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
                                           behaviors:ZoomPanBehavior.IsEnabled="True"
                                           behaviors:ZoomPanBehavior.ResetZoomTrigger="{Binding SelectedCard.Current}">
@@ -275,12 +276,12 @@
                                            Foreground="White"
                                            FontSize="15"
                                            FontWeight="SemiBold"
-                                           FontFamily="{StaticResource DefaultFont}"
+                                           FontFamily="{DynamicResource DefaultFont}"
                                            HorizontalAlignment="Center"/>
                                 <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Gallery_Hint_Cycle]}"
                                            Foreground="#99FFFFFF"
                                            FontSize="11"
-                                           FontFamily="{StaticResource DefaultFont}"
+                                           FontFamily="{DynamicResource DefaultFont}"
                                            HorizontalAlignment="Center"
                                            Margin="0,3,0,0"/>
                             </StackPanel>

@@ -10,16 +10,16 @@
     <UserControl.Resources>
         <!-- Section card button style -->
         <Style x:Key="SectionCard" TargetType="Button">
-            <Setter Property="Background"      Value="{StaticResource CardBackground}"/>
+            <Setter Property="Background"      Value="{DynamicResource CardBackground}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor"          Value="Hand"/>
-            <Setter Property="FontFamily"      Value="{StaticResource DefaultFont}"/>
+            <Setter Property="FontFamily"      Value="{DynamicResource DefaultFont}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="Root"
                                 Background="{TemplateBinding Background}"
-                                CornerRadius="{StaticResource CardCornerRadius}"
+                                CornerRadius="{DynamicResource CardCornerRadius}"
                                 Padding="28,32"
                                 Width="200"
                                 Height="180">
@@ -30,7 +30,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Root" Property="Background" Value="{StaticResource PastelSecondary}"/>
+                                <Setter TargetName="Root" Property="Background" Value="{DynamicResource PastelSecondary}"/>
                                 <Setter TargetName="Root" Property="Effect">
                                     <Setter.Value>
                                         <DropShadowEffect BlurRadius="28" ShadowDepth="5" Opacity="0.22" Color="#C84747"/>
@@ -38,7 +38,7 @@
                                 </Setter>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Root" Property="Background" Value="{StaticResource PastelAccent}"/>
+                                <Setter TargetName="Root" Property="Background" Value="{DynamicResource PastelAccent}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -65,7 +65,7 @@
             <!-- Title -->
             <TextBlock Grid.Row="0"
                        Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_More]}"
-                       Style="{StaticResource PastelHeading}"
+                       Style="{DynamicResource PastelHeading}"
                        HorizontalAlignment="Center"/>
 
             <!-- Section cards -->
@@ -83,11 +83,11 @@
                                    HorizontalAlignment="Center"
                                    Margin="0,0,0,12"/>
                         <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Gallery_Title]}"
-                                   Style="{StaticResource PastelTextBlock}"
+                                   Style="{DynamicResource PastelTextBlock}"
                                    FontSize="15"
                                    FontWeight="SemiBold"
                                    HorizontalAlignment="Center"
-                                   Foreground="{StaticResource PastelText}"/>
+                                   Foreground="{DynamicResource PastelText}"/>
                     </StackPanel>
                 </Button>
 
@@ -101,11 +101,11 @@
                                    HorizontalAlignment="Center"
                                    Margin="0,0,0,12"/>
                         <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Profile]}"
-                                   Style="{StaticResource PastelTextBlock}"
+                                   Style="{DynamicResource PastelTextBlock}"
                                    FontSize="15"
                                    FontWeight="SemiBold"
                                    HorizontalAlignment="Center"
-                                   Foreground="{StaticResource PastelText}"/>
+                                   Foreground="{DynamicResource PastelText}"/>
                     </StackPanel>
                 </Button>
 
@@ -118,11 +118,11 @@
                                    HorizontalAlignment="Center"
                                    Margin="0,0,0,12"/>
                         <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Friends]}"
-                                   Style="{StaticResource PastelTextBlock}"
+                                   Style="{DynamicResource PastelTextBlock}"
                                    FontSize="15"
                                    FontWeight="SemiBold"
                                    HorizontalAlignment="Center"
-                                   Foreground="{StaticResource PastelText}"/>
+                                   Foreground="{DynamicResource PastelText}"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
@@ -132,7 +132,7 @@
                     HorizontalAlignment="Center"
                     Command="{Binding GoBackCommand}"
                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"
-                    Style="{StaticResource LinkButton}"/>
+                    Style="{DynamicResource LinkButton}"/>
         </Grid>
     </Grid>
 </UserControl>

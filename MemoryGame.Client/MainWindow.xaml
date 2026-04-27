@@ -23,7 +23,7 @@
         <KeyBinding Key="F11" Command="{Binding ToggleFullscreenCommand}"/>
     </Window.InputBindings>
 
-    <Border x:Name="MainWindowBorder" Background="{StaticResource PastelBackground}" CornerRadius="14" ClipToBounds="True">
+    <Border x:Name="MainWindowBorder" Background="{DynamicResource PastelBackground}" CornerRadius="14" ClipToBounds="True">
         <Border.Style>
             <Style TargetType="Border">
                 <Style.Triggers>
@@ -119,8 +119,8 @@
                    PlacementTarget="{Binding ElementName=MenuToggleBtn}"
                    Placement="Bottom" HorizontalOffset="-104" VerticalOffset="8"
                    StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade">
-                <Border Background="{StaticResource CardBackground}"
-                        CornerRadius="{StaticResource CardCornerRadius}"
+                <Border Background="{DynamicResource CardBackground}"
+                        CornerRadius="{DynamicResource CardCornerRadius}"
                         Padding="24,20"
                         DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=Popup}}">
                     <Border.Effect>
@@ -128,13 +128,13 @@
                     </Border.Effect>
                     <StackPanel Width="160">
                         <!-- Profile / Friends / Register -->
-                        <Button Style="{StaticResource PastelDropdownButton}" Command="{Binding GoToProfileCommand}" Margin="0,0,0,4" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Profile], FallbackValue=Profile}"/>
-                        <Button Style="{StaticResource PastelDropdownButton}" Command="{Binding GoToFriendsCommand}" Margin="0,0,0,4" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Friends], FallbackValue=Friends}"/>
-                        <Button Style="{StaticResource PastelDropdownButton}" Command="{Binding GoToGuestRegisterCommand}" Margin="0,0,0,4" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Register], FallbackValue=Register}" Visibility="{Binding GuestRegisterVisibility}"/>
+                        <Button Style="{DynamicResource PastelDropdownButton}" Command="{Binding GoToProfileCommand}" Margin="0,0,0,4" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Profile], FallbackValue=Profile}"/>
+                        <Button Style="{DynamicResource PastelDropdownButton}" Command="{Binding GoToFriendsCommand}" Margin="0,0,0,4" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Friends], FallbackValue=Friends}"/>
+                        <Button Style="{DynamicResource PastelDropdownButton}" Command="{Binding GoToGuestRegisterCommand}" Margin="0,0,0,4" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Register], FallbackValue=Register}" Visibility="{Binding GuestRegisterVisibility}"/>
                         
                         <!-- Settings -->
-                        <Rectangle Style="{StaticResource SectionDivider}" Margin="8,4,8,8" Height="1"/>
-                        <Button Style="{StaticResource PastelDropdownButton}" Command="{Binding GoToSettingsCommand}" Margin="0,0,0,0" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Settings], FallbackValue=Settings}"/>
+                        <Rectangle Style="{DynamicResource SectionDivider}" Margin="8,4,8,8" Height="1"/>
+                        <Button Style="{DynamicResource PastelDropdownButton}" Command="{Binding GoToSettingsCommand}" Margin="0,0,0,0" Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Settings], FallbackValue=Settings}"/>
                     </StackPanel>
                 </Border>
             </Popup>

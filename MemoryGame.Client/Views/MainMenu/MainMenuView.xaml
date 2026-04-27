@@ -29,8 +29,8 @@
                    Margin="0,0,0,20"/>
 
             <Border Margin="60,0,60,0"
-                    CornerRadius="{StaticResource CardCornerRadius}"
-                    Background="{StaticResource CardBackground}"
+                    CornerRadius="{DynamicResource CardCornerRadius}"
+                    Background="{DynamicResource CardBackground}"
                     Padding="32,28,32,24">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="4" BlurRadius="20"
@@ -40,34 +40,34 @@
                 <StackPanel>
 
                     <TextBlock Text="{Binding WelcomeMessage}"
-                               Style="{StaticResource PastelTextBlock}"
+                               Style="{DynamicResource PastelTextBlock}"
                                FontSize="17" FontWeight="SemiBold"
-                               Foreground="{StaticResource PastelPrimary}"
+                               Foreground="{DynamicResource PastelPrimary}"
                                HorizontalAlignment="Center"
                                TextAlignment="Center"
                                Margin="0,0,0,20"
                                TextWrapping="Wrap"/>
 
                     <Button Height="48" Margin="0,0,0,12"
-                            Style="{StaticResource PastelButton}"
+                            Style="{DynamicResource PastelButton}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Singleplayer]}"/>
 
                     <Button Height="48" Margin="0,0,0,12"
-                            Style="{StaticResource PastelButton}"
+                            Style="{DynamicResource PastelButton}"
                             Command="{Binding GoToMultiplayerCommand}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Multiplayer]}"/>
 
                     <Button Height="48" Margin="0,0,0,20"
-                            Style="{StaticResource PastelButton}"
+                            Style="{DynamicResource PastelButton}"
                             Command="{Binding GoToMoreCommand}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_More]}"/>
 
-                    <Rectangle Style="{StaticResource SectionDivider}" Margin="20,0,20,4"/>
+                    <Rectangle Style="{DynamicResource SectionDivider}" Margin="20,0,20,4"/>
 
                     <Button HorizontalAlignment="Center"
                             Command="{Binding LogoutCommand}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Logout]}"
-                            Style="{StaticResource LinkButton}"/>
+                            Style="{DynamicResource LinkButton}"/>
                 </StackPanel>
             </Border>
         </StackPanel>

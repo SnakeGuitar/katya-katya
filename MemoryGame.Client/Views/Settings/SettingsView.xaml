@@ -36,8 +36,8 @@
 
             <!-- RIGHT: Settings Card -->
             <Border Grid.Column="1"
-                    Background="{StaticResource CardBackground}"
-                    CornerRadius="{StaticResource CardCornerRadius}"
+                    Background="{DynamicResource CardBackground}"
+                    CornerRadius="{DynamicResource CardCornerRadius}"
                     Width="400"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
@@ -50,32 +50,32 @@
                 <StackPanel>
                     <!-- Title -->
                     <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Settings_Label_Language]}"
-                               Style="{StaticResource PastelHeading}"
+                               Style="{DynamicResource PastelHeading}"
                                HorizontalAlignment="Center"
                                Margin="0,0,0,28"/>
 
                     <!-- ── Language ─────────────────────────────── -->
                     <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Settings_Label_Language]}"
-                               Style="{StaticResource PastelLabel}"
+                               Style="{DynamicResource PastelLabel}"
                                Margin="0,0,0,8"/>
                     <ComboBox ItemsSource="{Binding Source={x:Static vm:SettingsViewModel.Languages}}"
                               SelectedItem="{Binding SelectedLanguage}"
                               DisplayMemberPath="NativeName"
-                              Style="{StaticResource PastelComboBox}"
+                              Style="{DynamicResource PastelComboBox}"
                               Margin="0,0,0,0"/>
 
-                    <Rectangle Style="{StaticResource SectionDivider}"/>
+                    <Rectangle Style="{DynamicResource SectionDivider}"/>
 
                     <!-- ── Theme ────────────────────────────────── -->
                     <TextBlock Text="Theme"
-                               Style="{StaticResource PastelLabel}"
+                               Style="{DynamicResource PastelLabel}"
                                Margin="0,0,0,8"/>
                     <ComboBox ItemsSource="{Binding Source={x:Static vm:SettingsViewModel.Themes}}"
                               SelectedItem="{Binding SelectedTheme}"
-                              Style="{StaticResource PastelComboBox}"
+                              Style="{DynamicResource PastelComboBox}"
                               Margin="0,0,0,0"/>
 
-                    <Rectangle Style="{StaticResource SectionDivider}"/>
+                    <Rectangle Style="{DynamicResource SectionDivider}"/>
 
                     <!-- ── Music ────────────────────────────────── -->
                     <Grid Margin="0,0,0,14">
@@ -85,22 +85,22 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
                                    Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Settings_Label_Music]}"
-                                   Style="{StaticResource PastelLabel}"
+                                   Style="{DynamicResource PastelLabel}"
                                    VerticalAlignment="Center"/>
                         <CheckBox Grid.Column="1"
                                   IsChecked="{Binding IsMusicEnabled}"
-                                  Style="{StaticResource ToggleSwitch}"/>
+                                  Style="{DynamicResource ToggleSwitch}"/>
                     </Grid>
 
                     <!-- Track selection (hidden when music is off) -->
                     <Grid Margin="0,0,0,12" Opacity="{Binding IsMusicEnabled, Converter={StaticResource InverseBoolConverter}}">
                         <TextBlock Text="Track"
-                                   Style="{StaticResource PastelLabel}"
+                                   Style="{DynamicResource PastelLabel}"
                                    Margin="0,0,0,8"/>
                     </Grid>
                     <ComboBox ItemsSource="{Binding AvailableTracks}"
                               SelectedIndex="{Binding SelectedTrackIndex}"
-                              Style="{StaticResource PastelComboBox}"
+                              Style="{DynamicResource PastelComboBox}"
                               Margin="0,0,0,12"
                               IsEnabled="{Binding IsMusicEnabled}">
                         <ComboBox.Opacity>
@@ -121,7 +121,7 @@
                         <Slider Grid.Column="0"
                                 Value="{Binding MusicVolume}"
                                 Minimum="0" Maximum="1"
-                                Style="{StaticResource PastelSlider}"
+                                Style="{DynamicResource PastelSlider}"
                                 VerticalAlignment="Center"
                                 IsEnabled="{Binding IsMusicEnabled}">
                             <Slider.Opacity>
@@ -134,13 +134,13 @@
                         </Slider>
                         <TextBlock Grid.Column="1"
                                    Text="{Binding MusicVolume, StringFormat={}{0:P0}}"
-                                   Style="{StaticResource PastelLabel}"
+                                   Style="{DynamicResource PastelLabel}"
                                    VerticalAlignment="Center"
                                    Margin="12,0,0,0"
                                    Opacity="{Binding IsMusicEnabled, Converter={StaticResource InverseBoolConverter}}"/>
                     </Grid>
 
-                    <Rectangle Style="{StaticResource SectionDivider}"/>
+                    <Rectangle Style="{DynamicResource SectionDivider}"/>
 
                     <!-- ── Display ──────────────────────────────── -->
                     <Grid Margin="0,0,0,0">
@@ -150,20 +150,20 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0"
                                    Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Settings_Label_Fullscreen]}"
-                                   Style="{StaticResource PastelLabel}"
+                                   Style="{DynamicResource PastelLabel}"
                                    VerticalAlignment="Center"/>
                         <CheckBox Grid.Column="1"
                                   IsChecked="{Binding IsFullscreen}"
-                                  Style="{StaticResource ToggleSwitch}"/>
+                                  Style="{DynamicResource ToggleSwitch}"/>
                     </Grid>
 
-                    <Rectangle Style="{StaticResource SectionDivider}"/>
+                    <Rectangle Style="{DynamicResource SectionDivider}"/>
 
                     <!-- Back button -->
                     <Button HorizontalAlignment="Center"
                             Command="{Binding GoBackCommand}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"
-                            Style="{StaticResource LinkButton}"/>
+                            Style="{DynamicResource LinkButton}"/>
                 </StackPanel>
             </Border>
         </Grid>
