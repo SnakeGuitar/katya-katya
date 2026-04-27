@@ -1,15 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MemoryGame.Client.Services.Core;
 using MemoryGame.Client.Services.Interfaces;
-using MemoryGame.Client.Services.Media;
-using MemoryGame.Client.Services.Network;
-using MemoryGame.Client.Services.UI;
 
 namespace MemoryGame.Client.ViewModels.Gallery;
 
 /// <summary>
-/// Gallery screen. Holds all available cards and their variants.
+/// Gallery screen. Holds all available cards laid out as scattered stickers.
 /// Add new cards to <see cref="BuildCards"/> as assets are introduced.
 /// </summary>
 public partial class GalleryViewModel : ObservableObject
@@ -43,40 +39,77 @@ public partial class GalleryViewModel : ObservableObject
 
     private static IReadOnlyList<GalleryCardViewModel> BuildCards()
     {
-        static GalleryCardViewModel Card(params CardVariant[] variants) => new(variants);
-
         const string Cards = "/Resources/Images/Cards";
         const string Moods = "/Resources/Images/Backgrounds/katya-moods";
 
-        return
-        [
-            Card(
-                new CardVariant("Color",    $"{Cards}/katya-1/katya-1-no-background.png"),
-                new CardVariant("Original", $"{Cards}/katya-1/katya-1-original.png")),
+        // Variants per card. First entry is shown by default.
+        var sets = new CardVariant[][]
+        {
+            [
+                new("Color",  $"{Cards}/katya-1/katya-1-no-background.png"),
+                new("Sketch", $"{Cards}/katya-1/katya-1-original-border.png"),
+            ],
+            [
+                new("Color",  $"{Moods}/main/katya-main-no-background.png"),
+                new("Sketch", $"{Moods}/main/sketch-katya-main-no-background.png"),
+            ],
+            [
+                new("Color",  $"{Moods}/in-love/katya-in-love-no-background.png"),
+                new("Sketch", $"{Moods}/in-love/sketch-katya-in-love-no-background.png"),
+            ],
+            [
+                new("Color",  $"{Moods}/shy/katya-shy-2-no-background.png"),
+                new("Sketch", $"{Moods}/shy/sketch-katya-shy-no-background.png"),
+            ],
+            [
+                new("Sketch", $"{Moods}/standing/sketch-katya-standing-no-background.png"),
+            ],
+            [
+                new("Sketch", $"{Cards}/yumiko-1/yumiko-1-original.png"),
+            ],
+            [
+                new("Sketch", $"{Cards}/akari-1/akari-1-original.png"),
+            ],
+            [
+                new("Sitting", "/Resources/Images/katya-sit-down.png"),
+            ],
+        };
 
-            Card(
-                new CardVariant("Color",    $"{Moods}/main/katya-main-no-background.png"),
-                new CardVariant("Original", $"{Moods}/main/katya-main.png"),
-                new CardVariant("Sketch",   $"{Moods}/main/sketch-katya-main-no-background.png")),
+        return ScatterLayout(sets);
+    }
 
-            Card(
-                new CardVariant("Color",    $"{Moods}/in-love/katya-in-love-no-background.png"),
-                new CardVariant("Original", $"{Moods}/in-love/katya-in-love.png"),
-                new CardVariant("Sketch",   $"{Moods}/in-love/sketch-katya-in-love-no-background.png")),
+    /// <summary>
+    /// Places the cards over a 4×2 grid with random jitter, rotation, size,
+    /// and z-index so they look like stickers piled on a market stand.
+    /// Uses a fixed seed so the layout is stable between sessions.
+    /// </summary>
+    private static IReadOnlyList<GalleryCardViewModel> ScatterLayout(CardVariant[][] sets)
+    {
+        const int    cols      = 4;
+        const double slotW     = 290;
+        const double slotH     = 420;
+        const double baseX     = 30;
+        const double baseY     = 20;
+        const double jitterXY  = 40;
+        const double tiltDeg   = 14;
 
-            Card(
-                new CardVariant("Color",    $"{Moods}/shy/katya-shy-2-no-background.png"),
-                new CardVariant("Original", $"{Moods}/shy/katya-shy-3.png"),
-                new CardVariant("Sketch",   $"{Moods}/shy/sketch-katya-shy-no-background.png")),
+        var rng    = new Random(0xC4F5);
+        var result = new GalleryCardViewModel[sets.Length];
 
-            Card(
-                new CardVariant("Sketch",   $"{Moods}/standing/sketch-katya-standing-no-background.png")),
+        for (int i = 0; i < sets.Length; i++)
+        {
+            int    col      = i % cols;
+            int    row      = i / cols;
+            double maxHeight = 340 + rng.NextDouble() * 40;       // 340–380
+            double maxWidth  = 280;
+            double x        = baseX + col * slotW + (rng.NextDouble() - 0.5) * jitterXY;
+            double y        = baseY + row * slotH + (rng.NextDouble() - 0.5) * jitterXY;
+            double rotation = (rng.NextDouble() - 0.5) * 2 * tiltDeg;
+            int    zIndex   = rng.Next(100);
 
-            Card(
-                new CardVariant("Original", $"{Cards}/yumiko-1/yumiko-1-original.png")),
+            result[i] = new GalleryCardViewModel(sets[i], x, y, maxWidth, maxHeight, rotation, zIndex);
+        }
 
-            Card(
-                new CardVariant("Original", $"{Cards}/akari-1/akari-1-original.png")),
-        ];
+        return result;
     }
 }
