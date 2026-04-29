@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 		<xsd:element name="root" msdata:IsDataSet="true">
@@ -449,6 +449,39 @@
 	</data>
 	<data name="Lobby_Message_LeaveLobby">
 		<value>确定要离开房间吗？</value>
+	</data>
+	<data name="Lobby_Message_Kicked">
+		<value>你已被移出房间。</value>
+	</data>
+	<data name="Lobby_Label_Chat">
+		<value>聊天</value>
+	</data>
+	<data name="Lobby_Label_Settings">
+		<value>设置</value>
+	</data>
+	<data name="Lobby_Label_NumberOfCards">
+		<value>卡片数量</value>
+	</data>
+	<data name="Lobby_Label_TimerLimit">
+		<value>时间限制</value>
+	</data>
+	<data name="Lobby_Label_Seconds">
+		<value>秒</value>
+	</data>
+	<data name="Lobby_Label_Cards">
+		<value>张</value>
+	</data>
+	<data name="Lobby_Label_Host">
+		<value>房主</value>
+	</data>
+	<data name="Lobby_Label_NotEnoughPlayers">
+		<value>至少需要2名玩家才能开始游戏。</value>
+	</data>
+	<data name="Lobby_Label_TypeMessage">
+		<value>输入消息...</value>
+	</data>
+	<data name="Lobby_Label_GuestsCannotChat">
+		<value>游客无法发送消息。</value>
 	</data>
 	<data name="KickVote_Message_VoteKickPlayer">
 		<value>是否投票踢出{0}？</value>

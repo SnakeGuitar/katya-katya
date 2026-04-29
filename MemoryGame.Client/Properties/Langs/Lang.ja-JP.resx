@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 		<xsd:element name="root" msdata:IsDataSet="true">
@@ -449,6 +449,39 @@
 	</data>
 	<data name="Lobby_Message_LeaveLobby">
 		<value>本当にロビーから退出しますか？</value>
+	</data>
+	<data name="Lobby_Message_Kicked">
+		<value>ロビーから追放されました。</value>
+	</data>
+	<data name="Lobby_Label_Chat">
+		<value>チャット</value>
+	</data>
+	<data name="Lobby_Label_Settings">
+		<value>設定</value>
+	</data>
+	<data name="Lobby_Label_NumberOfCards">
+		<value>カードの枚数</value>
+	</data>
+	<data name="Lobby_Label_TimerLimit">
+		<value>制限時間</value>
+	</data>
+	<data name="Lobby_Label_Seconds">
+		<value>秒</value>
+	</data>
+	<data name="Lobby_Label_Cards">
+		<value>枚</value>
+	</data>
+	<data name="Lobby_Label_Host">
+		<value>ホスト</value>
+	</data>
+	<data name="Lobby_Label_NotEnoughPlayers">
+		<value>ゲームを開始するには少なくとも2人のプレイヤーが必要です。</value>
+	</data>
+	<data name="Lobby_Label_TypeMessage">
+		<value>メッセージを入力...</value>
+	</data>
+	<data name="Lobby_Label_GuestsCannotChat">
+		<value>ゲストはメッセージを送信できません。</value>
 	</data>
 	<data name="KickVote_Message_VoteKickPlayer">
 		<value>{0}をキックする投票を行いますか？</value>

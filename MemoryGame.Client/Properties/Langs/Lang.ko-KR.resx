@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
 		<xsd:element name="root" msdata:IsDataSet="true">
@@ -445,6 +445,39 @@
 	</data>
 	<data name="Lobby_Message_LeaveLobby">
 		<value>정말로 로비에서 나가시겠습니까?</value>
+	</data>
+	<data name="Lobby_Message_Kicked">
+		<value>로비에서 강퇴되었습니다.</value>
+	</data>
+	<data name="Lobby_Label_Chat">
+		<value>채팅</value>
+	</data>
+	<data name="Lobby_Label_Settings">
+		<value>설정</value>
+	</data>
+	<data name="Lobby_Label_NumberOfCards">
+		<value>카드 수</value>
+	</data>
+	<data name="Lobby_Label_TimerLimit">
+		<value>시간 제한</value>
+	</data>
+	<data name="Lobby_Label_Seconds">
+		<value>초</value>
+	</data>
+	<data name="Lobby_Label_Cards">
+		<value>장</value>
+	</data>
+	<data name="Lobby_Label_Host">
+		<value>호스트</value>
+	</data>
+	<data name="Lobby_Label_NotEnoughPlayers">
+		<value>게임을 시작하려면 최소 2명의 플레이어가 필요합니다.</value>
+	</data>
+	<data name="Lobby_Label_TypeMessage">
+		<value>메시지 입력...</value>
+	</data>
+	<data name="Lobby_Label_GuestsCannotChat">
+		<value>게스트는 메시지를 보낼 수 없습니다.</value>
 	</data>
 	<data name="KickVote_Message_VoteKickPlayer">
 		<value>{0}님을 추방하는 투표에 참여하시겠습니까?</value>
