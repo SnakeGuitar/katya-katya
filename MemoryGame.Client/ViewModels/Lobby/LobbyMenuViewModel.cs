@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MemoryGame.Client.Localization;
@@ -14,7 +15,7 @@ namespace MemoryGame.Client.ViewModels.Lobby;
 /// <summary>
 /// Lobby menu — the entry point for multiplayer. Lets the player create a lobby
 /// (with optional public flag) or join one by code / from the public list.
-/// Public lobbies are fetched automatically on load via SignalR.
+/// Public lobbies are fetched automatically on load and refreshed periodically via SignalR.
 /// </summary>
 public partial class LobbyMenuViewModel : ObservableObject
 {
@@ -23,6 +24,9 @@ public partial class LobbyMenuViewModel : ObservableObject
     private readonly ILobbyService _lobbyService;
     private readonly IDialogService _dialog;
     private readonly HubService _hub;
+
+    private readonly DispatcherTimer _refreshTimer;
+    private bool _disposed;
 
     [ObservableProperty]
     private string _joinCode = string.Empty;
@@ -54,6 +58,12 @@ public partial class LobbyMenuViewModel : ObservableObject
         _hub = hub;
 
         _lobbyService.PublicLobbiesUpdated += OnPublicLobbiesReceived;
+
+        // Periodic refresh every 5 seconds so the public lobby list stays current
+        _refreshTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+        _refreshTimer.Tick += async (_, _) => await RefreshPublicLobbiesAsync();
+        _refreshTimer.Start();
+
         _ = LoadPublicLobbiesAsync();
     }
 
@@ -67,6 +77,19 @@ public partial class LobbyMenuViewModel : ObservableObject
         catch
         {
             // Silent — public lobbies are a nice-to-have, not blocking
+        }
+    }
+
+    private async Task RefreshPublicLobbiesAsync()
+    {
+        if (_disposed) return;
+        try
+        {
+            await _lobbyService.GetPublicLobbiesAsync();
+        }
+        catch
+        {
+            // Silent
         }
     }
 
@@ -111,6 +134,7 @@ public partial class LobbyMenuViewModel : ObservableObject
 
         App.Current.Dispatcher.Invoke(() =>
         {
+            Cleanup();
             _navigation.NavigateTo<HostLobbyViewModel>(vm => vm.GameCode = gameCode);
         });
     }
@@ -171,7 +195,7 @@ public partial class LobbyMenuViewModel : ObservableObject
 
         App.Current.Dispatcher.Invoke(() =>
         {
-            _lobbyService.PublicLobbiesUpdated -= OnPublicLobbiesReceived;
+            Cleanup();
             _navigation.NavigateTo<LobbyViewModel>(vm => vm.GameCode = JoinCode.Trim());
         });
     }
@@ -209,6 +233,8 @@ public partial class LobbyMenuViewModel : ObservableObject
 
     private void OnPublicLobbiesReceived(List<LobbySummaryDto> lobbies)
     {
+        if (_disposed) return;
+
         App.Current.Dispatcher.Invoke(() =>
         {
             PublicLobbies.Clear();
@@ -220,8 +246,21 @@ public partial class LobbyMenuViewModel : ObservableObject
     [RelayCommand]
     private void GoBack()
     {
-        _lobbyService.PublicLobbiesUpdated -= OnPublicLobbiesReceived;
+        Cleanup();
         _navigation.GoBack();
+    }
+
+    /// <summary>
+    /// Stops the refresh timer and unsubscribes from events.
+    /// Called when navigating away from this screen.
+    /// </summary>
+    private void Cleanup()
+    {
+        if (_disposed) return;
+        _disposed = true;
+
+        _refreshTimer.Stop();
+        _lobbyService.PublicLobbiesUpdated -= OnPublicLobbiesReceived;
     }
 
     private static string GenerateGameCode()

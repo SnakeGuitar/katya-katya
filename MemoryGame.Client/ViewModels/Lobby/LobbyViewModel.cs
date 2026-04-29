@@ -26,6 +26,7 @@ public partial class LobbyViewModel : ObservableObject
     private readonly HubService _hub;
 
     private bool _isGameStarting;
+    private bool _disposed;
 
     // ── Observable Properties ──────────────────────────────────────────────
 
@@ -43,6 +44,12 @@ public partial class LobbyViewModel : ObservableObject
 
     public bool IsGuest => _session.Current?.IsGuest == true;
     public string CurrentUsername => _session.Current?.Username ?? "Player";
+
+    /// <summary>
+    /// Fired when the chat needs to scroll to the newest message.
+    /// The View subscribes to this to scroll its ScrollViewer.
+    /// </summary>
+    public event Action? ScrollChatToBottom;
 
     // ── Constructor ────────────────────────────────────────────────────────
 
@@ -81,6 +88,9 @@ public partial class LobbyViewModel : ObservableObject
 
     private void UnsubscribeEvents()
     {
+        if (_disposed) return;
+        _disposed = true;
+
         _lobbyService.PlayerListUpdated -= OnPlayerListUpdated;
         _lobbyService.PlayerJoined -= OnPlayerJoined;
         _lobbyService.PlayerLeft -= OnPlayerLeft;
@@ -94,7 +104,7 @@ public partial class LobbyViewModel : ObservableObject
 
     private void OnPlayerListUpdated(List<LobbyPlayerDto> players)
     {
-        if (_isGameStarting) return;
+        if (_isGameStarting || _disposed) return;
 
         App.Current.Dispatcher.Invoke(() =>
         {
@@ -106,7 +116,7 @@ public partial class LobbyViewModel : ObservableObject
 
     private void OnPlayerJoined(string username, bool isGuest)
     {
-        if (_isGameStarting) return;
+        if (_isGameStarting || _disposed) return;
 
         App.Current.Dispatcher.Invoke(() =>
         {
@@ -117,7 +127,7 @@ public partial class LobbyViewModel : ObservableObject
 
     private void OnPlayerLeft(string username)
     {
-        if (_isGameStarting) return;
+        if (_isGameStarting || _disposed) return;
 
         App.Current.Dispatcher.Invoke(() =>
         {
@@ -128,12 +138,13 @@ public partial class LobbyViewModel : ObservableObject
 
     private void OnChatMessageReceived(string sender, string message, bool isSystem)
     {
-        if (_isGameStarting) return;
+        if (_isGameStarting || _disposed) return;
 
         App.Current.Dispatcher.Invoke(() =>
         {
             string formatted = isSystem ? $"⸻ {message} ⸻" : $"{sender}: {message}";
             ChatMessages.Add(formatted);
+            ScrollChatToBottom?.Invoke();
         });
     }
 
@@ -149,6 +160,8 @@ public partial class LobbyViewModel : ObservableObject
 
     private void OnKicked()
     {
+        if (_disposed) return;
+
         App.Current.Dispatcher.Invoke(() =>
         {
             UnsubscribeEvents();
@@ -162,6 +175,8 @@ public partial class LobbyViewModel : ObservableObject
 
     private void OnErrorReceived(string errorCode)
     {
+        if (_disposed) return;
+
         App.Current.Dispatcher.Invoke(() =>
         {
             IsLoading = false;
@@ -249,6 +264,7 @@ public partial class LobbyViewModel : ObservableObject
     private void AddSystemMessage(string message)
     {
         ChatMessages.Add($"⸻ {message} ⸻");
+        ScrollChatToBottom?.Invoke();
     }
 
     private async Task SafeLeaveAsync()
