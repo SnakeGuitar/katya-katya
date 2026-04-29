@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -216,6 +216,17 @@
   <data name="Lobby_Notification_PlayerJoined"><value>{0} joined the lobby.</value></data>
   <data name="Lobby_Notification_PlayerLeft"><value>{0} left the lobby.</value></data>
   <data name="Lobby_Message_LeaveLobby"><value>Are you sure you want to leave the lobby?</value></data>
+  <data name="Lobby_Message_Kicked"><value>You have been kicked from the lobby.</value></data>
+  <data name="Lobby_Label_Chat"><value>Chat</value></data>
+  <data name="Lobby_Label_Settings"><value>Settings</value></data>
+  <data name="Lobby_Label_NumberOfCards"><value>Number of Cards</value></data>
+  <data name="Lobby_Label_TimerLimit"><value>Timer Limit</value></data>
+  <data name="Lobby_Label_Seconds"><value>seconds</value></data>
+  <data name="Lobby_Label_Cards"><value>cards</value></data>
+  <data name="Lobby_Label_Host"><value>Host</value></data>
+  <data name="Lobby_Label_NotEnoughPlayers"><value>At least 2 players are required to start the game.</value></data>
+  <data name="Lobby_Label_TypeMessage"><value>Type a message...</value></data>
+  <data name="Lobby_Label_GuestsCannotChat"><value>Guests cannot send messages.</value></data>
   <data name="KickVote_Message_VoteKickPlayer"><value>Vote to kick {0}?</value></data>
 
   <!-- =====================================================================
