@@ -328,7 +328,24 @@ public class GameLobbyHub : Hub
     {
         var userId = GetUserId();
         if (userId > 0)
+        {
+            // If the user was already in a lobby (orphaned session), remove them
+            var oldLobby = _lobbyManager.FindLobbyByUserId(userId);
+            if (oldLobby is not null)
+            {
+                var oldPlayer = oldLobby.Players.Values.FirstOrDefault(p => p.UserId == userId);
+                if (oldPlayer is not null)
+                {
+                    oldLobby.RemovePlayer(oldPlayer.ConnectionId);
+                    if (oldLobby.Players.Count == 0)
+                        _lobbyManager.RemoveLobby(oldLobby.GameCode);
+                    else
+                        await Clients.Group(oldLobby.GameCode).SendAsync("UpdatePlayerList", oldLobby.GetPlayerList());
+                }
+            }
+            
             _presenceTracker.Track(userId, Context.ConnectionId);
+        }
 
         await base.OnConnectedAsync();
     }

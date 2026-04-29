@@ -27,12 +27,19 @@ public class LobbyService : ILobbyService
     {
         _hubService = hubService;
         _hubService.ConnectionEstablished += AttachHandlers;
+
+        if (_hubService.Connection is not null)
+        {
+            AttachHandlers(_hubService.Connection);
+        }
     }
 
     private void AttachHandlers(HubConnection connection)
     {
         connection.On<string>("LobbyCreated", code => LobbyCreated?.Invoke(code));
+        
         connection.On<List<LobbyPlayerDto>>("UpdatePlayerList", players => PlayerListUpdated?.Invoke(players));
+
         connection.On<string, bool>("PlayerJoined", (user, guest) => PlayerJoined?.Invoke(user, guest));
         connection.On<string>("PlayerLeft", user => PlayerLeft?.Invoke(user));
         connection.On("Kicked", () => Kicked?.Invoke());
@@ -46,37 +53,46 @@ public class LobbyService : ILobbyService
 
     public async Task CreateLobbyAsync(string gameCode, bool isPublic)
     {
-        if (_hubService.Connection is not null)
-            await _hubService.Connection.InvokeAsync("CreateLobby", gameCode, isPublic);
+        var connection = GetActiveConnection();
+        await connection.InvokeAsync("CreateLobby", gameCode, isPublic);
     }
 
     public async Task JoinLobbyAsync(string gameCode)
     {
-        if (_hubService.Connection is not null)
-            await _hubService.Connection.InvokeAsync("JoinLobby", gameCode);
+        var connection = GetActiveConnection();
+        await connection.InvokeAsync("JoinLobby", gameCode);
     }
 
     public async Task LeaveLobbyAsync()
     {
-        if (_hubService.Connection is not null)
-            await _hubService.Connection.InvokeAsync("LeaveLobby");
+        var connection = GetActiveConnection();
+        await connection.InvokeAsync("LeaveLobby");
     }
 
     public async Task VoteToKickAsync(string targetUsername)
     {
-        if (_hubService.Connection is not null)
-            await _hubService.Connection.InvokeAsync("VoteToKick", targetUsername);
+        var connection = GetActiveConnection();
+        await connection.InvokeAsync("VoteToKick", targetUsername);
     }
 
     public async Task GetPublicLobbiesAsync()
     {
-        if (_hubService.Connection is not null)
-            await _hubService.Connection.InvokeAsync("GetPublicLobbies");
+        var connection = GetActiveConnection();
+        await connection.InvokeAsync("GetPublicLobbies");
     }
 
     public async Task InviteFriendAsync(int targetUserId)
     {
-        if (_hubService.Connection is not null)
-            await _hubService.Connection.InvokeAsync("InviteFriend", targetUserId);
+        var connection = GetActiveConnection();
+        await connection.InvokeAsync("InviteFriend", targetUserId);
+    }
+
+    private HubConnection GetActiveConnection()
+    {
+        if (_hubService.Connection is null || _hubService.Connection.State != HubConnectionState.Connected)
+        {
+            throw new InvalidOperationException("Not connected to game server.");
+        }
+        return _hubService.Connection;
     }
 }

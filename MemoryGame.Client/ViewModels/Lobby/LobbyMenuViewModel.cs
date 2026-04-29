@@ -37,6 +37,8 @@ public partial class LobbyMenuViewModel : ObservableObject
     [ObservableProperty]
     private bool _isLoading;
 
+    private bool _isJoining;
+
     [ObservableProperty]
     private string? _joinCodeError;
 
@@ -58,6 +60,9 @@ public partial class LobbyMenuViewModel : ObservableObject
         _hub = hub;
 
         _lobbyService.PublicLobbiesUpdated += OnPublicLobbiesReceived;
+        _lobbyService.LobbyCreated += OnLobbyCreated;
+        _lobbyService.ErrorReceived += OnLobbyError;
+        _lobbyService.PlayerListUpdated += OnJoinSuccess;
 
         // Periodic refresh every 5 seconds so the public lobby list stays current
         _refreshTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
@@ -74,15 +79,15 @@ public partial class LobbyMenuViewModel : ObservableObject
             await _hub.ConnectAsync();
             await _lobbyService.GetPublicLobbiesAsync();
         }
-        catch
+        catch (Exception ex)
         {
-            // Silent — public lobbies are a nice-to-have, not blocking
+            System.Diagnostics.Debug.WriteLine($"[LobbyMenu] Initial connection failed: {ex.Message}");
         }
     }
 
     private async Task RefreshPublicLobbiesAsync()
     {
-        if (_disposed) return;
+        if (_disposed || IsLoading || !_hub.IsConnected) return;
         try
         {
             await _lobbyService.GetPublicLobbiesAsync();
@@ -105,22 +110,45 @@ public partial class LobbyMenuViewModel : ObservableObject
             return;
         }
 
+        _isJoining = false;
         IsLoading = true;
 
         try
         {
-            await _hub.ConnectAsync();
+            // Set a timeout for the connection and creation process
+            var connectTask = _hub.ConnectAsync();
+            var timeoutTask = Task.Delay(10000); // 10 seconds timeout
+
+            var completedTask = await Task.WhenAny(connectTask, timeoutTask);
+            if (completedTask == timeoutTask)
+            {
+                throw new TimeoutException("Connection to server timed out.");
+            }
+
+            await connectTask; // Propagate any exception from the connection itself
 
             string gameCode = GenerateGameCode();
-            _lobbyService.LobbyCreated += OnLobbyCreated;
-            _lobbyService.ErrorReceived += OnCreateError;
-            await _lobbyService.CreateLobbyAsync(gameCode, IsPublic);
+            var createLobbyTask = _lobbyService.CreateLobbyAsync(gameCode, IsPublic);
+            var createTimeoutTask = Task.Delay(10000);
+            var completedCreateTask = await Task.WhenAny(createLobbyTask, createTimeoutTask);
+
+            if (completedCreateTask == createTimeoutTask)
+            {
+                throw new TimeoutException("Server did not respond to CreateLobby.");
+            }
+
+            await createLobbyTask;
+            
+            // Note: OnLobbyCreated or OnLobbyError will reset IsLoading
         }
-        catch
+        catch (Exception ex)
         {
             IsLoading = false;
-            _dialog.ShowMessage(
-                LocalizationManager.Instance["Error_Network"],
+            string errorMessage = ex is TimeoutException 
+                ? "Timed out connecting to server." 
+                : $"Network error: {ex.Message}";
+
+            _dialog.ShowMessage(errorMessage,
                 LocalizationManager.Instance["Global_Title_Error"],
                 DialogButton.OK, DialogIcon.Error);
         }
@@ -128,30 +156,39 @@ public partial class LobbyMenuViewModel : ObservableObject
 
     private void OnLobbyCreated(string gameCode)
     {
-        _lobbyService.LobbyCreated -= OnLobbyCreated;
-        _lobbyService.ErrorReceived -= OnCreateError;
-        IsLoading = false;
+        if (_disposed) return;
 
         App.Current.Dispatcher.Invoke(() =>
         {
-            Cleanup();
+            IsLoading = false;
+            JoinCode = string.Empty; // Clear fields for the next time
+            JoinCodeError = null;
+            // Removed Cleanup() so the ViewModel stays alive when returning from HostLobby
             _navigation.NavigateTo<HostLobbyViewModel>(vm => vm.GameCode = gameCode);
         });
     }
 
-    private void OnCreateError(string errorCode)
+    private void OnLobbyError(string errorCode)
     {
-        _lobbyService.LobbyCreated -= OnLobbyCreated;
-        _lobbyService.ErrorReceived -= OnCreateError;
-        IsLoading = false;
+        if (_disposed) return;
 
         App.Current.Dispatcher.Invoke(() =>
         {
-            string message = LocalizationManager.Instance[$"Error_{errorCode}"]
-                             ?? LocalizationManager.Instance["Error_Network"];
-            _dialog.ShowMessage(message,
-                LocalizationManager.Instance["Global_Title_Error"],
-                DialogButton.OK, DialogIcon.Error);
+            IsLoading = false;
+            
+            if (errorCode == "LOBBY_NOT_FOUND" || errorCode == "LOBBY_FULL" || errorCode == "LOBBY_GAME_IN_PROGRESS")
+            {
+                JoinCodeError = LocalizationManager.Instance[$"Error_{errorCode}"]
+                                 ?? LocalizationManager.Instance["Error_Network"];
+            }
+            else
+            {
+                string message = LocalizationManager.Instance[$"Error_{errorCode}"]
+                                 ?? LocalizationManager.Instance["Error_Network"];
+                _dialog.ShowMessage(message,
+                    LocalizationManager.Instance["Global_Title_Error"],
+                    DialogButton.OK, DialogIcon.Error);
+            }
         });
     }
 
@@ -168,20 +205,18 @@ public partial class LobbyMenuViewModel : ObservableObject
             return;
         }
 
+        _isJoining = true;
         IsLoading = true;
 
         try
         {
             await _hub.ConnectAsync();
-            _lobbyService.ErrorReceived += OnJoinError;
-            _lobbyService.PlayerListUpdated += OnJoinSuccess;
             await _lobbyService.JoinLobbyAsync(code);
         }
-        catch
+        catch (Exception ex)
         {
             IsLoading = false;
-            _dialog.ShowMessage(
-                LocalizationManager.Instance["Error_Network"],
+            _dialog.ShowMessage($"Join failed: {ex.Message}",
                 LocalizationManager.Instance["Global_Title_Error"],
                 DialogButton.OK, DialogIcon.Error);
         }
@@ -189,28 +224,16 @@ public partial class LobbyMenuViewModel : ObservableObject
 
     private void OnJoinSuccess(List<LobbyPlayerDto> _)
     {
-        _lobbyService.PlayerListUpdated -= OnJoinSuccess;
-        _lobbyService.ErrorReceived -= OnJoinError;
-        IsLoading = false;
+        if (_disposed || !_isJoining) return;
 
         App.Current.Dispatcher.Invoke(() =>
         {
-            Cleanup();
-            _navigation.NavigateTo<LobbyViewModel>(vm => vm.GameCode = JoinCode.Trim());
-        });
-    }
-
-    private void OnJoinError(string errorCode)
-    {
-        _lobbyService.PlayerListUpdated -= OnJoinSuccess;
-        _lobbyService.ErrorReceived -= OnJoinError;
-        IsLoading = false;
-
-        App.Current.Dispatcher.Invoke(() =>
-        {
-            string message = LocalizationManager.Instance[$"Error_{errorCode}"]
-                             ?? LocalizationManager.Instance["Error_Network"];
-            JoinCodeError = message;
+            IsLoading = false;
+            string code = JoinCode?.Trim() ?? string.Empty;
+            JoinCode = string.Empty; // Clear fields for the next time
+            JoinCodeError = null;
+            // Removed Cleanup() so the ViewModel stays alive when returning from Lobby
+            _navigation.NavigateTo<LobbyViewModel>(vm => vm.GameCode = code);
         });
     }
 
@@ -250,10 +273,6 @@ public partial class LobbyMenuViewModel : ObservableObject
         _navigation.GoBack();
     }
 
-    /// <summary>
-    /// Stops the refresh timer and unsubscribes from events.
-    /// Called when navigating away from this screen.
-    /// </summary>
     private void Cleanup()
     {
         if (_disposed) return;
@@ -261,6 +280,9 @@ public partial class LobbyMenuViewModel : ObservableObject
 
         _refreshTimer.Stop();
         _lobbyService.PublicLobbiesUpdated -= OnPublicLobbiesReceived;
+        _lobbyService.LobbyCreated -= OnLobbyCreated;
+        _lobbyService.ErrorReceived -= OnLobbyError;
+        _lobbyService.PlayerListUpdated -= OnJoinSuccess;
     }
 
     private static string GenerateGameCode()

@@ -1,7 +1,10 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
+using MemoryGame.Client.Services.Interfaces;
 
 namespace MemoryGame.Client.Services.Network;
-using MemoryGame.Client.Services.Interfaces;
 
 /// <summary>
 /// Manages the SignalR hub connection lifecycle.
@@ -12,6 +15,8 @@ public class HubService : IAsyncDisposable, IDisposable
     private readonly ISessionService _session;
     private readonly string _hubUrl;
     private HubConnection? _connection;
+    private Task? _connectTask;
+    private readonly SemaphoreSlim _connectionLock = new(1, 1);
 
     public HubService(ISessionService session, string hubUrl)
     {
@@ -37,37 +42,84 @@ public class HubService : IAsyncDisposable, IDisposable
 
     /// <summary>
     /// Builds and starts the hub connection using the current session's JWT.
-    /// If already connected, this is a no-op.
+    /// If already connected, returns immediately.
+    /// If a connection is in progress, waits for it to complete.
     /// </summary>
     public async Task ConnectAsync()
     {
-        // Already connected — nothing to do
-        if (_connection is not null && _connection.State == HubConnectionState.Connected)
-            return;
+        Task? taskToWait = null;
 
-        // Connection exists but is in a bad state — tear it down first
-        if (_connection is not null)
+        await _connectionLock.WaitAsync();
+        try
         {
-            try { await _connection.DisposeAsync(); } catch { /* best-effort */ }
-            _connection = null;
+            // If already connected, we're done.
+            if (_connection?.State == HubConnectionState.Connected)
+                return;
+
+            // If a connection attempt is already in progress, capture the task and wait outside the lock.
+            if (_connectTask != null)
+            {
+                taskToWait = _connectTask;
+            }
+            else
+            {
+                // Start a new connection attempt
+                _connectTask = ConnectInternalAsync();
+                taskToWait = _connectTask;
+            }
+        }
+        finally
+        {
+            _connectionLock.Release();
         }
 
-        if (_session.Current is null)
-            throw new InvalidOperationException("Cannot connect to hub without an active session.");
+        if (taskToWait != null)
+        {
+            await taskToWait;
+        }
+    }
 
-        var token = _session.Current.AccessToken;
-
-        _connection = new HubConnectionBuilder()
-            .WithUrl(_hubUrl, options =>
+    private async Task ConnectInternalAsync()
+    {
+        try
+        {
+            if (_connection is not null)
             {
-                options.AccessTokenProvider = () => Task.FromResult<string?>(token);
-            })
-            .WithAutomaticReconnect()
-            .Build();
+                try { await _connection.DisposeAsync(); } catch { /* best-effort */ }
+                _connection = null;
+            }
 
-        ConnectionEstablished?.Invoke(_connection);
+            if (_session.Current is null)
+            {
+                throw new InvalidOperationException("Cannot connect to hub without an active session.");
+            }
 
-        await _connection.StartAsync();
+            var token = _session.Current.AccessToken;
+
+            _connection = new HubConnectionBuilder()
+                .WithUrl(_hubUrl, options =>
+                {
+                    options.AccessTokenProvider = () => Task.FromResult<string?>(token);
+                })
+                .WithAutomaticReconnect()
+                .Build();
+
+            ConnectionEstablished?.Invoke(_connection);
+
+            await _connection.StartAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[HubService] Connection failed: {ex.Message}");
+            throw;
+        }
+        finally
+        {
+            // Reset the connect task so the next call can try again if it failed
+            await _connectionLock.WaitAsync();
+            _connectTask = null;
+            _connectionLock.Release();
+        }
     }
 
     /// <summary>
@@ -75,11 +127,20 @@ public class HubService : IAsyncDisposable, IDisposable
     /// </summary>
     public async Task DisconnectAsync()
     {
-        if (_connection is not null)
+        await _connectionLock.WaitAsync();
+        try
         {
-            await _connection.StopAsync();
-            await _connection.DisposeAsync();
-            _connection = null;
+            if (_connection is not null)
+            {
+                await _connection.StopAsync();
+                await _connection.DisposeAsync();
+                _connection = null;
+            }
+            _connectTask = null;
+        }
+        finally
+        {
+            _connectionLock.Release();
         }
     }
 

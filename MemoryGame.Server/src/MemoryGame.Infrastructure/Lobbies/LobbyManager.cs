@@ -49,4 +49,11 @@ public class LobbyManager : ILobbyManager
     {
         return _lobbies.Values.FirstOrDefault(l => l.GetPlayer(connectionId) is not null);
     }
+
+    /// <inheritdoc/>
+    public Lobby? FindLobbyByUserId(int userId)
+    {
+        if (userId <= 0) return null;
+        return _lobbies.Values.FirstOrDefault(l => l.Players.Values.Any(p => p.UserId == userId));
+    }
 }

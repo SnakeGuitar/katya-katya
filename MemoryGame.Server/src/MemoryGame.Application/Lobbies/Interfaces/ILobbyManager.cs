@@ -32,4 +32,9 @@ public interface ILobbyManager
     /// Finds which lobby a connection ID is currently in.
     /// </summary>
     Lobby? FindLobbyByConnection(string connectionId);
+
+    /// <summary>
+    /// Finds which lobby a user ID is currently in.
+    /// </summary>
+    Lobby? FindLobbyByUserId(int userId);
 }
