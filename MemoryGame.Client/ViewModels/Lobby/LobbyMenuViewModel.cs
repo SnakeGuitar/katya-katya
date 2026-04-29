@@ -273,6 +273,10 @@ public partial class LobbyMenuViewModel : ObservableObject
         _navigation.GoBack();
     }
 
+    /// <summary>
+    /// Stops the refresh timer and unsubscribes from events.
+    /// Called when navigating away from this screen.
+    /// </summary>
     private void Cleanup()
     {
         if (_disposed) return;
