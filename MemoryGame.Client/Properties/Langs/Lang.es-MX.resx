@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -216,6 +216,17 @@
   <data name="Lobby_Notification_PlayerJoined"><value>{0} se unió a la sala.</value></data>
   <data name="Lobby_Notification_PlayerLeft"><value>{0} abandonó la sala.</value></data>
   <data name="Lobby_Message_LeaveLobby"><value>¿Seguro que quieres salir de la sala?</value></data>
+  <data name="Lobby_Message_Kicked"><value>Has sido expulsado de la sala.</value></data>
+  <data name="Lobby_Label_Chat"><value>Chat</value></data>
+  <data name="Lobby_Label_Settings"><value>Ajustes</value></data>
+  <data name="Lobby_Label_NumberOfCards"><value>Número de Cartas</value></data>
+  <data name="Lobby_Label_TimerLimit"><value>Tiempo Límite</value></data>
+  <data name="Lobby_Label_Seconds"><value>segundos</value></data>
+  <data name="Lobby_Label_Cards"><value>cartas</value></data>
+  <data name="Lobby_Label_Host"><value>Anfitrión</value></data>
+  <data name="Lobby_Label_NotEnoughPlayers"><value>Se requieren al menos 2 jugadores para iniciar la partida.</value></data>
+  <data name="Lobby_Label_TypeMessage"><value>Escribe un mensaje...</value></data>
+  <data name="Lobby_Label_GuestsCannotChat"><value>Los invitados no pueden enviar mensajes.</value></data>
   <data name="KickVote_Message_VoteKickPlayer"><value>¿Votar para expulsar a {0}?</value></data>
 
   <!-- =====================================================================

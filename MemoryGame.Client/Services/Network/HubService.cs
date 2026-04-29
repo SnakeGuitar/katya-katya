@@ -37,9 +37,21 @@ public class HubService : IAsyncDisposable, IDisposable
 
     /// <summary>
     /// Builds and starts the hub connection using the current session's JWT.
+    /// If already connected, this is a no-op.
     /// </summary>
     public async Task ConnectAsync()
     {
+        // Already connected — nothing to do
+        if (_connection is not null && _connection.State == HubConnectionState.Connected)
+            return;
+
+        // Connection exists but is in a bad state — tear it down first
+        if (_connection is not null)
+        {
+            try { await _connection.DisposeAsync(); } catch { /* best-effort */ }
+            _connection = null;
+        }
+
         if (_session.Current is null)
             throw new InvalidOperationException("Cannot connect to hub without an active session.");
 
