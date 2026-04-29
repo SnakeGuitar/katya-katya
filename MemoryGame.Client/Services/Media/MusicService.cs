@@ -27,7 +27,7 @@ public class MusicService : IDisposable
             var all = Directory.GetFiles(musicDir, "*.mp3");
 
             var sujioegaku = all.FirstOrDefault(t =>
-                Path.GetFileName(t).Contains("??????", StringComparison.OrdinalIgnoreCase));
+                Path.GetFileName(t).Contains("すじをえがく", StringComparison.OrdinalIgnoreCase));
 
             _tracks = sujioegaku is null
                 ? all
