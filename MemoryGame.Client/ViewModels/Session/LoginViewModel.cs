@@ -68,9 +68,19 @@ public partial class LoginViewModel : BaseViewModel
 /// DTO matching the server's login response.
 /// </summary>
 public record LoginResponse(
+    string AccessToken,
+    string RefreshToken,
+    LoginUserData User)
+{
+    public int UserId => User.UserId;
+    public string Username => User.Username;
+    public string Email => User.Email;
+    public bool IsGuest => User.IsGuest;
+}
+
+public record LoginUserData(
     int UserId,
     string Username,
     string Email,
     bool IsGuest,
-    string AccessToken,
-    string RefreshToken);
+    bool VerifiedEmail);
