@@ -70,6 +70,16 @@ public partial class LobbyViewModel : ObservableObject
         _dialog = dialog;
         _hub = hub;
 
+        // Initialize with currently known players on the UI thread
+        App.Current.Dispatcher.Invoke(() =>
+        {
+            Players.Clear();
+            foreach (var p in _lobbyService.CurrentPlayers)
+            {
+                Players.Add(p);
+            }
+        });
+
         SubscribeEvents();
     }
 
@@ -153,8 +163,13 @@ public partial class LobbyViewModel : ObservableObject
         App.Current.Dispatcher.Invoke(() =>
         {
             _isGameStarting = true;
+            var playersSnapshot = Players.ToList();
             UnsubscribeEvents();
-            // TODO: Navigate to the multiplayer board view when implemented
+
+            _navigation.NavigateTo<GameBoardViewModel>(vm =>
+            {
+                vm.Initialize(cards, playersSnapshot);
+            });
         });
     }
 

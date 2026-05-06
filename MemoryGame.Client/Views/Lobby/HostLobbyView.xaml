@@ -133,6 +133,7 @@
                                                                 <ColumnDefinition Width="Auto"/>
                                                                 <ColumnDefinition Width="*"/>
                                                                 <ColumnDefinition Width="Auto"/>
+                                                                <ColumnDefinition Width="Auto"/>
                                                             </Grid.ColumnDefinitions>
 
                                                             <!-- Avatar placeholder -->
@@ -155,14 +156,9 @@
                                                                 </TextBlock>
                                                                 <TextBlock Style="{DynamicResource PastelLabel}"
                                                                            FontSize="11"
-                                                                           Opacity="0.6">
-                                                                    <TextBlock.Text>
-                                                                        <Binding Path="IsHost"
-                                                                                 Converter="{StaticResource BoolToVisibilityConverter}"
-                                                                                 ConverterParameter="Host"
-                                                                                 FallbackValue=""/>
-                                                                    </TextBlock.Text>
-                                                                </TextBlock>
+                                                                           Opacity="0.6"
+                                                                           Text="Host"
+                                                                           Visibility="{Binding IsHost, Converter={StaticResource BoolToVisibilityConverter}}"/>
                                                             </StackPanel>
 
                                                             <!-- Host badge -->
@@ -173,6 +169,26 @@
                                                                            FontSize="16"
                                                                            VerticalAlignment="Center"/>
                                                             </Border>
+
+                                                            <!-- Kick button (visible only for non-host players) -->
+                                                            <Button Grid.Column="3"
+                                                                    Content="✕"
+                                                                    ToolTip="Kick player"
+                                                                    FontSize="14"
+                                                                    Width="28" Height="28"
+                                                                    Margin="6,0,0,0"
+                                                                    VerticalAlignment="Center"
+                                                                    Command="{Binding DataContext.KickPlayerCommand,
+                                                                              RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                    CommandParameter="{Binding}"
+                                                                    Style="{DynamicResource PastelButton}"
+                                                                    Padding="0">
+                                                                <Button.Visibility>
+                                                                    <Binding Path="IsHost"
+                                                                             Converter="{StaticResource BoolToVisibilityConverter}"
+                                                                             ConverterParameter="Invert"/>
+                                                                </Button.Visibility>
+                                                            </Button>
                                                         </Grid>
                                                     </Border>
                                                 </DataTemplate>
@@ -234,7 +250,11 @@
 
                                         <TextBox Grid.Column="0"
                                                  Text="{Binding ChatMessage, UpdateSourceTrigger=PropertyChanged}"
-                                                 Style="{DynamicResource PastelTextBox}"/>
+                                                 Style="{DynamicResource PastelTextBox}">
+                                            <TextBox.InputBindings>
+                                                <KeyBinding Key="Enter" Command="{Binding SendChatMessageCommand}"/>
+                                            </TextBox.InputBindings>
+                                        </TextBox>
 
                                         <Button Grid.Column="2"
                                                 Style="{DynamicResource PastelButton}"

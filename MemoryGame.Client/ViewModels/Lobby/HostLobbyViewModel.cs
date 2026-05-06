@@ -82,6 +82,10 @@ public partial class HostLobbyViewModel : ObservableObject
         _dialog = dialog;
         _hub = hub;
 
+        // Initialize with currently known players so the list isn't empty on load
+        foreach (var p in _lobbyService.CurrentPlayers)
+            Players.Add(p);
+
         SubscribeEvents();
     }
 
@@ -92,6 +96,7 @@ public partial class HostLobbyViewModel : ObservableObject
         _lobbyService.PlayerListUpdated += OnPlayerListUpdated;
         _lobbyService.PlayerJoined += OnPlayerJoined;
         _lobbyService.PlayerLeft += OnPlayerLeft;
+        _lobbyService.Kicked += OnKicked;
         _lobbyService.ErrorReceived += OnErrorReceived;
         _chatService.MessageReceived += OnChatMessageReceived;
         _gameService.GameStarted += OnGameStarted;
@@ -105,6 +110,7 @@ public partial class HostLobbyViewModel : ObservableObject
         _lobbyService.PlayerListUpdated -= OnPlayerListUpdated;
         _lobbyService.PlayerJoined -= OnPlayerJoined;
         _lobbyService.PlayerLeft -= OnPlayerLeft;
+        _lobbyService.Kicked -= OnKicked;
         _lobbyService.ErrorReceived -= OnErrorReceived;
         _chatService.MessageReceived -= OnChatMessageReceived;
         _gameService.GameStarted -= OnGameStarted;
@@ -163,8 +169,13 @@ public partial class HostLobbyViewModel : ObservableObject
         App.Current.Dispatcher.Invoke(() =>
         {
             _isGameStarting = true;
+            var playersSnapshot = Players.ToList();
             UnsubscribeEvents();
-            // TODO: Navigate to the multiplayer board view when implemented
+
+            _navigation.NavigateTo<GameBoardViewModel>(vm =>
+            {
+                vm.Initialize(cards, playersSnapshot);
+            });
         });
     }
 
@@ -180,6 +191,21 @@ public partial class HostLobbyViewModel : ObservableObject
             _dialog.ShowMessage(message,
                 LocalizationManager.Instance["Global_Title_Error"],
                 DialogButton.OK, DialogIcon.Error);
+        });
+    }
+
+    private void OnKicked()
+    {
+        if (_disposed) return;
+
+        App.Current.Dispatcher.Invoke(() =>
+        {
+            UnsubscribeEvents();
+            _dialog.ShowMessage(
+                LocalizationManager.Instance["Lobby_Message_Kicked"] ?? "You have been kicked.",
+                LocalizationManager.Instance["Global_Title_Information"] ?? "Information",
+                DialogButton.OK, DialogIcon.Information);
+            _navigation.GoBack();
         });
     }
 
@@ -251,6 +277,28 @@ public partial class HostLobbyViewModel : ObservableObject
 
         UnsubscribeEvents();
         _navigation.GoBack();
+    }
+
+    [RelayCommand]
+    private async Task KickPlayerAsync(LobbyPlayerDto player)
+    {
+        if (player.IsHost) return;
+
+        var result = _dialog.ShowMessage(
+            LocalizationManager.Instance.Format("KickVote_Message_VoteKickPlayer", player.Username),
+            LocalizationManager.Instance["Global_Title_Confirm"],
+            DialogButton.YesNo, DialogIcon.Question);
+
+        if (result != Services.Interfaces.DialogResult.Yes) return;
+
+        try
+        {
+            await _lobbyService.KickPlayerAsync(player.Username);
+        }
+        catch
+        {
+            // Best-effort
+        }
     }
 
     [RelayCommand]
