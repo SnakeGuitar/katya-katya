@@ -19,16 +19,24 @@ public class GameSession
     public bool IsFinished { get; private set; }
 
     /// <summary>
+    /// Snapshot of participants at game start (username → userId/isGuest),
+    /// used to persist match stats even after players leave.
+    /// </summary>
+    public IReadOnlyDictionary<string, (int UserId, bool IsGuest)> Participants { get; }
+
+    /// <summary>
     /// Creates a new game session with a shuffled board.
     /// </summary>
     /// <param name="cardCount">Total cards on the board (must be even).</param>
     /// <param name="turnTimeSeconds">Seconds per turn.</param>
     /// <param name="playerUsernames">Usernames of participating players in join order.</param>
-    public GameSession(int cardCount, int turnTimeSeconds, IEnumerable<string> playerUsernames)
+    public GameSession(int cardCount, int turnTimeSeconds, IEnumerable<(string Username, int UserId, bool IsGuest)> participants)
     {
         TurnTimeSeconds = turnTimeSeconds;
-        TurnOrder = new List<string>(playerUsernames);
+        var list = participants.ToList();
+        TurnOrder = list.Select(p => p.Username).ToList();
         Scores = new ConcurrentDictionary<string, int>();
+        Participants = list.ToDictionary(p => p.Username, p => (p.UserId, p.IsGuest));
 
         foreach (var username in TurnOrder)
             Scores[username] = 0;
@@ -136,22 +144,47 @@ public class GameSession
 
     private static List<GameCard> GenerateBoard(int cardCount)
     {
+        // Real assets from the revival gallery
+        var availableImages = new List<string>
+        {
+            "katya-1/katya-1-no-background",
+            "katya-moods/main/katya-main-no-background",
+            "katya-moods/in-love/katya-in-love-no-background",
+            "katya-moods/shy/katya-shy-2-no-background",
+            "katya-moods/sitting/katya-sit-no-background",
+            "katya-moods/standing/sketch-katya-standing-no-background",
+            "yumiko-1/yumiko-1-original",
+            "akari-1/akari-1-original",
+            "katya-moods/happy/katya-happy",
+            "katya-moods/shy/katya-shy-3",
+            "katya-1/katya-1-original-border",
+            "katya-moods/main/sketch-katya-main-no-background",
+            "katya-moods/in-love/sketch-katya-in-love-no-background",
+            "katya-moods/shy/sketch-katya-shy-no-background",
+            "katya-moods/happy/katya-happy", // Duplicate as fallback
+            "katya-moods/shy/katya-shy-3",   // Duplicate as fallback
+            "yumiko-1/yumiko-1-original",   // Duplicate as fallback
+            "akari-1/akari-1-original"      // Duplicate as fallback
+        };
+
         var pairCount = cardCount / 2;
         var cards = new List<GameCard>();
 
         for (var i = 0; i < pairCount; i++)
         {
-            var imageId = $"card_{i:D3}";
+            var imageId = availableImages[i % availableImages.Count];
             cards.Add(new GameCard(0, imageId));
             cards.Add(new GameCard(0, imageId));
         }
 
+        // Shuffle
         for (var i = cards.Count - 1; i > 0; i--)
         {
             var j = Rng.Next(i + 1);
             (cards[i], cards[j]) = (cards[j], cards[i]);
         }
 
+        // Assign final indices
         for (var i = 0; i < cards.Count; i++)
             cards[i] = new GameCard(i, cards[i].ImageIdentifier);
 

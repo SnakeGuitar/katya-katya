@@ -90,8 +90,10 @@ public class Lobby
     /// </summary>
     public GameSession StartGame(GameSettingsDto settings)
     {
-        var usernames = _players.Values.OrderBy(p => p.JoinedAt).Select(p => p.Username);
-        Game = new GameSession(settings.CardCount, settings.TurnTimeSeconds, usernames);
+        var participants = _players.Values
+            .OrderBy(p => p.JoinedAt)
+            .Select(p => (p.Username, p.UserId, p.IsGuest));
+        Game = new GameSession(settings.CardCount, settings.TurnTimeSeconds, participants);
         return Game;
     }
 
