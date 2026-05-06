@@ -22,6 +22,8 @@ public class LobbyService : ILobbyService
     public event Action<string, bool>? LobbyInviteSent;
     
     public event Action<string>? ErrorReceived;
+    
+    public List<LobbyPlayerDto> CurrentPlayers { get; } = new();
 
     public LobbyService(HubService hubService)
     {
@@ -38,7 +40,12 @@ public class LobbyService : ILobbyService
     {
         connection.On<string>("LobbyCreated", code => LobbyCreated?.Invoke(code));
         
-        connection.On<List<LobbyPlayerDto>>("UpdatePlayerList", players => PlayerListUpdated?.Invoke(players));
+        connection.On<List<LobbyPlayerDto>>("UpdatePlayerList", players =>
+        {
+            CurrentPlayers.Clear();
+            CurrentPlayers.AddRange(players);
+            PlayerListUpdated?.Invoke(players);
+        });
 
         connection.On<string, bool>("PlayerJoined", (user, guest) => PlayerJoined?.Invoke(user, guest));
         connection.On<string>("PlayerLeft", user => PlayerLeft?.Invoke(user));
@@ -67,12 +74,19 @@ public class LobbyService : ILobbyService
     {
         var connection = GetActiveConnection();
         await connection.InvokeAsync("LeaveLobby");
+        CurrentPlayers.Clear();
     }
 
     public async Task VoteToKickAsync(string targetUsername)
     {
         var connection = GetActiveConnection();
         await connection.InvokeAsync("VoteToKick", targetUsername);
+    }
+
+    public async Task KickPlayerAsync(string targetUsername)
+    {
+        var connection = GetActiveConnection();
+        await connection.InvokeAsync("KickPlayer", targetUsername);
     }
 
     public async Task GetPublicLobbiesAsync()

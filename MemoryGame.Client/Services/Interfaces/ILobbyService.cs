@@ -22,6 +22,9 @@ public interface ILobbyService
     event Action<string, bool>? LobbyInviteSent;
     
     event Action<string>? ErrorReceived;
+    
+    /// <summary>The current list of players in the joined lobby.</summary>
+    List<LobbyPlayerDto> CurrentPlayers { get; }
 
     // Hub methods
     Task CreateLobbyAsync(string gameCode, bool isPublic);
@@ -29,6 +32,7 @@ public interface ILobbyService
     Task LeaveLobbyAsync();
     
     Task VoteToKickAsync(string targetUsername);
+    Task KickPlayerAsync(string targetUsername);
     Task GetPublicLobbiesAsync();
     Task InviteFriendAsync(int targetUserId);
 }

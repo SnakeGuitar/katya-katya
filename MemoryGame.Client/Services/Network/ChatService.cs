@@ -18,6 +18,11 @@ public class ChatService : IChatService
         _sessionService = sessionService;
 
         _hubService.ConnectionEstablished += AttachHandlers;
+
+        if (_hubService.Connection is not null)
+        {
+            AttachHandlers(_hubService.Connection);
+        }
     }
 
     private void AttachHandlers(HubConnection connection)
@@ -30,9 +35,7 @@ public class ChatService : IChatService
     {
         if (string.IsNullOrWhiteSpace(message)) return;
 
-        if (_sessionService.Current?.IsGuest == true)
-            return;
-
+        // Allowing guests to chat in the revival version for better social interaction
         if (_hubService.Connection is not null)
             await _hubService.Connection.InvokeAsync("SendChatMessage", message);
     }
