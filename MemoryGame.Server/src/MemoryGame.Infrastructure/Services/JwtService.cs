@@ -26,11 +26,12 @@ public class JwtService : IJwtService
 
     public string GenerateAccessToken(User user)
     {
-        var claims = new[]
+        var claims = new List<Claim>
         {
+            new Claim(ClaimTypes.NameIdentifier,     user.Id.ToString()),
+            new Claim(ClaimTypes.Name,               user.Username),
             new Claim(JwtRegisteredClaimNames.Sub,   user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email.Value),
-            new Claim("username",                    user.Username),
             new Claim("isGuest",                     user.IsGuest.ToString().ToLower()),
             new Claim(JwtRegisteredClaimNames.Jti,   Guid.NewGuid().ToString())
         };
