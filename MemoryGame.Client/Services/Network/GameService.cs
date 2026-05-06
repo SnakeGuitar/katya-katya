@@ -23,6 +23,11 @@ public class GameService : IGameService
     {
         _hubService = hubService;
         _hubService.ConnectionEstablished += AttachHandlers;
+
+        if (_hubService.Connection is not null)
+        {
+            AttachHandlers(_hubService.Connection);
+        }
     }
 
     private void AttachHandlers(HubConnection connection)
@@ -30,8 +35,8 @@ public class GameService : IGameService
         connection.On<List<CardInfoDto>>("GameStarted", board => GameStarted?.Invoke(board));
         connection.On<string, int>("UpdateTurn", (user, time) => TurnUpdated?.Invoke(user, time));
         connection.On<int, string?>("ShowCard", (index, image) => CardShown?.Invoke(index, image));
-        connection.On<int, int>("SetCardsAsMatched", (i1, i2) => CardsMatched?.Invoke(i1, i2));
-        connection.On<int, int>("HideCards", (i1, i2) => CardsHidden?.Invoke(i1, i2));
+        connection.On<int, int>("CardsMatched", (i1, i2) => CardsMatched?.Invoke(i1, i2));
+        connection.On<int, int>("CardsHidden", (i1, i2) => CardsHidden?.Invoke(i1, i2));
         connection.On<string, int>("UpdateScore", (user, score) => ScoreUpdated?.Invoke(user, score));
         connection.On<string>("GameFinished", winner => GameFinished?.Invoke(winner));
     }
