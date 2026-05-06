@@ -1,8 +1,11 @@
+using System.Collections.Concurrent;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MemoryGame.Application.Common.Interfaces;
 using MemoryGame.Application.Lobbies.DTOs;
 using MemoryGame.Application.Lobbies.Interfaces;
 using MemoryGame.Application.Lobbies.Models;
+using MemoryGame.Domain.Matches;
 using MemoryGame.Domain.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
@@ -21,34 +24,33 @@ public class GameLobbyHub : Hub
     private readonly IUserRepository _userRepository;
     private readonly IEmailService _emailService;
     private readonly ILogger<GameLobbyHub> _logger;
+    private readonly IHubContext<GameLobbyHub> _hubContext;
+    private readonly IMatchRepository _matchRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    /// <summary>
-    /// Time players have to see both cards before they are hidden or confirmed as matched.
-    /// Intentionally short to keep the game feel snappy.
-    /// </summary>
-    private static readonly TimeSpan CardRevealDelay = TimeSpan.FromMilliseconds(800);
+    private static readonly TimeSpan CardRevealDelay = TimeSpan.FromMilliseconds(1000);
+    private static readonly ConcurrentDictionary<string, CancellationTokenSource> _turnTimers = new();
 
-    /// <summary>
-    /// Initializes the hub with its dependencies.
-    /// </summary>
     public GameLobbyHub(
         ILobbyManager lobbyManager,
         IPresenceTracker presenceTracker,
         IUserRepository userRepository,
         IEmailService emailService,
-        ILogger<GameLobbyHub> logger)
+        ILogger<GameLobbyHub> logger,
+        IHubContext<GameLobbyHub> hubContext,
+        IMatchRepository matchRepository,
+        IUnitOfWork unitOfWork)
     {
         _lobbyManager     = lobbyManager;
         _presenceTracker  = presenceTracker;
         _userRepository   = userRepository;
         _emailService     = emailService;
         _logger           = logger;
+        _hubContext       = hubContext;
+        _matchRepository  = matchRepository;
+        _unitOfWork       = unitOfWork;
     }
 
-    /// <summary>
-    /// Creates a new lobby and adds the caller as host.
-    /// Client event: UpdatePlayerList
-    /// </summary>
     public async Task CreateLobby(string gameCode, bool isPublic)
     {
         var lobby = _lobbyManager.CreateLobby(gameCode, isPublic);
@@ -59,17 +61,54 @@ public class GameLobbyHub : Hub
         }
 
         var player = CreatePlayerFromContext(isHost: true);
-        lobby.TryAddPlayer(player);
+        if (!lobby.TryAddPlayer(player))
+        {
+            _lobbyManager.RemoveLobby(gameCode);
+            await Clients.Caller.SendAsync("Error", "LOBBY_CREATE_FAILED");
+            return;
+        }
 
         await Groups.AddToGroupAsync(Context.ConnectionId, gameCode);
         await Clients.Caller.SendAsync("LobbyCreated", gameCode);
         await Clients.Group(gameCode).SendAsync("UpdatePlayerList", lobby.GetPlayerList());
     }
 
-    /// <summary>
-    /// Joins an existing lobby by game code.
-    /// Client events: PlayerJoined, UpdatePlayerList
-    /// </summary>
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        var lobby = _lobbyManager.FindLobbyByConnection(Context.ConnectionId);
+        if (lobby is not null)
+        {
+            var player = lobby.RemovePlayer(Context.ConnectionId);
+            if (player is not null)
+            {
+                CancelTurnTimer(lobby.GameCode);
+                await Clients.Group(lobby.GameCode).SendAsync("PlayerLeft", player.Username);
+
+                if (lobby.Players.Count == 0)
+                {
+                    _lobbyManager.RemoveLobby(lobby.GameCode);
+                }
+                else
+                {
+                    await Clients.Group(lobby.GameCode).SendAsync("UpdatePlayerList", lobby.GetPlayerList());
+
+                    if (lobby.IsGameInProgress)
+                    {
+                        if (lobby.Game!.IsFinished)
+                            await NotifyGameFinished(lobby);
+                        else
+                        {
+                            await Clients.Group(lobby.GameCode).SendAsync("UpdateTurn", lobby.Game.CurrentPlayer, lobby.Game.TurnTimeSeconds);
+                            StartTurnTimer(lobby, lobby.Game.TurnTimeSeconds);
+                        }
+                    }
+                }
+            }
+        }
+
+        await base.OnDisconnectedAsync(exception);
+    }
+
     public async Task JoinLobby(string gameCode)
     {
         var lobby = _lobbyManager.GetLobby(gameCode);
@@ -97,10 +136,6 @@ public class GameLobbyHub : Hub
         await Clients.Group(gameCode).SendAsync("UpdatePlayerList", lobby.GetPlayerList());
     }
 
-    /// <summary>
-    /// Leaves the current lobby. If the lobby becomes empty, it is destroyed.
-    /// Client events: PlayerLeft, UpdatePlayerList
-    /// </summary>
     public async Task LeaveLobby()
     {
         var lobby = _lobbyManager.FindLobbyByConnection(Context.ConnectionId);
@@ -108,6 +143,8 @@ public class GameLobbyHub : Hub
 
         var player = lobby.RemovePlayer(Context.ConnectionId);
         if (player is null) return;
+
+        CancelTurnTimer(lobby.GameCode);
 
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, lobby.GameCode);
         await Clients.Group(lobby.GameCode).SendAsync("PlayerLeft", player.Username);
@@ -120,15 +157,20 @@ public class GameLobbyHub : Hub
         {
             await Clients.Group(lobby.GameCode).SendAsync("UpdatePlayerList", lobby.GetPlayerList());
 
-            if (lobby.IsGameInProgress && lobby.Game!.IsFinished)
-                await NotifyGameFinished(lobby);
+            if (lobby.IsGameInProgress)
+            {
+                if (lobby.Game!.IsFinished)
+                    await NotifyGameFinished(lobby);
+                else
+                {
+                    // Update turn in case the current player left
+                    await Clients.Group(lobby.GameCode).SendAsync("UpdateTurn", lobby.Game.CurrentPlayer, lobby.Game.TurnTimeSeconds);
+                    StartTurnTimer(lobby, lobby.Game.TurnTimeSeconds);
+                }
+            }
         }
     }
 
-    /// <summary>
-    /// Sends a chat message to all players in the lobby.
-    /// Client event: ReceiveChatMessage
-    /// </summary>
     public async Task SendChatMessage(string message)
     {
         var lobby = _lobbyManager.FindLobbyByConnection(Context.ConnectionId);
@@ -140,10 +182,6 @@ public class GameLobbyHub : Hub
         await Clients.Group(lobby.GameCode).SendAsync("ReceiveChatMessage", player.Username, message, false);
     }
 
-    /// <summary>
-    /// Starts the game. Only the host can call this. Requires at least 2 players.
-    /// Client events: GameStarted, UpdateTurn
-    /// </summary>
     public async Task StartGame(GameSettingsDto settings)
     {
         var lobby = _lobbyManager.FindLobbyByConnection(Context.ConnectionId);
@@ -156,18 +194,6 @@ public class GameLobbyHub : Hub
             return;
         }
 
-        if (settings.CardCount < 4 || settings.CardCount > 36 || settings.CardCount % 2 != 0)
-        {
-            await Clients.Caller.SendAsync("Error", "LOBBY_INVALID_CARD_COUNT");
-            return;
-        }
-
-        if (settings.TurnTimeSeconds < 5 || settings.TurnTimeSeconds > 120)
-        {
-            await Clients.Caller.SendAsync("Error", "LOBBY_INVALID_TURN_TIME");
-            return;
-        }
-
         var game = lobby.StartGame(settings);
 
         var boardForClients = game.Board
@@ -175,13 +201,13 @@ public class GameLobbyHub : Hub
             .ToList();
 
         await Clients.Group(lobby.GameCode).SendAsync("GameStarted", boardForClients);
+
+        // Delay to allow clients to transition
+        await Task.Delay(2000);
         await Clients.Group(lobby.GameCode).SendAsync("UpdateTurn", game.CurrentPlayer, game.TurnTimeSeconds);
+        StartTurnTimer(lobby, game.TurnTimeSeconds);
     }
 
-    /// <summary>
-    /// Flips a card on the board. Handles match detection with a reveal delay.
-    /// Client events: ShowCard, SetCardsAsMatched/HideCards, UpdateScore, UpdateTurn, GameFinished
-    /// </summary>
     public async Task FlipCard(int cardIndex)
     {
         var lobby = _lobbyManager.FindLobbyByConnection(Context.ConnectionId);
@@ -194,22 +220,21 @@ public class GameLobbyHub : Hub
 
         if (flipped is null) return;
 
-        // Send ShowCard to the caller first for immediate visual feedback,
-        // then broadcast to the rest of the group in parallel.
-        var notifyOthers = Clients.GroupExcept(lobby.GameCode, Context.ConnectionId)
-            .SendAsync("ShowCard", flipped.Index, flipped.ImageIdentifier);
-        await Clients.Caller.SendAsync("ShowCard", flipped.Index, flipped.ImageIdentifier);
-        await notifyOthers;
+        // Reset turn timer on activity
+        StartTurnTimer(lobby, game.TurnTimeSeconds);
+
+        await Clients.Group(lobby.GameCode).SendAsync("ShowCard", flipped.Index, flipped.ImageIdentifier);
 
         if (firstCard is not null)
         {
+            CancelTurnTimer(lobby.GameCode); // Pause during reveal
             await Task.Delay(CardRevealDelay);
 
             var isMatch = game.EvaluateMatch(firstCard, flipped);
 
             if (isMatch)
             {
-                await Clients.Group(lobby.GameCode).SendAsync("SetCardsAsMatched", firstCard.Index, flipped.Index);
+                await Clients.Group(lobby.GameCode).SendAsync("CardsMatched", firstCard.Index, flipped.Index);
                 await Clients.Group(lobby.GameCode).SendAsync("UpdateScore", player.Username, game.Scores[player.Username]);
 
                 if (game.IsFinished)
@@ -220,17 +245,20 @@ public class GameLobbyHub : Hub
             }
             else
             {
-                await Clients.Group(lobby.GameCode).SendAsync("HideCards", firstCard.Index, flipped.Index);
+                await Clients.Group(lobby.GameCode).SendAsync("CardsHidden", firstCard.Index, flipped.Index);
             }
 
             await Clients.Group(lobby.GameCode).SendAsync("UpdateTurn", game.CurrentPlayer, game.TurnTimeSeconds);
+            StartTurnTimer(lobby, game.TurnTimeSeconds);
         }
     }
 
-    /// <summary>
-    /// Votes to kick a player. If majority is reached, the player is removed.
-    /// Client events: ReceiveChatMessage (notification), PlayerLeft, UpdatePlayerList
-    /// </summary>
+    public async Task GetPublicLobbies()
+    {
+        var lobbies = _lobbyManager.GetPublicLobbies();
+        await Clients.Caller.SendAsync("PublicLobbiesList", lobbies);
+    }
+
     public async Task VoteToKick(string targetUsername)
     {
         var lobby = _lobbyManager.FindLobbyByConnection(Context.ConnectionId);
@@ -241,160 +269,193 @@ public class GameLobbyHub : Hub
         if (target is null || target.ConnectionId == Context.ConnectionId) return;
 
         var shouldKick = lobby.VoteToKick(voter.Username, targetUsername);
-
-        await Clients.Group(lobby.GameCode).SendAsync(
-            "ReceiveChatMessage", "System",
-            $"{voter.Username} voted to kick {targetUsername}.", true);
+        await Clients.Group(lobby.GameCode).SendAsync("ReceiveChatMessage", "System", $"{voter.Username} voted to kick {targetUsername}.", true);
 
         if (shouldKick)
         {
-            lobby.RemovePlayer(target.ConnectionId);
-            await Groups.RemoveFromGroupAsync(target.ConnectionId, lobby.GameCode);
-            await Clients.Client(target.ConnectionId).SendAsync("Kicked");
-            await Clients.Group(lobby.GameCode).SendAsync("PlayerLeft", targetUsername);
-            await Clients.Group(lobby.GameCode).SendAsync("UpdatePlayerList", lobby.GetPlayerList());
-            await Clients.Group(lobby.GameCode).SendAsync(
-                "ReceiveChatMessage", "System",
-                $"{targetUsername} has been kicked.", true);
-
-            if (lobby.IsGameInProgress && lobby.Game!.IsFinished)
-                await NotifyGameFinished(lobby);
+            await PerformKick(lobby, target);
         }
     }
 
-    /// <summary>
-    /// Returns a list of public, non-full lobbies that are not in a game.
-    /// Client event: PublicLobbiesList
-    /// </summary>
-    public async Task GetPublicLobbies()
+    public async Task KickPlayer(string targetUsername)
     {
-        var lobbies = _lobbyManager.GetPublicLobbies();
-        await Clients.Caller.SendAsync("PublicLobbiesList", lobbies);
+        var lobby = _lobbyManager.FindLobbyByConnection(Context.ConnectionId);
+        var host = lobby?.GetPlayer(Context.ConnectionId);
+        if (lobby is null || host is null || !host.IsHost) return;
+
+        var target = lobby.Players.Values.FirstOrDefault(p => p.Username == targetUsername);
+        if (target is null || target.IsHost) return;
+
+        await PerformKick(lobby, target);
     }
 
-    /// <summary>
-    /// Invites another player to the caller's current lobby.
-    /// Delivers a real-time notification if the target is online;
-    /// otherwise falls back to an email invitation.
-    /// Client events: LobbyInviteSent (caller), LobbyInviteReceived (target)
-    /// </summary>
+    private async Task PerformKick(Lobby lobby, LobbyPlayer target)
+    {
+        await Clients.Client(target.ConnectionId).SendAsync("Kicked");
+        lobby.RemovePlayer(target.ConnectionId);
+        await Groups.RemoveFromGroupAsync(target.ConnectionId, lobby.GameCode);
+        await Clients.Group(lobby.GameCode).SendAsync("PlayerLeft", target.Username);
+        await Clients.Group(lobby.GameCode).SendAsync("UpdatePlayerList", lobby.GetPlayerList());
+
+        if (lobby.IsGameInProgress)
+        {
+            if (lobby.Game!.IsFinished)
+                await NotifyGameFinished(lobby);
+            else
+            {
+                await Clients.Group(lobby.GameCode).SendAsync("UpdateTurn", lobby.Game.CurrentPlayer, lobby.Game.TurnTimeSeconds);
+                StartTurnTimer(lobby, lobby.Game.TurnTimeSeconds);
+            }
+        }
+    }
+
     public async Task InviteFriend(int targetUserId)
     {
         var lobby = _lobbyManager.FindLobbyByConnection(Context.ConnectionId);
-        var caller = lobby?.GetPlayer(Context.ConnectionId);
-
-        if (lobby is null || caller is null)
-        {
-            await Clients.Caller.SendAsync("Error", "LOBBY_NOT_IN_LOBBY");
-            return;
-        }
-
-        if (caller.UserId == targetUserId)
-        {
-            await Clients.Caller.SendAsync("Error", "LOBBY_INVITE_SELF");
-            return;
-        }
+        var sender = lobby?.GetPlayer(Context.ConnectionId);
+        if (lobby is null || sender is null) return;
 
         var targetUser = await _userRepository.GetByIdAsync(targetUserId);
-        if (targetUser is null)
+        if (targetUser is null) return;
+
+        var targetConnection = _presenceTracker.GetConnectionId(targetUser.Id);
+        if (targetConnection is not null)
         {
-            await Clients.Caller.SendAsync("Error", "USER_NOT_FOUND");
-            return;
+            await Clients.Client(targetConnection).SendAsync("LobbyInviteReceived", sender.Username, lobby.GameCode);
+            await Clients.Caller.SendAsync("LobbyInviteSent", targetUser.Username, true);
         }
-
-        var targetConnectionId = _presenceTracker.GetConnectionId(targetUserId);
-
-        if (targetConnectionId is not null)
+        else if (targetUser.Email is not null)
         {
-            await Clients.Client(targetConnectionId).SendAsync(
-                "LobbyInviteReceived", caller.Username, lobby.GameCode);
+            await _emailService.SendLobbyInviteAsync(targetUser.Email.Value, targetUser.Username, sender.Username, lobby.GameCode);
+            await Clients.Caller.SendAsync("LobbyInviteSent", targetUser.Username, false);
         }
-        else
-        {
-            await _emailService.SendLobbyInviteAsync(
-                targetUser.Email.Value,
-                targetUser.Username,
-                caller.Username,
-                lobby.GameCode);
-        }
-
-        await Clients.Caller.SendAsync("LobbyInviteSent", targetUser.Username, targetConnectionId is not null);
-    }
-
-    /// <summary>
-    /// Registers the caller's presence so other players can send in-game invitations.
-    /// </summary>
-    public override async Task OnConnectedAsync()
-    {
-        var userId = GetUserId();
-        if (userId > 0)
-        {
-            // If the user was already in a lobby (orphaned session), remove them
-            var oldLobby = _lobbyManager.FindLobbyByUserId(userId);
-            if (oldLobby is not null)
-            {
-                var oldPlayer = oldLobby.Players.Values.FirstOrDefault(p => p.UserId == userId);
-                if (oldPlayer is not null)
-                {
-                    oldLobby.RemovePlayer(oldPlayer.ConnectionId);
-                    if (oldLobby.Players.Count == 0)
-                        _lobbyManager.RemoveLobby(oldLobby.GameCode);
-                    else
-                        await Clients.Group(oldLobby.GameCode).SendAsync("UpdatePlayerList", oldLobby.GetPlayerList());
-                }
-            }
-            
-            _presenceTracker.Track(userId, Context.ConnectionId);
-        }
-
-        await base.OnConnectedAsync();
-    }
-
-    /// <summary>
-    /// Handles unexpected disconnections by removing the player from their lobby.
-    /// </summary>
-    public override async Task OnDisconnectedAsync(Exception? exception)
-    {
-        _presenceTracker.Untrack(Context.ConnectionId);
-
-        var lobby = _lobbyManager.FindLobbyByConnection(Context.ConnectionId);
-        if (lobby is not null)
-        {
-            var player = lobby.RemovePlayer(Context.ConnectionId);
-            if (player is not null)
-            {
-                await Clients.Group(lobby.GameCode).SendAsync("PlayerLeft", player.Username);
-
-                if (lobby.Players.Count == 0)
-                {
-                    _lobbyManager.RemoveLobby(lobby.GameCode);
-                }
-                else
-                {
-                    await Clients.Group(lobby.GameCode).SendAsync("UpdatePlayerList", lobby.GetPlayerList());
-                    if (lobby.IsGameInProgress && lobby.Game!.IsFinished)
-                        await NotifyGameFinished(lobby);
-                }
-            }
-        }
-
-        await base.OnDisconnectedAsync(exception);
     }
 
     private async Task NotifyGameFinished(Lobby lobby)
     {
-        var winner = lobby.Game!.GetWinner();
-        await Clients.Group(lobby.GameCode).SendAsync("GameFinished", winner);
+        CancelTurnTimer(lobby.GameCode);
+        var game = lobby.Game;
+        var winner = game?.GetWinner();
+
+        if (game is not null)
+        {
+            try
+            {
+                await PersistMatchAsync(game, winner);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to persist match for lobby {Code}", lobby.GameCode);
+            }
+        }
+
+        await _hubContext.Clients.Group(lobby.GameCode).SendAsync("GameFinished", winner);
+
+        // Tear down the lobby so it doesn't linger as a zombie.
+        var connectionIds = lobby.Players.Keys.ToList();
+        foreach (var connId in connectionIds)
+        {
+            try { await Groups.RemoveFromGroupAsync(connId, lobby.GameCode); } catch { /* best-effort */ }
+        }
+        _lobbyManager.RemoveLobby(lobby.GameCode);
     }
 
-    private int GetUserId() =>
-        int.Parse(Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+    private async Task PersistMatchAsync(GameSession game, string? winnerUsername)
+    {
+        // Only persist participations for registered users (guests have no stable userId).
+        var registered = game.Participants
+            .Where(kv => !kv.Value.IsGuest && kv.Value.UserId > 0)
+            .ToList();
+
+        if (registered.Count == 0) return;
+
+        var match = Match.Create();
+        await _matchRepository.AddAsync(match);
+        await _unitOfWork.SaveChangesAsync(); // Generate match.Id
+
+        foreach (var (username, info) in registered)
+        {
+            var participation = match.AddParticipant(info.UserId);
+            if (game.Scores.TryGetValue(username, out var score) && score > 0)
+                participation.AddPoints(score);
+        }
+
+        int? winnerUserId = null;
+        if (winnerUsername is not null
+            && game.Participants.TryGetValue(winnerUsername, out var winnerInfo)
+            && !winnerInfo.IsGuest && winnerInfo.UserId > 0)
+        {
+            winnerUserId = winnerInfo.UserId;
+        }
+
+        match.Finish(winnerUserId);
+        _matchRepository.Update(match);
+        await _unitOfWork.SaveChangesAsync();
+    }
 
     private LobbyPlayer CreatePlayerFromContext(bool isHost)
     {
-        var username = Context.User?.FindFirst("username")?.Value ?? "Unknown";
-        var isGuest  = Context.User?.FindFirst("isGuest")?.Value == "true";
+        var userIdStr = Context.User?.FindFirstValue(ClaimTypes.NameIdentifier)
+                     ?? Context.User?.FindFirstValue(JwtRegisteredClaimNames.Sub);
 
-        return new LobbyPlayer(Context.ConnectionId, GetUserId(), username, isGuest, isHost);
+        var username = Context.User?.Identity?.Name
+                    ?? Context.User?.FindFirstValue("username")
+                    ?? "Guest_" + Context.ConnectionId[..4];
+
+        var isGuest = string.IsNullOrEmpty(userIdStr) || userIdStr == "0";
+        var userId = isGuest ? 0 : int.Parse(userIdStr!);
+
+        return new LobbyPlayer(Context.ConnectionId, userId, username, isGuest, isHost);
+    }
+
+    private void StartTurnTimer(Lobby lobby, int seconds)
+    {
+        var cts = new CancellationTokenSource();
+        _turnTimers.AddOrUpdate(lobby.GameCode, _ => cts, (_, old) => { old.Cancel(); return cts; });
+
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(seconds + 2), cts.Token);
+                await HandleTurnTimeout(lobby.GameCode);
+            }
+            catch (OperationCanceledException) { }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Turn timer error for {Lobby}", lobby.GameCode);
+            }
+        });
+    }
+
+    private void CancelTurnTimer(string lobbyCode)
+    {
+        if (_turnTimers.TryRemove(lobbyCode, out var cts))
+        {
+            cts.Cancel();
+        }
+    }
+
+    private async Task HandleTurnTimeout(string lobbyCode)
+    {
+        var lobby = _lobbyManager.GetLobby(lobbyCode);
+        if (lobby?.Game is null || lobby.Game.IsFinished) return;
+
+        var game = lobby.Game;
+        var group = _hubContext.Clients.Group(lobby.GameCode);
+
+        if (game.IsWaitingForSecondFlip && game.FirstFlippedCard is not null)
+        {
+            var firstIdx = game.FirstFlippedCard.Index;
+            game.AdvanceTurn();
+            await group.SendAsync("CardsHidden", firstIdx, -1);
+        }
+        else
+        {
+            game.AdvanceTurn();
+        }
+
+        await group.SendAsync("UpdateTurn", game.CurrentPlayer, game.TurnTimeSeconds);
+        StartTurnTimer(lobby, game.TurnTimeSeconds);
     }
 }
