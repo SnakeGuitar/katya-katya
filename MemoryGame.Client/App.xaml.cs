@@ -80,6 +80,7 @@ public partial class App : Application
         services.AddTransient<LobbyMenuViewModel>();
         services.AddTransient<HostLobbyViewModel>();
         services.AddTransient<LobbyViewModel>();
+        services.AddTransient<GameBoardViewModel>();
 
         // Main window
         services.AddSingleton<MainWindow>();

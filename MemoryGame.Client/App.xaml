@@ -15,7 +15,8 @@
              xmlns:galleryViews="clr-namespace:MemoryGame.Client.Views.Gallery"
              xmlns:profileViews="clr-namespace:MemoryGame.Client.Views.Profile"
              xmlns:socialViews="clr-namespace:MemoryGame.Client.Views.Social"
-             xmlns:lobbyViews="clr-namespace:MemoryGame.Client.Views.Lobby">
+             xmlns:lobbyViews="clr-namespace:MemoryGame.Client.Views.Lobby"
+             xmlns:boardViews="clr-namespace:MemoryGame.Client.Views.Board">
 
     <Application.Resources>
         <ResourceDictionary>
@@ -95,6 +96,10 @@
 
             <DataTemplate DataType="{x:Type lobbyVm:LobbyViewModel}">
                 <lobbyViews:LobbyView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type lobbyVm:GameBoardViewModel}">
+                <boardViews:GameBoardView />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

@@ -1,0 +1,365 @@
+<UserControl x:Class="MemoryGame.Client.Views.Board.GameBoardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:MemoryGame.Client.Localization"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="1280" d:DesignHeight="720">
+
+    <UserControl.Resources>
+        <!-- Card button style with flip/match visual states -->
+        <Style x:Key="GameCardButton" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="CardBorder"
+                                CornerRadius="12"
+                                BorderThickness="2"
+                                BorderBrush="{DynamicResource PastelPrimary}"
+                                Background="{DynamicResource CardBackground}"
+                                ClipToBounds="True"
+                                RenderTransformOrigin="0.5,0.5">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="8" ShadowDepth="2"
+                                                  Opacity="0.15" Color="#3D1C1C"/>
+                            </Border.Effect>
+                            <Grid>
+                                <Image Source="{Binding DisplayImage}"
+                                       Stretch="Uniform"
+                                       Margin="6"
+                                       RenderOptions.BitmapScalingMode="HighQuality"/>
+
+                                <!-- Matched overlay -->
+                                <Border x:Name="MatchedOverlay"
+                                        Background="#3000C853"
+                                        CornerRadius="10"
+                                        Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="CardBorder" Property="BorderBrush" Value="{DynamicResource PastelAccent}"/>
+                                <Setter TargetName="CardBorder" Property="BorderThickness" Value="3"/>
+                            </Trigger>
+                            <DataTrigger Binding="{Binding IsMatched}" Value="True">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Setter TargetName="MatchedOverlay" Property="Visibility" Value="Visible"/>
+                                <Setter Property="Opacity" Value="0.7"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsFlipped}" Value="True">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding DataContext.IsMyTurn, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="False">
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Setter Property="Opacity" Value="0.85"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Active player panel highlight -->
+        <Style x:Key="PlayerPanelBorder" TargetType="Border">
+            <Setter Property="Background" Value="#08000000"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsActive}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource PastelPrimary}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="{DynamicResource GlobalBackgroundSource}"
+                        Stretch="UniformToFill"/>
+        </Grid.Background>
+
+        <Grid Margin="16">
+            <Grid.ColumnDefinitions>
+                <!-- Left: Players Panel -->
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="12"/>
+                <!-- Center: Game Board -->
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <!-- Right: Chat Panel -->
+                <ColumnDefinition Width="260"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ══════════════ LEFT: Players ══════════════ -->
+            <Border Grid.Column="0"
+                    Background="{DynamicResource CardBackground}"
+                    CornerRadius="{DynamicResource CardCornerRadius}"
+                    Padding="14,12">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="16" ShadowDepth="3" Opacity="0.12"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Players]}"
+                               Style="{DynamicResource PastelTextBlock}"
+                               FontWeight="SemiBold" FontSize="16"
+                               Foreground="{DynamicResource PastelPrimary}"
+                               Margin="0,0,0,10"/>
+
+                    <!-- Player list -->
+                    <ItemsControl Grid.Row="1"
+                                  ItemsSource="{Binding Players}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource PlayerPanelBorder}">
+                                    <Border.InputBindings>
+                                        <MouseBinding Gesture="RightClick"
+                                                      Command="{Binding DataContext.VoteToKickCommand,
+                                                                RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                      CommandParameter="{Binding}"/>
+                                    </Border.InputBindings>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- Player name -->
+                                        <TextBlock Grid.Row="0"
+                                                   FontSize="14" FontWeight="SemiBold"
+                                                   FontFamily="{DynamicResource DefaultFont}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{DynamicResource PastelText}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsCurrentUser}" Value="True">
+                                                            <Setter Property="FontWeight" Value="Bold"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                            <Run Text="{Binding Username, Mode=OneWay}"/>
+                                            <Run Text="  ⭐" FontSize="11">
+                                                <Run.Style>
+                                                    <Style TargetType="Run">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsCurrentUser}" Value="False">
+                                                                <Setter Property="Text" Value=""/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Run.Style>
+                                            </Run>
+                                        </TextBlock>
+
+                                        <!-- Score -->
+                                        <TextBlock Grid.Row="1"
+                                                   FontSize="12" Opacity="0.75"
+                                                   FontFamily="{DynamicResource DefaultFont}"
+                                                   Margin="0,2,0,0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{DynamicResource PastelTextLight}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                            <Run Text="Pairs: "/>
+                                            <Run Text="{Binding Score, Mode=OneWay}"/>
+                                        </TextBlock>
+
+                                        <!-- Timer -->
+                                        <TextBlock Grid.Row="2"
+                                                   FontSize="11" Opacity="0.65"
+                                                   FontFamily="{DynamicResource DefaultFont}"
+                                                   Margin="0,1,0,0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="{DynamicResource PastelTextLight}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsActive}" Value="True">
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                            <Run Text="⏱ "/>
+                                            <Run Text="{Binding TimeDisplay, Mode=OneWay}"/>
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Leave button -->
+                    <Button Grid.Row="2"
+                            Command="{Binding LeaveGameCommand}"
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Leave]}"
+                            Style="{DynamicResource LinkButton}"
+                            HorizontalAlignment="Center"
+                            Margin="0,12,0,0"/>
+                </Grid>
+            </Border>
+
+            <!-- ══════════════ CENTER: Game Board ══════════════ -->
+            <Border Grid.Column="2"
+                    Background="{DynamicResource CardBackground}"
+                    CornerRadius="{DynamicResource CardCornerRadius}"
+                    Padding="16">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.12"/>
+                </Border.Effect>
+                <Viewbox Stretch="Uniform">
+                    <ItemsControl ItemsSource="{Binding Cards}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="{Binding BoardRows}"
+                                             Columns="{Binding BoardColumns}"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Width="90" Height="90"
+                                        Margin="4"
+                                        Style="{StaticResource GameCardButton}"
+                                        Command="{Binding DataContext.FlipCardCommand,
+                                                  RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Viewbox>
+            </Border>
+
+            <!-- ══════════════ RIGHT: Chat ══════════════ -->
+            <Border Grid.Column="4"
+                    Background="{DynamicResource CardBackground}"
+                    CornerRadius="{DynamicResource CardCornerRadius}"
+                    Padding="14,12">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="16" ShadowDepth="3" Opacity="0.12"/>
+                </Border.Effect>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_Chat]}"
+                               Style="{DynamicResource PastelTextBlock}"
+                               FontWeight="SemiBold" FontSize="16"
+                               Foreground="{DynamicResource PastelPrimary}"
+                               Margin="0,0,0,8"/>
+
+                    <!-- Chat messages -->
+                    <Border Grid.Row="1"
+                            Background="#04000000"
+                            CornerRadius="10"
+                            Padding="8"
+                            Margin="0,0,0,8">
+                        <ScrollViewer x:Name="ChatScrollViewer"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding ChatMessages}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"
+                                                   Style="{DynamicResource PastelTextBlock}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,0,0,2"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+
+                    <!-- Chat input -->
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="6"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0"
+                                 Text="{Binding ChatMessage, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{DynamicResource PastelTextBox}"
+                                 FontSize="12">
+                            <TextBox.InputBindings>
+                                <KeyBinding Key="Enter" Command="{Binding SendChatMessageCommand}"/>
+                            </TextBox.InputBindings>
+                        </TextBox>
+
+                        <Button Grid.Column="2"
+                                Style="{DynamicResource PastelButton}"
+                                Command="{Binding SendChatMessageCommand}"
+                                Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Send]}"
+                                Padding="12,4"
+                                FontSize="12"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ══════════════ GAME OVER OVERLAY ══════════════ -->
+        <Border Visibility="{Binding ShowGameOver, Converter={StaticResource BoolToVisibilityConverter}}"
+                Background="#DD000000">
+            <Border Background="{DynamicResource CardBackground}"
+                    CornerRadius="20"
+                    Padding="40,32"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MinWidth="360">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="40" ShadowDepth="6" Opacity="0.3"/>
+                </Border.Effect>
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="🏆"
+                               FontSize="48"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,12"/>
+
+                    <TextBlock Text="{Binding GameOverTitle}"
+                               Style="{DynamicResource PastelHeading}"
+                               FontSize="24"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,0,0,16"/>
+
+                    <TextBlock Text="{Binding GameOverStats}"
+                               Style="{DynamicResource PastelTextBlock}"
+                               FontSize="15"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,0,0,24"/>
+
+                    <Button Command="{Binding CloseGameOverCommand}"
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Accept]}"
+                            Style="{DynamicResource PastelButton}"
+                            Padding="28,10"
+                            FontSize="15"
+                            HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>
