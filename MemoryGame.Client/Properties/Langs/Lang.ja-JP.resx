@@ -438,6 +438,12 @@
 	<data name="MultiplayerMenu_CheckBox_Public">
 		<value>公開ロビー</value>
 	</data>
+	<data name="MultiplayerMenu_Label_PublicLobbies">
+		<value>公開ロビー一覧</value>
+	</data>
+	<data name="MultiplayerMenu_Label_NoPublicLobbies">
+		<value>利用可能な公開ロビーはありません。</value>
+	</data>
 	<data name="Lobby_Label_WaitingPlayers">
 		<value>プレイヤーを待機中...</value>
 	</data>

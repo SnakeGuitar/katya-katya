@@ -438,6 +438,12 @@
 	<data name="MultiplayerMenu_CheckBox_Public">
 		<value>公开房间</value>
 	</data>
+	<data name="MultiplayerMenu_Label_PublicLobbies">
+		<value>公开房间列表</value>
+	</data>
+	<data name="MultiplayerMenu_Label_NoPublicLobbies">
+		<value>暂无可用的公开房间。</value>
+	</data>
 	<data name="Lobby_Label_WaitingPlayers">
 		<value>等待玩家加入...</value>
 	</data>

@@ -66,10 +66,22 @@
                                       Margin="0,0,0,12"
                                       IsEnabled="{Binding IsGuest, Converter={StaticResource InverseBoolConverter}}"/>
 
-                            <Button Style="{DynamicResource PastelButton}"
-                                    Command="{Binding CreateLobbyCommand}"
-                                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_CreateLobby]}"
-                                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
+                            <Button Command="{Binding CreateLobbyCommand}"
+                                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_CreateLobby]}">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource PastelButton}">
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsGuest}" Value="True">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
 
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Menu_Error_RequiresFullAccount]}"
                                        Style="{DynamicResource PastelTextBlock}"
@@ -97,23 +109,17 @@
                                        HorizontalAlignment="Center"
                                        Margin="0,0,0,12"/>
 
-                            <Grid Margin="0,0,0,4">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
+                            <StackPanel Margin="0,0,0,4">
                                 <TextBox Text="{Binding JoinCode, UpdateSourceTrigger=PropertyChanged}"
                                          MaxLength="6"
-                                         Style="{DynamicResource PastelTextBox}" Grid.ColumnSpan="2" Margin="0,0,3,0"/>
+                                         Style="{DynamicResource PastelTextBox}"
+                                         Margin="0,0,0,10"/>
 
-                                <Button
-                                        Style="{DynamicResource PastelButton}"
+                                <Button Style="{DynamicResource PastelButton}"
                                         Command="{Binding JoinByCodeCommand}"
                                         Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_JoinLobby]}"
-                                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}" Grid.ColumnSpan="2" Margin="2,77,5,-77"/>
-                            </Grid>
+                                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBoolConverter}}"/>
+                            </StackPanel>
 
                             <TextBlock Text="{Binding JoinCodeError}"
                                        Style="{DynamicResource PastelTextBlock}"
@@ -138,14 +144,14 @@
                     <DockPanel>
                         <!-- Header -->
                         <TextBlock DockPanel.Dock="Top"
-                                   Text="Public Lobbies"
+                                   Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_PublicLobbies]}"
                                    Style="{DynamicResource PastelTextBlock}"
                                    FontSize="16" FontWeight="SemiBold"
                                    Foreground="{DynamicResource PastelPrimary}"
                                    Margin="0,0,0,12"/>
 
                         <!-- Empty state -->
-                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_WaitingPlayers]}"
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_NoPublicLobbies]}"
                                    FontSize="13" Opacity="0.5"
                                    HorizontalAlignment="Center" VerticalAlignment="Center">
                             <TextBlock.Style>

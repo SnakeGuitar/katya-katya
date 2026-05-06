@@ -434,6 +434,12 @@
 	<data name="MultiplayerMenu_CheckBox_Public">
 		<value>공개 로비</value>
 	</data>
+	<data name="MultiplayerMenu_Label_PublicLobbies">
+		<value>공개 로비 목록</value>
+	</data>
+	<data name="MultiplayerMenu_Label_NoPublicLobbies">
+		<value>이용 가능한 공개 로비가 없습니다.</value>
+	</data>
 	<data name="Lobby_Label_WaitingPlayers">
 		<value>플레이어 대기 중...</value>
 	</data>

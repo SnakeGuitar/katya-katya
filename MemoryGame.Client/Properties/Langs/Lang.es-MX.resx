@@ -212,6 +212,8 @@
   <data name="MultiplayerMenu_Label_CreateGame"><value>Crear partida</value></data>
   <data name="MultiplayerMenu_Label_JoinGame"><value>Unirse a partida</value></data>
   <data name="MultiplayerMenu_CheckBox_Public"><value>Sala pública</value></data>
+  <data name="MultiplayerMenu_Label_PublicLobbies"><value>Salas públicas</value></data>
+  <data name="MultiplayerMenu_Label_NoPublicLobbies"><value>No hay salas públicas disponibles.</value></data>
   <data name="Lobby_Label_WaitingPlayers"><value>Esperando jugadores...</value></data>
   <data name="Lobby_Notification_PlayerJoined"><value>{0} se unió a la sala.</value></data>
   <data name="Lobby_Notification_PlayerLeft"><value>{0} abandonó la sala.</value></data>

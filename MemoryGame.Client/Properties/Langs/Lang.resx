@@ -212,6 +212,8 @@
   <data name="MultiplayerMenu_Label_CreateGame"><value>Host a Game</value></data>
   <data name="MultiplayerMenu_Label_JoinGame"><value>Join a Game</value></data>
   <data name="MultiplayerMenu_CheckBox_Public"><value>Public lobby</value></data>
+  <data name="MultiplayerMenu_Label_PublicLobbies"><value>Public Lobbies</value></data>
+  <data name="MultiplayerMenu_Label_NoPublicLobbies"><value>No public lobbies available.</value></data>
   <data name="Lobby_Label_WaitingPlayers"><value>Waiting for players...</value></data>
   <data name="Lobby_Notification_PlayerJoined"><value>{0} joined the lobby.</value></data>
   <data name="Lobby_Notification_PlayerLeft"><value>{0} left the lobby.</value></data>

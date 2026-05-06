@@ -9,6 +9,7 @@ using MemoryGame.Client.Localization;
 using MemoryGame.Client.Models.Lobby;
 using MemoryGame.Client.Services.Interfaces;
 using MemoryGame.Client.Services.Network;
+using MemoryGame.Client.ViewModels.MainMenu;
 
 namespace MemoryGame.Client.ViewModels.Lobby;
 
@@ -163,6 +164,7 @@ public partial class LobbyMenuViewModel : ObservableObject
             IsLoading = false;
             JoinCode = string.Empty; // Clear fields for the next time
             JoinCodeError = null;
+            IsPublic = false;
             // Removed Cleanup() so the ViewModel stays alive when returning from HostLobby
             _navigation.NavigateTo<HostLobbyViewModel>(vm => vm.GameCode = gameCode);
         });
@@ -175,7 +177,8 @@ public partial class LobbyMenuViewModel : ObservableObject
         App.Current.Dispatcher.Invoke(() =>
         {
             IsLoading = false;
-            
+            _isJoining = false;
+
             if (errorCode == "LOBBY_NOT_FOUND" || errorCode == "LOBBY_FULL" || errorCode == "LOBBY_GAME_IN_PROGRESS")
             {
                 JoinCodeError = LocalizationManager.Instance[$"Error_{errorCode}"]
@@ -216,6 +219,7 @@ public partial class LobbyMenuViewModel : ObservableObject
         catch (Exception ex)
         {
             IsLoading = false;
+            _isJoining = false;
             _dialog.ShowMessage($"Join failed: {ex.Message}",
                 LocalizationManager.Instance["Global_Title_Error"],
                 DialogButton.OK, DialogIcon.Error);
@@ -232,7 +236,10 @@ public partial class LobbyMenuViewModel : ObservableObject
             string code = JoinCode?.Trim() ?? string.Empty;
             JoinCode = string.Empty; // Clear fields for the next time
             JoinCodeError = null;
-            // Removed Cleanup() so the ViewModel stays alive when returning from Lobby
+
+            // Unsubscribe to avoid multiple navigations if more updates arrive
+            _lobbyService.PlayerListUpdated -= OnJoinSuccess;
+
             _navigation.NavigateTo<LobbyViewModel>(vm => vm.GameCode = code);
         });
     }
@@ -270,7 +277,17 @@ public partial class LobbyMenuViewModel : ObservableObject
     private void GoBack()
     {
         Cleanup();
-        _navigation.GoBack();
+        
+        if (_navigation.CanGoBack)
+        {
+            _navigation.GoBack();
+        }
+        else
+        {
+            // If the navigation history was cleared (e.g. after leaving a game), 
+            // ensure we can still return to the main menu.
+            _navigation.NavigateToRootWithFade<MainMenuViewModel>();
+        }
     }
 
     /// <summary>
