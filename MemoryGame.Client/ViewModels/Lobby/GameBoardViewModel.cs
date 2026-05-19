@@ -73,9 +73,10 @@ public partial class GameBoardViewModel : ObservableObject
     [ObservableProperty]
     private int _boardRows = 4;
 
-    /// <summary>
-    /// Fired when the chat needs to scroll to the newest message.
-    /// </summary>
+    /// <summary>Fired when a pair is matched so the view can spawn particles.</summary>
+    public event Action? PairMatched;
+
+    /// <summary>Fired when the chat needs to scroll to the newest message.</summary>
     public event Action? ScrollChatToBottom;
 
     // ── Constructor ───────────────────────────────────────────────────────
@@ -215,6 +216,7 @@ public partial class GameBoardViewModel : ObservableObject
 
             if (c1 is not null) { c1.IsMatched = true; c1.IsFlipped = true; }
             if (c2 is not null) { c2.IsMatched = true; c2.IsFlipped = true; }
+            PairMatched?.Invoke();
         });
     }
 
@@ -249,10 +251,10 @@ public partial class GameBoardViewModel : ObservableObject
 
             string title;
             if (string.IsNullOrEmpty(winner))
-                title = LocalizationManager.Instance["GameBoard_Label_Tie"] ?? "Tie!";
+                title = LocalizationManager.Instance.TryGet("GameBoard_Label_Tie") ?? "Tie!";
             else
                 title = string.Format(
-                    LocalizationManager.Instance["GameBoard_Label_Winner"] ?? "{0} wins!",
+                    LocalizationManager.Instance.TryGet("GameBoard_Label_Winner") ?? "{0} wins!",
                     winner);
 
             var scoreSummary = string.Join("\n",
@@ -305,8 +307,8 @@ public partial class GameBoardViewModel : ObservableObject
         {
             UnsubscribeEvents();
             _dialog.ShowMessage(
-                LocalizationManager.Instance["Lobby_Message_Kicked"] ?? "You have been kicked.",
-                LocalizationManager.Instance["Global_Title_Information"] ?? "Information",
+                LocalizationManager.Instance.TryGet("Lobby_Message_Kicked") ?? "You have been kicked.",
+                LocalizationManager.Instance.TryGet("Global_Title_Information") ?? "Information",
                 DialogButton.OK, DialogIcon.Information);
             _navigation.NavigateToRoot<LobbyMenuViewModel>();
         });
@@ -389,9 +391,9 @@ public partial class GameBoardViewModel : ObservableObject
 
         var result = _dialog.ShowMessage(
             string.Format(
-                LocalizationManager.Instance["KickVote_Message_VoteKickPlayer"] ?? "Vote to kick {0}?",
+                LocalizationManager.Instance.TryGet("KickVote_Message_VoteKickPlayer") ?? "Vote to kick {0}?",
                 player.Username),
-            LocalizationManager.Instance["Global_Title_Confirm"] ?? "Confirm",
+            LocalizationManager.Instance.TryGet("Global_Title_Confirm") ?? "Confirm",
             DialogButton.YesNo, DialogIcon.Question);
 
         if (result != Services.Interfaces.DialogResult.Yes) return;
@@ -410,8 +412,8 @@ public partial class GameBoardViewModel : ObservableObject
     private async Task LeaveGameAsync()
     {
         var result = _dialog.ShowMessage(
-            LocalizationManager.Instance["Global_Message_ExitGame"] ?? "Are you sure you want to leave?",
-            LocalizationManager.Instance["Global_Title_Confirm"] ?? "Confirm",
+            LocalizationManager.Instance.TryGet("Global_Message_ExitGame") ?? "Are you sure you want to leave?",
+            LocalizationManager.Instance.TryGet("Global_Title_Confirm") ?? "Confirm",
             DialogButton.YesNo, DialogIcon.Question);
 
         if (result != Services.Interfaces.DialogResult.Yes) return;

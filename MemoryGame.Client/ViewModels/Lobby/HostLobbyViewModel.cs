@@ -186,9 +186,7 @@ public partial class HostLobbyViewModel : ObservableObject
         App.Current.Dispatcher.Invoke(() =>
         {
             IsLoading = false;
-            string message = LocalizationManager.Instance[$"Error_{errorCode}"]
-                             ?? LocalizationManager.Instance["Error_UNKNOWN"];
-            _dialog.ShowMessage(message,
+            _dialog.ShowMessage(ErrorResolver.Resolve(errorCode),
                 LocalizationManager.Instance["Global_Title_Error"],
                 DialogButton.OK, DialogIcon.Error);
         });
@@ -202,8 +200,8 @@ public partial class HostLobbyViewModel : ObservableObject
         {
             UnsubscribeEvents();
             _dialog.ShowMessage(
-                LocalizationManager.Instance["Lobby_Message_Kicked"] ?? "You have been kicked.",
-                LocalizationManager.Instance["Global_Title_Information"] ?? "Information",
+                LocalizationManager.Instance.TryGet("Lobby_Message_Kicked") ?? "You have been kicked.",
+                LocalizationManager.Instance.TryGet("Global_Title_Information") ?? "Information",
                 DialogButton.OK, DialogIcon.Information);
             _navigation.GoBack();
         });

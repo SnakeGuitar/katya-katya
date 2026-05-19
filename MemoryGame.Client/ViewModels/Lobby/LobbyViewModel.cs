@@ -195,9 +195,7 @@ public partial class LobbyViewModel : ObservableObject
         App.Current.Dispatcher.Invoke(() =>
         {
             IsLoading = false;
-            string message = LocalizationManager.Instance[$"Error_{errorCode}"]
-                             ?? LocalizationManager.Instance["Error_UNKNOWN"];
-            _dialog.ShowMessage(message,
+            _dialog.ShowMessage(ErrorResolver.Resolve(errorCode),
                 LocalizationManager.Instance["Global_Title_Error"],
                 DialogButton.OK, DialogIcon.Error);
         });

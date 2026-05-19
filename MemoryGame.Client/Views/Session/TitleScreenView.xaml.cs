@@ -1,4 +1,4 @@
-using MemoryGame.Client.Views.Controls.Effects;
+using MemoryGame.Client.Engine.Particles;
 using System.Windows.Controls;
 
 namespace MemoryGame.Client.Views.Session;

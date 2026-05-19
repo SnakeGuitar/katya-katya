@@ -11,13 +11,13 @@
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         ShowInTaskbar="False">
 
-    <Border Background="{DynamicResource CardBackground}"
+    <Border Background="#FAF5F5"
             CornerRadius="{DynamicResource CardCornerRadius}"
             BorderBrush="{DynamicResource PastelBorder}"
-            BorderThickness="1"
+            BorderThickness="1.5"
             Margin="10">
         <Border.Effect>
-            <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.14" Color="#3D1C1C"/>
+            <DropShadowEffect BlurRadius="25" ShadowDepth="5" Opacity="0.18" Color="#3D1C1C"/>
         </Border.Effect>
 
         <Grid Margin="24,20">

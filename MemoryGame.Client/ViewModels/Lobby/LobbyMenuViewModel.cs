@@ -181,14 +181,11 @@ public partial class LobbyMenuViewModel : ObservableObject
 
             if (errorCode == "LOBBY_NOT_FOUND" || errorCode == "LOBBY_FULL" || errorCode == "LOBBY_GAME_IN_PROGRESS")
             {
-                JoinCodeError = LocalizationManager.Instance[$"Error_{errorCode}"]
-                                 ?? LocalizationManager.Instance["Error_Network"];
+                JoinCodeError = ErrorResolver.Resolve(errorCode);
             }
             else
             {
-                string message = LocalizationManager.Instance[$"Error_{errorCode}"]
-                                 ?? LocalizationManager.Instance["Error_Network"];
-                _dialog.ShowMessage(message,
+                _dialog.ShowMessage(ErrorResolver.Resolve(errorCode),
                     LocalizationManager.Instance["Global_Title_Error"],
                     DialogButton.OK, DialogIcon.Error);
             }

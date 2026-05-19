@@ -31,17 +31,13 @@
             </Rectangle>
 
             <Border Grid.Column="1"
-                    Background="{DynamicResource CardBackground}"
-                    CornerRadius="{DynamicResource CardCornerRadius}"
+                    Style="{DynamicResource LiquidGlassCard}"
                     Width="370"
                     MaxHeight="600"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     Padding="36,32"
                     Margin="0,0,40,0">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.14" Color="#3D1C1C"/>
-                </Border.Effect>
 
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <StackPanel>

@@ -7,26 +7,75 @@
     <SolidColorBrush x:Key="PastelBackground"      Color="#FDF8F8"/>
     <SolidColorBrush x:Key="PastelPrimary"          Color="#C84747"/>
     <SolidColorBrush x:Key="PastelPrimaryHover"     Color="#B03A3A"/>
-    <SolidColorBrush x:Key="PastelSecondary"        Color="#F4C2C2"/>
-    <SolidColorBrush x:Key="PastelAccent"           Color="#F0A0A0"/>
+    
+    <!-- Secondary & Accent: Glassmorphic Liquid Pink Gradients -->
+    <LinearGradientBrush x:Key="PastelSecondary" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#CCF8E6E6" Offset="0"/>
+        <GradientStop Color="#80E8C4C4" Offset="1"/>
+    </LinearGradientBrush>
+    
+    <LinearGradientBrush x:Key="PastelAccent" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFE8D8D8" Offset="0"/>
+        <GradientStop Color="#BBE0C0C0" Offset="1"/>
+    </LinearGradientBrush>
+    
     <SolidColorBrush x:Key="PastelText"             Color="#3D1C1C"/>
-    <SolidColorBrush x:Key="PastelTextLight"        Color="#9B6B6B"/>
-    <SolidColorBrush x:Key="PastelBorder"           Color="#EDD5D5"/>
-    <SolidColorBrush x:Key="PastelError"            Color="#C84747"/>
+    <SolidColorBrush x:Key="PastelTextLight"        Color="#613D3D"/>
+    
+    <!-- Enhanced diagonal glass border with primary light hit & rose refraction -->
+    <LinearGradientBrush x:Key="PastelBorder" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#D0FFFFFF" Offset="0.0"/>
+        <GradientStop Color="#20FFFFFF" Offset="0.5"/>
+        <GradientStop Color="#40C84747" Offset="1.0"/>
+    </LinearGradientBrush>
+    
+    <SolidColorBrush x:Key="PastelError"            Color="#B82A2A"/>
     <SolidColorBrush x:Key="PastelSuccess"          Color="#B8F0D0"/>
-    <SolidColorBrush x:Key="CardBackground"         Color="#D1F9F0F0"/>
+    
+    <!-- Liquid Glass Card Background: beautiful glassmorphic blur base -->
+    <LinearGradientBrush x:Key="CardBackground" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#66FFFFFF" Offset="0"/>
+        <GradientStop Color="#33F9ECEC" Offset="0.4"/>
+        <GradientStop Color="#1AE5C5C5" Offset="1"/>
+    </LinearGradientBrush>
+    
     <SolidColorBrush x:Key="LinkText"               Color="#AF1010"/>
     <SolidColorBrush x:Key="LinkTextHover"          Color="#8A0D0D"/>
 
-    <!-- Primary gradient — soft warm rose -->
+    <!-- Animation / particle colours -->
+    <SolidColorBrush x:Key="MatchRingBrush"         Color="#00C853"/>
+    <SolidColorBrush x:Key="MatchOverlayBrush"      Color="#3000C853"/>
+    <Color            x:Key="CardShadowColor"                >#3D1C1C</Color>
+
+    <!-- Primary gradient — soft warm rose liquid glass -->
     <LinearGradientBrush x:Key="PrimaryGradient" StartPoint="0.5,0" EndPoint="0.5,1">
-        <GradientStop Color="#E07070" Offset="0"/>
-        <GradientStop Color="#C04848" Offset="1"/>
+        <GradientStop Color="#E6E07070" Offset="0"/>
+        <GradientStop Color="#B3C04848" Offset="1"/>
     </LinearGradientBrush>
 
+    <!-- Liquid Glass Card Container Style -->
+    <Style x:Key="LiquidGlassCard" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource CardBackground}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource PastelBorder}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{StaticResource CardCornerRadius}"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="#C84747"
+                                  Direction="315"
+                                  ShadowDepth="4"
+                                  BlurRadius="25"
+                                  Opacity="0.18"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!-- Global Backgrounds -->
-    <ImageSource x:Key="GlobalBackgroundSource">pack://application:,,,/Resources/Images/Backgrounds/background-minimalistic.png</ImageSource>
-    <ImageSource x:Key="GlobalMainBackgroundSource">pack://application:,,,/Resources/Images/Backgrounds/katya-main-background-only.png</ImageSource>
+    <ImageSource x:Key="GlobalBackgroundSourceImage">pack://application:,,,/Resources/Images/Backgrounds/background-minimalistic.png</ImageSource>
+    <ImageSource x:Key="GlobalMainBackgroundSourceImage">pack://application:,,,/Resources/Images/Backgrounds/katya-main-background-only.png</ImageSource>
+
+    <x:Null x:Key="GlobalBackgroundSource"/>
+    <x:Null x:Key="GlobalMainBackgroundSource"/>
 
     <!-- Icons -->
     <ImageSource x:Key="MenuIconSource">pack://application:,,,/Resources/Images/Icons/menu-icon.png</ImageSource>
@@ -51,14 +100,14 @@
     <CornerRadius x:Key="CardCornerRadius">18</CornerRadius>
 
     <!-- =========================================================
-         Neumorphism Shadows
+         Neumorphism Shadows & Glass Glows
          ========================================================= -->
     <DropShadowEffect x:Key="NeumorphShadowDark"
-                      Color="#C9A0A0"
+                      Color="#3D1C1C"
                       Direction="315"
                       ShadowDepth="4"
-                      BlurRadius="14"
-                      Opacity="0.45"/>
+                      BlurRadius="22"
+                      Opacity="0.22"/>
     <DropShadowEffect x:Key="NeumorphShadowSoft"
                       Color="#B89090"
                       Direction="315"
@@ -76,9 +125,18 @@
          Primary Button  (red gradient, white text)
          ========================================================= -->
     <Style x:Key="PastelButton" TargetType="Button">
-        <Setter Property="Background"   Value="{StaticResource PrimaryGradient}"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="#FFE65A5A" Offset="0"/>
+                    <GradientStop Color="#FFC83737" Offset="0.3"/>
+                    <GradientStop Color="#FFA02222" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Foreground"   Value="White"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource PastelBorder}"/>
         <Setter Property="FontSize"     Value="16"/>
         <Setter Property="FontWeight"   Value="SemiBold"/>
         <Setter Property="FontFamily"   Value="{StaticResource DefaultFont}"/>
@@ -90,108 +148,404 @@
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="Root"
                             Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="{StaticResource ButtonCornerRadius}"
-                            Padding="{TemplateBinding Padding}"
-                            Effect="{StaticResource NeumorphShadowDark}">
-                        <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
+                            RenderTransformOrigin="0.5,0.5"
+                            ClipToBounds="True"
+                            CacheMode="BitmapCache">
+                        <Border.Effect>
+                            <DropShadowEffect x:Name="GlowEffect"
+                                              Color="#FF8080"
+                                              Direction="315"
+                                              ShadowDepth="3"
+                                              BlurRadius="12"
+                                              Opacity="0.32"/>
+                        </Border.Effect>
+                        <Border.RenderTransform>
+                            <ScaleTransform x:Name="ButtonScale" ScaleX="1" ScaleY="1"/>
+                        </Border.RenderTransform>
+                        <Grid>
+                            <!-- Inner Glint Highlight (Rim Reflection on glass top lip) - Clean top lip border instead of capsule -->
+                            <Border BorderBrush="#4DFFFFFF" 
+                                    BorderThickness="0,1.2,0,0" 
+                                    CornerRadius="12" 
+                                    IsHitTestVisible="False"/>
+
+                            <!-- Inner Dark Edge Shadow (Simulating physical thickness) -->
+                            <Border BorderBrush="#25000000" 
+                                    BorderThickness="0,0,0,1" 
+                                    CornerRadius="12" 
+                                    IsHitTestVisible="False"/>
+
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                            
+                            <!-- Shimmer overlay sweep -->
+                            <Border x:Name="Shimmer" 
+                                    IsHitTestVisible="False" 
+                                    Opacity="0"
+                                    Width="120"
+                                    HorizontalAlignment="Left"
+                                    Margin="-120,0,0,0">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                        <GradientStop Color="#00FFFFFF" Offset="0"/>
+                                        <GradientStop Color="#60FFFFFF" Offset="0.5"/>
+                                        <GradientStop Color="#00FFFFFF" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.RenderTransform>
+                                    <TranslateTransform x:Name="ShimmerTransform" X="0"/>
+                                </Border.RenderTransform>
+                            </Border>
+                        </Grid>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <!-- Hover scale to 1.04 -->
+                                        <DoubleAnimation Storyboard.TargetName="ButtonScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="1.04" Duration="0:0:0.2">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="1.04" Duration="0:0:0.2">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <!-- Neon Glow Hover Animation -->
+                                        <ColorAnimation Storyboard.TargetName="Root"
+                                                        Storyboard.TargetProperty="Effect.Color"
+                                                        To="#FF3333" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="Root"
+                                                         Storyboard.TargetProperty="Effect.BlurRadius"
+                                                         To="25" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="Root"
+                                                         Storyboard.TargetProperty="Effect.Opacity"
+                                                         To="0.85" Duration="0:0:0.2"/>
+                                        <!-- Shimmer animation sweep -->
+                                        <DoubleAnimation Storyboard.TargetName="Shimmer"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         From="0" To="1" Duration="0:0:0.05"/>
+                                        <DoubleAnimation Storyboard.TargetName="Shimmer"
+                                                         Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                         From="-50" To="400" Duration="0:0:0.6">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <!-- Un-hover scale back to 1.0 -->
+                                        <DoubleAnimation Storyboard.TargetName="ButtonScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="1.0" Duration="0:0:0.2">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="1.0" Duration="0:0:0.2">
+                                            <DoubleAnimation.EasingFunction>
+                                                <QuadraticEase EasingMode="EaseOut"/>
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                        <!-- Reset Neon Glow -->
+                                        <ColorAnimation Storyboard.TargetName="Root"
+                                                        Storyboard.TargetProperty="Effect.Color"
+                                                        To="#FF8080" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="Root"
+                                                         Storyboard.TargetProperty="Effect.BlurRadius"
+                                                         To="12" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="Root"
+                                                         Storyboard.TargetProperty="Effect.Opacity"
+                                                         To="0.32" Duration="0:0:0.2"/>
+                                        <!-- Fade shimmer out -->
+                                        <DoubleAnimation Storyboard.TargetName="Shimmer"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0" Duration="0:0:0.15"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <!-- Press Squash to 0.96 -->
+                                        <DoubleAnimation Storyboard.TargetName="ButtonScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="0.96" Duration="0:0:0.05"/>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="0.96" Duration="0:0:0.05"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonScale"
+                                                         Storyboard.TargetProperty="ScaleX"
+                                                         To="1.04" Duration="0:0:0.1"/>
+                                        <DoubleAnimation Storyboard.TargetName="ButtonScale"
+                                                         Storyboard.TargetProperty="ScaleY"
+                                                         To="1.04" Duration="0:0:0.1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource PrimaryGradientHover}"/>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.55"/>
-            </Trigger>
-        </Style.Triggers>
     </Style>
 
-    <!-- Secondary Button (light rose, dark text) -->
+    <!-- Secondary Button (translucent rose glass style, inheriting exact same premium template layout) -->
     <Style x:Key="PastelButtonSecondary" TargetType="Button" BasedOn="{StaticResource PastelButton}">
-        <Setter Property="Background" Value="{StaticResource PastelSecondary}"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#D9F8E6E6" Offset="0"/>
+                    <GradientStop Color="#99E8C4C4" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Foreground" Value="{StaticResource PastelText}"/>
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource PastelAccent}"/>
-            </Trigger>
-        </Style.Triggers>
+        <Setter Property="BorderBrush" Value="{StaticResource PastelBorder}"/>
     </Style>
 
-    <!-- Accent Button -->
+    <!-- Accent Button (elegant warm pink glow glass button) -->
     <Style x:Key="PastelButtonAccent" TargetType="Button" BasedOn="{StaticResource PastelButton}">
-        <Setter Property="Background" Value="{StaticResource PastelAccent}"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FFEAE0E0" Offset="0"/>
+                    <GradientStop Color="#CCD0B8B8" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Foreground" Value="{StaticResource PastelText}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource PastelBorder}"/>
     </Style>
 
     <!-- =========================================================
-         TextBox
+         TextBox (Carved Inset Liquid Glass Cavity Slot)
          ========================================================= -->
     <Style x:Key="PastelTextBox" TargetType="TextBox">
-        <Setter Property="Background"       Value="#FFFFFF"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#40FDFDFD" Offset="0"/>
+                    <GradientStop Color="#25F2E4E4" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Foreground"       Value="{StaticResource PastelText}"/>
         <Setter Property="BorderBrush"      Value="{StaticResource PastelBorder}"/>
-        <Setter Property="BorderThickness"  Value="1.5"/>
+        <Setter Property="BorderThickness"  Value="1"/>
         <Setter Property="FontSize"         Value="14"/>
         <Setter Property="FontFamily"       Value="{StaticResource DefaultFont}"/>
-        <Setter Property="Padding"          Value="10,6"/>
+        <Setter Property="Padding"          Value="12,8"/>
         <Setter Property="CaretBrush"       Value="{StaticResource PastelText}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{StaticResource InputCornerRadius}"
-                            Padding="{TemplateBinding Padding}"
-                            Effect="{StaticResource NeumorphInsetShadow}">
-                        <ScrollViewer x:Name="PART_ContentHost"
-                                      VerticalAlignment="Center"/>
-                    </Border>
+                    <Grid>
+                        <!-- Main carved border container -->
+                        <Border x:Name="InputBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{StaticResource InputCornerRadius}"
+                                Padding="{TemplateBinding Padding}">
+                            <Border.Effect>
+                                <DropShadowEffect x:Name="FocusGlow"
+                                                  Color="#FF8080"
+                                                  Direction="315"
+                                                  ShadowDepth="0"
+                                                  BlurRadius="0"
+                                                  Opacity="0"/>
+                            </Border.Effect>
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Top-lip inner shadow (adds carving pocket depth) -->
+                        <Border BorderBrush="#25000000" 
+                                BorderThickness="0,1,0,0" 
+                                CornerRadius="{StaticResource InputCornerRadius}"
+                                IsHitTestVisible="False"/>
+
+                        <!-- Bottom-lip glint highlight (adds refractive shelf light reflection) -->
+                        <Border BorderBrush="#60FFFFFF" 
+                                BorderThickness="0,0,0,1" 
+                                CornerRadius="{StaticResource InputCornerRadius}"
+                                IsHitTestVisible="False"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="InputBorder" Property="BorderBrush" Value="{StaticResource PastelPrimary}"/>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="InputBorder"
+                                                         Storyboard.TargetProperty="Effect.BlurRadius"
+                                                         To="10" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="InputBorder"
+                                                         Storyboard.TargetProperty="Effect.Opacity"
+                                                         To="0.6" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="InputBorder"
+                                                         Storyboard.TargetProperty="Effect.BlurRadius"
+                                                         To="0" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="InputBorder"
+                                                         Storyboard.TargetProperty="Effect.Opacity"
+                                                         To="0" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="InputBorder" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#55FDFDFD" Offset="0"/>
+                                        <GradientStop Color="#35F2E4E4" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsFocused" Value="True">
-                <Setter Property="BorderBrush" Value="{StaticResource PastelPrimary}"/>
-            </Trigger>
-        </Style.Triggers>
     </Style>
 
     <!-- =========================================================
-         PasswordBox
+         PasswordBox (Carved Inset Liquid Glass Cavity Slot)
          ========================================================= -->
     <Style x:Key="PastelPasswordBox" TargetType="PasswordBox">
-        <Setter Property="Background"       Value="#FFFFFF"/>
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#40FDFDFD" Offset="0"/>
+                    <GradientStop Color="#25F2E4E4" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Foreground"       Value="{StaticResource PastelText}"/>
         <Setter Property="BorderBrush"      Value="{StaticResource PastelBorder}"/>
-        <Setter Property="BorderThickness"  Value="1.5"/>
+        <Setter Property="BorderThickness"  Value="1"/>
         <Setter Property="FontSize"         Value="14"/>
         <Setter Property="FontFamily"       Value="{StaticResource DefaultFont}"/>
-        <Setter Property="Padding"          Value="10,6"/>
+        <Setter Property="Padding"          Value="12,8"/>
         <Setter Property="CaretBrush"       Value="{StaticResource PastelText}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="PasswordBox">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="{StaticResource InputCornerRadius}"
-                            Padding="{TemplateBinding Padding}"
-                            Effect="{StaticResource NeumorphInsetShadow}">
-                        <ScrollViewer x:Name="PART_ContentHost"
-                                      VerticalAlignment="Center"/>
-                    </Border>
+                    <Grid>
+                        <!-- Main carved border container -->
+                        <Border x:Name="InputBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{StaticResource InputCornerRadius}"
+                                Padding="{TemplateBinding Padding}">
+                            <Border.Effect>
+                                <DropShadowEffect x:Name="FocusGlow"
+                                                  Color="#FF8080"
+                                                  Direction="315"
+                                                  ShadowDepth="0"
+                                                  BlurRadius="0"
+                                                  Opacity="0"/>
+                            </Border.Effect>
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Top-lip inner shadow (adds carving pocket depth) -->
+                        <Border BorderBrush="#25000000" 
+                                BorderThickness="0,1,0,0" 
+                                CornerRadius="{StaticResource InputCornerRadius}"
+                                IsHitTestVisible="False"/>
+
+                        <!-- Bottom-lip glint highlight (adds refractive shelf light reflection) -->
+                        <Border BorderBrush="#60FFFFFF" 
+                                BorderThickness="0,0,0,1" 
+                                CornerRadius="{StaticResource InputCornerRadius}"
+                                IsHitTestVisible="False"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="InputBorder" Property="BorderBrush" Value="{StaticResource PastelPrimary}"/>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="InputBorder"
+                                                         Storyboard.TargetProperty="Effect.BlurRadius"
+                                                         To="10" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="InputBorder"
+                                                         Storyboard.TargetProperty="Effect.Opacity"
+                                                         To="0.6" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="InputBorder"
+                                                         Storyboard.TargetProperty="Effect.BlurRadius"
+                                                         To="0" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="InputBorder"
+                                                         Storyboard.TargetProperty="Effect.Opacity"
+                                                         To="0" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="InputBorder" Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#55FDFDFD" Offset="0"/>
+                                        <GradientStop Color="#35F2E4E4" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Style.Triggers>
-            <Trigger Property="IsFocused" Value="True">
-                <Setter Property="BorderBrush" Value="{StaticResource PastelPrimary}"/>
-            </Trigger>
-        </Style.Triggers>
     </Style>
 
     <!-- =========================================================
