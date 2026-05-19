@@ -496,46 +496,41 @@
 	<!-- =====================================================================
        Profile
        ===================================================================== -->
-	<data name="EditProfile_Label_EditProfile">
-		<value>编辑资料</value>
-	</data>
-	<data name="EditProfile_Button_ChangeAvatar">
-		<value>更改头像</value>
-	</data>
-	<data name="EditProfile_Button_UpdatePassword">
-		<value>更新密码</value>
-	</data>
-	<data name="EditProfile_Label_NewUsername">
-		<value>新用户名</value>
-	</data>
-	<data name="EditProfile_Label_ActualPassword">
-		<value>当前密码</value>
-	</data>
-	<data name="EditProfile_Label_NewPassword">
-		<value>新密码</value>
-	</data>
+	<data name="Profile_Title"><value>个人资料</value></data>
+	<data name="Profile_Label_Name"><value>姓名</value></data>
+	<data name="Profile_Label_RegistrationDate"><value>注册日期</value></data>
+	<data name="Profile_Label_SocialNetworks"><value>社交网络</value></data>
+	<data name="Profile_Label_NoInfo"><value>未提供</value></data>
+	<data name="EditProfile_Label_EditProfile"><value>编辑资料</value></data>
+	<data name="EditProfile_Button_ChangeAvatar"><value>更改头像</value></data>
+	<data name="EditProfile_Button_UpdatePassword"><value>更新密码</value></data>
+	<data name="EditProfile_Label_NewUsername"><value>新用户名</value></data>
+	<data name="EditProfile_Label_ActualPassword"><value>当前密码</value></data>
+	<data name="EditProfile_Label_NewPassword"><value>新密码</value></data>
+	<data name="EditProfile_Label_PersonalInfo"><value>个人信息</value></data>
+	<data name="EditProfile_Label_ChangeUsername"><value>更改用户名</value></data>
+	<data name="EditProfile_Message_AvatarUpdated"><value>头像已成功更新。</value></data>
+	<data name="EditProfile_Message_InfoUpdated"><value>个人信息已更新。</value></data>
+	<data name="EditProfile_Message_UsernameUpdated"><value>用户名已更新，请重新登录。</value></data>
+	<data name="EditProfile_Message_PasswordUpdated"><value>密码已更新。</value></data>
+	<data name="EditProfile_Message_SocialAdded"><value>社交网络已添加。</value></data>
+	<data name="EditProfile_Message_SocialRemoved"><value>社交网络已删除。</value></data>
 
 	<!-- =====================================================================
        Friends / Social
        ===================================================================== -->
-	<data name="Friends_Label_MyFriends">
-		<value>我的好友</value>
-	</data>
-	<data name="Friends_Label_PendingRequests">
-		<value>待处理请求</value>
-	</data>
-	<data name="Friends_Label_AddFriend">
-		<value>添加好友</value>
-	</data>
-	<data name="Friends_Button_SendRequest">
-		<value>发送请求</value>
-	</data>
-	<data name="Friends_Label_EnterUsername">
-		<value>输入用户名</value>
-	</data>
-	<data name="Friends_Message_RemoveFriend">
-		<value>确定要将{0}从好友列表中移除吗？</value>
-	</data>
+	<data name="Friends_Title"><value>好友</value></data>
+	<data name="Friends_Label_MyFriends"><value>我的好友</value></data>
+	<data name="Friends_Label_PendingRequests"><value>待处理请求</value></data>
+	<data name="Friends_Label_AddFriend"><value>添加好友</value></data>
+	<data name="Friends_Button_SendRequest"><value>发送请求</value></data>
+	<data name="Friends_Label_EnterUsername"><value>输入用户名</value></data>
+	<data name="Friends_Label_FriendsSince"><value>自{0}起成为好友</value></data>
+	<data name="Friends_Message_RemoveFriend"><value>确定要将{0}从好友列表中移除吗？</value></data>
+	<data name="Friends_Message_RequestSent"><value>已向{0}发送好友请求。</value></data>
+	<data name="Friends_Label_NoFriends"><value>还没有好友，发送请求开始吧！</value></data>
+	<data name="Friends_Label_NoRequests"><value>没有待处理的请求。</value></data>
+	<data name="Error_SOCIAL_CANNOT_ADD_SELF"><value>您不能将自己添加为好友。</value></data>
 
 	<!-- =====================================================================
        Match / Singleplayer / Stats
@@ -635,4 +630,27 @@
        ===================================================================== -->
   <data name="Gallery_Title"><value>卡牌收藏</value></data>
   <data name="Gallery_Hint_Cycle"><value>点击图片切换版本</value></data>
+
+  <!-- =====================================================================
+       Single Player
+       ===================================================================== -->
+  <data name="SinglePlayer_Label_SelectDifficulty"><value>选择难度</value></data>
+  <data name="SinglePlayer_Button_Easy"><value>简单</value></data>
+  <data name="SinglePlayer_Label_Easy_Desc"><value>16张卡牌 · 每回合60秒</value></data>
+  <data name="SinglePlayer_Button_Medium"><value>中等</value></data>
+  <data name="SinglePlayer_Label_Medium_Desc"><value>24张卡牌 · 每回合45秒</value></data>
+  <data name="SinglePlayer_Button_Hard"><value>困难</value></data>
+  <data name="SinglePlayer_Label_Hard_Desc"><value>36张卡牌 · 每回合30秒</value></data>
+  <data name="SinglePlayer_Button_Custom"><value>自定义</value></data>
+  <data name="SinglePlayer_Label_Custom_Desc"><value>自行配置设置</value></data>
+  <data name="SinglePlayer_Label_CustomSettings"><value>自定义设置</value></data>
+  <data name="SinglePlayer_Label_CardCount"><value>卡牌数量</value></data>
+  <data name="SinglePlayer_Label_TurnTime"><value>回合时间</value></data>
+  <data name="SinglePlayer_Label_NoTimeLimit"><value>无时间限制</value></data>
+  <data name="SinglePlayer_Label_Pairs"><value>配对数</value></data>
+  <data name="SinglePlayer_Label_Attempts"><value>尝试次数</value></data>
+  <data name="SinglePlayer_Label_Elapsed"><value>用时</value></data>
+  <data name="SinglePlayer_Label_GameOver_Complete"><value>拼图完成！</value></data>
+  <data name="SinglePlayer_Label_GameOver_Stats"><value>配对: {0}/{1}  ·  尝试: {2}  ·  用时: {3}</value></data>
+  <data name="SinglePlayer_Button_PlayAgain"><value>再玩一次</value></data>
 </root>

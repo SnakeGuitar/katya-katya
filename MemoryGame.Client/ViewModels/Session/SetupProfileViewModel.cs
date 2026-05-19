@@ -79,7 +79,7 @@ public partial class SetupProfileViewModel : BaseViewModel
 
         if (!result.IsSuccess)
         {
-            ErrorMessage = result.ErrorMessage ?? "Registration failed.";
+            ErrorMessage = ErrorResolver.Resolve(result.ErrorCode);
             return;
         }
 

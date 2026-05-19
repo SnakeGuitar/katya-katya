@@ -326,6 +326,29 @@
 </data>
 
   <!-- =====================================================================
+       Single Player
+       ===================================================================== -->
+  <data name="SinglePlayer_Label_SelectDifficulty"><value>Select Difficulty</value></data>
+  <data name="SinglePlayer_Button_Easy"><value>Easy</value></data>
+  <data name="SinglePlayer_Label_Easy_Desc"><value>16 cards · 60s per turn</value></data>
+  <data name="SinglePlayer_Button_Medium"><value>Medium</value></data>
+  <data name="SinglePlayer_Label_Medium_Desc"><value>24 cards · 45s per turn</value></data>
+  <data name="SinglePlayer_Button_Hard"><value>Hard</value></data>
+  <data name="SinglePlayer_Label_Hard_Desc"><value>36 cards · 30s per turn</value></data>
+  <data name="SinglePlayer_Button_Custom"><value>Custom</value></data>
+  <data name="SinglePlayer_Label_Custom_Desc"><value>Choose your own settings</value></data>
+  <data name="SinglePlayer_Label_CustomSettings"><value>Custom Settings</value></data>
+  <data name="SinglePlayer_Label_CardCount"><value>Cards</value></data>
+  <data name="SinglePlayer_Label_TurnTime"><value>Turn Time</value></data>
+  <data name="SinglePlayer_Label_NoTimeLimit"><value>No time limit</value></data>
+  <data name="SinglePlayer_Label_Pairs"><value>Pairs</value></data>
+  <data name="SinglePlayer_Label_Attempts"><value>Attempts</value></data>
+  <data name="SinglePlayer_Label_Elapsed"><value>Elapsed</value></data>
+  <data name="SinglePlayer_Label_GameOver_Complete"><value>Puzzle Complete!</value></data>
+  <data name="SinglePlayer_Label_GameOver_Stats"><value>Pairs: {0}/{1}  ·  Attempts: {2}  ·  Time: {3}</value></data>
+  <data name="SinglePlayer_Button_PlayAgain"><value>Play Again</value></data>
+
+  <!-- =====================================================================
        Gallery
        ===================================================================== -->
   <data name="Gallery_Title"><value>Card Collection</value></data>

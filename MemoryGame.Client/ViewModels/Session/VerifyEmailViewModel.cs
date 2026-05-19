@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MemoryGame.Client.Localization;
 using MemoryGame.Client.Services.Core;
 using MemoryGame.Client.Services.Interfaces;
 using MemoryGame.Client.Services.Media;
@@ -44,13 +45,13 @@ public partial class VerifyEmailViewModel : BaseViewModel
 
         if (!result.IsSuccess)
         {
-            ErrorMessage = result.ErrorMessage ?? "Verification failed.";
+            ErrorMessage = ErrorResolver.Resolve(result.ErrorCode);
             return;
         }
 
         if (!result.Data!.Valid)
         {
-            ErrorMessage = Localization.LocalizationManager.Instance["VerifyEmail_InvalidPin"];
+            ErrorMessage = LocalizationManager.Instance["VerifyEmail_InvalidPin"];
             return;
         }
 
@@ -68,7 +69,7 @@ public partial class VerifyEmailViewModel : BaseViewModel
         PinResentMessage = null;
         var result = await _api.PostAsync("api/auth/resend-verification", new { Email });
         if (result.IsSuccess)
-            PinResentMessage = Localization.LocalizationManager.Instance["VerifyEmail_PinResentMessage"];
+            PinResentMessage = LocalizationManager.Instance["VerifyEmail_PinResentMessage"];
     }
 }
 

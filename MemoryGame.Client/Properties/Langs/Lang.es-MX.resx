@@ -234,22 +234,41 @@
   <!-- =====================================================================
        Profile
        ===================================================================== -->
+  <data name="Profile_Title"><value>Perfil</value></data>
+  <data name="Profile_Label_Name"><value>Nombre</value></data>
+  <data name="Profile_Label_RegistrationDate"><value>Registrado</value></data>
+  <data name="Profile_Label_SocialNetworks"><value>Redes Sociales</value></data>
+  <data name="Profile_Label_NoInfo"><value>No proporcionado</value></data>
   <data name="EditProfile_Label_EditProfile"><value>Editar Perfil</value></data>
   <data name="EditProfile_Button_ChangeAvatar"><value>Cambiar Avatar</value></data>
   <data name="EditProfile_Button_UpdatePassword"><value>Cambiar Contraseña</value></data>
   <data name="EditProfile_Label_NewUsername"><value>Nuevo usuario</value></data>
   <data name="EditProfile_Label_ActualPassword"><value>Contraseña actual</value></data>
   <data name="EditProfile_Label_NewPassword"><value>Nueva contraseña</value></data>
+  <data name="EditProfile_Label_PersonalInfo"><value>Información Personal</value></data>
+  <data name="EditProfile_Label_ChangeUsername"><value>Cambiar Nombre de Usuario</value></data>
+  <data name="EditProfile_Message_AvatarUpdated"><value>Avatar actualizado correctamente.</value></data>
+  <data name="EditProfile_Message_InfoUpdated"><value>Información personal actualizada.</value></data>
+  <data name="EditProfile_Message_UsernameUpdated"><value>Nombre de usuario actualizado. Por favor inicia sesión de nuevo.</value></data>
+  <data name="EditProfile_Message_PasswordUpdated"><value>Contraseña actualizada.</value></data>
+  <data name="EditProfile_Message_SocialAdded"><value>Red social agregada.</value></data>
+  <data name="EditProfile_Message_SocialRemoved"><value>Red social eliminada.</value></data>
 
   <!-- =====================================================================
        Friends / Social
        ===================================================================== -->
+  <data name="Friends_Title"><value>Amigos</value></data>
   <data name="Friends_Label_MyFriends"><value>Mis Amigos</value></data>
   <data name="Friends_Label_PendingRequests"><value>Solicitudes pendientes</value></data>
   <data name="Friends_Label_AddFriend"><value>Agregar amigo</value></data>
   <data name="Friends_Button_SendRequest"><value>Enviar solicitud</value></data>
   <data name="Friends_Label_EnterUsername"><value>Ingresa el nombre de usuario</value></data>
+  <data name="Friends_Label_FriendsSince"><value>Amigos desde {0}</value></data>
   <data name="Friends_Message_RemoveFriend"><value>¿Seguro que quieres eliminar a {0} de tus amigos?</value></data>
+  <data name="Friends_Message_RequestSent"><value>Solicitud de amistad enviada a {0}.</value></data>
+  <data name="Friends_Label_NoFriends"><value>Aún no tienes amigos. ¡Envía una solicitud para empezar!</value></data>
+  <data name="Friends_Label_NoRequests"><value>No hay solicitudes pendientes.</value></data>
+  <data name="Error_SOCIAL_CANNOT_ADD_SELF"><value>No puedes agregarte a ti mismo como amigo.</value></data>
 
   <!-- =====================================================================
        Match / Singleplayer / Stats
@@ -311,4 +330,27 @@
        ===================================================================== -->
   <data name="Gallery_Title"><value>Colección de Cartas</value></data>
   <data name="Gallery_Hint_Cycle"><value>Clic en la imagen para cambiar versión</value></data>
+
+  <!-- =====================================================================
+       Single Player
+       ===================================================================== -->
+  <data name="SinglePlayer_Label_SelectDifficulty"><value>Seleccionar Dificultad</value></data>
+  <data name="SinglePlayer_Button_Easy"><value>Fácil</value></data>
+  <data name="SinglePlayer_Label_Easy_Desc"><value>16 cartas · 60s por turno</value></data>
+  <data name="SinglePlayer_Button_Medium"><value>Medio</value></data>
+  <data name="SinglePlayer_Label_Medium_Desc"><value>24 cartas · 45s por turno</value></data>
+  <data name="SinglePlayer_Button_Hard"><value>Difícil</value></data>
+  <data name="SinglePlayer_Label_Hard_Desc"><value>36 cartas · 30s por turno</value></data>
+  <data name="SinglePlayer_Button_Custom"><value>Personalizado</value></data>
+  <data name="SinglePlayer_Label_Custom_Desc"><value>Elige tus propios ajustes</value></data>
+  <data name="SinglePlayer_Label_CustomSettings"><value>Ajustes Personalizados</value></data>
+  <data name="SinglePlayer_Label_CardCount"><value>Cartas</value></data>
+  <data name="SinglePlayer_Label_TurnTime"><value>Tiempo de Turno</value></data>
+  <data name="SinglePlayer_Label_NoTimeLimit"><value>Sin límite de tiempo</value></data>
+  <data name="SinglePlayer_Label_Pairs"><value>Pares</value></data>
+  <data name="SinglePlayer_Label_Attempts"><value>Intentos</value></data>
+  <data name="SinglePlayer_Label_Elapsed"><value>Tiempo</value></data>
+  <data name="SinglePlayer_Label_GameOver_Complete"><value>¡Puzzle Completado!</value></data>
+  <data name="SinglePlayer_Label_GameOver_Stats"><value>Pares: {0}/{1}  ·  Intentos: {2}  ·  Tiempo: {3}</value></data>
+  <data name="SinglePlayer_Button_PlayAgain"><value>Jugar de Nuevo</value></data>
 </root>

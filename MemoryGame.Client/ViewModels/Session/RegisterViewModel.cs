@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MemoryGame.Client.Localization;
 using MemoryGame.Client.Services.Core;
 using MemoryGame.Client.Services.Interfaces;
 using MemoryGame.Client.Services.Media;
@@ -38,7 +39,7 @@ public partial class RegisterViewModel : BaseViewModel
 
         if (Password != ConfirmPassword)
         {
-            ErrorMessage = "Passwords do not match.";
+            ErrorMessage = LocalizationManager.Instance["Validation_PasswordsDoNotMatch"];
             return;
         }
 
@@ -46,7 +47,7 @@ public partial class RegisterViewModel : BaseViewModel
 
         if (!result.IsSuccess)
         {
-            ErrorMessage = result.ErrorMessage ?? "Registration failed.";
+            ErrorMessage = ErrorResolver.Resolve(result.ErrorCode);
             return;
         }
 

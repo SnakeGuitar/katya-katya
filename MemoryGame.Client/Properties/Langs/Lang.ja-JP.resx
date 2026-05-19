@@ -496,46 +496,41 @@
 	<!-- =====================================================================
        Profile
        ===================================================================== -->
-	<data name="EditProfile_Label_EditProfile">
-		<value>プロフィール編集</value>
-	</data>
-	<data name="EditProfile_Button_ChangeAvatar">
-		<value>アバターを変更</value>
-	</data>
-	<data name="EditProfile_Button_UpdatePassword">
-		<value>パスワードを更新</value>
-	</data>
-	<data name="EditProfile_Label_NewUsername">
-		<value>新しいユーザー名</value>
-	</data>
-	<data name="EditProfile_Label_ActualPassword">
-		<value>現在のパスワード</value>
-	</data>
-	<data name="EditProfile_Label_NewPassword">
-		<value>新しいパスワード</value>
-	</data>
+	<data name="Profile_Title"><value>プロフィール</value></data>
+	<data name="Profile_Label_Name"><value>名前</value></data>
+	<data name="Profile_Label_RegistrationDate"><value>登録日</value></data>
+	<data name="Profile_Label_SocialNetworks"><value>ソーシャルネットワーク</value></data>
+	<data name="Profile_Label_NoInfo"><value>未設定</value></data>
+	<data name="EditProfile_Label_EditProfile"><value>プロフィール編集</value></data>
+	<data name="EditProfile_Button_ChangeAvatar"><value>アバターを変更</value></data>
+	<data name="EditProfile_Button_UpdatePassword"><value>パスワードを更新</value></data>
+	<data name="EditProfile_Label_NewUsername"><value>新しいユーザー名</value></data>
+	<data name="EditProfile_Label_ActualPassword"><value>現在のパスワード</value></data>
+	<data name="EditProfile_Label_NewPassword"><value>新しいパスワード</value></data>
+	<data name="EditProfile_Label_PersonalInfo"><value>個人情報</value></data>
+	<data name="EditProfile_Label_ChangeUsername"><value>ユーザー名を変更</value></data>
+	<data name="EditProfile_Message_AvatarUpdated"><value>アバターが更新されました。</value></data>
+	<data name="EditProfile_Message_InfoUpdated"><value>個人情報が更新されました。</value></data>
+	<data name="EditProfile_Message_UsernameUpdated"><value>ユーザー名が更新されました。再ログインしてください。</value></data>
+	<data name="EditProfile_Message_PasswordUpdated"><value>パスワードが更新されました。</value></data>
+	<data name="EditProfile_Message_SocialAdded"><value>ソーシャルネットワークが追加されました。</value></data>
+	<data name="EditProfile_Message_SocialRemoved"><value>ソーシャルネットワークが削除されました。</value></data>
 
 	<!-- =====================================================================
        Friends / Social
        ===================================================================== -->
-	<data name="Friends_Label_MyFriends">
-		<value>友達一覧</value>
-	</data>
-	<data name="Friends_Label_PendingRequests">
-		<value>保留中のリクエスト</value>
-	</data>
-	<data name="Friends_Label_AddFriend">
-		<value>友達を追加</value>
-	</data>
-	<data name="Friends_Button_SendRequest">
-		<value>リクエストを送信</value>
-	</data>
-	<data name="Friends_Label_EnterUsername">
-		<value>ユーザー名を入力</value>
-	</data>
-	<data name="Friends_Message_RemoveFriend">
-		<value>本当に{0}を友達リストから削除しますか？</value>
-	</data>
+	<data name="Friends_Title"><value>友達</value></data>
+	<data name="Friends_Label_MyFriends"><value>友達一覧</value></data>
+	<data name="Friends_Label_PendingRequests"><value>保留中のリクエスト</value></data>
+	<data name="Friends_Label_AddFriend"><value>友達を追加</value></data>
+	<data name="Friends_Button_SendRequest"><value>リクエストを送信</value></data>
+	<data name="Friends_Label_EnterUsername"><value>ユーザー名を入力</value></data>
+	<data name="Friends_Label_FriendsSince"><value>{0}から友達</value></data>
+	<data name="Friends_Message_RemoveFriend"><value>本当に{0}を友達リストから削除しますか？</value></data>
+	<data name="Friends_Message_RequestSent"><value>{0}に友達リクエストを送信しました。</value></data>
+	<data name="Friends_Label_NoFriends"><value>まだ友達がいません。リクエストを送って始めましょう！</value></data>
+	<data name="Friends_Label_NoRequests"><value>保留中のリクエストはありません。</value></data>
+	<data name="Error_SOCIAL_CANNOT_ADD_SELF"><value>自分自身を友達に追加することはできません。</value></data>
 
 	<!-- =====================================================================
        Match / Singleplayer / Stats
@@ -635,4 +630,27 @@
        ===================================================================== -->
   <data name="Gallery_Title"><value>カードコレクション</value></data>
   <data name="Gallery_Hint_Cycle"><value>画像をクリックしてバージョンを切り替え</value></data>
+
+  <!-- =====================================================================
+       Single Player
+       ===================================================================== -->
+  <data name="SinglePlayer_Label_SelectDifficulty"><value>難易度を選択</value></data>
+  <data name="SinglePlayer_Button_Easy"><value>かんたん</value></data>
+  <data name="SinglePlayer_Label_Easy_Desc"><value>16枚 · 60秒/ターン</value></data>
+  <data name="SinglePlayer_Button_Medium"><value>ふつう</value></data>
+  <data name="SinglePlayer_Label_Medium_Desc"><value>24枚 · 45秒/ターン</value></data>
+  <data name="SinglePlayer_Button_Hard"><value>むずかしい</value></data>
+  <data name="SinglePlayer_Label_Hard_Desc"><value>36枚 · 30秒/ターン</value></data>
+  <data name="SinglePlayer_Button_Custom"><value>カスタム</value></data>
+  <data name="SinglePlayer_Label_Custom_Desc"><value>自分で設定する</value></data>
+  <data name="SinglePlayer_Label_CustomSettings"><value>カスタム設定</value></data>
+  <data name="SinglePlayer_Label_CardCount"><value>カード枚数</value></data>
+  <data name="SinglePlayer_Label_TurnTime"><value>ターン時間</value></data>
+  <data name="SinglePlayer_Label_NoTimeLimit"><value>時間制限なし</value></data>
+  <data name="SinglePlayer_Label_Pairs"><value>ペア</value></data>
+  <data name="SinglePlayer_Label_Attempts"><value>試行回数</value></data>
+  <data name="SinglePlayer_Label_Elapsed"><value>経過時間</value></data>
+  <data name="SinglePlayer_Label_GameOver_Complete"><value>パズル完成！</value></data>
+  <data name="SinglePlayer_Label_GameOver_Stats"><value>ペア: {0}/{1}  ·  試行: {2}  ·  時間: {3}</value></data>
+  <data name="SinglePlayer_Button_PlayAgain"><value>もう一度プレイ</value></data>
 </root>

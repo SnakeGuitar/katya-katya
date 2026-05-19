@@ -42,9 +42,9 @@ public abstract partial class BaseViewModel : ObservableObject
         {
             await action();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            ErrorMessage = ex.Message;
+            ErrorMessage = LocalizationManager.Instance["Error_UNKNOWN"];
             if (showDefaultErrorIndicator)
             {
                 Dialog.ShowMessage(

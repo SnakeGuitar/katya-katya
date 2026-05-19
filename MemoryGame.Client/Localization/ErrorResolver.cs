@@ -63,9 +63,43 @@ public static class ErrorResolver
             "LOBBY_CODE_TAKEN"                      => "Error_LOBBY_CODE_TAKEN",
             "LOBBY_NOT_IN_LOBBY"                    => "Error_LOBBY_NOT_IN_LOBBY",
             "LOBBY_INVITE_SELF"                     => "Error_LOBBY_INVITE_SELF",
+            "LOBBY_CREATE_FAILED"                   => "Error_UNKNOWN",
 
-            // CLIENT-SIDE
+            // VALIDATION (server-side input checks)
+            // Where an existing Validation_* resx key matches, route to it.
+            // Otherwise fall back to Error_UNKNOWN until a key is added.
+            "VALIDATION_USERNAME_REQUIRED"          => "Validation_Required",
+            "VALIDATION_USERNAME_TOO_SHORT"         => "Validation_UsernameTooShort",
+            "VALIDATION_USERNAME_TOO_LONG"          => "Validation_UsernameTooLong",
+            "VALIDATION_USERNAME_INVALID_CHARACTERS" => "Error_UNKNOWN",
+            "VALIDATION_PASSWORD_REQUIRED"          => "Validation_Required",
+            "VALIDATION_PASSWORD_TOO_SHORT"         => "Validation_PasswordTooShort",
+            "VALIDATION_PASSWORD_TOO_LONG"          => "Validation_PasswordTooLong",
+            "VALIDATION_PASSWORD_REQUIRES_UPPERCASE" => "Validation_PasswordMissingUpper",
+            "VALIDATION_PASSWORD_REQUIRES_LOWERCASE" => "Validation_PasswordMissingLower",
+            "VALIDATION_PASSWORD_REQUIRES_DIGIT"    => "Validation_PasswordMissingDigit",
+            "VALIDATION_PASSWORD_REQUIRES_SPECIAL"  => "Validation_PasswordMissingSpecial",
+            "VALIDATION_CURRENT_PASSWORD_REQUIRED"  => "Validation_Required",
+            "VALIDATION_EMAIL_REQUIRED"             => "Validation_Required",
+            "VALIDATION_EMAIL_INVALID_FORMAT"       => "Validation_InvalidEmail",
+            "VALIDATION_EMAIL_TOO_LONG"             => "Error_UNKNOWN",
+            "VALIDATION_PIN_REQUIRED"               => "Validation_Required",
+            "VALIDATION_PIN_INVALID_FORMAT"         => "Validation_PinLength",
+            "VALIDATION_AVATAR_REQUIRED"            => "Validation_Required",
+            "VALIDATION_AVATAR_INVALID_FORMAT"      => "Error_UNKNOWN",
+            "VALIDATION_AVATAR_TOO_LARGE"           => "Error_UNKNOWN",
+            "VALIDATION_NAME_TOO_LONG"              => "Error_UNKNOWN",
+            "VALIDATION_LAST_NAME_TOO_LONG"         => "Error_UNKNOWN",
+            "VALIDATION_REFRESH_TOKEN_REQUIRED"     => "Validation_Required",
+            "VALIDATION_SOCIAL_ACCOUNT_REQUIRED"    => "Validation_Required",
+            "VALIDATION_SOCIAL_ACCOUNT_TOO_LONG"    => "Error_UNKNOWN",
+            "VALIDATION_ID_INVALID"                 => "Error_UNKNOWN",
+            "VALIDATION_CANNOT_REPORT_SELF"         => "Error_UNKNOWN",
+            "VALIDATION_CANNOT_REMOVE_SELF"         => "Error_UNKNOWN",
+
+            // CLIENT-SIDE / GENERIC
             "CONNECTION_ERROR"                      => "Error_CONNECTION_ERROR",
+            "INTERNAL_ERROR"                        => "Error_UNKNOWN",
 
             _                                       => "Error_UNKNOWN"
         };

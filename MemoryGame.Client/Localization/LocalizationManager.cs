@@ -32,7 +32,8 @@ public sealed class LocalizationManager : ObservableObject
 
     /// <summary>
     /// Returns the localized string for the given key.
-    /// Falls back to [key] if not found so missing keys are visible during dev.
+    /// Falls back to [key] if not found so missing keys are visible in XAML bindings during dev.
+    /// For C# call sites that want a graceful fallback, use <see cref="TryGet"/> instead.
     /// </summary>
     public string this[string key]
     {
@@ -46,6 +47,23 @@ public sealed class LocalizationManager : ObservableObject
             {
                 return $"[{key}]";
             }
+        }
+    }
+
+    /// <summary>
+    /// Returns the localized string for the given key, or <c>null</c> if the key is missing.
+    /// Use this with the <c>??</c> operator to provide an English fallback in code:
+    /// <c>LocalizationManager.Instance.TryGet("Some_Key") ?? "fallback"</c>.
+    /// </summary>
+    public string? TryGet(string key)
+    {
+        try
+        {
+            return ResourceManager.GetString(key, _culture);
+        }
+        catch
+        {
+            return null;
         }
     }
 
