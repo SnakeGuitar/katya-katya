@@ -14,6 +14,7 @@ using MemoryGame.Client.ViewModels.Profile;
 using MemoryGame.Client.ViewModels.Session;
 using MemoryGame.Client.ViewModels.Settings;
 using MemoryGame.Client.ViewModels.Lobby;
+using MemoryGame.Client.ViewModels.SinglePlayer;
 using MemoryGame.Client.ViewModels.Social;
 
 namespace MemoryGame.Client;
@@ -81,6 +82,8 @@ public partial class App : Application
         services.AddTransient<HostLobbyViewModel>();
         services.AddTransient<LobbyViewModel>();
         services.AddTransient<GameBoardViewModel>();
+        services.AddTransient<SinglePlayerMenuViewModel>();
+        services.AddTransient<SinglePlayerGameViewModel>();
 
         // Main window
         services.AddSingleton<MainWindow>();

@@ -9,6 +9,7 @@
              xmlns:profileVm="clr-namespace:MemoryGame.Client.ViewModels.Profile"
              xmlns:socialVm="clr-namespace:MemoryGame.Client.ViewModels.Social"
              xmlns:lobbyVm="clr-namespace:MemoryGame.Client.ViewModels.Lobby"
+             xmlns:spVm="clr-namespace:MemoryGame.Client.ViewModels.SinglePlayer"
              xmlns:sessionViews="clr-namespace:MemoryGame.Client.Views.Session"
              xmlns:mainMenuViews="clr-namespace:MemoryGame.Client.Views.MainMenu"
              xmlns:settingsViews="clr-namespace:MemoryGame.Client.Views.Settings"
@@ -16,7 +17,8 @@
              xmlns:profileViews="clr-namespace:MemoryGame.Client.Views.Profile"
              xmlns:socialViews="clr-namespace:MemoryGame.Client.Views.Social"
              xmlns:lobbyViews="clr-namespace:MemoryGame.Client.Views.Lobby"
-             xmlns:boardViews="clr-namespace:MemoryGame.Client.Views.Board">
+             xmlns:boardViews="clr-namespace:MemoryGame.Client.Views.Board"
+             xmlns:spViews="clr-namespace:MemoryGame.Client.Views.SinglePlayer">
 
     <Application.Resources>
         <ResourceDictionary>
@@ -100,6 +102,14 @@
 
             <DataTemplate DataType="{x:Type lobbyVm:GameBoardViewModel}">
                 <boardViews:GameBoardView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type spVm:SinglePlayerMenuViewModel}">
+                <spViews:SinglePlayerMenuView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type spVm:SinglePlayerGameViewModel}">
+                <spViews:SinglePlayerGameView />
             </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>

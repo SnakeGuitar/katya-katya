@@ -10,6 +10,7 @@ using MemoryGame.Client.Services.UI;
 using MemoryGame.Client.ViewModels.Lobby;
 using MemoryGame.Client.ViewModels.Session;
 using MemoryGame.Client.ViewModels.Settings;
+using MemoryGame.Client.ViewModels.SinglePlayer;
 
 namespace MemoryGame.Client.ViewModels.MainMenu;
 
@@ -34,6 +35,8 @@ public partial class MainMenuViewModel : ObservableObject, IRecipient<ThemeChang
         _session = session;
         _hub = hub;
 
+        WelcomeMessage = Localization.LocalizationManager.Instance.Format("Global_Message_Welcome", _session.Current?.Username ?? "Player");
+
         PickMoodImage();
         WeakReferenceMessenger.Default.Register(this);
     }
@@ -47,14 +50,13 @@ public partial class MainMenuViewModel : ObservableObject, IRecipient<ThemeChang
         ImageScale = 1.0;
     }
 
-    public string Username => _session.Current?.Username ?? "Player";
-
-    /// <summary>Formatted welcome string — avoids TwoWay binding issues with Run.Text.</summary>
-    public string WelcomeMessage =>
-        Localization.LocalizationManager.Instance.Format("Global_Message_Welcome", Username);
-
+    [ObservableProperty]
+    private string _welcomeMessage = string.Empty;
     [RelayCommand]
     private void GoToSettings() => _navigation.NavigateTo<SettingsViewModel>();
+
+    [RelayCommand]
+    private void GoToSingleplayer() => _navigation.NavigateTo<SinglePlayerMenuViewModel>();
 
     [RelayCommand]
     private void GoToMultiplayer() => _navigation.NavigateTo<LobbyMenuViewModel>();
