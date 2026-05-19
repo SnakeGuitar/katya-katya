@@ -1,5 +1,5 @@
 MemoryGame.Domain
-  (ninguna)
+  (none)
 
 MemoryGame.Application
   MediatR
