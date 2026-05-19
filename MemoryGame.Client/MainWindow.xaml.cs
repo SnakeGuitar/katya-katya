@@ -1,6 +1,8 @@
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
+using MemoryGame.Client.Engine.Animations;
 using MemoryGame.Client.Services.Core;
 using MemoryGame.Client.Services.Interfaces;
 using MemoryGame.Client.Services.Media;
@@ -18,11 +20,26 @@ public partial class MainWindow : Window
 {
     private const int FadeOutMs = 120;
     private const int FadeInMs  = 180;
+    
+    private GameBackgroundService? _background;
 
     public MainWindow()
     {
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
+        Loaded += OnLoaded;
+        Unloaded += OnUnloaded;
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        _background = new GameBackgroundService(this, BackgroundCanvas);
+    }
+
+    private void OnUnloaded(object sender, RoutedEventArgs e)
+    {
+        _background?.Dispose();
+        _background = null;
     }
 
     private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -41,6 +58,19 @@ public partial class MainWindow : Window
 
         var next    = nav.CurrentViewModel;
         var animate = nav.IsAnimatedTransition;
+        
+        // Dynamically swap the global background image behind the canvas depending on the active View
+        if (next != null)
+        {
+            if (next.GetType().Name == "MainMenuViewModel")
+            {
+                GlobalBgImage.Source = (ImageSource)FindResource("GlobalMainBackgroundSourceImage");
+            }
+            else
+            {
+                GlobalBgImage.Source = (ImageSource)FindResource("GlobalBackgroundSourceImage");
+            }
+        }
 
         if (animate && PageContent.Content is not null)
             await AnimateOpacityAsync(0, FadeOutMs);

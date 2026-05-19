@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:loc="clr-namespace:MemoryGame.Client.Localization"
+        xmlns:skia="clr-namespace:SkiaSharp.Views.WPF;assembly=SkiaSharp.Views.WPF"
         mc:Ignorable="d"
         Title="Memory Game"
         Height="720" Width="1280"
@@ -34,6 +35,12 @@
             </Style>
         </Border.Style>
         <Grid>
+            <!-- Global Background Image, drawn behind everything -->
+            <Image x:Name="GlobalBgImage" Source="{DynamicResource GlobalBackgroundSourceImage}" Stretch="UniformToFill" IsHitTestVisible="False"/>
+
+            <!-- Global Dynamic Background Canvas: fully GPU-accelerated native WPF composition -->
+            <Canvas x:Name="BackgroundCanvas" IsHitTestVisible="False" ClipToBounds="True"/>
+
             <!-- Traffic Light MacOS buttons (Top-Left) -->
             <StackPanel x:Name="TrafficLights" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="18,18,0,0" Panel.ZIndex="100"
                         WindowChrome.IsHitTestVisibleInChrome="True">
