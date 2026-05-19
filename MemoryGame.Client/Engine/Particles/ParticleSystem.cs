@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
-namespace MemoryGame.Client.Views.Controls.Effects;
+namespace MemoryGame.Client.Engine.Particles;
 
 /// <summary>
 /// Base class for canvas-based particle effects.

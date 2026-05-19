@@ -5,7 +5,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using MemoryGame.Client.Services.UI;
 
-namespace MemoryGame.Client.Views.Controls.Effects;
+namespace MemoryGame.Client.Engine.Particles;
 
 /// <summary>
 /// Falling cherry-blossom petal effect.

@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace MemoryGame.Client.Views.Controls;
+namespace MemoryGame.Client.Controls;
 
 /// <summary>
 /// An extended Image control that ignores totally transparent pixels when performing mouse hit testing.
