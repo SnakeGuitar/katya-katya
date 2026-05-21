@@ -258,7 +258,7 @@ public sealed class GameAnimationService : IDisposable
 
     // ── Particles ─────────────────────────────────────────────────────────
 
-    private const int MAX_TOTAL_PARTICLES = 80;  // Limit total particles for performance
+    private const int MAX_TOTAL_PARTICLES = 50;  // Limit total particles for performance (reduced for high res)
 
     /// <summary>
     /// Spawns particle explosion, radial shockwave, and floating combo texts.

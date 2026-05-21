@@ -27,7 +27,7 @@
                             ClipToBounds="True"
                             RenderTransformOrigin="0.5,0.5">
                         <Border.CacheMode>
-                            <BitmapCache RenderAtScale="1.1" EnableClearType="False"/>
+                            <BitmapCache RenderAtScale="1.0" EnableClearType="False"/>
                         </Border.CacheMode>
                         <Border.RenderTransform>
                             <TransformGroup>
