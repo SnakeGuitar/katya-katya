@@ -2,6 +2,8 @@
 
 WPF desktop client for the Memory Game Revival multiplayer application.
 
+> **Note**: This is v0.1.0, the **Memory Game phase**. The project is transitioning to **"Katya Katya"** (dating simulator) in the next major version. See [CHANGELOG.md](../CHANGELOG.md) for details on the pivot.
+
 ## Requirements
 
 - [.NET SDK 10.0](https://dotnet.microsoft.com/download)
