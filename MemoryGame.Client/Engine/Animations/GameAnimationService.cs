@@ -48,9 +48,9 @@ public struct Particle
     public SKShader Shader;
     public SKPath Path;
 
-    // Buffer circular en línea para el rastro (Motion Blur) sin asignación en el Heap
-    public float HistoryX0, HistoryX1, HistoryX2, HistoryX3;
-    public float HistoryY0, HistoryY1, HistoryY2, HistoryY3;
+    // Buffer circular en línea para el rastro (Motion Blur) sin asignación en el Heap — optimizado a 2 frames
+    public float HistoryX0, HistoryX1;
+    public float HistoryY0, HistoryY1;
     public int HistoryCount;
 }
 
@@ -258,6 +258,8 @@ public sealed class GameAnimationService : IDisposable
 
     // ── Particles ─────────────────────────────────────────────────────────
 
+    private const int MAX_TOTAL_PARTICLES = 80;  // Limit total particles for performance
+
     /// <summary>
     /// Spawns particle explosion, radial shockwave, and floating combo texts.
     /// Compatible with original signature, and introduces combo multiplier styling dynamically.
@@ -295,8 +297,15 @@ public sealed class GameAnimationService : IDisposable
 
         int effectiveCombo = _currentCombo;
 
-        // Escalar cantidad de partículas basándonos en el combo
+        // Escalar cantidad de partículas basándonos en el combo, pero limitar el total
         int particleCount = (count == 12) ? (12 * effectiveCombo) : count;
+
+        // Clamp total particles to prevent performance issues
+        lock (_particles)
+        {
+            int availableSlots = MAX_TOTAL_PARTICLES - _particles.Count;
+            particleCount = Math.Min(particleCount, availableSlots);
+        }
 
         // Configuración de la paleta armónica y el tipo de partícula según combo
         ParticleType pType;
@@ -365,11 +374,9 @@ public sealed class GameAnimationService : IDisposable
                     Color = pColor,
                     Shader = pShader,
                     Path = pPath,
-                    // Inicializar historial de rastro
+                    // Inicializar historial de rastro — 2 frames
                     HistoryX0 = startX, HistoryY0 = startY,
                     HistoryX1 = startX, HistoryY1 = startY,
-                    HistoryX2 = startX, HistoryY2 = startY,
-                    HistoryX3 = startX, HistoryY3 = startY,
                     HistoryCount = 0
                 };
 
@@ -482,16 +489,12 @@ public sealed class GameAnimationService : IDisposable
                 {
                     if (p.Age >= p.Delay)
                     {
-                        // Registrar historial de rastro (Motion Blur)
-                        p.HistoryX3 = p.HistoryX2;
-                        p.HistoryY3 = p.HistoryY2;
-                        p.HistoryX2 = p.HistoryX1;
-                        p.HistoryY2 = p.HistoryY1;
+                        // Registrar historial de rastro (Motion Blur) — optimizado a 2 frames
                         p.HistoryX1 = p.HistoryX0;
                         p.HistoryY1 = p.HistoryY0;
                         p.HistoryX0 = p.X;
                         p.HistoryY0 = p.Y;
-                        p.HistoryCount = Math.Min(4, p.HistoryCount + 1);
+                        p.HistoryCount = Math.Min(2, p.HistoryCount + 1);
 
                         // Ecuaciones de Física Reales
                         p.VelocityY += p.Gravity * deltaTime;
@@ -614,20 +617,18 @@ public sealed class GameAnimationService : IDisposable
                     opacity = 1.0f - (t - 0.55f) / 0.45f;
                 }
 
-                // 2A. Dibujar Rastro (Fading Clones de Historial)
+                // 2A. Dibujar Rastro (Fading Clones de Historial) — optimizado a 2 frames
                 for (int h = p.HistoryCount - 1; h >= 0; h--)
                 {
                     float hX, hY;
                     if (h == 0) { hX = p.HistoryX0; hY = p.HistoryY0; }
-                    else if (h == 1) { hX = p.HistoryX1; hY = p.HistoryY1; }
-                    else if (h == 2) { hX = p.HistoryX2; hY = p.HistoryY2; }
-                    else { hX = p.HistoryX3; hY = p.HistoryY3; }
+                    else { hX = p.HistoryX1; hY = p.HistoryY1; }
 
-                    float indexFactor = (float)(h + 1) / 5f;
+                    float indexFactor = (float)(h + 1) / 3f;
                     float trailScale = scale * (1.0f - indexFactor);
                     if (trailScale <= 0f) continue;
 
-                    float trailOpacity = opacity * (1.0f - indexFactor * 1.1f);
+                    float trailOpacity = opacity * (1.0f - indexFactor * 0.8f);
                     if (trailOpacity <= 0f) continue;
 
                     canvas.Save();

@@ -11,6 +11,8 @@ using System.Windows;
 using MemoryGame.Client.Localization;
 using MemoryGame.Client.ViewModels.Session;
 using MemoryGame.Client.ViewModels.Profile;
+using MemoryGame.Client.ViewModels.Lobby;
+using MemoryGame.Client.ViewModels.Social;
 
 namespace MemoryGame.Client.ViewModels;
 
@@ -39,6 +41,7 @@ public partial class MainWindowViewModel : ObservableObject
                 if (e.PropertyName == nameof(INavigationService.CurrentViewModel))
                 {
                     OnPropertyChanged(nameof(GuestRegisterVisibility));
+                    OnPropertyChanged(nameof(HeaderVisibility));
                 }
             };
         }
@@ -47,18 +50,40 @@ public partial class MainWindowViewModel : ObservableObject
     /// <summary>The navigation service that exposes the current view model to the shell.</summary>
     public INavigationService Navigation => _navigation;
 
-    public Visibility GuestRegisterVisibility => 
+    public Visibility GuestRegisterVisibility =>
         _session.IsLoggedIn && _session.Current?.IsGuest == true ? Visibility.Visible : Visibility.Collapsed;
+
+    public Visibility HeaderVisibility
+    {
+        get
+        {
+            var vm = _navigation.CurrentViewModel;
+            // Ocultar header en pantallas de sesión (login, registro, etc.)
+            return vm is TitleScreenViewModel ||
+                   vm is LoginViewModel ||
+                   vm is RegisterViewModel ||
+                   vm is GuestLoginViewModel ||
+                   vm is VerifyEmailViewModel ||
+                   vm is SetupProfileViewModel
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+        }
+    }
 
     /// <summary>Bound to the global settings button in MainWindow.xaml.</summary>
     [RelayCommand]
-    private void GoToSettings() => _navigation.NavigateTo<SettingsViewModel>();
+    private void GoToSettings()
+    {
+        CloseGameBoardModalIfOpen();
+        _navigation.NavigateTo<SettingsViewModel>();
+    }
 
     /// <summary>Bound to the global profile button in MainWindow.xaml.</summary>
     [RelayCommand]
-    private void GoToProfile() 
+    private void GoToProfile()
     {
         if (!CheckCanAccessProtectedSection()) return;
+        CloseGameBoardModalIfOpen();
         _navigation.NavigateTo<ProfileViewModel>();
     }
 
@@ -67,7 +92,8 @@ public partial class MainWindowViewModel : ObservableObject
     private void GoToFriends()
     {
         if (!CheckCanAccessProtectedSection()) return;
-        _navigation.NavigateTo<Social.FriendsViewModel>();
+        CloseGameBoardModalIfOpen();
+        _navigation.NavigateTo<FriendsViewModel>();
     }
 
     [RelayCommand]
@@ -83,6 +109,15 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand]
     private void ToggleFullscreen() => _window.ToggleFullscreen();
 
+    private void CloseGameBoardModalIfOpen()
+    {
+        // Si estamos en GameBoard con el modal de GameOver abierto, cerrarlo primero
+        if (_navigation.CurrentViewModel is Lobby.GameBoardViewModel gameBoardVm)
+        {
+            gameBoardVm.CloseGameOverCommand.Execute(null);
+        }
+    }
+
     private bool CheckCanAccessProtectedSection()
     {
         if (IsSessionFlow() && _session.IsLoggedIn)
@@ -91,7 +126,7 @@ public partial class MainWindowViewModel : ObservableObject
         }
 
         if (!IsLoggedIn()) return false;
-        
+
         if (IsLoggedInAsGuest()) return false;
 
         return true;

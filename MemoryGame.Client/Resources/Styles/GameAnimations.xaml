@@ -70,11 +70,11 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="HoverScale" Storyboard.TargetProperty="ScaleX"
-                                                         To="1.08" Duration="0:0:0.15" EasingFunction="{StaticResource QuadEase}"/>
+                                                         To="1.08" Duration="0:0:0.10" EasingFunction="{StaticResource QuadEase}"/>
                                         <DoubleAnimation Storyboard.TargetName="HoverScale" Storyboard.TargetProperty="ScaleY"
-                                                         To="1.08" Duration="0:0:0.15" EasingFunction="{StaticResource QuadEase}"/>
+                                                         To="1.08" Duration="0:0:0.10" EasingFunction="{StaticResource QuadEase}"/>
                                         <DoubleAnimation Storyboard.TargetName="CardShadow" Storyboard.TargetProperty="Opacity"
-                                                         To="0.35" Duration="0:0:0.15"/>
+                                                         To="0.35" Duration="0:0:0.10"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
@@ -82,11 +82,11 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="HoverScale" Storyboard.TargetProperty="ScaleX"
-                                                         To="1" Duration="0:0:0.15" EasingFunction="{StaticResource QuadEase}"/>
+                                                         To="1" Duration="0:0:0.10" EasingFunction="{StaticResource QuadEase}"/>
                                         <DoubleAnimation Storyboard.TargetName="HoverScale" Storyboard.TargetProperty="ScaleY"
-                                                         To="1" Duration="0:0:0.15" EasingFunction="{StaticResource QuadEase}"/>
+                                                         To="1" Duration="0:0:0.10" EasingFunction="{StaticResource QuadEase}"/>
                                         <DoubleAnimation Storyboard.TargetName="CardShadow" Storyboard.TargetProperty="Opacity"
-                                                         To="0.15" Duration="0:0:0.15"/>
+                                                         To="0.15" Duration="0:0:0.10"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>

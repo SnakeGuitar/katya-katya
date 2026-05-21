@@ -161,12 +161,13 @@
             <Border Grid.Column="2"
                     Background="{DynamicResource CardBackground}"
                     CornerRadius="{DynamicResource CardCornerRadius}"
-                    Padding="16">
+                    Padding="16"
+                    CacheMode="BitmapCache">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.12"/>
                 </Border.Effect>
                 <Viewbox Stretch="Uniform">
-                    <ItemsControl ItemsSource="{Binding Cards}">
+                    <ItemsControl ItemsSource="{Binding Cards}" IsHitTestVisible="False">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <UniformGrid Rows="{Binding BoardRows}" Columns="{Binding BoardColumns}"/>
