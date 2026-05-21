@@ -167,7 +167,7 @@
                     <DropShadowEffect BlurRadius="20" ShadowDepth="4" Opacity="0.12"/>
                 </Border.Effect>
                 <Viewbox Stretch="Uniform">
-                    <ItemsControl ItemsSource="{Binding Cards}" IsHitTestVisible="False">
+                    <ItemsControl ItemsSource="{Binding Cards}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <UniformGrid Rows="{Binding BoardRows}" Columns="{Binding BoardColumns}"/>
