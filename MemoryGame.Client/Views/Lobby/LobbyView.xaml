@@ -62,7 +62,8 @@
                     Background="{DynamicResource CardBackground}"
                     CornerRadius="{DynamicResource CardCornerRadius}"
                     Padding="28,20"
-                    MinHeight="420">
+                    MinHeight="420"
+                    MinWidth="720">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.14" Color="#3D1C1C"/>
                 </Border.Effect>

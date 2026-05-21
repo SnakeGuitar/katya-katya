@@ -62,7 +62,8 @@
                     Background="{DynamicResource CardBackground}"
                     CornerRadius="{DynamicResource CardCornerRadius}"
                     Padding="28,20"
-                    MinHeight="420">
+                    MinHeight="420"
+                    MinWidth="720">
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.14" Color="#3D1C1C"/>
                 </Border.Effect>
@@ -242,25 +243,29 @@
 
                                     <!-- Chat input -->
                                     <Grid Grid.Row="2">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="47*"/>
+                                            <RowDefinition Height="6*"/>
+                                        </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="8"/>
-                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="70"/>
                                         </Grid.ColumnDefinitions>
 
                                         <TextBox Grid.Column="0"
                                                  Text="{Binding ChatMessage, UpdateSourceTrigger=PropertyChanged}"
-                                                 Style="{DynamicResource PastelTextBox}">
+                                                 Style="{DynamicResource PastelTextBox}" Grid.RowSpan="2">
                                             <TextBox.InputBindings>
                                                 <KeyBinding Key="Enter" Command="{Binding SendChatMessageCommand}"/>
                                             </TextBox.InputBindings>
                                         </TextBox>
 
-                                        <Button Grid.Column="2"
+                                        <Button Grid.Column="1"
                                                 Style="{DynamicResource PastelButton}"
                                                 Command="{Binding SendChatMessageCommand}"
                                                 Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Send]}"
-                                                Padding="16,6"/>
+                                                Padding="6,6" Grid.RowSpan="2"
+/>
                                     </Grid>
                                 </Grid>
                             </Border>
