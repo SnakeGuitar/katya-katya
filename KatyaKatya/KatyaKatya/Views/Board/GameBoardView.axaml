@@ -1,0 +1,230 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Lobby"
+             xmlns:lobby="using:KatyaKatya.Models.Lobby"
+             x:Class="KatyaKatya.Views.Board.GameBoardView"
+             x:DataType="vm:GameBoardViewModel">
+
+    <UserControl.Styles>
+
+        <Style Selector="Border.player-row">
+            <Setter Property="Background" Value="#08000000"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E5D0D0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                    <BrushTransition Property="BorderBrush" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Border.player-row.active">
+            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style Selector="Border.player-row.active TextBlock">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Classes="page-bg" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <!-- Particle Canvas: placeholder for future SkiaSharp particle rendering -->
+        <!-- TODO: Implement custom particle canvas using Avalonia + SkiaSharp -->
+
+        <!-- Board Layout Grid -->
+        <Grid Classes="board-entrance" Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="280"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ══════════════ LEFT COLUMN: Players ══════════════ -->
+            <Border Grid.Column="0" Classes="glass-card" Padding="14,12" VerticalAlignment="Stretch">
+                <Grid RowDefinitions="Auto, *, Auto">
+                    
+                    <TextBlock Grid.Row="0"
+                               Text="Players"
+                               Classes="h3"
+                               Foreground="{DynamicResource PrimaryBrush}"
+                               Margin="0,0,0,12"/>
+
+                    <!-- Players list -->
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding Players}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="lobby:PlayerScoreViewModel">
+                                    <Border Classes="player-row" Classes.active="{Binding IsActive}">
+                                        <Border.ContextMenu>
+                                            <ContextMenu IsVisible="{Binding !IsCurrentUser}">
+                                                <MenuItem Header="Vote to Kick"
+                                                          Command="{Binding $parent[UserControl].((vm:GameBoardViewModel)DataContext).VoteToKickCommand}"
+                                                          CommandParameter="{Binding}"/>
+                                            </ContextMenu>
+                                        </Border.ContextMenu>
+                                        <Grid RowDefinitions="Auto, Auto, Auto">
+                                            
+                                            <!-- Username -->
+                                            <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="4">
+                                                <TextBlock Text="{Binding Username}" 
+                                                           FontWeight="SemiBold" 
+                                                           FontSize="14"/>
+                                                <TextBlock Text="⭐" 
+                                                           FontSize="11" 
+                                                           VerticalAlignment="Center" 
+                                                           IsVisible="{Binding IsCurrentUser}"/>
+                                                <TextBlock Text="👑" 
+                                                           FontSize="11" 
+                                                           VerticalAlignment="Center" 
+                                                           IsVisible="{Binding IsActive}"/>
+                                            </StackPanel>
+
+                                            <!-- Score -->
+                                            <TextBlock Grid.Row="1" FontSize="12" Opacity="0.8" Margin="0,2,0,0">
+                                                <Run Text="❤ "/>
+                                                <Run Text="{Binding Score}" FontWeight="Bold"/>
+                                            </TextBlock>
+
+                                            <!-- Timer -->
+                                            <TextBlock Grid.Row="2" FontSize="11" Opacity="0.7" Margin="0,1,0,0">
+                                                <Run Text="⏱ "/>
+                                                <Run Text="{Binding TimeDisplay}"/>
+                                            </TextBlock>
+
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!-- Leave Game Button -->
+                    <Button Grid.Row="2"
+                            Command="{Binding LeaveGameCommand}"
+                            Content="Leave Game"
+                            Classes="btn-ghost"
+                            HorizontalAlignment="Center"
+                            Margin="0,12,0,0"/>
+                </Grid>
+            </Border>
+
+            <!-- ══════════════ CENTER COLUMN: Card Grid ══════════════ -->
+            <Border Grid.Column="2" Classes="glass-card" Padding="16" VerticalAlignment="Stretch">
+                <Viewbox Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <ItemsControl ItemsSource="{Binding Cards}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="{Binding BoardRows}" Columns="{Binding BoardColumns}"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="lobby:CardViewModel">
+                                <Button Width="90" Height="90" Margin="4"
+                                        Classes="animated-card"
+                                        Command="{Binding $parent[UserControl].((vm:GameBoardViewModel)DataContext).FlipCardCommand}"
+                                        CommandParameter="{Binding}"
+                                        IsEnabled="{Binding $parent[UserControl].((vm:GameBoardViewModel)DataContext).IsMyTurn}">
+                                    <Border Classes="card-face">
+                                        <Grid>
+                                            <Image Source="{Binding DisplayImage}" Stretch="Uniform" Margin="6"/>
+                                            <Border Classes="match-overlay" IsVisible="{Binding IsMatched}"/>
+                                        </Grid>
+                                    </Border>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Viewbox>
+            </Border>
+
+            <!-- ══════════════ RIGHT COLUMN: Chat ══════════════ -->
+            <Border Grid.Column="4" Classes="glass-card" Padding="14,12" VerticalAlignment="Stretch">
+                <Grid RowDefinitions="Auto, *, Auto">
+                    
+                    <TextBlock Grid.Row="0"
+                               Text="Lobby Chat"
+                               Classes="h3"
+                               Foreground="{DynamicResource PrimaryBrush}"
+                               Margin="0,0,0,8"/>
+
+                    <!-- Messages viewport -->
+                    <Border Grid.Row="1" Background="#08000000" CornerRadius="10" Padding="10" Margin="0,0,0,8">
+                        <ScrollViewer x:Name="ChatScrollViewer" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding ChatMessages}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="x:String">
+                                        <TextBlock Text="{Binding}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,0,0,4"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+
+                    <!-- Text input and Send button -->
+                    <Grid Grid.Row="2" ColumnDefinitions="*, 8, Auto">
+                        <TextBox Grid.Column="0"
+                                 Text="{Binding ChatMessage, UpdateSourceTrigger=PropertyChanged}"
+                                 PlaceholderText="Write a message..."
+                                 FontSize="12"
+                                 Classes="input">
+                            <TextBox.KeyBindings>
+                                <KeyBinding Gesture="Enter" Command="{Binding SendChatMessageCommand}"/>
+                            </TextBox.KeyBindings>
+                        </TextBox>
+                        <Button Grid.Column="2"
+                                Command="{Binding SendChatMessageCommand}"
+                                Content="Send"
+                                Classes="btn-primary"
+                                Padding="16,6"
+                                FontSize="12"/>
+                    </Grid>
+
+                </Grid>
+            </Border>
+
+        </Grid>
+
+        <!-- ══════════════ GAME OVER OVERLAY ══════════════ -->
+        <Border x:Name="GameOverBackdrop" Background="#BF000000" IsVisible="{Binding ShowGameOver}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Border x:Name="GameOverCard" Classes="glass-card"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MinWidth="380"
+                    MaxWidth="450"
+                    Padding="40,32">
+                <StackPanel HorizontalAlignment="Center" Spacing="16">
+                    <TextBlock Text="🏆" FontSize="52" Classes="trophy-wiggle" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                    
+                    <TextBlock Text="{Binding GameOverTitle}"
+                               Classes="h2"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"/>
+
+                    <TextBlock Text="{Binding GameOverStats}"
+                               FontSize="14"
+                               Opacity="0.7"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,0,0,16"/>
+
+                    <Button Command="{Binding CloseGameOverCommand}"
+                            Content="Back to Lobby"
+                            Classes="btn-primary"
+                            FontWeight="Bold"
+                            HorizontalAlignment="Center"
+                            Padding="24,10"/>
+                </StackPanel>
+            </Border>
+        </Border>
+
+    </Grid>
+</UserControl>

@@ -1,0 +1,169 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Gallery"
+             xmlns:converters="using:KatyaKatya.Converters"
+             x:Class="KatyaKatya.Views.Gallery.GalleryView"
+             x:DataType="vm:GalleryViewModel">
+
+    <UserControl.Resources>
+        <converters:StringAssetToBitmapConverter x:Key="StringAssetToBitmapConverter"/>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <!-- Hover & scaling animation styles for the sticker card containers -->
+        <Style Selector="ItemsControl > ContentPresenter" x:DataType="vm:GalleryCardViewModel">
+            <Setter Property="Canvas.Left" Value="{Binding X}"/>
+            <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+            <Setter Property="ZIndex" Value="{Binding ZIndex}"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.25" Easing="CubicEaseOut"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        
+        <Style Selector="Button.sticker-btn" x:DataType="vm:GalleryCardViewModel">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="Padding" Value="10,10,10,16"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransform">
+                <TransformGroup>
+                    <RotateTransform Angle="{Binding Rotation}"/>
+                </TransformGroup>
+            </Setter>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2" Easing="CubicEaseOut"/>
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <!-- Template content presenter styling to override button hover theme -->
+        <Style Selector="Button.sticker-btn /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BoxShadow" Value="{DynamicResource Shadow.Subtle}"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="Button.sticker-btn:pointerover" x:DataType="vm:GalleryCardViewModel">
+            <Setter Property="ZIndex" Value="999"/>
+            <Setter Property="RenderTransform">
+                <TransformGroup>
+                    <RotateTransform Angle="{Binding Rotation}"/>
+                    <ScaleTransform ScaleX="1.06" ScaleY="1.06"/>
+                </TransformGroup>
+            </Setter>
+        </Style>
+        
+        <Style Selector="Button.sticker-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BoxShadow" Value="{DynamicResource Shadow.Elevated}"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Classes="page-bg" RowDefinitions="Auto, *">
+        <Grid.Background>
+            <!-- Warm, corkboard/wooden aesthetic gradient -->
+            <RadialGradientBrush Center="50%,50%" RadiusX="100%" RadiusY="100%">
+                <GradientStop Offset="0" Color="#FFFBF7"/>
+                <GradientStop Offset="0.6" Color="#FFF2E8"/>
+                <GradientStop Offset="1" Color="#FFE7D6"/>
+            </RadialGradientBrush>
+        </Grid.Background>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto" Margin="24,20">
+            <Button Grid.Column="0" Command="{Binding GoBackCommand}" Classes="btn-ghost" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="←" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="Back" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <StackPanel Grid.Column="1" Spacing="4" HorizontalAlignment="Center">
+                <TextBlock Text="Moods Gallery" Classes="h2" Foreground="{DynamicResource PrimaryBrush}" HorizontalAlignment="Center"/>
+                <TextBlock Text="Click a card sticker to cycle through styles or view close-ups!" Classes="subtitle" FontSize="12" HorizontalAlignment="Center"/>
+            </StackPanel>
+            <Grid Grid.Column="2" Width="60"/> <!-- Balanced layout spacer -->
+        </Grid>
+
+        <!-- Sticker Board / Canvas area -->
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+            <!-- Broad grid that acts as the market stand base -->
+            <Grid Width="1240" Height="920" Margin="24">
+                <ItemsControl ItemsSource="{Binding Cards}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:GalleryCardViewModel">
+                            <!-- Polaroid Sticker Button -->
+                            <Button Classes="sticker-btn" Command="{Binding $parent[UserControl].((vm:GalleryViewModel)DataContext).SelectCardCommand}" CommandParameter="{Binding}">
+                                <StackPanel Spacing="10">
+                                    <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1" CornerRadius="1" Background="#FAF8F6">
+                                        <Image Source="{Binding Current.ImagePath, Converter={StaticResource StringAssetToBitmapConverter}}" 
+                                               Width="{Binding MaxWidth}" 
+                                               Height="{Binding MaxHeight}"
+                                               MaxWidth="240"
+                                               MaxHeight="290"
+                                               Stretch="Uniform" />
+                                    </Border>
+                                    <TextBlock Text="{Binding Current.Label}" HorizontalAlignment="Center" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </ScrollViewer>
+
+        <!-- Premium Expanded Details Dialog Popup Overlay -->
+        <Grid Grid.RowSpan="2" Background="#C0000000" IsVisible="{Binding SelectedCard, Converter={x:Static ObjectConverters.IsNotNull}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <!-- Outer grid to catch click and close overlay -->
+            <Button Background="Transparent" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Command="{Binding CloseCardCommand}"/>
+            
+            <Border Classes="card" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="28" Width="440" Height="580" MaxWidth="500" BoxShadow="{DynamicResource Shadow.Elevated}">
+                <Grid RowDefinitions="*, Auto">
+                    <Button Classes="btn-ghost" Command="{Binding CloseCardCommand}" HorizontalAlignment="Right" VerticalAlignment="Top" Width="36" Height="36" Padding="0" Margin="0,-16,-16,0" ZIndex="10">
+                        <TextBlock Text="✕" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Button>
+
+                    <!-- Core Polaroid Detail -->
+                    <StackPanel Grid.Row="0" Spacing="16" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Border BorderBrush="{DynamicResource DividerBrush}" BorderThickness="1.5" CornerRadius="4" Padding="12" Background="#FAFAFA" BoxShadow="{DynamicResource Shadow.Subtle}">
+                            <Image Source="{Binding SelectedCard.Current.ImagePath, Converter={StaticResource StringAssetToBitmapConverter}}" 
+                                   Width="320" 
+                                   Height="360"
+                                   Stretch="Uniform" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center"/>
+                        </Border>
+                        
+                        <TextBlock Text="{Binding SelectedCard.Current.Label}" Classes="h3" HorizontalAlignment="Center" FontWeight="Bold"/>
+                    </StackPanel>
+
+                    <!-- Cycle variants bar -->
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto, *, Auto" Margin="0,16,0,0">
+                        <Button Grid.Column="0" Command="{Binding SelectedCard.CycleBackCommand}" Classes="btn-ghost" ToolTip.Tip="Previous style">
+                            <TextBlock Text="◀" FontSize="16" FontWeight="Bold"/>
+                        </Button>
+                        
+                        <TextBlock Grid.Column="1" Text="Tap arrows to cycle styles" Classes="subtitle" FontSize="12" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        
+                        <Button Grid.Column="2" Command="{Binding SelectedCard.CycleCommand}" Classes="btn-ghost" ToolTip.Tip="Next style">
+                            <TextBlock Text="▶" FontSize="16" FontWeight="Bold"/>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

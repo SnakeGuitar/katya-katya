@@ -1,0 +1,78 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Session"
+             x:Class="KatyaKatya.Views.Session.SplashScreenView"
+             x:DataType="vm:SplashScreenViewModel">
+
+    <UserControl.Styles>
+        <!-- Fade in animation for LogoContainer matching WPF FadeIn Storyboard -->
+        <Style Selector="Grid#LogoContainer">
+            <Setter Property="Opacity" Value="0"/>
+            <Style.Animations>
+                <Animation Duration="0:0:1.5" FillMode="Forward" Easing="QuadraticEaseIn">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="Opacity" Value="0"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="Opacity" Value="1"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+
+        <!-- Pulsating logo style matching WPF breathing style -->
+        <Style Selector="Image.splash-logo">
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <ScaleTransform ScaleX="1" ScaleY="1"/>
+            </Setter>
+            <Style.Animations>
+                <Animation Duration="0:0:3.5" IterationCount="Infinite" PlaybackDirection="Alternate" Easing="SineEaseInOut">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="ScaleTransform.ScaleX" Value="0.97"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="0.97"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="ScaleTransform.ScaleX" Value="1.03"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="1.03"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Name="RootGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Opacity="1">
+        <Grid.Transitions>
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:1.2">
+                    <DoubleTransition.Easing>
+                        <QuadraticEaseOut/>
+                    </DoubleTransition.Easing>
+                </DoubleTransition>
+            </Transitions>
+        </Grid.Transitions>
+
+        <!-- Blurred Background Image matching WPF design -->
+        <Grid>
+            <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/katya-main-background-only.png"
+                   Stretch="UniformToFill"/>
+            <Grid.Effect>
+                <BlurEffect Radius="20"/>
+            </Grid.Effect>
+        </Grid>
+
+        <!-- Large Centered Pulsating Logo matching WPF 360x360 dimensions -->
+        <Grid Name="LogoContainer"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+
+            <!-- 360x360 Image containing the dynamic locale-based logo -->
+            <Image Classes="splash-logo"
+                   Source="{Binding LogoPath, Converter={StaticResource StringAssetToBitmapConverter}}"
+                   Width="360" Height="360"
+                   Stretch="Uniform"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
+</UserControl>

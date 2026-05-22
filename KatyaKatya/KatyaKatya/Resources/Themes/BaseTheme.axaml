@@ -1,0 +1,210 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ═══════════════════════════════════════════════════════════
+         COLOR TOKENS — Warm Rose / Crimson Palette
+         Matches WPF BaseTheme.xaml warm rose glassmorphic design
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Primary: Warm Rose -->
+    <Color x:Key="Color.Primary.50">#FCE7E6</Color>
+    <Color x:Key="Color.Primary.100">#F8D0CC</Color>
+    <Color x:Key="Color.Primary.300">#F0A19B</Color>
+    <Color x:Key="Color.Primary.500">#C84747</Color>
+    <Color x:Key="Color.Primary.600">#B03A3A</Color>
+    <Color x:Key="Color.Primary.700">#A02222</Color>
+
+    <!-- Secondary: Soft Purple -->
+    <Color x:Key="Color.Secondary.300">#9B94FF</Color>
+    <Color x:Key="Color.Secondary.500">#6C63FF</Color>
+    <Color x:Key="Color.Secondary.600">#5B52E0</Color>
+
+    <!-- Neutral -->
+    <Color x:Key="Color.Neutral.50">#FAFAFA</Color>
+    <Color x:Key="Color.Neutral.100">#F5F5F5</Color>
+    <Color x:Key="Color.Neutral.200">#EEEEEE</Color>
+    <Color x:Key="Color.Neutral.300">#E0E0E0</Color>
+    <Color x:Key="Color.Neutral.500">#9E9E9E</Color>
+    <Color x:Key="Color.Neutral.600">#757575</Color>
+    <Color x:Key="Color.Neutral.700">#616161</Color>
+    <Color x:Key="Color.Neutral.900">#212121</Color>
+
+    <!-- Surface -->
+    <Color x:Key="Color.Surface.Background">#FDF8F8</Color>
+    <Color x:Key="Color.Surface.Card">#FFFFFF</Color>
+
+    <!-- Semantic -->
+    <Color x:Key="Color.Success">#88D4A0</Color>
+    <Color x:Key="Color.Error">#B82A2A</Color>
+    <Color x:Key="Color.Warning">#FFB74D</Color>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         BRUSHES — Solid Colors
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Primary family -->
+    <SolidColorBrush x:Key="PrimaryBrush"        Color="{StaticResource Color.Primary.500}"/>
+    <SolidColorBrush x:Key="PrimaryHoverBrush"   Color="{StaticResource Color.Primary.600}"/>
+    <SolidColorBrush x:Key="PrimaryLightBrush"   Color="{StaticResource Color.Primary.50}"/>
+
+    <!-- WPF compat aliases (used by views referencing DynamicResource PastelPrimary etc.) -->
+    <SolidColorBrush x:Key="PastelPrimary"        Color="{StaticResource Color.Primary.500}"/>
+    <SolidColorBrush x:Key="PastelPrimaryHover"   Color="{StaticResource Color.Primary.600}"/>
+    <SolidColorBrush x:Key="PastelBackground"     Color="{StaticResource Color.Surface.Background}"/>
+    <SolidColorBrush x:Key="PastelText"           Color="#3D1C1C"/>
+    <SolidColorBrush x:Key="PastelTextLight"      Color="#613D3D"/>
+    <SolidColorBrush x:Key="PastelError"          Color="{StaticResource Color.Error}"/>
+    <SolidColorBrush x:Key="PastelSuccess"        Color="{StaticResource Color.Success}"/>
+    <SolidColorBrush x:Key="LinkText"             Color="#AF1010"/>
+    <SolidColorBrush x:Key="LinkTextHover"        Color="#8A0D0D"/>
+
+    <!-- Secondary family -->
+    <SolidColorBrush x:Key="SecondaryBrush"      Color="{StaticResource Color.Secondary.500}"/>
+    <SolidColorBrush x:Key="SecondaryHoverBrush" Color="{StaticResource Color.Secondary.600}"/>
+
+    <!-- Surface / Text -->
+    <SolidColorBrush x:Key="BackgroundBrush"     Color="{StaticResource Color.Surface.Background}"/>
+    <SolidColorBrush x:Key="CardBrush"           Color="{StaticResource Color.Surface.Card}"/>
+    <SolidColorBrush x:Key="DividerBrush"        Color="{StaticResource Color.Neutral.200}"/>
+
+    <SolidColorBrush x:Key="TextPrimaryBrush"    Color="{StaticResource Color.Neutral.900}"/>
+    <SolidColorBrush x:Key="TextSecondaryBrush"  Color="{StaticResource Color.Neutral.600}"/>
+    <SolidColorBrush x:Key="TextMutedBrush"      Color="{StaticResource Color.Neutral.600}"/>
+    <SolidColorBrush x:Key="TextDisabledBrush"   Color="{StaticResource Color.Neutral.500}"/>
+
+    <SolidColorBrush x:Key="SuccessBrush"        Color="{StaticResource Color.Success}"/>
+    <SolidColorBrush x:Key="ErrorBrush"          Color="{StaticResource Color.Error}"/>
+    <SolidColorBrush x:Key="WarningBrush"        Color="{StaticResource Color.Warning}"/>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         BRUSHES — Gradients & Glassmorphic
+         ═══════════════════════════════════════════════════════════ -->
+
+    <!-- Secondary glassmorphic gradient -->
+    <LinearGradientBrush x:Key="PastelSecondary" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#CCF8E6E6" Offset="0"/>
+        <GradientStop Color="#80E8C4C4" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Accent warm pink gradient -->
+    <LinearGradientBrush x:Key="PastelAccent" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFE8D8D8" Offset="0"/>
+        <GradientStop Color="#BBE0C0C0" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Enhanced diagonal glass border brush -->
+    <LinearGradientBrush x:Key="PastelBorder" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#D0FFFFFF" Offset="0.0"/>
+        <GradientStop Color="#20FFFFFF" Offset="0.5"/>
+        <GradientStop Color="#40C84747" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <!-- Liquid Glass Card Background -->
+    <LinearGradientBrush x:Key="CardBackground" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#E0FFFFFF" Offset="0"/>
+        <GradientStop Color="#CCF8EAEA" Offset="0.45"/>
+        <GradientStop Color="#AAECD8D8" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Primary gradient (soft warm rose) -->
+    <LinearGradientBrush x:Key="PrimaryGradient" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#E6E07070" Offset="0"/>
+        <GradientStop Color="#B3C04848" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Primary gradient hover -->
+    <LinearGradientBrush x:Key="PrimaryGradientHover" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#CC5555" Offset="0"/>
+        <GradientStop Color="#A03030" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Button gradient (3-stop) -->
+    <LinearGradientBrush x:Key="ButtonPrimaryGradient" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop Color="#FFE65A5A" Offset="0"/>
+        <GradientStop Color="#FFC83737" Offset="0.3"/>
+        <GradientStop Color="#FFA02222" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Secondary button glassmorphic gradient -->
+    <LinearGradientBrush x:Key="ButtonSecondaryGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#D9F8E6E6" Offset="0"/>
+        <GradientStop Color="#99E8C4C4" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Accent button gradient -->
+    <LinearGradientBrush x:Key="ButtonAccentGradient" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FFEAE0E0" Offset="0"/>
+        <GradientStop Color="#CCD0B8B8" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Input background gradient (carved inset) -->
+    <LinearGradientBrush x:Key="InputBackground" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#99FFFFFF" Offset="0"/>
+        <GradientStop Color="#66F2E4E4" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="InputBackgroundHover" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#B3FFFFFF" Offset="0"/>
+        <GradientStop Color="#80F2E4E4" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Animation / particle colours -->
+    <SolidColorBrush x:Key="MatchRingBrush"     Color="#00C853"/>
+    <SolidColorBrush x:Key="MatchOverlayBrush"  Color="#3000C853"/>
+    <Color x:Key="CardShadowColor">#3D1C1C</Color>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         TYPOGRAPHY — Fredoka (display) + Nunito (body)
+         ═══════════════════════════════════════════════════════════ -->
+
+    <FontFamily x:Key="DefaultFont">avares://KatyaKatya/Resources/Fonts/Nunito.ttf#Nunito</FontFamily>
+    <FontFamily x:Key="DisplayFont">avares://KatyaKatya/Resources/Fonts/Fredoka.ttf#Fredoka</FontFamily>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         CORNER RADII
+         ═══════════════════════════════════════════════════════════ -->
+
+    <CornerRadius x:Key="ButtonCornerRadius">12</CornerRadius>
+    <CornerRadius x:Key="InputCornerRadius">12</CornerRadius>
+    <CornerRadius x:Key="CardCornerRadius">18</CornerRadius>
+
+    <CornerRadius x:Key="Radius.Card">18</CornerRadius>
+    <CornerRadius x:Key="Radius.Button">12</CornerRadius>
+    <CornerRadius x:Key="Radius.Input">12</CornerRadius>
+    <CornerRadius x:Key="Radius.Small">4</CornerRadius>
+    <CornerRadius x:Key="Radius.Full">999</CornerRadius>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         SPACING (as Thickness for Padding/Margin)
+         ═══════════════════════════════════════════════════════════ -->
+
+    <Thickness x:Key="Spacing.Xs">4</Thickness>
+    <Thickness x:Key="Spacing.Sm">8</Thickness>
+    <Thickness x:Key="Spacing.Md">16</Thickness>
+    <Thickness x:Key="Spacing.Lg">24</Thickness>
+    <Thickness x:Key="Spacing.Xl">32</Thickness>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         BOX SHADOWS (Avalonia equivalent of DropShadowEffect)
+         ═══════════════════════════════════════════════════════════ -->
+
+    <BoxShadows x:Key="Shadow.Card">0 4 16 0 #20000000</BoxShadows>
+    <BoxShadows x:Key="Shadow.Elevated">0 8 32 0 #30000000</BoxShadows>
+    <BoxShadows x:Key="Shadow.Subtle">0 2 8 0 #18000000</BoxShadows>
+
+    <!-- Neumorphic shadows (matching WPF NeumorphShadow*) -->
+    <BoxShadows x:Key="Shadow.Neumorphic">4 4 22 0 #38613D3D</BoxShadows>
+    <BoxShadows x:Key="Shadow.NeumorphicSoft">3 3 10 0 #4DB89090</BoxShadows>
+    <BoxShadows x:Key="Shadow.NeumorphicInset">2 2 6 0 #40B89090</BoxShadows>
+
+    <!-- Glass card shadow: soft dark + rose tint (matches WPF DropShadowEffect BlurRadius=24 Opacity=0.14) -->
+    <BoxShadows x:Key="Shadow.GlassCard">0 4 24 0 #24613D3D, 0 1 6 0 #18C84747</BoxShadows>
+
+    <!-- Button glow shadow -->
+    <BoxShadows x:Key="Shadow.ButtonGlow">3 3 12 0 #52FF8080</BoxShadows>
+    <BoxShadows x:Key="Shadow.ButtonGlowHover">3 3 25 0 #D9FF3333</BoxShadows>
+
+    <!-- Menu Toggle Icon Source -->
+    <Bitmap x:Key="MenuIconSource">avares://KatyaKatya/Resources/Images/Icons/menu-icon.png</Bitmap>
+
+</ResourceDictionary>

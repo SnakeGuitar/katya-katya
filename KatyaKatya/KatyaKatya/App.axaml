@@ -1,0 +1,31 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:KatyaKatya"
+             xmlns:converters="using:KatyaKatya.Converters"
+             x:Class="KatyaKatya.App"
+             RequestedThemeVariant="Light">
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+
+    <!-- Resources must be declared before Styles so DynamicResource references resolve -->
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://KatyaKatya/Resources/Themes/BaseTheme.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <converters:StringAssetToBitmapConverter x:Key="StringAssetToBitmapConverter"/>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <!-- 1. Fluent base (provides all control templates) -->
+        <FluentTheme />
+        <!-- 2. Our design system on top -->
+        <StyleInclude Source="avares://KatyaKatya/Resources/Styles/CommonStyles.axaml"/>
+        <!-- 3. Game-specific animations and card templates -->
+        <StyleInclude Source="avares://KatyaKatya/Resources/Styles/GameAnimations.axaml"/>
+    </Application.Styles>
+
+</Application>

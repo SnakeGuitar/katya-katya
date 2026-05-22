@@ -1,0 +1,122 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.MainMenu"
+             x:Class="KatyaKatya.Views.MainMenu.MoreMenuView"
+             x:DataType="vm:MoreMenuViewModel">
+
+    <UserControl.Styles>
+        <!-- Custom premium styling for section cards -->
+        <Style Selector="Button.section-card">
+            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+            <Setter Property="CornerRadius" Value="{DynamicResource Radius.Card}"/>
+            <Setter Property="Padding" Value="28,32"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Height" Value="180"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.25" Easing="CubicEaseOut"/>
+                    <BrushTransition Property="Background" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+            <Setter Property="RenderTransform" Value="scale(1.0)"/>
+        </Style>
+        
+        <Style Selector="Button.section-card /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+            <Setter Property="BoxShadow" Value="{DynamicResource Shadow.Card}"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.2"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        
+        <Style Selector="Button.section-card:pointerover">
+            <Setter Property="Background" Value="{DynamicResource PastelSecondary}"/>
+            <Setter Property="RenderTransform" Value="scale(1.05)"/>
+        </Style>
+        
+        <Style Selector="Button.section-card:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource PastelSecondary}"/>
+            <Setter Property="BoxShadow" Value="{DynamicResource Shadow.Elevated}"/>
+        </Style>
+        
+        <Style Selector="Button.section-card:pressed">
+            <Setter Property="Background" Value="{DynamicResource PastelAccent}"/>
+        </Style>
+        <Style Selector="Button.section-card:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource PastelAccent}"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid Classes="page-bg">
+        <!-- Center Hub Panel -->
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <!-- Title -->
+            <TextBlock Text="More"
+                       Classes="h1"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,32"/>
+
+            <!-- Cards Row -->
+            <StackPanel Orientation="Horizontal" Spacing="20" HorizontalAlignment="Center">
+                
+                <!-- Gallery Card -->
+                <Button Classes="section-card" Command="{Binding GoToGalleryCommand}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="🃏"
+                                   FontSize="44"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,12"/>
+                        <TextBlock Text="Gallery"
+                                   Classes="h3"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Profile Card -->
+                <Button Classes="section-card" Command="{Binding GoToProfileCommand}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="👤"
+                                   FontSize="44"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,12"/>
+                        <TextBlock Text="Profile"
+                                   Classes="h3"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Friends Card -->
+                <Button Classes="section-card" Command="{Binding GoToFriendsCommand}">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Text="🤝"
+                                   FontSize="44"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,12"/>
+                        <TextBlock Text="Friends"
+                                   Classes="h3"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                
+            </StackPanel>
+
+            <!-- Back Button -->
+            <Button Content="Back"
+                    Command="{Binding GoBackCommand}"
+                    Classes="btn-ghost"
+                    HorizontalAlignment="Center"
+                    Margin="0,28,0,0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

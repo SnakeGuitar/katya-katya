@@ -1,0 +1,165 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:KatyaKatya.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+        x:Class="KatyaKatya.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Katya Katya"
+        Width="1280" Height="720"
+        MinWidth="980" MinHeight="720"
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="46"
+        WindowDecorations="BorderOnly"
+        Background="Transparent">
+
+    <Window.Styles>
+        <Style Selector="Image.logo-breathing">
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                    <TranslateTransform Y="0"/>
+                </TransformGroup>
+            </Setter>
+            <Style.Animations>
+                <Animation Duration="0:0:3.5" IterationCount="Infinite" PlaybackDirection="Alternate" Easing="SineEaseInOut">
+                    <KeyFrame Cue="0%">
+                        <Setter Property="ScaleTransform.ScaleX" Value="0.97"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="0.97"/>
+                        <Setter Property="TranslateTransform.Y" Value="-4"/>
+                    </KeyFrame>
+                    <KeyFrame Cue="100%">
+                        <Setter Property="ScaleTransform.ScaleX" Value="1.03"/>
+                        <Setter Property="ScaleTransform.ScaleY" Value="1.03"/>
+                        <Setter Property="TranslateTransform.Y" Value="8"/>
+                    </KeyFrame>
+                </Animation>
+            </Style.Animations>
+        </Style>
+    </Window.Styles>
+
+    <Window.KeyBindings>
+        <KeyBinding Gesture="F11" Command="{Binding ToggleFullscreenCommand}"/>
+    </Window.KeyBindings>
+
+    <Border x:Name="MainWindowBorder"
+            Background="{DynamicResource PastelBackground}"
+            CornerRadius="14"
+            ClipToBounds="True">
+        <Panel>
+            <!-- Global Background Image (behind everything) -->
+            <Image Name="GlobalBgImage"
+                   Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+                   Stretch="UniformToFill"
+                   IsHitTestVisible="False"/>
+
+            <!-- Main content: current view resolved by ViewLocator -->
+            <TransitioningContentControl x:Name="MainContentPresenter"
+                                         Content="{Binding Navigation.CurrentViewModel}">
+                <TransitioningContentControl.PageTransition>
+                    <CrossFade Duration="0:0:0.25"/>
+                </TransitioningContentControl.PageTransition>
+            </TransitioningContentControl>
+
+            <!-- Traffic Light Buttons (macOS-style, top-left) -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="18,18,0,0"
+                        Spacing="8"
+                        ZIndex="100"
+                        x:Name="TrafficLights">
+
+                <!-- Close -->
+                <Button Classes="traffic-light traffic-close"
+                        Click="OnCloseClicked"
+                        ToolTip.Tip="Close">
+                    <TextBlock Text="×" FontSize="10" Foreground="#44000000"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Margin="0,0,0,1"
+                               IsVisible="{Binding #TrafficLights.IsPointerOver}"/>
+                </Button>
+
+                <!-- Minimize -->
+                <Button Classes="traffic-light traffic-minimize"
+                        Click="OnMinimizeClicked"
+                        ToolTip.Tip="Minimize">
+                    <TextBlock Text="–" FontSize="10" Foreground="#44000000"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               Margin="0,1,0,0"
+                               IsVisible="{Binding #TrafficLights.IsPointerOver}"/>
+                </Button>
+
+                <!-- Maximize -->
+                <Button Classes="traffic-light traffic-maximize"
+                        Click="OnMaximizeClicked"
+                        ToolTip.Tip="Maximize">
+                    <TextBlock Text="+" FontSize="9" Foreground="#44000000"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
+                               IsVisible="{Binding #TrafficLights.IsPointerOver}"/>
+                </Button>
+            </StackPanel>
+
+            <!-- Header Menu Toggle Button (matches WPF rounded MenuToggleBtn) -->
+            <Grid HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  Margin="0,52,18,0"
+                  ZIndex="110"
+                  IsVisible="{Binding IsHeaderVisible}">
+                
+                <ToggleButton x:Name="MenuToggleBtn"
+                              Classes="menu-toggle"
+                              ToolTip.Tip="Menu">
+                    <Image Source="{DynamicResource MenuIconSource}"
+                           Width="36" Height="36"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </ToggleButton>
+
+                <!-- Dropdown Popup -->
+                <Popup IsOpen="{Binding #MenuToggleBtn.IsChecked, Mode=TwoWay}"
+                       PlacementTarget="{Binding #MenuToggleBtn}"
+                       Placement="Bottom"
+                       HorizontalOffset="-120" VerticalOffset="8"
+                       IsLightDismissEnabled="True">
+                    <Border Background="{DynamicResource CardBackground}"
+                            BorderBrush="{DynamicResource PastelBorder}"
+                            BorderThickness="1"
+                            CornerRadius="{DynamicResource CardCornerRadius}"
+                            Padding="24,20"
+                            BoxShadow="{DynamicResource Shadow.GlassCard}">
+                        <StackPanel Width="160" Spacing="4">
+                            <!-- Profile / Friends / Register -->
+                            <Button Content="Profile"
+                                    Command="{Binding GoToProfileCommand}"
+                                    Classes="btn-dropdown"
+                                    Click="OnMenuDropdownItemClicked"/>
+                            
+                            <Button Content="Friends"
+                                    Command="{Binding GoToFriendsCommand}"
+                                    Classes="btn-dropdown"
+                                    Click="OnMenuDropdownItemClicked"/>
+                            
+                            <Button Content="Register"
+                                    Command="{Binding GoToGuestRegisterCommand}"
+                                    Classes="btn-dropdown"
+                                    IsVisible="{Binding IsGuestRegisterVisible}"
+                                    Click="OnMenuDropdownItemClicked"/>
+                            
+                            <!-- Divider -->
+                            <Rectangle Classes="divider" Fill="{DynamicResource DividerBrush}" Height="1" Margin="8,4,8,8"/>
+                            
+                            <!-- Settings -->
+                            <Button Content="Settings"
+                                    Command="{Binding GoToSettingsCommand}"
+                                    Classes="btn-dropdown"
+                                    Click="OnMenuDropdownItemClicked"/>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+            </Grid>
+        </Panel>
+    </Border>
+</Window>

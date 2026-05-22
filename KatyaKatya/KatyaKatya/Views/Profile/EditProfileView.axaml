@@ -1,0 +1,160 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Profile"
+             xmlns:converters="using:KatyaKatya.Converters"
+             x:Class="KatyaKatya.Views.Profile.EditProfileView"
+             x:DataType="vm:EditProfileViewModel">
+
+    <UserControl.Resources>
+        <converters:ByteArrayToBitmapConverter x:Key="ByteArrayToBitmapConverter"/>
+    </UserControl.Resources>
+
+    <Grid Classes="page-bg" RowDefinitions="Auto, *">
+        <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto" Margin="24,24,24,24">
+            <Button Grid.Column="0" Command="{Binding GoBackCommand}" Classes="btn-ghost" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="←" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="Back to Profile" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <TextBlock Grid.Column="1" Text="Edit Profile" Classes="h2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Grid Grid.Column="2" Width="60"/> <!-- Spacer to balance header -->
+        </Grid>
+
+        <!-- Form Scroll Area -->
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="24,0,24,24">
+            <Grid ColumnDefinitions="*, 32, 1.2*" MaxWidth="900" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,12,0,0">
+                
+                <!-- Left Column: Avatar Settings & Social Networks (Grid.Column="0") -->
+                <StackPanel Grid.Column="0" Spacing="24">
+                    <!-- Avatar Management -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="20" HorizontalAlignment="Center">
+                            <TextBlock Text="Profile Avatar" Classes="h3" HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <Border Height="1" Background="{DynamicResource DividerBrush}"/>
+
+                            <Grid Width="140" Height="140" HorizontalAlignment="Center">
+                                <Border CornerRadius="70" ClipToBounds="True" Background="{DynamicResource PrimaryLightBrush}">
+                                    <TextBlock Text="👤" FontSize="56" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryBrush}"/>
+                                </Border>
+                                <Border CornerRadius="70" ClipToBounds="True" IsVisible="{Binding AvatarBytes, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                    <Image Source="{Binding AvatarBytes, Converter={StaticResource ByteArrayToBitmapConverter}}" Stretch="UniformToFill"/>
+                                </Border>
+                            </Grid>
+
+                            <Button Name="ChangeAvatarButton" Classes="btn-secondary" Content="Upload New Photo" HorizontalAlignment="Center" Click="OnChangeAvatarClick"/>
+                            <TextBlock Text="Supports JPG, PNG (Max 1MB)" Classes="subtitle" HorizontalAlignment="Center" FontSize="11"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Social Accounts Management -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="Social Networks" Classes="h3" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <Border Height="1" Background="{DynamicResource DividerBrush}"/>
+
+                            <!-- Add New Account Form -->
+                            <Grid ColumnDefinitions="*, Auto">
+                                <TextBox Grid.Column="0" Text="{Binding NewSocialAccount, Mode=TwoWay}" PlaceholderText="Add handle (e.g. discord:katya)" Classes="input" Margin="0,0,10,0"/>
+                                <Button Grid.Column="1" Command="{Binding AddSocialCommand}" Classes="btn-secondary" Content="Add"/>
+                            </Grid>
+
+                            <!-- Social Accounts List -->
+                            <ItemsControl ItemsSource="{Binding SocialNetworks}" Margin="0,8,0,0">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{DynamicResource PrimaryLightBrush}" CornerRadius="{DynamicResource Radius.Small}" Padding="10" Margin="0,0,0,8">
+                                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                                <TextBlock Grid.Column="0" Text="🔗" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Account}" FontSize="13" FontWeight="Medium" VerticalAlignment="Center"/>
+                                                <Button Grid.Column="2" Command="{Binding $parent[UserControl].((vm:EditProfileViewModel)DataContext).RemoveSocialCommand}" CommandParameter="{Binding Id}" Classes="btn-ghost" Foreground="{DynamicResource ErrorBrush}" Padding="4" VerticalAlignment="Center">
+                                                    <TextBlock Text="🗑️" FontSize="14"/>
+                                                </Button>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Right Column: Personal & Credentials Form (Grid.Column="2") -->
+                <StackPanel Grid.Column="2" Spacing="24">
+                    <!-- Personal Details Form -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="Personal Details" Classes="h3" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <Border Height="1" Background="{DynamicResource DividerBrush}"/>
+
+                            <Grid ColumnDefinitions="*, 16, *" RowDefinitions="Auto, 16, Auto">
+                                <StackPanel Grid.Row="0" Grid.Column="0" Spacing="6">
+                                    <TextBlock Text="First Name" Classes="label"/>
+                                    <TextBox Text="{Binding FirstName, Mode=TwoWay}" Classes="input"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Row="0" Grid.Column="2" Spacing="6">
+                                    <TextBlock Text="Last Name" Classes="label"/>
+                                    <TextBox Text="{Binding LastName, Mode=TwoWay}" Classes="input"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Button Command="{Binding UpdatePersonalInfoCommand}" Classes="btn-primary" Content="Save Personal Info" HorizontalAlignment="Right" Margin="0,8,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Username Settings Form -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="Change Username" Classes="h3" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <Border Height="1" Background="{DynamicResource DividerBrush}"/>
+
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="New Username" Classes="label"/>
+                                <TextBox Text="{Binding NewUsername, Mode=TwoWay}" Classes="input"/>
+                            </StackPanel>
+
+                            <TextBlock Text="Note: Changing your username will log you out immediately." Classes="subtitle" Foreground="{DynamicResource WarningBrush}" FontSize="12" Margin="0,4,0,0"/>
+
+                            <Button Command="{Binding UpdateUsernameCommand}" Classes="btn-primary" Content="Update Username" HorizontalAlignment="Right" Margin="0,8,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Password Settings Form -->
+                    <Border Classes="card">
+                        <StackPanel Spacing="16">
+                            <TextBlock Text="Update Password" Classes="h3" Foreground="{DynamicResource PrimaryBrush}"/>
+                            <Border Height="1" Background="{DynamicResource DividerBrush}"/>
+
+                            <Grid ColumnDefinitions="*, 16, *">
+                                <StackPanel Grid.Column="0" Spacing="6">
+                                    <TextBlock Text="Current Password" Classes="label"/>
+                                    <TextBox Text="{Binding CurrentPassword, Mode=TwoWay}" PasswordChar="●" Classes="input"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2" Spacing="6">
+                                    <TextBlock Text="New Password" Classes="label"/>
+                                    <TextBox Text="{Binding NewPassword, Mode=TwoWay}" PasswordChar="●" Classes="input"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Button Command="{Binding UpdatePasswordCommand}" Classes="btn-primary" Content="Change Password" HorizontalAlignment="Right" Margin="0,8,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+            </Grid>
+        </ScrollViewer>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.RowSpan="2" Background="#80000000" IsVisible="{Binding IsLoading}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Border Classes="card" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="32">
+                <StackPanel Spacing="16" HorizontalAlignment="Center">
+                    <ProgressBar IsIndeterminate="True" Width="120" Height="4" Foreground="{DynamicResource PrimaryBrush}"/>
+                    <TextBlock Text="Updating Details..." Classes="subtitle" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,163 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Social"
+             xmlns:models="using:KatyaKatya.Models"
+             x:Class="KatyaKatya.Views.Social.FriendsView"
+             x:DataType="vm:FriendsViewModel">
+
+    <Border Classes="page-bg" Padding="24">
+        <Grid RowDefinitions="Auto, *">
+            <!-- Header -->
+        <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto" Margin="0,0,0,24">
+            <Button Grid.Column="0" Command="{Binding GoBackCommand}" Classes="btn-ghost" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <TextBlock Text="←" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="Back" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <TextBlock Grid.Column="1" Text="Friends Hub" Classes="h2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Grid Grid.Column="2" Width="60"/> <!-- Balanced layout spacer -->
+        </Grid>
+
+        <!-- Main Content Area -->
+        <TabControl Grid.Row="1" MaxWidth="850" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            
+            <!-- Tab 1: My Friends -->
+            <TabItem Header="My Friends" FontSize="16" FontWeight="SemiBold" Padding="16,10">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+                    <StackPanel Spacing="16">
+                        
+                        <!-- Empty State -->
+                        <Border Classes="card" IsVisible="{Binding !HasFriends}" Padding="40" Margin="0,12">
+                            <StackPanel Spacing="20" HorizontalAlignment="Center">
+                                <TextBlock Text="👥" FontSize="64" Opacity="0.3" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Your friends list is currently empty!" Classes="h3" HorizontalAlignment="Center"/>
+                                <TextBlock Text="Search and send a friend request in the 'Requests &amp; Search' tab to connect with others." Classes="subtitle" TextWrapping="Wrap" TextAlignment="Center" MaxWidth="400" HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Friends list -->
+                        <ItemsControl ItemsSource="{Binding Friends}" IsVisible="{Binding HasFriends}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:FriendDto">
+                                    <Border Classes="card-subtle" Margin="0,0,0,12">
+                                        <Grid ColumnDefinitions="Auto, *, Auto" VerticalAlignment="Center">
+                                            <!-- Mini Avatar -->
+                                            <Border Grid.Column="0" Width="48" Height="48" CornerRadius="24" Background="{DynamicResource PrimaryLightBrush}" Margin="0,0,16,0">
+                                                <TextBlock Text="👤" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryBrush}"/>
+                                            </Border>
+                                            
+                                            <!-- Details -->
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
+                                                <TextBlock Text="{Binding Username}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                                    <TextBlock Text="Friends since " Classes="label" FontSize="12"/>
+                                                    <TextBlock Text="{Binding FriendsSince, StringFormat='{}{0:MMMM dd, yyyy}'}" Classes="subtitle" FontSize="12"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            
+                                            <!-- Remove button -->
+                                            <Button Grid.Column="2" Command="{Binding $parent[UserControl].((vm:FriendsViewModel)DataContext).RemoveFriendCommand}" CommandParameter="{Binding}" Classes="btn-ghost" Foreground="{DynamicResource ErrorBrush}" VerticalAlignment="Center" ToolTip.Tip="Remove Friend">
+                                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                                    <TextBlock Text="🗑️" FontSize="14" VerticalAlignment="Center"/>
+                                                    <TextBlock Text="Unfriend" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Tab 2: Requests & Search -->
+            <TabItem Header="Add Friends &amp; Requests" FontSize="16" FontWeight="SemiBold" Padding="16,10">
+                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Margin="0,16,0,0">
+                    <Grid ColumnDefinitions="*, 24, 1.2*">
+                        
+                        <!-- Left Side: Search & Send Request -->
+                        <StackPanel Grid.Column="0" Spacing="20">
+                            <Border Classes="card">
+                                <StackPanel Spacing="16">
+                                    <TextBlock Text="Find Friends" Classes="h3" Foreground="{DynamicResource PrimaryBrush}"/>
+                                    <Border Height="1" Background="{DynamicResource DividerBrush}"/>
+                                    <TextBlock Text="Enter a username below to send them a friend request." Classes="subtitle" TextWrapping="Wrap"/>
+                                    
+                                    <TextBox Text="{Binding SearchUsername, Mode=TwoWay}" PlaceholderText="Enter username..." Classes="input" Margin="0,8,0,0"/>
+                                    
+                                    <Button Command="{Binding SendRequestCommand}" Classes="btn-primary" HorizontalAlignment="Stretch" Margin="0,4,0,0">
+                                        <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                                            <TextBlock Text="➕" VerticalAlignment="Center"/>
+                                            <TextBlock Text="Send Friend Request" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                        
+                        <!-- Right Side: Pending Requests List -->
+                        <StackPanel Grid.Column="2" Spacing="20">
+                            <Border Classes="card">
+                                <StackPanel Spacing="16">
+                                    <TextBlock Text="Incoming Friend Requests" Classes="h3" Foreground="{DynamicResource PrimaryBrush}"/>
+                                    <Border Height="1" Background="{DynamicResource DividerBrush}"/>
+
+                                    <!-- Empty pending state -->
+                                    <StackPanel IsVisible="{Binding !HasRequests}" Spacing="16" Margin="0,24" HorizontalAlignment="Center">
+                                        <TextBlock Text="✉️" FontSize="48" Opacity="0.3" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="No pending requests at the moment." Classes="subtitle" HorizontalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <!-- Pending list -->
+                                    <ItemsControl ItemsSource="{Binding PendingRequests}" IsVisible="{Binding HasRequests}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate x:DataType="models:FriendRequestDto">
+                                                <Border Background="{DynamicResource BackgroundBrush}" CornerRadius="{DynamicResource Radius.Small}" Padding="12" Margin="0,0,0,10">
+                                                    <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto, Auto">
+                                                        <!-- Requester info -->
+                                                        <StackPanel Grid.Column="0" Grid.Row="0" Spacing="2">
+                                                            <TextBlock Text="{Binding SenderUsername}" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                                                            <TextBlock Text="{Binding SentAt, StringFormat='Requested {0:MMM dd, yyyy}'}" Classes="subtitle" FontSize="11"/>
+                                                        </StackPanel>
+                                                        
+                                                        <!-- Actions -->
+                                                        <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                                            <Button Command="{Binding $parent[UserControl].((vm:FriendsViewModel)DataContext).AcceptRequestCommand}" CommandParameter="{Binding RequestId}" Classes="btn-success" Padding="12,6" FontSize="12">
+                                                                <StackPanel Orientation="Horizontal" Spacing="4">
+                                                                    <TextBlock Text="✓" FontWeight="Bold" VerticalAlignment="Center"/>
+                                                                    <TextBlock Text="Accept" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                                                </StackPanel>
+                                                            </Button>
+                                                            <Button Command="{Binding $parent[UserControl].((vm:FriendsViewModel)DataContext).RejectRequestCommand}" CommandParameter="{Binding RequestId}" Classes="btn-ghost" Foreground="{DynamicResource ErrorBrush}" Padding="8,6" FontSize="12">
+                                                                <TextBlock Text="Ignore" VerticalAlignment="Center"/>
+                                                            </Button>
+                                                        </StackPanel>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+            
+        </TabControl>
+
+        <!-- Loading Overlay -->
+        <Grid Grid.RowSpan="2" Background="#80000000" IsVisible="{Binding IsLoading}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Border Classes="card" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="32">
+                <StackPanel Spacing="16" HorizontalAlignment="Center">
+                    <ProgressBar IsIndeterminate="True" Width="120" Height="4" Foreground="{DynamicResource PrimaryBrush}"/>
+                    <TextBlock Text="Updating lists..." Classes="subtitle" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        </Grid>
+    </Border>
+</UserControl>

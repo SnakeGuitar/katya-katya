@@ -1,0 +1,33 @@
+<Project>
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+    <ItemGroup>
+        <!-- Avalonia packages -->
+        <PackageVersion Include="Avalonia" Version="12.0.3" />
+        <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.0.3" />
+        <PackageVersion Include="Avalonia.Fonts.Inter" Version="12.0.3" />
+        <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.1" />
+        <PackageVersion Include="Avalonia.Desktop" Version="12.0.3" />
+        <PackageVersion Include="Avalonia.Android" Version="12.0.3" />
+
+        <!-- MVVM & DI -->
+        <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+        <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.5" />
+
+        <!-- Networking -->
+        <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.5" />
+
+        <!-- Graphics: SkiaSharp for particle system (TBD - needs custom Avalonia integration) -->
+        <!-- <PackageVersion Include="SkiaSharp" Version="3.119.0" /> -->
+
+        <!-- Audio -->
+        <PackageVersion Include="LibVLCSharp" Version="3.9.3" />
+        <PackageVersion Include="VideoLAN.LibVLC.Windows" Version="3.0.21" />
+        <PackageVersion Include="VideoLAN.LibVLC.Android" Version="3.6.5" />
+
+        <!-- Android -->
+        <PackageVersion Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.0.1.15" />
+    </ItemGroup>
+</Project>

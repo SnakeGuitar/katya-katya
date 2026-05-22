@@ -1,0 +1,209 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.SinglePlayer"
+             x:Class="KatyaKatya.Views.SinglePlayer.SinglePlayerMenuView"
+             x:DataType="vm:SinglePlayerMenuViewModel">
+
+    <UserControl.Styles>
+        <!-- Difficulty button: glassmorphic selection cards -->
+        <Style Selector="Button.difficulty-btn">
+            <Setter Property="Height" Value="58"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="16,0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PastelBorder}"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform" Value="scale(1.0)"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15" Easing="QuadraticEaseOut"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.difficulty-btn /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PastelBorder}"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BoxShadow" Value="{DynamicResource Shadow.Subtle}"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.15"/>
+                    <BrushTransition Property="BorderBrush" Duration="0:0:0.15"/>
+                    <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.15"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.difficulty-btn:pointerover">
+            <Setter Property="RenderTransform" Value="scale(1.02)"/>
+        </Style>
+        <Style Selector="Button.difficulty-btn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#FFF0EE"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PastelPrimary}"/>
+            <Setter Property="BoxShadow" Value="{DynamicResource Shadow.Card}"/>
+        </Style>
+        <Style Selector="Button.difficulty-btn.selected /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#FFEAE7"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PastelPrimary}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BoxShadow" Value="{DynamicResource Shadow.GlassCard}"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid>
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Width="720">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="16"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="24"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Title -->
+            <TextBlock Grid.Row="0"
+                       Text="Singleplayer Game"
+                       Classes="h2"
+                       FontFamily="{DynamicResource DisplayFont}"
+                       HorizontalAlignment="Center"/>
+
+            <!-- Difficulty Cards Container -->
+            <Border Grid.Row="2" Classes="glass-card" MinHeight="360" Padding="32,28">
+                <Grid ColumnDefinitions="*, 32, *">
+
+                    <!-- Left: Difficulty Selector -->
+                    <StackPanel Grid.Column="0" Spacing="8">
+                        <TextBlock Text="Select Difficulty"
+                                   Classes="h3"
+                                   Foreground="{DynamicResource PastelPrimary}"
+                                   Margin="0,0,0,10"/>
+
+                        <!-- Easy -->
+                        <Button Command="{Binding SelectEasyCommand}"
+                                Classes="difficulty-btn"
+                                Classes.selected="{Binding IsEasy}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="12">
+                                <TextBlock Text="🟢" FontSize="20" VerticalAlignment="Center"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Easy" FontWeight="SemiBold" FontSize="15"/>
+                                    <TextBlock Text="16 cards · 60s turn limit" FontSize="11" Opacity="0.6"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Medium -->
+                        <Button Command="{Binding SelectMediumCommand}"
+                                Classes="difficulty-btn"
+                                Classes.selected="{Binding IsMedium}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="12">
+                                <TextBlock Text="🟡" FontSize="20" VerticalAlignment="Center"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Medium" FontWeight="SemiBold" FontSize="15"/>
+                                    <TextBlock Text="24 cards · 45s turn limit" FontSize="11" Opacity="0.6"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Hard -->
+                        <Button Command="{Binding SelectHardCommand}"
+                                Classes="difficulty-btn"
+                                Classes.selected="{Binding IsHard}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="12">
+                                <TextBlock Text="🔴" FontSize="20" VerticalAlignment="Center"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Hard" FontWeight="SemiBold" FontSize="15"/>
+                                    <TextBlock Text="36 cards · 30s turn limit" FontSize="11" Opacity="0.6"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Custom -->
+                        <Button Command="{Binding SelectCustomCommand}"
+                                Classes="difficulty-btn"
+                                Classes.selected="{Binding IsCustomMode}"
+                                Margin="0">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="12">
+                                <TextBlock Text="⚙️" FontSize="20" VerticalAlignment="Center"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Custom" FontWeight="SemiBold" FontSize="15"/>
+                                    <TextBlock Text="Configure your own settings" FontSize="11" Opacity="0.6"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Separator line -->
+                    <Rectangle Grid.Column="1" Width="1" Fill="{DynamicResource PastelBorder}" VerticalAlignment="Stretch" Margin="15,10"/>
+
+                    <!-- Right: Custom settings (visible when Custom selected) -->
+                    <StackPanel Grid.Column="2" Spacing="16" IsVisible="{Binding IsCustomMode}">
+                        <TextBlock Text="Custom Settings"
+                                   Classes="h3"
+                                   Foreground="{DynamicResource PastelPrimary}"
+                                   Margin="0,0,0,10"/>
+
+                        <!-- Card count -->
+                        <StackPanel Spacing="6">
+                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                <TextBlock Text="Card Count: " Classes="label"/>
+                                <TextBlock Text="{Binding CustomCardCount}" FontWeight="Bold" Classes="label"/>
+                            </StackPanel>
+                            <ComboBox ItemsSource="{Binding CustomCardCountOptions}"
+                                      SelectedItem="{Binding CustomCardCount}"
+                                      HorizontalAlignment="Stretch"
+                                      CornerRadius="12"/>
+                        </StackPanel>
+
+                        <!-- No time limit toggle -->
+                        <CheckBox IsChecked="{Binding CustomNoTimeLimit}"
+                                  Content="No Turn Time Limit"
+                                  Margin="0,4,0,0"/>
+
+                        <!-- Turn time limit slider -->
+                        <StackPanel Spacing="6" IsVisible="{Binding ShowCustomTurnTime}">
+                            <StackPanel Orientation="Horizontal" Spacing="4">
+                                <TextBlock Text="Turn Time: " Classes="label"/>
+                                <TextBlock Text="{Binding CustomTurnTime}" FontWeight="Bold" Classes="label"/>
+                                <TextBlock Text=" seconds" Classes="label"/>
+                            </StackPanel>
+                            <Slider Minimum="5" Maximum="120"
+                                    Value="{Binding CustomTurnTime}"
+                                    TickFrequency="5"
+                                    IsSnapToTickEnabled="True"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Right: Preview for standard modes -->
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="16" IsVisible="{Binding !IsCustomMode}">
+                        <TextBlock Text="🃏" FontSize="72" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Find all pairs of matching cards before the time runs out!"
+                                   TextWrapping="Wrap"
+                                   TextAlignment="Center"
+                                   FontSize="14"
+                                   Opacity="0.6"
+                                   MaxWidth="240"/>
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+
+            <!-- Buttons -->
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="24">
+                <Button Command="{Binding GoBackCommand}"
+                        Content="Back to Menu"
+                        Classes="btn-ghost"
+                        Padding="24,10"/>
+                <Button Command="{Binding StartGameCommand}"
+                        Content="Play Game"
+                        Classes="btn-primary"
+                        FontWeight="Bold"
+                        Padding="32,12"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

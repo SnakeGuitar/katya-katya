@@ -1,0 +1,182 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         GAME CARD ANIMATIONS
+         Avalonia port of WPF GameAnimations.xaml
+         
+         Note: WPF DataTrigger.EnterActions with Storyboards don't exist in
+         Avalonia AXAML. Card flip and match bounce are driven from code-behind
+         via Animation.RunAsync(). This file provides the visual template and 
+         hover/pointer interactions only.
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <!-- AnimatedCardButton: game card with border, image, overlays, hover lift -->
+    <Style Selector="Button.animated-card">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform" Value="scale(1.0)"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.12" Easing="QuadraticEaseOut"/>
+            </Transitions>
+        </Setter>
+    </Style>
+    <Style Selector="Button.animated-card /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+
+    <!-- Hover lift: scale up to 1.08 -->
+    <Style Selector="Button.animated-card:pointerover">
+        <Setter Property="RenderTransform" Value="scale(1.08)"/>
+    </Style>
+
+    <!-- Pressed: slight squash to 0.96 -->
+    <Style Selector="Button.animated-card:pressed">
+        <Setter Property="RenderTransform" Value="scale(0.96)"/>
+    </Style>
+
+    <!-- Card face border with shadow transition -->
+    <Style Selector="Border.card-face">
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PastelPrimary}"/>
+        <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
+        <Setter Property="ClipToBounds" Value="True"/>
+        <Setter Property="BoxShadow" Value="0 2 8 0 #25000000"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.12"/>
+                <BrushTransition Property="BorderBrush" Duration="0:0:0.12"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <!-- Card face on parent hover: accent border + elevated shadow -->
+    <Style Selector="Button.animated-card:pointerover Border.card-face">
+        <Setter Property="BorderBrush" Value="{DynamicResource PastelAccent}"/>
+        <Setter Property="BoxShadow" Value="0 4 16 0 #40000000"/>
+    </Style>
+
+    <!-- Matched card overlay -->
+    <Style Selector="Border.match-overlay">
+        <Setter Property="Background" Value="{DynamicResource MatchOverlayBrush}"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="IsVisible" Value="False"/>
+    </Style>
+
+    <!-- Match ring (sparkle ring expanding outward) -->
+    <Style Selector="Ellipse.match-ring">
+        <Setter Property="Stroke" Value="{DynamicResource MatchRingBrush}"/>
+        <Setter Property="StrokeThickness" Value="3"/>
+        <Setter Property="Opacity" Value="0"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform" Value="scale(0.6)"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SCORE PULSE — value text that scales on update (code-behind triggered)
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <Style Selector="TextBlock.score-pulse">
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform" Value="scale(1.0)"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.2" Easing="QuadraticEaseOut"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TROPHY WIGGLE — rotation keyframe animation on game over emoji
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <Style Selector="TextBlock.trophy-wiggle">
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="RenderTransform">
+            <RotateTransform Angle="0"/>
+        </Setter>
+        <Style.Animations>
+            <Animation Duration="0:0:0.6" IterationCount="3" Easing="QuadraticEaseInOut">
+                <KeyFrame Cue="0%">
+                    <Setter Property="RotateTransform.Angle" Value="0"/>
+                </KeyFrame>
+                <KeyFrame Cue="25%">
+                    <Setter Property="RotateTransform.Angle" Value="15"/>
+                </KeyFrame>
+                <KeyFrame Cue="50%">
+                    <Setter Property="RotateTransform.Angle" Value="-15"/>
+                </KeyFrame>
+                <KeyFrame Cue="75%">
+                    <Setter Property="RotateTransform.Angle" Value="10"/>
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="RotateTransform.Angle" Value="0"/>
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         GAME OVER OVERLAY — fade in with slide up
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <Style Selector="Border.game-over-backdrop">
+        <Style.Animations>
+            <Animation Duration="0:0:0.4" FillMode="Both">
+                <KeyFrame Cue="0%">
+                    <Setter Property="Opacity" Value="0"/>
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="Opacity" Value="1"/>
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+
+    <Style Selector="Border.game-over-card">
+        <Setter Property="RenderTransform">
+            <TranslateTransform Y="0"/>
+        </Setter>
+        <Style.Animations>
+            <Animation Duration="0:0:0.5" Delay="0:0:0.1" FillMode="Both" Easing="QuadraticEaseOut">
+                <KeyFrame Cue="0%">
+                    <Setter Property="Opacity" Value="0"/>
+                    <Setter Property="TranslateTransform.Y" Value="40"/>
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="Opacity" Value="1"/>
+                    <Setter Property="TranslateTransform.Y" Value="0"/>
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         BOARD ENTRANCE — slide up + fade in
+         ═══════════════════════════════════════════════════════════════ -->
+
+    <Style Selector="Grid.board-entrance">
+        <Setter Property="RenderTransform">
+            <TranslateTransform Y="0"/>
+        </Setter>
+        <Style.Animations>
+            <Animation Duration="0:0:0.5" FillMode="Both" Easing="QuadraticEaseOut">
+                <KeyFrame Cue="0%">
+                    <Setter Property="Opacity" Value="0"/>
+                    <Setter Property="TranslateTransform.Y" Value="20"/>
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="Opacity" Value="1"/>
+                    <Setter Property="TranslateTransform.Y" Value="0"/>
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+
+</Styles>
