@@ -22,7 +22,8 @@ public class MusicService : IMusicService
     public MusicService(ClientSettings settings)
     {
         _settings = settings;
-        TryInitialize();
+        // Asynchronously initialize to prevent blocking the UI thread (resolving the 10-second settings freeze)
+        Task.Run(() => TryInitialize());
     }
 
     private void TryInitialize()
