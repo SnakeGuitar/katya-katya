@@ -264,8 +264,7 @@
                                                 Style="{DynamicResource PastelButton}"
                                                 Command="{Binding SendChatMessageCommand}"
                                                 Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Send]}"
-                                                Padding="6,6" Grid.RowSpan="2"
-/>
+                                                Padding="16,6" Grid.RowSpan="2"/>
                                     </Grid>
                                 </Grid>
                             </Border>
