@@ -4,57 +4,61 @@
 
 ### Core Infrastructure
 - App.xaml.cs → App.axaml.cs (DI setup with Avalonia containers)
-- MainWindow shell with navigation ContentControl
-- Theme system (BaseTheme.axaml with colors, brushes, gradients, shadows)
-- Font loading via avares:// URIs with explicit file paths
 - Localization framework (4 locales: es-MX, ja-JP, zh-CN, ko-KR)
-
-### Views - Session Flow
-- SplashScreenView (entrance animation fixed with ScaleTransform, no TransformGroup)
-- TitleScreenView (login, register, guest button)
-- LoginView (fixed StringConverters namespace references)
-- RegisterView (fixed StringConverters namespace references)
-- GuestLoginViewModel + GuestLoginView (new flow for guest login)
-- VerifyEmailView (email PIN entry post-registration)
-
-### Views - Main App
-- MainMenuView
-- MoreMenuView
-- SettingsView
-- ProfileView with EditProfileView
-- FriendsView
-- GalleryView (card gallery)
-- LobbyMenuView
-
-### Views - Game
-- GameBoardView (multiplayer board with players, cards, chat)
-  - Players panel (left column)
-  - Card grid (center, UniformGrid with Viewbox)
-  - Chat panel (right column)
-  - Game Over overlay with animations
-
-### Styling & Animations
-- CommonStyles.axaml (button, text, input styles)
-- GameAnimations.axaml
-  - Animated card hover/press (scale transitions)
-  - Trophy wiggle animation (rotation keyframes on game over)
-  - Board entrance (fade + slide up)
-  - Game Over overlay fade + card slide up with bounce
-- BaseTh eme.axaml updates:
-  - Font paths: explicit .ttf files instead of directory URIs
-  - CardBackground: increased opacity (85-67% range) for visible glass effect
-  - Shadow.GlassCard: dual shadow (dark base + rose tint) matching WPF DropShadowEffect
-  - InputBackground: increased opacity for readable text fields
 
 ### Navigation & Event Bindings
 - ViewLocator for ViewModel→View resolution
 - INavigationService implementation for Avalonia
-- Proper MVVM command bindings using x:CompileBindings="True"
-- Event-to-command via RelativeSource and $parent binding syntax
 
 ---
 
 ## In Progress / Deferred (🚧)
+
+### Views & Styling (Pending Re-implementation)
+> [!IMPORTANT]
+> All UI views, styles, themes, and client-side animation resources have been removed from the KatyaKatya project to ensure the core remains clean / separated. These will need to be re-implemented.
+
+- **Shell & Navigation**
+  - [ ] MainWindow shell with navigation ContentControl
+- **Theme & Styling**
+  - [ ] Theme system (`BaseTheme.axaml` with colors, brushes, gradients, shadows)
+  - [ ] Font loading via `avares://` URIs with explicit file paths
+  - [ ] `CommonStyles.axaml` (button, text, input styles)
+- **Views - Session Flow**
+  - [ ] `SplashScreenView` (entrance animation with ScaleTransform)
+  - [ ] `TitleScreenView` (login, register, guest button)
+  - [ ] `LoginView` (with fixed StringConverters)
+  - [ ] `RegisterView` (with fixed StringConverters)
+  - [ ] `GuestLoginView` (new flow for guest login)
+  - [ ] `VerifyEmailView` (email PIN entry post-registration)
+- **Views - Main App**
+  - [ ] `MainMenuView`
+  - [ ] `MoreMenuView`
+  - [ ] `SettingsView`
+  - [ ] `ProfileView` and `EditProfileView`
+  - [ ] `FriendsView`
+  - [ ] `GalleryView` (card gallery)
+  - [ ] `LobbyMenuView`
+- **Views - Game**
+  - [ ] `GameBoardView` (multiplayer board with players, cards, chat)
+    - [ ] Players panel (left column)
+    - [ ] Card grid (center, UniformGrid with Viewbox)
+    - [ ] Chat panel (right column)
+    - [ ] Game Over overlay with animations
+- **Styling & Animations**
+  - [ ] `GameAnimations.axaml`
+    - [ ] Animated card hover/press (scale transitions)
+    - [ ] Trophy wiggle animation (rotation keyframes on game over)
+    - [ ] Board entrance (fade + slide up)
+    - [ ] Game Over overlay fade + card slide up with bounce
+  - [ ] `BaseTheme.axaml` updates:
+    - [ ] Font paths: explicit .ttf files instead of directory URIs
+    - [ ] CardBackground: increased opacity (85-67% range) for visible glass effect
+    - [ ] Shadow.GlassCard: dual shadow (dark base + rose tint) matching WPF DropShadowEffect
+    - [ ] InputBackground: increased opacity for readable text fields
+- **MVVM Bindings**
+  - [ ] Proper MVVM command bindings using `x:CompileBindings="True"`
+  - [ ] Event-to-command via RelativeSource and `$parent` binding syntax
 
 ### Particle System & Advanced Animations
 **Status**: Architecture planned, implementation deferred
@@ -106,7 +110,7 @@ The WPF `GameAnimationService` provides:
 ## Test Status
 
 ### Build
-- ✅ Desktop (.NET 9.0) compiles cleanly
+- ❌ Desktop (.NET 9.0) compilation is broken due to missing view references in App.axaml.cs (needs cleanup or views restored)
 - ⏳ Android project requires workload installation (deferred)
 
 ### Runtime (Not yet tested)
@@ -161,9 +165,9 @@ The WPF `GameAnimationService` provides:
 ## Next Steps
 
 ### v1 (Baseline - Current)
-1. ✅ Core navigation and views
-2. ✅ Game board layout and styling
-3. ✅ Game Over animations
+1. 🚧 Core navigation and views (Pending Re-implementation)
+2. 🚧 Game board layout and styling (Pending Re-implementation)
+3. 🚧 Game Over animations (Pending Re-implementation)
 4. 🚧 **Particle system** (waiting on custom Canvas approach)
 5. 🚧 **Performance testing** on 1920x1080 fullscreen
 
