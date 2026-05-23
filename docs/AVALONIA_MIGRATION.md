@@ -198,7 +198,7 @@ timer.Tick += OnFrame;
 TopLevel.GetTopLevel(this)?.RequestAnimationFrame(OnFrame);
 ```
 
-**Decision**: Use `DispatcherTimer` at 60fps for particle system — simpler and sufficient.
+**Decision**: Use `DispatcherTimer` at 60fps for the particle system — simpler and sufficient for the initial phase.
 
 ### Window Chrome
 
