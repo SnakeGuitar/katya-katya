@@ -5,6 +5,7 @@
     <ItemGroup>
         <!-- Avalonia packages -->
         <PackageVersion Include="Avalonia" Version="12.0.3" />
+        <PackageVersion Include="Avalonia.Skia" Version="12.0.3" />
         <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.0.3" />
         <PackageVersion Include="Avalonia.Fonts.Inter" Version="12.0.3" />
         <PackageVersion Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.1" />
@@ -20,7 +21,7 @@
         <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.5" />
 
         <!-- Graphics: SkiaSharp for particle system (TBD - needs custom Avalonia integration) -->
-        <!-- <PackageVersion Include="SkiaSharp" Version="3.119.0" /> -->
+        <PackageVersion Include="SkiaSharp" Version="3.119.4-preview.1.1" />
 
         <!-- Audio -->
         <PackageVersion Include="LibVLCSharp" Version="3.9.3" />

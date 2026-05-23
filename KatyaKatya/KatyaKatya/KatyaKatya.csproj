@@ -23,6 +23,7 @@
   <ItemGroup>
     <!-- Avalonia -->
     <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Skia" />
     <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Avalonia.Fonts.Inter" />
     <PackageReference Include="AvaloniaUI.DiagnosticsSupport">
@@ -39,7 +40,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" />
 
     <!-- Graphics: SkiaSharp for particle system (TBD - needs custom Avalonia integration) -->
-    <!-- <PackageReference Include="SkiaSharp" /> -->
+    <PackageReference Include="SkiaSharp" />
 
     <!-- Audio -->
     <PackageReference Include="LibVLCSharp" />
