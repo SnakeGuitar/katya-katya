@@ -2,30 +2,54 @@
 
 ## Game Premise
 
-La historia trata de un niño de doce años llamado Joaquín que se enamora de la protagonista de una serie de chicas mágicas llamada "Katya".
-Eventualmente, se da cuenta que quiere verse como ella, pero no sabe como hacerlo. Un día, Martina, una chica de quince años, se empieza a dar cuenta que Joaquín no es como los demás niños, y decide investigar. Martina trata de hacerse amiga de Joaquín, y eventualmente descubre el secreto de Joaquín.  
+A dating simulator centered on **Katya**, a mysterious and charming character. The player embarks on a journey to build a romantic relationship with Katya, progressing through affinity levels that unlock dialogues, scenes, and story arcs.
+
+---
 
 ## Characters
 
-### Joaquín
+### Katya (Age: [TBD])
 
-- **Role**: [Main character]
-- **Personality**: [Brief description]
-- **Backstory**: [How they relate to the world/Katya]
+- **Role**: Main love interest. The player's romantic focus.
+- **Personality**: [To be defined]
 - **Appearance**: [Visual summary, reference existing assets]
-- **Affinity Milestones**:
-  - Level 0-20: [Dialogue/unlock]
-  - Level 21-50: [Dialogue/unlock]
-  - Level 51-100: [Dialogue/unlock]
+- **Background**: [Her story, interests, dreams]
 
-### Character 2: [Name]
+**Affinity Progression** (100 levels):
+- **Levels 0-10**: [Story milestone]
+- **Levels 11-20**: [Story milestone]
+- **Levels 21-30**: [Story milestone]
+- **Levels 31-40**: [Story milestone]
+- **Levels 41-50**: [Story milestone]
+- **Levels 51-60**: [Story milestone]
+- **Levels 61-70**: [Story milestone]
+- **Levels 71-80**: [Story milestone]
+- **Levels 81-90**: [Story milestone]
+- **Levels 91-100**: [Final story/ending]
 
-[Same structure]
+### [Other Characters] (Optional)
+
+- Secondary/tertiary love interests or supporting cast
+- [Define as needed]
+
+---
 
 ## World & Setting
 
-[Context: where/when does this take place? How do characters relate to each other?]
+**Time**: [When does this take place?]
+
+**Location**: [Where does this take place?]
+
+**Social Context**: [Background and world-building]
+
+---
 
 ## Themes & Tone
 
-[What should the player feel? Comedy, romance, slice-of-life?]
+**Core Themes**:
+- [Main theme 1]
+- [Main theme 2]
+- [Main theme 3]
+
+**Tone**:
+- [Describe the overall feeling and atmosphere]
