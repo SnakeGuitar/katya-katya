@@ -43,13 +43,18 @@
                             <Canvas Width="1220" Height="860"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
+                    <!-- Canvas.Left/Top must be on the generated ContentPresenter container,
+                         not the DataTemplate root, because the Canvas positions its direct children. -->
+                    <ItemsControl.ItemContainerTheme>
+                        <ControlTheme TargetType="ContentPresenter">
+                            <Setter Property="Canvas.Left"   Value="{ReflectionBinding X}"/>
+                            <Setter Property="Canvas.Top"    Value="{ReflectionBinding Y}"/>
+                            <Setter Property="Canvas.ZIndex" Value="{ReflectionBinding ZIndex}"/>
+                        </ControlTheme>
+                    </ItemsControl.ItemContainerTheme>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="vm:GalleryCardViewModel">
-                            <!-- Transparent Button wraps the card; Canvas.* props on the Button (outer element) -->
-                            <Button Canvas.Left="{Binding X}"
-                                    Canvas.Top="{Binding Y}"
-                                    Canvas.ZIndex="{Binding ZIndex}"
-                                    Command="{Binding CycleCommand}"
+                            <Button Command="{Binding CycleCommand}"
                                     Background="Transparent"
                                     BorderThickness="0"
                                     Padding="0"
