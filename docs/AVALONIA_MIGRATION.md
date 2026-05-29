@@ -1,5 +1,7 @@
 # WPF → Avalonia UI Migration Plan
 
+AI AGENT DIRECTIVE: DO NOT attempt a 1:1 syntax translation. Read the UI_SPEC.md for functional requirements and build the XAML strictly using Avalonia 11/12 native paradigms. BlurEffect, Effect, and code-behind UI logic are explicitly banned.
+
 ## Executive Summary
 
 **Goal**: Migrate `MemoryGame.Client` from WPF to Avalonia UI for cross-platform support (Windows, Linux, macOS, Android, iOS/Web future).
@@ -12,6 +14,7 @@
 ## 1. Current State Analysis
 
 ### Project Stats
+
 | Metric | Count |
 |--------|-------|
 | XAML Views | 25 |
@@ -22,38 +25,42 @@
 
 ### NuGet Compatibility
 
-| Package | WPF | Avalonia Equivalent | Action |
-|---------|-----|-------------------|--------|
-| CommunityToolkit.Mvvm | ✅ | ✅ Same package | None |
-| Microsoft.AspNetCore.SignalR.Client | ✅ | ✅ Same package | None |
-| Microsoft.Extensions.DependencyInjection | ✅ | ✅ Same package | None |
-| Microsoft.Extensions.Http | ✅ | ✅ Same package | None |
-| SkiaSharp.Views.WPF | ❌ WPF-only | SkiaSharp.Views.Avalonia | Replace |
+| Package                                  | WPF        | Avalonia Equivalent      | Action  |
+| ------------------------------------------| ------------| --------------------------| ---------|
+| CommunityToolkit.Mvvm                    | ✅          | ✅ Same package           | None    |
+| Microsoft.AspNetCore.SignalR.Client      | ✅          | ✅ Same package           | None    |
+| Microsoft.Extensions.DependencyInjection | ✅          | ✅ Same package           | None    |
+| Microsoft.Extensions.Http                | ✅          | ✅ Same package           | None    |
+| SkiaSharp.Views.WPF                      | ❌ WPF-only | SkiaSharp.Views.Avalonia | Replace |
 
 ### WPF-Specific Concerns (Must Rewrite)
 
-| Concern | WPF | Avalonia Replacement |
-|---------|-----|---------------------|
-| Window chrome | `WindowChrome` | `ExtendClientAreaToDecorationsHint` |
-| Audio playback | `System.Windows.Media.MediaPlayer` | `LibVLCSharp` or `NAudio` (Windows) / platform audio |
-| Particle rendering | `SkiaSharp.Views.WPF.SKElement` | `SkiaSharp.Views.Avalonia.SKCanvasView` |
-| Animation loop | `CompositionTarget.Rendering` | `DispatcherTimer` or `TopLevel.RequestAnimationFrame` |
-| Resource URIs | `pack://application:,,,/` | `avares://AssemblyName/` |
-| Visibility | `Visibility.Visible/Hidden/Collapsed` | `bool IsVisible` |
-| Triggers | `DataTrigger`, `EventTrigger` | Avalonia `Styles` with `Selector` or `Animations` |
-| Storyboards | WPF `Storyboard` in `EventTrigger` | Avalonia `Animation` with `Transitions` or keyframes |
-| DependencyProperty | `DependencyProperty.Register` | `StyledProperty<T>` or `DirectProperty<T>` |
-| Converters | `BooleanToVisibilityConverter` | `IsVisible` binding directly (bool) |
-| Popup | `System.Windows.Controls.Primitives.Popup` | `Avalonia.Controls.Primitives.Popup` |
-| Drop shadows | `DropShadowEffect` | `BoxShadow` property on `Border` |
-| ImageBrush | `ImageBrush` with pack URI | `ImageBrush` with avares URI |
-| UniformGrid | `UniformGrid` | `Avalonia.Controls.UniformGrid` (Labs or built-in) |
+CONCEPTUAL MAPPING ONLY: This table represents conceptual goals, not syntactical drop-ins. DO NOT use this as a search-and-replace dictionary. Views must be rebuilt structurally.
+
+| Concern            | WPF                                        | Avalonia Replacement                                  |
+| --------------------| --------------------------------------------| -------------------------------------------------------|
+| Window chrome      | `WindowChrome`                             | `ExtendClientAreaToDecorationsHint`                   |
+| Audio playback     | `System.Windows.Media.MediaPlayer`         | `LibVLCSharp` or `NAudio` (Windows) / platform audio  |
+| Particle rendering | `SkiaSharp.Views.WPF.SKElement`            | `SkiaSharp.Views.Avalonia.SKCanvasView`               |
+| Animation loop     | `CompositionTarget.Rendering`              | `DispatcherTimer` or `TopLevel.RequestAnimationFrame` |
+| Resource URIs      | `pack://application:,,,/`                  | `avares://AssemblyName/`                              |
+| Visibility         | `Visibility.Visible/Hidden/Collapsed`      | `bool IsVisible`                                      |
+| Triggers           | `DataTrigger`, `EventTrigger`              | Avalonia `Styles` with `Selector` or `Animations`     |
+| Storyboards        | WPF `Storyboard` in `EventTrigger`         | Avalonia `Animation` with `Transitions` or keyframes  |
+| DependencyProperty | `DependencyProperty.Register`              | `StyledProperty<T>` or `DirectProperty<T>`            |
+| Converters         | `BooleanToVisibilityConverter`             | `IsVisible` binding directly (bool)                   |
+| Popup              | `System.Windows.Controls.Primitives.Popup` | `Avalonia.Controls.Primitives.Popup`                  |
+| Drop shadows       | `DropShadowEffect`                         | `BoxShadow` property on `Border`                      |
+| ImageBrush         | `ImageBrush` with pack URI                 | `ImageBrush` with avares URI                          |
+| UniformGrid        | `UniformGrid`                              | `Avalonia.Controls.UniformGrid` (Labs or built-in)    |
 
 ---
 
 ## 2. Migration Strategy
 
 ### Approach: **New Project, Shared Core**
+
+Strict Design Adherence: For any View being rewritten, you MUST extract all colors, fonts, opacities, and spacing strictly from UI_SPEC.md or BaseTheme.axaml. Do not hallucinate or guess hex codes. If a visual state (like hover) is not specified, use Avalonia's default Fluent theme behavior or ask the user.
 
 Create a new `KatyaKatya` project alongside the WPF client (parallel existence during transition). Copy ViewModels/Services into the new project, then rewrite Views. All new code uses the `KatyaKatya` namespace.
 
@@ -75,6 +82,7 @@ MemoryGame-Revival/
 ```
 
 ### Why Not In-Place Rewrite?
+
 - WPF client still works and can serve as reference
 - Parallel development: test Avalonia while WPF remains functional
 - Rollback safety
@@ -85,6 +93,7 @@ MemoryGame-Revival/
 ## 3. Phase Breakdown
 
 ### Phase 1: Project Scaffolding (Days 1-2)
+
 - [ ] Create Avalonia project with `dotnet new avalonia.app`
 - [ ] Configure .csproj (target `net10.0` + `net10.0-android`)
 - [ ] Add NuGet packages (CommunityToolkit.Mvvm, SignalR, DI, Http, SkiaSharp.Views.Avalonia)
@@ -93,6 +102,7 @@ MemoryGame-Revival/
 - [ ] Create `MainWindow.axaml` shell with navigation ContentControl
 
 ### Phase 2: Core Infrastructure (Days 3-5)
+
 - [ ] Copy all ViewModels (no changes expected — pure CommunityToolkit.Mvvm)
 - [ ] Copy Services/Core/ (SessionService, ClientSettings)
 - [ ] Copy Services/Network/ (ApiClient, HubService, LobbyService, etc.)
@@ -105,7 +115,8 @@ MemoryGame-Revival/
 - [ ] Set up Localization (Avalonia resource dictionaries or .resx files)
 
 ### Phase 3: Theme & Design System (Days 6-8)
-- [ ] Port `BaseTheme.xaml` → `BaseTheme.axaml` (styles, brushes, colors)
+
+- [ ] Build from scratch: BaseTheme.axaml. DO NOT port WPF styles. Re-engineer the design system using Avalonia ControlTheme. Use pure composition for visual depth (e.g., dual BoxShadows), completely ignoring how it was done in WPF.
 - [ ] Port `SketchTheme.xaml` → `SketchTheme.axaml`
 - [ ] Port `GameAnimations.xaml` → Avalonia animations
 - [ ] Create shared button/textblock/border styles
@@ -115,6 +126,7 @@ MemoryGame-Revival/
 - [ ] Custom window chrome (traffic-light buttons, drag region)
 
 ### Phase 4: Views - Session Flow (Days 9-12)
+
 - [ ] `SplashScreenView.axaml`
 - [ ] `TitleScreenView.axaml`
 - [ ] `LoginView.axaml`
@@ -124,15 +136,17 @@ MemoryGame-Revival/
 - [ ] `SetupProfileView.axaml`
 
 ### Phase 5: Views - Main App (Days 13-17)
-- [x] `MainMenuView.axaml`
-- [x] `MoreMenuView.axaml`
-- [x] `SettingsView.axaml`
-- [x] `ProfileView.axaml`
-- [x] `EditProfileView.axaml`
-- [x] `FriendsView.axaml`
-- [x] `GalleryView.axaml`
+
+- [] `MainMenuView.axaml`
+- [] `MoreMenuView.axaml`
+- [] `SettingsView.axaml`
+- [] `ProfileView.axaml`
+- [] `EditProfileView.axaml`
+- [] `FriendsView.axaml`
+- [] `GalleryView.axaml`
 
 ### Phase 6: Views - Game (Days 18-24)
+
 - [ ] `SinglePlayerMenuView.axaml`
 - [ ] `SinglePlayerGameView.axaml` (most complex — card grid, animations, SkiaSharp particles)
 - [ ] `LobbyMenuView.axaml`
@@ -142,14 +156,16 @@ MemoryGame-Revival/
 - [ ] `DialogWindow.axaml` (convert to overlay panel)
 
 ### Phase 7: SkiaSharp & Animations (Days 25-28)
+
 - [ ] Port particle system (`SKElement` → `SKCanvasView`)
 - [ ] Replace `CompositionTarget.Rendering` with Avalonia animation timer
-- [ ] Port card flip animations (WPF Storyboard → Avalonia Animations)
+- [ ] Discard all WPF Storyboards and EventTriggers. Build interactions using Avalonia Transitions, Style Selectors (pseudo-classes like :pointerover), and keyframe Animations within styles.
 - [ ] Port entrance/exit transitions
 - [ ] Port score pulse animation
 - [ ] Dynamic background (bokeh canvas)
 
 ### Phase 8: Android Target (Days 29-35)
+
 - [ ] Add Android head project
 - [ ] Configure Android manifest, permissions
 - [ ] Test touch input (tap = click, swipe navigation)
@@ -159,6 +175,7 @@ MemoryGame-Revival/
 - [ ] Status bar / navigation bar integration
 
 ### Phase 9: Testing & Polish (Days 36-42)
+
 - [ ] Functional testing (all views navigate correctly)
 - [ ] Game logic testing (cards flip, match, score)
 - [ ] SignalR testing (lobby, multiplayer)
@@ -174,20 +191,23 @@ MemoryGame-Revival/
 ### Audio (MusicService replacement)
 
 **Option A: LibVLCSharp** (Recommended)
+
 - Cross-platform (Windows, Linux, macOS, Android, iOS)
 - Supports MP3, OGG, FLAC
 - NuGet: `LibVLCSharp` + `VideoLAN.LibVLC.{platform}`
 - Heavier dependency (~30MB per platform)
 
 **Option B: NAudio (Windows) + Platform-specific**
+
 - NAudio for Windows, AVAudioPlayer for Android
 - Lighter per-platform but more code to maintain
 
-**Decision**: LibVLCSharp for MVP simplicity, revisit if APK size is a concern.
+**Decisions**:
+
+- ibVLCSharp for MVP simplicity, revisit if APK size is a concern.
+- WPF Effects and Storyboards are explicitly banned. UI will be built bottom-up using Avalonia native composition.
 
 ### Animation Timer
-
-WPF uses `CompositionTarget.Rendering` (vsync-locked callback). Avalonia equivalent:
 
 ```csharp
 // Option 1: DispatcherTimer (simpler, slightly less precise)
@@ -198,7 +218,7 @@ timer.Tick += OnFrame;
 TopLevel.GetTopLevel(this)?.RequestAnimationFrame(OnFrame);
 ```
 
-**Decision**: Use `DispatcherTimer` at 60fps for the particle system — simpler and sufficient for the initial phase.
+**Decision**: Use `DispatcherTimer` at 60fps for particle system — simpler and sufficient.
 
 ### Window Chrome
 
@@ -298,17 +318,19 @@ These are platform-agnostic and work in both WPF and Avalonia:
 | `Resources/Styles/GameAnimations.xaml` | WPF Storyboard → Avalonia Animation |
 | `Localization/LocalizationManager.cs` | WPF ResourceDictionary-based → Avalonia equivalent |
 
+Zero Code-Behind Rule: The .axaml.cs files must remain completely empty except for InitializeComponent(). All UI logic, transitions, and states MUST be handled via MVVM Bindings or Avalonia Styles/Pseudo-classes.
+
 ---
 
 ## 7. Risk Matrix
 
-| Risk | Impact | Likelihood | Mitigation |
-|------|--------|------------|------------|
-| Complex animations don't port cleanly | High | Medium | Simplify animations, use SkiaSharp for complex effects |
-| Audio library issues on Android | Medium | Medium | Test early, have fallback (platform-specific) |
-| Performance regression (particle system) | Medium | Low | SkiaSharp performance is consistent cross-platform |
-| SignalR on Android network issues | Low | Low | Same library, different transport negotiation |
-| Touch input needs different UX | Medium | High | Plan mobile-specific layouts from Phase 8 |
+| Risk                                     | Impact | Likelihood | Mitigation                                             |
+| ------------------------------------------| --------| ------------| --------------------------------------------------------|
+| Complex animations don't port cleanly    | High   | Medium     | Simplify animations, use SkiaSharp for complex effects |
+| Audio library issues on Android          | Medium | Medium     | Test early, have fallback (platform-specific)          |
+| Performance regression (particle system) | Medium | Low        | SkiaSharp performance is consistent cross-platform     |
+| SignalR on Android network issues        | Low    | Low        | Same library, different transport negotiation          |
+| Touch input needs different UX           | Medium | High       | Plan mobile-specific layouts from Phase 8              |
 
 ---
 
