@@ -53,6 +53,8 @@
                                 IsHitTestVisible="False"/>
                         <ContentPresenter HorizontalContentAlignment="Center"
                                           VerticalContentAlignment="Center"
+                                          Content="{TemplateBinding Content}"
+                                          Foreground="{TemplateBinding Foreground}"
                                           Margin="{TemplateBinding Padding}"/>
                     </Grid>
                 </Border>
@@ -101,6 +103,8 @@
                         BoxShadow="2 2 10 0 #20C84747">
                     <ContentPresenter HorizontalContentAlignment="Center"
                                       VerticalContentAlignment="Center"
+                                      Content="{TemplateBinding Content}"
+                                      Foreground="{TemplateBinding Foreground}"
                                       Margin="{TemplateBinding Padding}"/>
                 </Border>
             </ControlTemplate>
@@ -183,6 +187,7 @@
                         Padding="{TemplateBinding Padding}">
                     <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                       VerticalAlignment="Center"
+                                      Content="{TemplateBinding Content}"
                                       Foreground="{TemplateBinding Foreground}"/>
                 </Border>
             </ControlTemplate>

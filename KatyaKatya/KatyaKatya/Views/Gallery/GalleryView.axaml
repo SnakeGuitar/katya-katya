@@ -54,7 +54,8 @@
                     </ItemsControl.ItemContainerTheme>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="vm:GalleryCardViewModel">
-                            <Button Command="{Binding CycleCommand}"
+                            <Button Command="{ReflectionBinding $parent[UserControl].DataContext.SelectCardCommand}"
+                                    CommandParameter="{Binding}"
                                     Background="Transparent"
                                     BorderThickness="0"
                                     Padding="0"
@@ -111,6 +112,12 @@
                 <Grid>
                     <Image Source="{Binding SelectedCard.Current.ImagePath, Converter={StaticResource StringAssetToBitmapConverter}}"
                            Stretch="Uniform"/>
+                    <Button HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Classes="PastelButtonSecondary"
+                            Command="{Binding SelectedCard.CycleCommand}"
+                            Content="Variant"
+                            Margin="0,0,0,4"/>
                     <Button HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Classes="LinkButton"

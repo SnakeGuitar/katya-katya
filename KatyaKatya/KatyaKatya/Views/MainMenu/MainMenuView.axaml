@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.MainMenu"
+             xmlns:controls="using:KatyaKatya.Controls"
              x:Class="KatyaKatya.Views.MainMenu.MainMenuView"
              x:DataType="vm:MainMenuViewModel">
 
@@ -67,28 +68,29 @@
         </StackPanel>
 
         <!-- Katya character (right-bottom, clickable) -->
-        <Button HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Background="{x:Null}"
-                BorderThickness="0"
-                Padding="0"
-                MaxWidth="600"
-                Cursor="Hand"
-                RenderTransformOrigin="0.5,1"
-                Command="{Binding GoToDatingCommand}">
-            <Button.Transitions>
+        <controls:AlphaHitTestButton HorizontalAlignment="Right"
+                                     VerticalAlignment="Bottom"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Padding="0"
+                                     MaxWidth="600"
+                                     Cursor="Hand"
+                                     RenderTransformOrigin="0.5,1"
+                                     AlphaMaskSource="{Binding CurrentMoodImage}"
+                                     Command="{Binding GoToDatingCommand}">
+            <controls:AlphaHitTestButton.Transitions>
                 <Transitions>
                     <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.18"/>
                 </Transitions>
-            </Button.Transitions>
-            <Button.Styles>
-                <Style Selector="Button:pointerover">
+            </controls:AlphaHitTestButton.Transitions>
+            <controls:AlphaHitTestButton.Styles>
+                <Style Selector="controls|AlphaHitTestButton:pointerover">
                     <Setter Property="RenderTransform" Value="scale(1.04)"/>
                 </Style>
-            </Button.Styles>
+            </controls:AlphaHitTestButton.Styles>
             <Image Source="{Binding CurrentMoodImage, Converter={StaticResource StringAssetToBitmapConverter}}"
                    Stretch="Uniform"
                    MaxHeight="780"/>
-        </Button>
+        </controls:AlphaHitTestButton>
     </Grid>
 </UserControl>
