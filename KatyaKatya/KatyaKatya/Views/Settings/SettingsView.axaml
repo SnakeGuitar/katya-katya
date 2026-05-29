@@ -16,7 +16,7 @@
             </Grid.ColumnDefinitions>
 
             <Image Grid.Column="0"
-                   Source="avares://KatyaKatya/Resources/Images/Logos/logo-en.png"
+                   Source="{Binding LogoPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                    Width="280" Height="280"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
@@ -32,19 +32,19 @@
                     Margin="0,0,40,0">
 
                 <StackPanel Spacing="0">
-                    <TextBlock Text="Settings"
+                    <TextBlock Text="{Binding SettingsTitle}"
                                Classes="PastelHeading"
                                HorizontalAlignment="Center"
                                Margin="0,0,0,28"/>
 
                     <!-- Language -->
-                    <TextBlock Text="Language" Classes="PastelLabel" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding LanguageLabel}" Classes="PastelLabel" Margin="0,0,0,8"/>
                     <ComboBox ItemsSource="{x:Static vm:SettingsViewModel.Languages}"
-                              SelectedItem="{Binding SelectedLanguage}"
+                              SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
                               DisplayMemberBinding="{ReflectionBinding NativeName}"
                               Classes="PastelComboBox"
                               Margin="0,0,0,4"/>
-                    <TextBlock Text="* Restart to apply language change"
+                    <TextBlock Text="{Binding RestartLanguageLabel}"
                                Classes="PastelLabel"
                                FontSize="11"
                                Opacity="0.6"
@@ -54,9 +54,9 @@
                     <Rectangle Classes="SectionDivider"/>
 
                     <!-- Theme -->
-                    <TextBlock Text="Theme" Classes="PastelLabel" Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding ThemeLabel}" Classes="PastelLabel" Margin="0,0,0,8"/>
                     <ComboBox ItemsSource="{x:Static vm:SettingsViewModel.Themes}"
-                              SelectedItem="{Binding SelectedTheme}"
+                              SelectedItem="{Binding SelectedTheme, Mode=TwoWay}"
                               Classes="PastelComboBox"
                               Margin="0,0,0,0"/>
 
@@ -68,7 +68,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Music" Classes="PastelLabel" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="0" Text="{Binding MusicLabel}" Classes="PastelLabel" VerticalAlignment="Center"/>
                         <ToggleSwitch Grid.Column="1"
                                       IsChecked="{Binding IsMusicEnabled}"
                                       OffContent="" OnContent=""
@@ -102,7 +102,7 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Fullscreen" Classes="PastelLabel" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="0" Text="{Binding FullscreenLabel}" Classes="PastelLabel" VerticalAlignment="Center"/>
                         <ToggleSwitch Grid.Column="1"
                                       IsChecked="{Binding IsFullscreen}"
                                       OffContent="" OnContent=""
@@ -114,7 +114,7 @@
                     <Button HorizontalAlignment="Center"
                             Classes="LinkButton"
                             Command="{Binding GoBackCommand}"
-                            Content="← Back"/>
+                            Content="{Binding BackLabel}"/>
                 </StackPanel>
             </Border>
         </Grid>

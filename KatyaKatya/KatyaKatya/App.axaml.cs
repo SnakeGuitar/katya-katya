@@ -51,6 +51,9 @@ public partial class App : Application
             };
 
             var navigation = _serviceProvider.GetRequiredService<INavigationService>();
+            var settings = _serviceProvider.GetRequiredService<ClientSettings>();
+            var theme = _serviceProvider.GetRequiredService<IThemeService>();
+            theme.ApplyTheme(settings.ThemeName);
             navigation.NavigateTo<SplashScreenViewModel>();
 
             desktop.ShutdownRequested += OnShutdown;
@@ -63,6 +66,9 @@ public partial class App : Application
             };
 
             var navigation = _serviceProvider.GetRequiredService<INavigationService>();
+            var settings = _serviceProvider.GetRequiredService<ClientSettings>();
+            var theme = _serviceProvider.GetRequiredService<IThemeService>();
+            theme.ApplyTheme(settings.ThemeName);
             navigation.NavigateTo<SplashScreenViewModel>();
         }
 

@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KatyaKatya.Helpers;
 using KatyaKatya.Services.Core;
 using KatyaKatya.Services.Interfaces;
 
@@ -64,11 +66,21 @@ public partial class SettingsViewModel : ObservableObject
     }
 
     public IReadOnlyList<string> AvailableTracks => _music.Tracks;
+    public string LogoPath => LogoResolver.Resolve(_settings.LanguageCode, _settings.ThemeName);
+    public string SettingsTitle => T("Settings", "Configuracion");
+    public string LanguageLabel => T("Language", "Idioma");
+    public string RestartLanguageLabel => T("* Restart to apply language change", "* Reinicia para aplicar el idioma");
+    public string ThemeLabel => T("Theme", "Tema");
+    public string MusicLabel => T("Music", "Musica");
+    public string FullscreenLabel => T("Fullscreen", "Pantalla completa");
+    public string BackLabel => T("< Back", "< Volver");
 
     partial void OnSelectedLanguageChanged(LanguageOption value)
     {
         _settings.LanguageCode = value.Code;
+        CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(value.Code);
         LanguageChanged = true;
+        NotifyLocalizedProperties();
     }
 
     partial void OnIsMusicEnabledChanged(bool value) => _music.IsEnabled = value;
@@ -80,6 +92,22 @@ public partial class SettingsViewModel : ObservableObject
     {
         _settings.ThemeName = value;
         _theme.ApplyTheme(value);
+        OnPropertyChanged(nameof(LogoPath));
+    }
+
+    private string T(string en, string es)
+        => _settings.LanguageCode.StartsWith("es", StringComparison.OrdinalIgnoreCase) ? es : en;
+
+    private void NotifyLocalizedProperties()
+    {
+        OnPropertyChanged(nameof(LogoPath));
+        OnPropertyChanged(nameof(SettingsTitle));
+        OnPropertyChanged(nameof(LanguageLabel));
+        OnPropertyChanged(nameof(RestartLanguageLabel));
+        OnPropertyChanged(nameof(ThemeLabel));
+        OnPropertyChanged(nameof(MusicLabel));
+        OnPropertyChanged(nameof(FullscreenLabel));
+        OnPropertyChanged(nameof(BackLabel));
     }
 
     [RelayCommand]
