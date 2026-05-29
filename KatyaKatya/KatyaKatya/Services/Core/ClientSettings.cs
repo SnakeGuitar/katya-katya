@@ -69,6 +69,6 @@ public class ClientSettings
         public string LanguageCode { get; set; } = System.Globalization.CultureInfo.CurrentUICulture.Name.StartsWith("es", StringComparison.OrdinalIgnoreCase) ? "es-MX" : "en-US";
         public bool MusicEnabled { get; set; } = true;
         public double MusicVolume { get; set; } = 0.5;
-        public string ThemeName { get; set; } = "Default";
+        public string ThemeName { get; set; } = "Pastel";
     }
 }

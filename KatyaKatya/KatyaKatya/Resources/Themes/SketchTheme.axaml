@@ -1,0 +1,70 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- =========================================================
+         Sketch / Ink Palette  — monochrome hand-drawn aesthetic
+         ========================================================= -->
+    <SolidColorBrush x:Key="PastelBackground"      Color="#F8F6F0"/>
+    <SolidColorBrush x:Key="PastelPrimary"          Color="#2B2B2B"/>
+    <SolidColorBrush x:Key="PastelPrimaryHover"     Color="#1A1A1A"/>
+    <SolidColorBrush x:Key="PastelText"             Color="#1A1A1A"/>
+    <SolidColorBrush x:Key="PastelTextLight"        Color="#5A5A5A"/>
+    <SolidColorBrush x:Key="PastelError"            Color="#8B0000"/>
+    <SolidColorBrush x:Key="PastelSuccess"          Color="#2E7D32"/>
+    <SolidColorBrush x:Key="LinkText"               Color="#1A1A8A"/>
+    <SolidColorBrush x:Key="LinkTextHover"          Color="#0D0D6A"/>
+    <SolidColorBrush x:Key="MatchRingBrush"         Color="#1B5E20"/>
+    <SolidColorBrush x:Key="MatchOverlayBrush"      Color="#301B5E20"/>
+
+    <!-- Secondary glass brush -->
+    <LinearGradientBrush x:Key="PastelSecondary" StartPoint="0%,0%" EndPoint="0%,100%">
+        <GradientStop Color="#EEF0F0F0" Offset="0"/>
+        <GradientStop Color="#CCE0E0E0" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PastelAccent" StartPoint="0%,0%" EndPoint="0%,100%">
+        <GradientStop Color="#FFE8E8E8" Offset="0"/>
+        <GradientStop Color="#BBD0D0D0" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Ink border — diagonal hatching feel -->
+    <LinearGradientBrush x:Key="PastelBorder" StartPoint="0%,0%" EndPoint="100%,100%">
+        <GradientStop Color="#CC2B2B2B" Offset="0.0"/>
+        <GradientStop Color="#882B2B2B" Offset="0.5"/>
+        <GradientStop Color="#AA2B2B2B" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <!-- Card background — faint paper texture look -->
+    <LinearGradientBrush x:Key="CardBackground" StartPoint="0%,0%" EndPoint="100%,100%">
+        <GradientStop Color="#EEFFFFFF" Offset="0"/>
+        <GradientStop Color="#CCF5F5F0" Offset="0.5"/>
+        <GradientStop Color="#AAEEEEE8" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Primary gradient — ink wash -->
+    <LinearGradientBrush x:Key="PrimaryGradient" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Color="#EE3A3A3A" Offset="0"/>
+        <GradientStop Color="#CC1A1A1A" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Button background — charcoal ink -->
+    <LinearGradientBrush x:Key="PastelButtonBg" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Color="#FF3D3D3D" Offset="0"/>
+        <GradientStop Color="#FF2A2A2A" Offset="0.4"/>
+        <GradientStop Color="#FF151515" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- =========================================================
+         Typography  —  Pangolin (sketch) + Nunito (UI)
+         ========================================================= -->
+    <FontFamily x:Key="DefaultFont">avares://KatyaKatya/Resources/Fonts#Nunito</FontFamily>
+    <FontFamily x:Key="DisplayFont">avares://KatyaKatya/Resources/Fonts#Pangolin</FontFamily>
+
+    <!-- =========================================================
+         Corner Radii  — slightly softer for hand-drawn feel
+         ========================================================= -->
+    <CornerRadius x:Key="ButtonCornerRadius">4</CornerRadius>
+    <CornerRadius x:Key="InputCornerRadius">4</CornerRadius>
+    <CornerRadius x:Key="CardCornerRadius">6</CornerRadius>
+
+</ResourceDictionary>

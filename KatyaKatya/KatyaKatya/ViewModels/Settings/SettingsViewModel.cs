@@ -21,6 +21,7 @@ public partial class SettingsViewModel : ObservableObject
     private readonly ClientSettings _settings;
     private readonly IMusicService _music;
     private readonly IWindowService _window;
+    private readonly IThemeService _theme;
 
     public static IReadOnlyList<LanguageOption> Languages { get; } =
     [
@@ -34,6 +35,7 @@ public partial class SettingsViewModel : ObservableObject
     public static IReadOnlyList<string> Themes { get; } = ["Pastel", "Sketch"];
 
     [ObservableProperty] private LanguageOption _selectedLanguage;
+    [ObservableProperty] private bool _languageChanged;
     [ObservableProperty] private bool _isMusicEnabled;
     [ObservableProperty] private double _musicVolume;
     [ObservableProperty] private int _selectedTrackIndex;
@@ -44,12 +46,14 @@ public partial class SettingsViewModel : ObservableObject
         INavigationService navigation,
         ClientSettings settings,
         IMusicService music,
-        IWindowService window)
+        IWindowService window,
+        IThemeService theme)
     {
         _navigation = navigation;
         _settings = settings;
         _music = music;
         _window = window;
+        _theme = theme;
 
         _selectedLanguage = Languages.FirstOrDefault(l => l.Code == settings.LanguageCode) ?? Languages[0];
         _isMusicEnabled = music.IsEnabled;
@@ -64,6 +68,7 @@ public partial class SettingsViewModel : ObservableObject
     partial void OnSelectedLanguageChanged(LanguageOption value)
     {
         _settings.LanguageCode = value.Code;
+        LanguageChanged = true;
     }
 
     partial void OnIsMusicEnabledChanged(bool value) => _music.IsEnabled = value;
@@ -74,8 +79,7 @@ public partial class SettingsViewModel : ObservableObject
     partial void OnSelectedThemeChanged(string value)
     {
         _settings.ThemeName = value;
-        // In this phase, theme switching uses basic settings updates. 
-        // We'll preserve it so that the application state retains the chosen theme.
+        _theme.ApplyTheme(value);
     }
 
     [RelayCommand]

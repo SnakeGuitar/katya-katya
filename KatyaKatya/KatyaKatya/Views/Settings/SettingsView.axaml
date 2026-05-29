@@ -41,9 +41,15 @@
                     <TextBlock Text="Language" Classes="PastelLabel" Margin="0,0,0,8"/>
                     <ComboBox ItemsSource="{x:Static vm:SettingsViewModel.Languages}"
                               SelectedItem="{Binding SelectedLanguage}"
-                              DisplayMemberBinding="{Binding NativeName}"
+                              DisplayMemberBinding="{ReflectionBinding NativeName}"
                               Classes="PastelComboBox"
-                              Margin="0,0,0,0"/>
+                              Margin="0,0,0,4"/>
+                    <TextBlock Text="* Restart to apply language change"
+                               Classes="PastelLabel"
+                               FontSize="11"
+                               Opacity="0.6"
+                               IsVisible="{Binding LanguageChanged}"
+                               Margin="2,0,0,0"/>
 
                     <Rectangle Classes="SectionDivider"/>
 

@@ -78,6 +78,7 @@ public partial class App : Application
         services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IWindowService, WindowService>();
+        services.AddSingleton<IThemeService, ThemeService>();
         services.AddSingleton<IProfileService, ProfileService>();
         services.AddSingleton<ILobbyService, LobbyService>();
         services.AddSingleton<IChatService, ChatService>();
