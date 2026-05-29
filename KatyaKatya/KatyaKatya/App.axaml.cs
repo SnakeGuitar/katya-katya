@@ -9,6 +9,7 @@ using KatyaKatya.Services.Network;
 using KatyaKatya.Services.UI;
 using KatyaKatya.ViewModels;
 using KatyaKatya.ViewModels.Session;
+using KatyaKatya.ViewModels.Common;
 using KatyaKatya.ViewModels.MainMenu;
 using KatyaKatya.ViewModels.Settings;
 using KatyaKatya.ViewModels.Profile;
@@ -101,6 +102,8 @@ public partial class App : Application
         services.AddTransient<LoginViewModel>();
         services.AddTransient<RegisterViewModel>();
         services.AddTransient<GuestLoginViewModel>();
+        services.AddTransient<VerifyEmailViewModel>();
+        services.AddTransient<SetupProfileViewModel>();
         services.AddTransient<MainMenuViewModel>();
         services.AddTransient<MoreMenuViewModel>();
         services.AddTransient<SettingsViewModel>();
