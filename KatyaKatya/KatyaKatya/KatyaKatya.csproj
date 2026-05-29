@@ -13,9 +13,9 @@
     <AvaloniaResource Include="Resources\**" Exclude="Resources\**\*.axaml" />
   </ItemGroup>
 
-  <!-- Embed music files as content -->
+  <!-- Copy music files to output directory so LibVLC can access them by path -->
   <ItemGroup>
-    <Content Include="Assets\Music\**\*.mp3">
+    <Content Include="Resources\Music\**\*.mp3">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
