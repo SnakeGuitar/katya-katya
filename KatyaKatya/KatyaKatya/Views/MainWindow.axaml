@@ -17,6 +17,20 @@
         <KeyBinding Gesture="F11" Command="{Binding ToggleFullscreenCommand}"/>
     </Window.KeyBindings>
 
+    <!-- Root grid: resize grips sit outside the clipping border -->
+    <Grid>
+
+        <!-- ─── Resize grips (ZIndex=200, outside ClipToBounds border) ─── -->
+        <!-- Corners take priority (declared after edges so they're on top) -->
+        <Border Name="ResizeN"  Height="6" VerticalAlignment="Top"    HorizontalAlignment="Stretch" Background="Transparent" Cursor="SizeNorthSouth" ZIndex="200"/>
+        <Border Name="ResizeS"  Height="6" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="Transparent" Cursor="SizeNorthSouth" ZIndex="200"/>
+        <Border Name="ResizeW"  Width="6"  HorizontalAlignment="Left"  VerticalAlignment="Stretch"  Background="Transparent" Cursor="SizeWestEast"   ZIndex="200"/>
+        <Border Name="ResizeE"  Width="6"  HorizontalAlignment="Right" VerticalAlignment="Stretch"  Background="Transparent" Cursor="SizeWestEast"   ZIndex="200"/>
+        <Border Name="ResizeNW" Width="12" Height="12" HorizontalAlignment="Left"  VerticalAlignment="Top"    Background="Transparent" Cursor="SizeNorthwestSoutheast" ZIndex="201"/>
+        <Border Name="ResizeNE" Width="12" Height="12" HorizontalAlignment="Right" VerticalAlignment="Top"    Background="Transparent" Cursor="SizeNortheastSouthwest" ZIndex="201"/>
+        <Border Name="ResizeSW" Width="12" Height="12" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Background="Transparent" Cursor="SizeNortheastSouthwest" ZIndex="201"/>
+        <Border Name="ResizeSE" Width="12" Height="12" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Transparent" Cursor="SizeNorthwestSoutheast" ZIndex="201"/>
+
     <Border Name="MainWindowBorder"
             Background="{DynamicResource PastelBackground}"
             CornerRadius="14"
@@ -32,6 +46,14 @@
             <!-- ─── Active view (fills the window) ─── -->
             <ContentControl Content="{Binding Navigation.CurrentViewModel}"
                             Classes="ViewFade"/>
+
+            <!-- ─── Drag area (top strip, below buttons) ─── -->
+            <Border Name="DragArea"
+                    Height="48"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Stretch"
+                    Background="Transparent"
+                    ZIndex="50"/>
 
             <!-- ─── Traffic-light buttons (Top-Left) ─── -->
             <StackPanel Name="TrafficLights"
@@ -117,4 +139,5 @@
             </Grid>
         </Grid>
     </Border>
+    </Grid>
 </Window>
