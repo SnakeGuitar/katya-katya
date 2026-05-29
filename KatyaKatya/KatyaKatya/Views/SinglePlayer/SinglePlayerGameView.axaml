@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.SinglePlayer"
+             xmlns:models="using:KatyaKatya.Models.Lobby"
              x:Class="KatyaKatya.Views.SinglePlayer.SinglePlayerGameView"
              x:DataType="vm:SinglePlayerGameViewModel">
 
@@ -72,25 +73,27 @@
                 </Grid>
             </Border>
 
-            <!-- Card grid — DataTemplate has no x:DataType so bindings are reflection-based.
-                 Button wraps the card and fires FlipCardCommand on the parent VM. -->
+            <!-- Card grid.
+                 Parent binding uses ReflectionBinding because DataContext inside the template
+                 is CardViewModel, not SinglePlayerGameViewModel. -->
             <ItemsControl Grid.Row="1"
                           ItemsSource="{Binding Cards}"
                           Margin="16,8,16,0">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <UniformGrid Columns="{Binding BoardColumns}"/>
+                        <UniformGrid Columns="{ReflectionBinding BoardColumns}"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="models:CardViewModel">
                         <Button Margin="4"
                                 Padding="0"
                                 Background="Transparent"
                                 BorderThickness="0"
                                 CornerRadius="12"
                                 Cursor="Hand"
-                                Command="{Binding $parent[UserControl].DataContext.FlipCardCommand}"
+                                IsEnabled="{ReflectionBinding $parent[UserControl].DataContext.IsInteractionEnabled}"
+                                Command="{ReflectionBinding $parent[UserControl].DataContext.FlipCardCommand}"
                                 CommandParameter="{Binding}">
                             <Border CornerRadius="12" ClipToBounds="True">
                                 <Grid>
@@ -127,6 +130,38 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+        </Grid>
+
+        <!-- Game-over overlay -->
+        <Grid IsVisible="{Binding ShowGameOver}"
+              ZIndex="300"
+              Background="#99000000">
+            <Border HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Classes="LiquidGlassCard"
+                    Width="400"
+                    Padding="36,32">
+                <StackPanel Spacing="0" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding GameOverTitle}"
+                               Classes="PastelHeading"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,12"/>
+                    <TextBlock Text="{Binding GameOverStats}"
+                               Classes="PastelLabel"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,0,0,24"/>
+                    <Button Classes="PastelButton"
+                            Height="44"
+                            Margin="0,0,0,10"
+                            Command="{Binding PlayAgainCommand}"
+                            Content="Play Again"/>
+                    <Button Classes="PastelButtonSecondary"
+                            Height="44"
+                            Command="{Binding CloseGameOverCommand}"
+                            Content="Back to Menu"/>
+                </StackPanel>
+            </Border>
         </Grid>
     </Grid>
 </UserControl>
