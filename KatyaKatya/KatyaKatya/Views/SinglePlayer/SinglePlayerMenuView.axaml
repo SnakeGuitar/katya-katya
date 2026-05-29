@@ -1,0 +1,174 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.SinglePlayer"
+             x:Class="KatyaKatya.Views.SinglePlayer.SinglePlayerMenuView"
+             x:DataType="vm:SinglePlayerMenuViewModel">
+
+    <Grid>
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+               Stretch="UniformToFill" IsHitTestVisible="False"/>
+
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Width="680">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="16"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="24"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Text="Single Player"
+                       Classes="PastelHeading"
+                       HorizontalAlignment="Center"/>
+
+            <!-- Difficulty + custom settings card -->
+            <Border Grid.Row="2"
+                    Classes="LiquidGlassCard"
+                    Padding="32,28">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="28"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Difficulty selector -->
+                    <StackPanel Grid.Column="0" Spacing="0">
+                        <TextBlock Text="Select Difficulty"
+                                   Classes="PastelTextBlock"
+                                   FontWeight="SemiBold" FontSize="15"
+                                   Foreground="{DynamicResource PastelPrimary}"
+                                   Margin="0,0,0,14"/>
+
+                        <!-- Easy -->
+                        <Button Command="{Binding SelectEasyCommand}"
+                                Height="56" Margin="0,0,0,10"
+                                HorizontalContentAlignment="Left" Padding="16,0"
+                                Classes="PastelButton">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
+                                <TextBlock Text="🟢" FontSize="16" VerticalAlignment="Center"/>
+                                <StackPanel Spacing="0">
+                                    <TextBlock Text="Easy" FontSize="15" FontFamily="{DynamicResource DefaultFont}"/>
+                                    <TextBlock Text="4×4 cards · No timer" FontSize="11" Opacity="0.7" FontFamily="{DynamicResource DefaultFont}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Medium -->
+                        <Button Command="{Binding SelectMediumCommand}"
+                                Height="56" Margin="0,0,0,10"
+                                HorizontalContentAlignment="Left" Padding="16,0"
+                                Classes="PastelButton">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
+                                <TextBlock Text="🟡" FontSize="16" VerticalAlignment="Center"/>
+                                <StackPanel Spacing="0">
+                                    <TextBlock Text="Medium" FontSize="15" FontFamily="{DynamicResource DefaultFont}"/>
+                                    <TextBlock Text="4×6 cards · 30s timer" FontSize="11" Opacity="0.7" FontFamily="{DynamicResource DefaultFont}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Hard -->
+                        <Button Command="{Binding SelectHardCommand}"
+                                Height="56" Margin="0,0,0,10"
+                                HorizontalContentAlignment="Left" Padding="16,0"
+                                Classes="PastelButton">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
+                                <TextBlock Text="🔴" FontSize="16" VerticalAlignment="Center"/>
+                                <StackPanel Spacing="0">
+                                    <TextBlock Text="Hard" FontSize="15" FontFamily="{DynamicResource DefaultFont}"/>
+                                    <TextBlock Text="6×6 cards · 20s timer" FontSize="11" Opacity="0.7" FontFamily="{DynamicResource DefaultFont}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Custom -->
+                        <Button Command="{Binding SelectCustomCommand}"
+                                Height="56"
+                                HorizontalContentAlignment="Left" Padding="16,0"
+                                Classes="PastelButton">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
+                                <TextBlock Text="⚙️" FontSize="16" VerticalAlignment="Center"/>
+                                <StackPanel Spacing="0">
+                                    <TextBlock Text="Custom" FontSize="15" FontFamily="{DynamicResource DefaultFont}"/>
+                                    <TextBlock Text="Choose your settings" FontSize="11" Opacity="0.7" FontFamily="{DynamicResource DefaultFont}"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Right: custom settings -->
+                    <StackPanel Grid.Column="2"
+                                IsVisible="{Binding IsCustomMode}"
+                                Spacing="0">
+                        <TextBlock Text="Custom Settings"
+                                   Classes="PastelTextBlock"
+                                   FontWeight="SemiBold" FontSize="15"
+                                   Foreground="{DynamicResource PastelPrimary}"
+                                   Margin="0,0,0,14"/>
+
+                        <TextBlock Classes="PastelTextBlock" FontSize="13" Margin="0,0,0,6">
+                            <Run Text="Card count: "/>
+                            <Run Text="{Binding CustomCardCount}" FontWeight="SemiBold"/>
+                        </TextBlock>
+                        <ComboBox ItemsSource="{Binding CustomCardCountOptions}"
+                                  SelectedItem="{Binding CustomCardCount}"
+                                  Classes="PastelComboBox"
+                                  Margin="0,0,0,18"/>
+
+                        <CheckBox IsChecked="{Binding CustomNoTimeLimit}"
+                                  Content="No time limit"
+                                  Foreground="{DynamicResource PastelText}"
+                                  FontFamily="{DynamicResource DefaultFont}"
+                                  Margin="0,0,0,12"/>
+
+                        <StackPanel IsVisible="{Binding ShowCustomTurnTime}" Spacing="0">
+                            <TextBlock Classes="PastelTextBlock" FontSize="13" Margin="0,0,0,6">
+                                <Run Text="Turn time: "/>
+                                <Run Text="{Binding CustomTurnTime}" FontWeight="SemiBold"/>
+                                <Run Text="s"/>
+                            </TextBlock>
+                            <Slider Minimum="5" Maximum="120"
+                                    Value="{Binding CustomTurnTime}"
+                                    TickFrequency="5"
+                                    IsSnapToTickEnabled="True"
+                                    Classes="PastelSlider"
+                                    Margin="0,0,0,4"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Right: preview for standard difficulties -->
+                    <StackPanel Grid.Column="2"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                IsVisible="{Binding !IsCustomMode}"
+                                Spacing="16">
+                        <TextBlock Text="🃏" FontSize="52" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Select a difficulty to start"
+                                   Classes="PastelTextBlock"
+                                   FontSize="14" Opacity="0.6"
+                                   HorizontalAlignment="Center"
+                                   TextAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Action buttons -->
+            <StackPanel Grid.Row="4"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="24">
+                <Button Classes="LinkButton"
+                        Command="{Binding GoBackCommand}"
+                        Content="← Back"/>
+                <Button Classes="PastelButton"
+                        Command="{Binding StartGameCommand}"
+                        Content="Play"
+                        Height="44" Padding="32,0"
+                        FontSize="15"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

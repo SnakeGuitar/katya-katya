@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Session"
+             x:Class="KatyaKatya.Views.Session.TitleScreenView"
+             x:DataType="vm:TitleScreenViewModel">
+
+    <Grid>
+        <!-- Background -->
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"/>
+
+        <!-- Floating logo (top-center) -->
+        <Image Source="{Binding LogoPath, Converter={StaticResource StringAssetToBitmapConverter}}"
+               Width="200" Height="200"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Top"
+               Margin="0,-10,0,0"
+               Stretch="Uniform"
+               Classes="FloatingLogo"/>
+
+        <!-- Buttons panel (center) -->
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Width="215"
+                    Margin="0,80,0,0"
+                    Spacing="0">
+
+            <Button Height="40"
+                    Margin="0,0,0,16"
+                    Classes="PastelButton"
+                    Command="{Binding GoToLoginCommand}"
+                    Content="Login"/>
+
+            <Button Height="40"
+                    Margin="0,0,0,16"
+                    Classes="PastelButton"
+                    Command="{Binding GoToRegisterCommand}"
+                    Content="Register"/>
+
+            <Button Height="34"
+                    Classes="LinkButton"
+                    Command="{Binding GoToGuestLoginCommand}"
+                    Content="Play as Guest"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

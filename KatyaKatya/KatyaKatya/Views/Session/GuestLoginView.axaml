@@ -1,0 +1,74 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Session"
+             x:Class="KatyaKatya.Views.Session.GuestLoginView"
+             x:DataType="vm:GuestLoginViewModel">
+
+    <Grid>
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0"
+                   Source="avares://KatyaKatya/Resources/Images/Logos/logo-en.png"
+                   Width="280" Height="280"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="40,0,0,0"
+                   Stretch="Uniform"/>
+
+            <Border Grid.Column="1"
+                    Classes="LiquidGlassCard"
+                    Width="360"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Padding="36,32"
+                    Margin="0,0,40,0">
+
+                <StackPanel Spacing="0">
+                    <TextBlock Text="Guest Play"
+                               Classes="PastelHeading"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,8"/>
+
+                    <TextBlock Text="Play without an account. Progress won't be saved."
+                               Classes="PastelTextBlock"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               FontSize="13"
+                               Margin="0,0,0,24"/>
+
+                    <TextBlock Text="Username"
+                               Classes="PastelLabel"
+                               Margin="0,0,0,6"/>
+                    <TextBox Text="{Binding Username}"
+                             Classes="PastelTextBox"
+                             Margin="0,0,0,16"/>
+
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Classes="PastelErrorText"
+                               Margin="0,0,0,14"
+                               IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                    <Button Height="46"
+                            Margin="0,0,0,16"
+                            Classes="PastelButton"
+                            Command="{Binding LoginAsGuestCommand}"
+                            IsEnabled="{Binding !IsLoading}"
+                            Content="Play"/>
+
+                    <Button HorizontalAlignment="Center"
+                            Classes="LinkButton"
+                            Command="{Binding GoBackCommand}"
+                            Content="← Back"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

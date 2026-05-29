@@ -1,0 +1,119 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Gallery"
+             x:Class="KatyaKatya.Views.Gallery.GalleryView"
+             x:DataType="vm:GalleryViewModel">
+
+    <Grid>
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"/>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+
+            <!-- Back button -->
+            <Button Grid.Row="1"
+                    HorizontalAlignment="Left" VerticalAlignment="Center"
+                    Margin="24,0,0,0"
+                    Command="{Binding GoBackCommand}"
+                    Width="48" Height="48"
+                    Background="{DynamicResource PastelPrimary}"
+                    BorderThickness="0" CornerRadius="24" Cursor="Hand">
+                <Image Source="avares://KatyaKatya/Resources/Images/Icons/return-icon.png"
+                       Stretch="Uniform" Margin="14"/>
+            </Button>
+
+            <TextBlock Grid.Row="1"
+                       Text="Gallery"
+                       Classes="PastelHeading"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+
+            <!-- Scattered sticker canvas -->
+            <ScrollViewer Grid.Row="2">
+                <ItemsControl ItemsSource="{Binding Cards}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas Width="1220" Height="860"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:GalleryCardViewModel">
+                            <!-- Transparent Button wraps the card; Canvas.* props on the Button (outer element) -->
+                            <Button Canvas.Left="{Binding X}"
+                                    Canvas.Top="{Binding Y}"
+                                    Canvas.ZIndex="{Binding ZIndex}"
+                                    Command="{Binding CycleCommand}"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    Padding="0"
+                                    Cursor="Hand"
+                                    MaxWidth="{Binding MaxWidth}"
+                                    MaxHeight="{Binding MaxHeight}">
+                                <Border CornerRadius="12"
+                                        Background="White"
+                                        BorderBrush="{DynamicResource PastelBorder}"
+                                        BorderThickness="1.5"
+                                        BoxShadow="3 3 12 0 #30000000"
+                                        RenderTransformOrigin="0.5,0.5">
+                                    <Border.RenderTransform>
+                                        <RotateTransform Angle="{Binding Rotation}"/>
+                                    </Border.RenderTransform>
+                                    <Grid>
+                                        <Image Source="{Binding Current.ImagePath, Converter={StaticResource StringAssetToBitmapConverter}}"
+                                               Stretch="Uniform"
+                                               Margin="8"/>
+                                        <TextBlock Text="{Binding Current.Label}"
+                                                   Classes="PastelLabel"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Bottom"
+                                                   Margin="0,0,0,8"
+                                                   Background="#88FFFFFF"
+                                                   Padding="4,2"/>
+                                    </Grid>
+                                </Border>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+
+        <!-- Expanded overlay when a card is selected — Grid: dismiss-button fills all, card floats on top -->
+        <Grid IsVisible="{Binding SelectedCard, Converter={x:Static ObjectConverters.IsNotNull}}"
+              ZIndex="200">
+            <!-- Full-size dismiss button (the dark backdrop) -->
+            <Button Background="#88000000"
+                    BorderThickness="0"
+                    Padding="0"
+                    Command="{Binding CloseCardCommand}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"/>
+            <!-- Floating card -->
+            <Border HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MaxWidth="400" MaxHeight="560"
+                    CornerRadius="16"
+                    Background="White"
+                    BoxShadow="6 6 30 0 #40000000"
+                    Padding="16">
+                <Grid>
+                    <Image Source="{Binding SelectedCard.Current.ImagePath, Converter={StaticResource StringAssetToBitmapConverter}}"
+                           Stretch="Uniform"/>
+                    <Button HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Classes="LinkButton"
+                            Command="{Binding CloseCardCommand}"
+                            Content="✕"
+                            Margin="0,0,4,0"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,90 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Session"
+             x:Class="KatyaKatya.Views.Session.VerifyEmailView"
+             x:DataType="vm:VerifyEmailViewModel">
+
+    <Grid>
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0"
+                   Source="avares://KatyaKatya/Resources/Images/Logos/logo-en.png"
+                   Width="280" Height="280"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="40,0,0,0"
+                   Stretch="Uniform"/>
+
+            <Border Grid.Column="1"
+                    Classes="LiquidGlassCard"
+                    Width="360"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Padding="36,32"
+                    Margin="0,0,40,0">
+
+                <StackPanel Spacing="0">
+                    <TextBlock Text="Verify Email"
+                               Classes="PastelHeading"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,14"/>
+
+                    <TextBlock Text="Enter the 6-digit PIN sent to your email."
+                               Classes="PastelTextBlock"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               FontSize="13"
+                               Margin="0,0,0,22"/>
+
+                    <TextBox Text="{Binding Pin}"
+                             MaxLength="6"
+                             Classes="PastelTextBox"
+                             FontSize="32"
+                             FontWeight="Bold"
+                             TextAlignment="Center"
+                             Height="56"
+                             Margin="0,0,0,16"/>
+
+                    <TextBlock Text="{Binding PinResentMessage}"
+                               Classes="PastelTextBlock"
+                               FontSize="12"
+                               Foreground="{DynamicResource PastelSuccess}"
+                               TextAlignment="Center"
+                               Margin="0,0,0,12"
+                               IsVisible="{Binding PinResentMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Classes="PastelErrorText"
+                               Margin="0,0,0,14"
+                               IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                    <Button Height="46"
+                            Margin="0,0,0,14"
+                            Classes="PastelButton"
+                            Command="{Binding VerifyCommand}"
+                            IsEnabled="{Binding !IsLoading}"
+                            Content="Verify"/>
+
+                    <Button Margin="0,0,0,10"
+                            HorizontalAlignment="Center"
+                            Classes="LinkButton"
+                            Command="{Binding ResendPinCommand}"
+                            Content="Resend PIN"/>
+
+                    <Button HorizontalAlignment="Center"
+                            Classes="LinkButton"
+                            Command="{Binding GoBackCommand}"
+                            Content="← Back"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,120 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:KatyaKatya.ViewModels"
+        x:Class="KatyaKatya.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="Katya Katya"
+        Width="1280" Height="720"
+        MinWidth="980" MinHeight="720"
+        WindowStartupLocation="CenterScreen"
+        WindowDecorations="None"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="Transparent"
+        Icon="avares://KatyaKatya/Resources/Images/logo-en.ico">
+
+    <!-- F11 → toggle fullscreen -->
+    <Window.KeyBindings>
+        <KeyBinding Gesture="F11" Command="{Binding ToggleFullscreenCommand}"/>
+    </Window.KeyBindings>
+
+    <Border Name="MainWindowBorder"
+            Background="{DynamicResource PastelBackground}"
+            CornerRadius="14"
+            ClipToBounds="True">
+
+        <Grid>
+            <!-- Global background image -->
+            <Image Name="GlobalBgImage"
+                   Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+                   Stretch="UniformToFill"
+                   IsHitTestVisible="False"/>
+
+            <!-- ─── Active view (fills the window) ─── -->
+            <ContentControl Content="{Binding Navigation.CurrentViewModel}"
+                            Classes="ViewFade"/>
+
+            <!-- ─── Traffic-light buttons (Top-Left) ─── -->
+            <StackPanel Name="TrafficLights"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="18,18,0,0"
+                        ZIndex="100">
+
+                <!-- Close -->
+                <Button Name="BtnClose"
+                        Classes="TrafficLight"
+                        Background="#FF5F56"
+                        Margin="0,0,8,0"
+                        ToolTip.Tip="Close"
+                        Click="OnCloseClicked"/>
+                <!-- Minimize -->
+                <Button Name="BtnMinimize"
+                        Classes="TrafficLight"
+                        Background="#FFBD2E"
+                        Margin="0,0,8,0"
+                        ToolTip.Tip="Minimize"
+                        Click="OnMinimizeClicked"/>
+                <!-- Maximize -->
+                <Button Name="BtnMaximize"
+                        Classes="TrafficLight"
+                        Background="#27C93F"
+                        ToolTip.Tip="Maximize/Restore"
+                        Click="OnMaximizeClicked"/>
+            </StackPanel>
+
+            <!-- ─── Global header menu (Top-Right, hidden on auth screens) ─── -->
+            <Grid HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  Margin="0,52,18,0"
+                  ZIndex="100"
+                  IsVisible="{Binding IsHeaderVisible}">
+
+                <ToggleButton Name="MenuToggleBtn"
+                              Width="56" Height="56"
+                              Cursor="Hand"
+                              ToolTip.Tip="Menu"
+                              Background="Transparent"
+                              BorderThickness="0"
+                              CornerRadius="28">
+                    <Image Source="avares://KatyaKatya/Resources/Images/Icons/menu-icon.png"
+                           Width="36" Height="36"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+                </ToggleButton>
+
+                <!-- Dropdown -->
+                <Popup IsOpen="{Binding #MenuToggleBtn.IsChecked, Mode=TwoWay}"
+                       PlacementTarget="{Binding #MenuToggleBtn}"
+                       Placement="BottomEdgeAlignedRight"
+                       IsLightDismissEnabled="True">
+                    <Border Background="{DynamicResource CardBackground}"
+                            CornerRadius="{DynamicResource CardCornerRadius}"
+                            Padding="24,20"
+                            BoxShadow="4 4 24 0 #243D1C1C"
+                            Width="184">
+                        <StackPanel Spacing="0">
+                            <Button Classes="PastelDropdownButton"
+                                    Command="{Binding GoToProfileCommand}"
+                                    Margin="0,0,0,4"
+                                    Content="Profile"/>
+                            <Button Classes="PastelDropdownButton"
+                                    Command="{Binding GoToFriendsCommand}"
+                                    Margin="0,0,0,4"
+                                    Content="Friends"/>
+                            <Button Classes="PastelDropdownButton"
+                                    Command="{Binding GoToGuestRegisterCommand}"
+                                    Margin="0,0,0,4"
+                                    Content="Register"
+                                    IsVisible="{Binding IsGuestRegisterVisible}"/>
+                            <Rectangle Classes="SectionDivider" Margin="8,4,8,8" Height="1"/>
+                            <Button Classes="PastelDropdownButton"
+                                    Command="{Binding GoToSettingsCommand}"
+                                    Content="Settings"/>
+                        </StackPanel>
+                    </Border>
+                </Popup>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,132 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.SinglePlayer"
+             x:Class="KatyaKatya.Views.SinglePlayer.SinglePlayerGameView"
+             x:DataType="vm:SinglePlayerGameViewModel">
+
+    <Grid>
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+               Stretch="UniformToFill" IsHitTestVisible="False"/>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="56"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="16"/>
+            </Grid.RowDefinitions>
+
+            <!-- HUD -->
+            <Border Grid.Row="0"
+                    Background="{DynamicResource CardBackground}"
+                    Padding="20,0"
+                    Margin="16,8,16,0"
+                    CornerRadius="14"
+                    BoxShadow="2 2 10 0 #1A3D1C1C">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Quit -->
+                    <Button Grid.Column="0"
+                            Classes="LinkButton"
+                            Command="{Binding LeaveGameCommand}"
+                            Content="← Quit"
+                            VerticalAlignment="Center"/>
+
+                    <!-- Score -->
+                    <StackPanel Grid.Column="2"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Spacing="0">
+                        <TextBlock Text="{Binding Score}"
+                                   Classes="PastelHeading ScorePulse"
+                                   FontSize="28"
+                                   HorizontalAlignment="Center"
+                                   Foreground="{DynamicResource PastelPrimary}"/>
+                        <TextBlock Text="Score"
+                                   Classes="PastelLabel"
+                                   FontSize="11"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Turn timer -->
+                    <StackPanel Grid.Column="4"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Spacing="0">
+                        <TextBlock Text="{Binding TurnTimerDisplay}"
+                                   Classes="PastelHeading"
+                                   FontSize="28"
+                                   HorizontalAlignment="Center"
+                                   Foreground="{DynamicResource PastelPrimary}"/>
+                        <TextBlock Text="Turn"
+                                   Classes="PastelLabel"
+                                   FontSize="11"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Card grid — DataTemplate has no x:DataType so bindings are reflection-based.
+                 Button wraps the card and fires FlipCardCommand on the parent VM. -->
+            <ItemsControl Grid.Row="1"
+                          ItemsSource="{Binding Cards}"
+                          Margin="16,8,16,0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="{Binding BoardColumns}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Margin="4"
+                                Padding="0"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                CornerRadius="12"
+                                Cursor="Hand"
+                                Command="{Binding $parent[UserControl].DataContext.FlipCardCommand}"
+                                CommandParameter="{Binding}">
+                            <Border CornerRadius="12" ClipToBounds="True">
+                                <Grid>
+                                    <!-- Card back -->
+                                    <Border Classes="CardBack"
+                                            Background="{DynamicResource PrimaryGradient}"
+                                            CornerRadius="12"
+                                            IsVisible="{Binding !IsFlipped}">
+                                        <TextBlock Text="🂠"
+                                                   FontSize="28"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="White"/>
+                                    </Border>
+                                    <!-- Card front -->
+                                    <Border Classes="CardFront"
+                                            Background="{DynamicResource CardBackground}"
+                                            CornerRadius="12"
+                                            BorderBrush="{DynamicResource PastelBorder}"
+                                            BorderThickness="1.5"
+                                            IsVisible="{Binding IsFlipped}">
+                                        <Image Source="{Binding DisplayImage}"
+                                               Stretch="Uniform"
+                                               Margin="8"/>
+                                    </Border>
+                                    <!-- Match overlay -->
+                                    <Border CornerRadius="12"
+                                            Background="{DynamicResource MatchOverlayBrush}"
+                                            IsVisible="{Binding IsMatched}"
+                                            Classes="MatchPulse"/>
+                                </Grid>
+                            </Border>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Session"
+             xmlns:conv="using:KatyaKatya.Converters"
+             x:Class="KatyaKatya.Views.Session.SplashScreenView"
+             x:DataType="vm:SplashScreenViewModel">
+
+    <Grid>
+        <!-- Blurred background -->
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/katya-main-background-only.png"
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"
+               Opacity="0.6"/>
+
+        <!-- Logo centered, fades in via FadeIn class -->
+        <Border HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="360" Height="360"
+                Classes="FadeIn">
+            <Image Source="{Binding LogoPath, Converter={StaticResource StringAssetToBitmapConverter}}"
+                   Stretch="Uniform"/>
+        </Border>
+    </Grid>
+</UserControl>

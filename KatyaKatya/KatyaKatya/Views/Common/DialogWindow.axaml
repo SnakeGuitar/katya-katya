@@ -1,0 +1,74 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:KatyaKatya.ViewModels.Common"
+        x:Class="KatyaKatya.Views.Common.DialogWindow"
+        x:DataType="vm:DialogViewModel"
+        Title="{Binding Title}"
+        Width="420" Height="220"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        WindowDecorations="None"
+        Background="Transparent"
+        ShowInTaskbar="False">
+
+    <Border Background="#FAF5F5"
+            CornerRadius="{DynamicResource CardCornerRadius}"
+            BorderBrush="{DynamicResource PastelBorder}"
+            BorderThickness="1.5"
+            Margin="12"
+            BoxShadow="5 5 25 0 #2E3D1C1C">
+
+        <Grid Margin="24,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Text="{Binding Title}"
+                       Classes="PastelLabel"
+                       FontSize="13"
+                       Margin="0,0,0,10"
+                       HorizontalAlignment="Left"/>
+
+            <TextBlock Grid.Row="1"
+                       Text="{Binding Message}"
+                       Classes="PastelTextBlock"
+                       TextWrapping="Wrap"
+                       FontSize="14"
+                       VerticalAlignment="Center"/>
+
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0,20,0,0"
+                        Spacing="8">
+
+                <Button Content="OK"
+                        Command="{Binding OKCommand}"
+                        IsVisible="{Binding IsOkVisible}"
+                        Classes="PastelButton"
+                        MinWidth="80" Height="36"/>
+
+                <Button Content="Cancel"
+                        Command="{Binding CancelCommand}"
+                        IsVisible="{Binding IsCancelVisible}"
+                        Classes="PastelButtonSecondary"
+                        MinWidth="80" Height="36"/>
+
+                <Button Content="Yes"
+                        Command="{Binding YesCommand}"
+                        IsVisible="{Binding IsYesNoVisible}"
+                        Classes="PastelButton"
+                        MinWidth="80" Height="36"/>
+
+                <Button Content="No"
+                        Command="{Binding NoCommand}"
+                        IsVisible="{Binding IsYesNoVisible}"
+                        Classes="PastelButtonSecondary"
+                        MinWidth="80" Height="36"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

@@ -1,0 +1,98 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Session"
+             x:Class="KatyaKatya.Views.Session.SetupProfileView"
+             x:DataType="vm:SetupProfileViewModel">
+
+    <Grid>
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0"
+                   Source="avares://KatyaKatya/Resources/Images/Logos/logo-en.png"
+                   Width="280" Height="280"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="40,0,0,0"
+                   Stretch="Uniform"/>
+
+            <Border Grid.Column="1"
+                    Classes="LiquidGlassCard"
+                    Width="370"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Padding="36,32"
+                    Margin="0,0,40,0">
+
+                <StackPanel Spacing="0">
+                    <TextBlock Text="Set Up Profile"
+                               Classes="PastelHeading"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,8"/>
+
+                    <TextBlock Text="Add a profile picture to personalise your account."
+                               Classes="PastelTextBlock"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap"
+                               FontSize="13"
+                               Margin="0,0,0,24"/>
+
+                    <!-- Avatar preview circle -->
+                    <Border Width="120" Height="120"
+                            CornerRadius="60"
+                            BorderBrush="{DynamicResource PastelPrimary}"
+                            BorderThickness="3"
+                            HorizontalAlignment="Center"
+                            Margin="0,0,0,12"
+                            Background="#10C84747"
+                            ClipToBounds="True">
+
+                        <Grid>
+                            <!-- Placeholder icon -->
+                            <TextBlock Text="📷"
+                                       FontSize="36"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       IsVisible="{Binding AvatarPreviewPath, Converter={x:Static StringConverters.IsNullOrEmpty}}"/>
+
+                            <!-- Preview image -->
+                            <Image Source="{Binding AvatarPreviewPath, Converter={StaticResource StringAssetToBitmapConverter}}"
+                                   Stretch="UniformToFill"
+                                   IsVisible="{Binding AvatarPreviewPath, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                        </Grid>
+                    </Border>
+
+                    <Button HorizontalAlignment="Center"
+                            Margin="0,0,0,24"
+                            Classes="LinkButton"
+                            Command="{Binding SelectAvatarCommand}"
+                            Content="Select Photo"/>
+
+                    <TextBlock Text="{Binding ErrorMessage}"
+                               Classes="PastelErrorText"
+                               Margin="0,0,0,14"
+                               IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                    <Button Height="46"
+                            Margin="0,0,0,16"
+                            Classes="PastelButton"
+                            Command="{Binding FinalizeCommand}"
+                            IsEnabled="{Binding !IsLoading}"
+                            Content="Continue"/>
+
+                    <Button HorizontalAlignment="Center"
+                            Classes="LinkButton"
+                            Command="{Binding GoBackCommand}"
+                            Content="← Back"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,116 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Settings"
+             x:Class="KatyaKatya.Views.Settings.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+    <Grid>
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0"
+                   Source="avares://KatyaKatya/Resources/Images/Logos/logo-en.png"
+                   Width="280" Height="280"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="40,0,0,0"
+                   Stretch="Uniform"/>
+
+            <Border Grid.Column="1"
+                    Classes="LiquidGlassCard"
+                    Width="400"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Padding="36,32"
+                    Margin="0,0,40,0">
+
+                <StackPanel Spacing="0">
+                    <TextBlock Text="Settings"
+                               Classes="PastelHeading"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,28"/>
+
+                    <!-- Language -->
+                    <TextBlock Text="Language" Classes="PastelLabel" Margin="0,0,0,8"/>
+                    <ComboBox ItemsSource="{x:Static vm:SettingsViewModel.Languages}"
+                              SelectedItem="{Binding SelectedLanguage}"
+                              DisplayMemberBinding="{Binding NativeName}"
+                              Classes="PastelComboBox"
+                              Margin="0,0,0,0"/>
+
+                    <Rectangle Classes="SectionDivider"/>
+
+                    <!-- Theme -->
+                    <TextBlock Text="Theme" Classes="PastelLabel" Margin="0,0,0,8"/>
+                    <ComboBox ItemsSource="{x:Static vm:SettingsViewModel.Themes}"
+                              SelectedItem="{Binding SelectedTheme}"
+                              Classes="PastelComboBox"
+                              Margin="0,0,0,0"/>
+
+                    <Rectangle Classes="SectionDivider"/>
+
+                    <!-- Music toggle -->
+                    <Grid Margin="0,0,0,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Music" Classes="PastelLabel" VerticalAlignment="Center"/>
+                        <ToggleSwitch Grid.Column="1"
+                                      IsChecked="{Binding IsMusicEnabled}"
+                                      OffContent="" OnContent=""
+                                      Classes="PastelToggle"/>
+                    </Grid>
+
+                    <!-- Volume slider -->
+                    <Grid Margin="0,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Slider Grid.Column="0"
+                                Value="{Binding MusicVolume}"
+                                Minimum="0" Maximum="1"
+                                Classes="PastelSlider"
+                                VerticalAlignment="Center"
+                                IsEnabled="{Binding IsMusicEnabled}"/>
+                        <TextBlock Grid.Column="1"
+                                   Text="{Binding MusicVolume, StringFormat={}{0:P0}}"
+                                   Classes="PastelLabel"
+                                   VerticalAlignment="Center"
+                                   Margin="12,0,0,0"/>
+                    </Grid>
+
+                    <Rectangle Classes="SectionDivider"/>
+
+                    <!-- Fullscreen -->
+                    <Grid Margin="0,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Fullscreen" Classes="PastelLabel" VerticalAlignment="Center"/>
+                        <ToggleSwitch Grid.Column="1"
+                                      IsChecked="{Binding IsFullscreen}"
+                                      OffContent="" OnContent=""
+                                      Classes="PastelToggle"/>
+                    </Grid>
+
+                    <Rectangle Classes="SectionDivider"/>
+
+                    <Button HorizontalAlignment="Center"
+                            Classes="LinkButton"
+                            Command="{Binding GoBackCommand}"
+                            Content="← Back"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

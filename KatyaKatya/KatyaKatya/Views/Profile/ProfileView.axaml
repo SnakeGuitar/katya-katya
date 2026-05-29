@@ -1,0 +1,130 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Profile"
+             xmlns:conv="using:KatyaKatya.Converters"
+             x:Class="KatyaKatya.Views.Profile.ProfileView"
+             x:DataType="vm:ProfileViewModel">
+
+    <UserControl.Resources>
+        <conv:ByteArrayToBitmapConverter x:Key="ByteArrayToBitmap"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"/>
+
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center"
+              MaxWidth="900" Width="661">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Profile card -->
+            <Border Grid.Row="0"
+                    Classes="LiquidGlassCard"
+                    Padding="50,48"
+                    Margin="24">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Left: avatar + actions -->
+                    <StackPanel Grid.Column="0" VerticalAlignment="Top" Margin="0,0,50,0" Spacing="0">
+                        <Border Width="140" Height="140"
+                                CornerRadius="70"
+                                BorderBrush="{DynamicResource PastelPrimary}"
+                                BorderThickness="3"
+                                HorizontalAlignment="Center"
+                                Background="#10C84747"
+                                ClipToBounds="True">
+                            <Grid>
+                                <TextBlock Text="👤" FontSize="48"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           IsVisible="{Binding AvatarBytes, Converter={x:Static ObjectConverters.IsNull}}"/>
+                                <Image Source="{Binding AvatarBytes, Converter={StaticResource ByteArrayToBitmap}}"
+                                       Stretch="UniformToFill"
+                                       Width="134" Height="134"
+                                       IsVisible="{Binding AvatarBytes, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                            </Grid>
+                        </Border>
+
+                        <Button Margin="0,24,0,0"
+                                HorizontalAlignment="Center"
+                                Classes="PastelButtonSecondary"
+                                Height="36" Padding="20,0"
+                                Command="{Binding GoToEditProfileCommand}"
+                                Content="Edit Profile"/>
+
+                        <Button Margin="0,8,0,0"
+                                HorizontalAlignment="Center"
+                                Classes="LinkButton"
+                                Command="{Binding LogoutCommand}"
+                                Content="Logout"/>
+                    </StackPanel>
+
+                    <!-- Right: user info -->
+                    <Grid Grid.Column="1" VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Username -->
+                        <TextBlock Grid.Row="0" Grid.ColumnSpan="2"
+                                   Text="{Binding Username}"
+                                   Classes="PastelHeading"
+                                   FontSize="36"
+                                   Margin="0,0,0,24"
+                                   TextTrimming="CharacterEllipsis"/>
+
+                        <!-- Full name -->
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Name"
+                                   Classes="PastelLabel" FontSize="14" Margin="0,0,16,12" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding FullName}"
+                                   Classes="PastelTextBlock" FontSize="16"
+                                   Foreground="{DynamicResource PastelPrimary}" Margin="0,0,0,12" VerticalAlignment="Center"/>
+
+                        <!-- Email -->
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Email"
+                                   Classes="PastelLabel" FontSize="14" Margin="0,0,16,12" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Email}"
+                                   Classes="PastelTextBlock" FontSize="16"
+                                   Foreground="{DynamicResource PastelPrimary}" Margin="0,0,0,12" VerticalAlignment="Center"/>
+
+                        <!-- Registered -->
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="Registered"
+                                   Classes="PastelLabel" FontSize="14" Margin="0,0,16,12" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding RegistrationDate}"
+                                   Classes="PastelTextBlock" FontSize="16"
+                                   Foreground="{DynamicResource PastelPrimary}" Margin="0,0,0,12" VerticalAlignment="Center"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- Bottom nav -->
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,20,0,20"
+                        Spacing="16">
+                <Button Classes="PastelButton" Height="46" Padding="32,0"
+                        Command="{Binding GoToFriendsCommand}" Content="Friends"/>
+                <Button Classes="LinkButton"
+                        Command="{Binding GoBackCommand}" Content="← Back"
+                        VerticalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

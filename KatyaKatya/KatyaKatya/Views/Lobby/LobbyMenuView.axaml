@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Lobby"
+             x:Class="KatyaKatya.Views.Lobby.LobbyMenuView"
+             x:DataType="vm:LobbyMenuViewModel">
+
+    <Grid>
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+               Stretch="UniformToFill" IsHitTestVisible="False"/>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="20"/>
+            </Grid.RowDefinitions>
+
+            <!-- Back -->
+            <Button Grid.Row="1"
+                    HorizontalAlignment="Left" VerticalAlignment="Center"
+                    Margin="24,0,0,0"
+                    Command="{Binding GoBackCommand}"
+                    Width="48" Height="48"
+                    Background="{DynamicResource PastelPrimary}"
+                    BorderThickness="0" CornerRadius="24" Cursor="Hand">
+                <Image Source="avares://KatyaKatya/Resources/Images/Icons/return-icon.png"
+                       Stretch="Uniform" Margin="14"/>
+            </Button>
+
+            <!-- Host lobby button -->
+            <Button Grid.Row="1"
+                    Classes="PastelButton" Height="40" Padding="20,0"
+                    HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Margin="0,0,24,0"
+                    Command="{Binding CreateLobbyCommand}"
+                    Content="Host Lobby"/>
+
+            <TextBlock Grid.Row="1"
+                       Text="Multiplayer Lobbies"
+                       Classes="PastelHeading"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
+
+            <!-- Lobby list — DataTemplate uses reflection bindings (no x:DataType) -->
+            <ScrollViewer Grid.Row="2" Margin="24" HorizontalScrollBarVisibility="Disabled">
+                <ItemsControl ItemsSource="{Binding PublicLobbies}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Classes="LiquidGlassCard"
+                                    Padding="20,16"
+                                    Margin="0,0,0,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" Spacing="4">
+                                        <TextBlock Classes="PastelTextBlock" FontWeight="SemiBold" FontSize="17">
+                                            <Run Text="Lobby by "/>
+                                            <Run Text="{Binding HostUsername}" FontWeight="Bold"/>
+                                        </TextBlock>
+                                        <TextBlock Classes="PastelLabel">
+                                            <Run Text="{Binding CurrentPlayers}"/>
+                                            <Run Text=" / "/>
+                                            <Run Text="{Binding MaxPlayers}"/>
+                                            <Run Text=" players  ·  Code: "/>
+                                            <Run Text="{Binding GameCode}" FontWeight="SemiBold"/>
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <Button Grid.Column="1"
+                                            Classes="PastelButton"
+                                            Height="36" Padding="20,0"
+                                            IsEnabled="{Binding !IsFull}"
+                                            Command="{Binding $parent[UserControl].DataContext.JoinPublicLobbyCommand}"
+                                            CommandParameter="{Binding}"
+                                            Content="Join"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</UserControl>

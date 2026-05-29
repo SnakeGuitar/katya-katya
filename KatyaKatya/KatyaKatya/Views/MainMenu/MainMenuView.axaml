@@ -1,0 +1,82 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.MainMenu"
+             x:Class="KatyaKatya.Views.MainMenu.MainMenuView"
+             x:DataType="vm:MainMenuViewModel">
+
+    <Grid>
+        <!-- Full background with character -->
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/katya-main-background-only.png"
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"/>
+
+        <!-- Left panel: logo + buttons -->
+        <StackPanel HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Width="500">
+
+            <!-- Floating logo -->
+            <Image Source="avares://KatyaKatya/Resources/Images/Logos/logo-en.png"
+                   Height="280"
+                   HorizontalAlignment="Center"
+                   Stretch="Uniform"
+                   Margin="0,0,0,20"
+                   Classes="FloatingLogo"/>
+
+            <!-- Buttons card -->
+            <Border Margin="60,0,60,0"
+                    Classes="LiquidGlassCard"
+                    Padding="0">
+
+                <Border Padding="32,28,32,24">
+                    <StackPanel Spacing="0">
+                        <TextBlock Text="{Binding WelcomeMessage}"
+                                   Classes="PastelTextBlock"
+                                   FontSize="17"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PastelPrimary}"
+                                   HorizontalAlignment="Center"
+                                   TextAlignment="Center"
+                                   Margin="0,0,0,20"
+                                   TextWrapping="Wrap"/>
+
+                        <Button Height="48" Margin="0,0,0,12"
+                                Classes="PastelButton"
+                                Command="{Binding GoToSingleplayerCommand}"
+                                Content="Single Player"/>
+
+                        <Button Height="48" Margin="0,0,0,12"
+                                Classes="PastelButton"
+                                Command="{Binding GoToMultiplayerCommand}"
+                                Content="Multiplayer"/>
+
+                        <Button Height="48" Margin="0,0,0,20"
+                                Classes="PastelButton"
+                                Command="{Binding GoToMoreCommand}"
+                                Content="More…"/>
+
+                        <Rectangle Classes="SectionDivider" Margin="20,0,20,4"/>
+
+                        <Button HorizontalAlignment="Center"
+                                Classes="LinkButton"
+                                Command="{Binding LogoutCommand}"
+                                Content="Logout"/>
+                    </StackPanel>
+                </Border>
+            </Border>
+        </StackPanel>
+
+        <!-- Katya character (right-bottom, clickable) — Button wraps Image for Avalonia 12 -->
+        <Button HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Background="Transparent"
+                BorderThickness="0"
+                Padding="0"
+                Cursor="Hand"
+                Command="{Binding GoToDatingCommand}">
+            <Image Source="{Binding CurrentMoodImage, Converter={StaticResource StringAssetToBitmapConverter}}"
+                   Stretch="Uniform"
+                   MaxHeight="780"/>
+        </Button>
+    </Grid>
+</UserControl>

@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels"
+             x:Class="KatyaKatya.Views.MainView"
+             x:DataType="vm:MainWindowViewModel">
+
+    <!-- Android / mobile shell — no custom chrome, just the navigation surface -->
+    <Grid Background="{DynamicResource PastelBackground}">
+        <!-- Background image -->
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"/>
+
+        <!-- Active view -->
+        <ContentControl Content="{Binding Navigation.CurrentViewModel}"
+                        Classes="ViewFade"/>
+    </Grid>
+</UserControl>

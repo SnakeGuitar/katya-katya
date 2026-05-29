@@ -1,0 +1,91 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:KatyaKatya.ViewModels.Session"
+             x:Class="KatyaKatya.Views.Session.RegisterView"
+             x:DataType="vm:RegisterViewModel">
+
+    <Grid>
+        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Logo left -->
+            <Image Grid.Column="0"
+                   Source="{Binding LogoPath, Converter={StaticResource StringAssetToBitmapConverter}}"
+                   Width="280" Height="280"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="40,0,0,0"
+                   Stretch="Uniform"/>
+
+            <!-- Register card right -->
+            <Border Grid.Column="1"
+                    Classes="LiquidGlassCard"
+                    Width="370"
+                    MaxHeight="600"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Padding="36,32"
+                    Margin="0,0,40,0">
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Spacing="0">
+                        <TextBlock Text="Register"
+                                   Classes="PastelHeading"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,24"/>
+
+                        <TextBlock Text="Username"
+                                   Classes="PastelLabel"
+                                   Margin="0,0,0,6"/>
+                        <TextBox Text="{Binding Username}"
+                                 Classes="PastelTextBox"
+                                 Margin="0,0,0,14"/>
+
+                        <TextBlock Text="Email"
+                                   Classes="PastelLabel"
+                                   Margin="0,0,0,6"/>
+                        <TextBox Text="{Binding Email}"
+                                 Classes="PastelTextBox"
+                                 Margin="0,0,0,14"/>
+
+                        <TextBlock Text="Password"
+                                   Classes="PastelLabel"
+                                   Margin="0,0,0,6"/>
+                        <TextBox Classes="PastelPasswordBox"
+                                 Margin="0,0,0,14"/>
+
+                        <TextBlock Text="Confirm Password"
+                                   Classes="PastelLabel"
+                                   Margin="0,0,0,6"/>
+                        <TextBox Classes="PastelPasswordBox"
+                                 Margin="0,0,0,18"/>
+
+                        <TextBlock Text="{Binding ErrorMessage}"
+                                   Classes="PastelErrorText"
+                                   Margin="0,0,0,14"
+                                   IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                        <Button Height="46"
+                                Margin="0,0,0,16"
+                                Classes="PastelButton"
+                                Command="{Binding RegisterCommand}"
+                                IsEnabled="{Binding !IsLoading}"
+                                Content="Register"/>
+
+                        <Button HorizontalAlignment="Center"
+                                Classes="LinkButton"
+                                Command="{Binding GoBackCommand}"
+                                Content="← Back"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>
