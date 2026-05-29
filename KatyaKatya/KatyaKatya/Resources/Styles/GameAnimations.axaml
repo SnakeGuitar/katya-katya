@@ -1,0 +1,129 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- =========================================================
+         Fade-in animation on attach — applied via class "FadeIn"
+         ========================================================= -->
+    <Style Selector="Control.FadeIn">
+        <Style.Animations>
+            <Animation Duration="0:0:0.5" FillMode="Forward">
+                <KeyFrame Cue="0%">
+                    <Setter Property="Opacity" Value="0"/>
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="Opacity" Value="1"/>
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+
+    <!-- =========================================================
+         Logo float breathing animation — class "FloatingLogo"
+         ========================================================= -->
+    <Style Selector="Control.FloatingLogo">
+        <Style.Animations>
+            <Animation Duration="0:0:3.2" IterationCount="INFINITE" PlaybackDirection="Alternate" Easing="QuadraticEaseInOut">
+                <KeyFrame Cue="0%">
+                    <Setter Property="TranslateTransform.Y" Value="-3"/>
+                    <Setter Property="ScaleTransform.ScaleX" Value="0.97"/>
+                    <Setter Property="ScaleTransform.ScaleY" Value="0.97"/>
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="TranslateTransform.Y" Value="6"/>
+                    <Setter Property="ScaleTransform.ScaleX" Value="1.03"/>
+                    <Setter Property="ScaleTransform.ScaleY" Value="1.03"/>
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.3"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <!-- =========================================================
+         Card pulse on match — class "MatchPulse"
+         ========================================================= -->
+    <Style Selector="Border.MatchPulse">
+        <Setter Property="RenderTransform">
+            <ScaleTransform ScaleX="1" ScaleY="1"/>
+        </Setter>
+        <Style.Animations>
+            <Animation Duration="0:0:0.6" FillMode="Forward">
+                <KeyFrame Cue="0%">
+                    <Setter Property="Opacity" Value="1"/>
+                    <Setter Property="ScaleTransform.ScaleX" Value="1"/>
+                    <Setter Property="ScaleTransform.ScaleY" Value="1"/>
+                </KeyFrame>
+                <KeyFrame Cue="50%">
+                    <Setter Property="Opacity" Value="0.5"/>
+                    <Setter Property="ScaleTransform.ScaleX" Value="1.05"/>
+                    <Setter Property="ScaleTransform.ScaleY" Value="1.05"/>
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="Opacity" Value="1"/>
+                    <Setter Property="ScaleTransform.ScaleX" Value="1"/>
+                    <Setter Property="ScaleTransform.ScaleY" Value="1"/>
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+
+    <!-- =========================================================
+         View transition fade — class "ViewFade"
+         ========================================================= -->
+    <Style Selector="ContentControl.ViewFade">
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.35" Easing="QuadraticEaseInOut"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <!-- =========================================================
+         Score pulse animation — class "ScorePulse"
+         ========================================================= -->
+    <Style Selector="TextBlock.ScorePulse">
+        <Setter Property="RenderTransform">
+            <ScaleTransform ScaleX="1" ScaleY="1"/>
+        </Setter>
+        <Style.Animations>
+            <Animation Duration="0:0:0.4" FillMode="Forward">
+                <KeyFrame Cue="0%">
+                    <Setter Property="ScaleTransform.ScaleX" Value="1"/>
+                    <Setter Property="ScaleTransform.ScaleY" Value="1"/>
+                </KeyFrame>
+                <KeyFrame Cue="40%">
+                    <Setter Property="ScaleTransform.ScaleX" Value="1.3"/>
+                    <Setter Property="ScaleTransform.ScaleY" Value="1.3"/>
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="ScaleTransform.ScaleX" Value="1"/>
+                    <Setter Property="ScaleTransform.ScaleY" Value="1"/>
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+
+    <!-- =========================================================
+         Card flip (front/back via opacity + scale)
+         Managed from code via IsVisible on front/back layers.
+         ========================================================= -->
+    <Style Selector="Border.CardFront">
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.2" Easing="QuadraticEaseInOut"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <Style Selector="Border.CardBack">
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.2" Easing="QuadraticEaseInOut"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+</Styles>

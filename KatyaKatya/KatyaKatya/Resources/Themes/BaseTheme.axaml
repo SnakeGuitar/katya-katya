@@ -1,0 +1,70 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- =========================================================
+         Warm Rose / Crimson Palette
+         ========================================================= -->
+    <SolidColorBrush x:Key="PastelBackground"      Color="#FDF8F8"/>
+    <SolidColorBrush x:Key="PastelPrimary"          Color="#C84747"/>
+    <SolidColorBrush x:Key="PastelPrimaryHover"     Color="#B03A3A"/>
+    <SolidColorBrush x:Key="PastelText"             Color="#3D1C1C"/>
+    <SolidColorBrush x:Key="PastelTextLight"        Color="#613D3D"/>
+    <SolidColorBrush x:Key="PastelError"            Color="#B82A2A"/>
+    <SolidColorBrush x:Key="PastelSuccess"          Color="#B8F0D0"/>
+    <SolidColorBrush x:Key="LinkText"               Color="#AF1010"/>
+    <SolidColorBrush x:Key="LinkTextHover"          Color="#8A0D0D"/>
+    <SolidColorBrush x:Key="MatchRingBrush"         Color="#00C853"/>
+    <SolidColorBrush x:Key="MatchOverlayBrush"      Color="#3000C853"/>
+
+    <!-- Secondary glass brush -->
+    <LinearGradientBrush x:Key="PastelSecondary" StartPoint="0%,0%" EndPoint="0%,100%">
+        <GradientStop Color="#CCF8E6E6" Offset="0"/>
+        <GradientStop Color="#80E8C4C4" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="PastelAccent" StartPoint="0%,0%" EndPoint="0%,100%">
+        <GradientStop Color="#FFE8D8D8" Offset="0"/>
+        <GradientStop Color="#BBE0C0C0" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Glass border diagonal -->
+    <LinearGradientBrush x:Key="PastelBorder" StartPoint="0%,0%" EndPoint="100%,100%">
+        <GradientStop Color="#D0FFFFFF" Offset="0.0"/>
+        <GradientStop Color="#20FFFFFF" Offset="0.5"/>
+        <GradientStop Color="#40C84747" Offset="1.0"/>
+    </LinearGradientBrush>
+
+    <!-- Liquid Glass card background -->
+    <LinearGradientBrush x:Key="CardBackground" StartPoint="0%,0%" EndPoint="100%,100%">
+        <GradientStop Color="#66FFFFFF" Offset="0"/>
+        <GradientStop Color="#33F9ECEC" Offset="0.4"/>
+        <GradientStop Color="#1AE5C5C5" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Primary gradient — warm rose -->
+    <LinearGradientBrush x:Key="PrimaryGradient" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Color="#E6E07070" Offset="0"/>
+        <GradientStop Color="#B3C04848" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Primary button gradient -->
+    <LinearGradientBrush x:Key="PastelButtonBg" StartPoint="50%,0%" EndPoint="50%,100%">
+        <GradientStop Color="#FFE65A5A" Offset="0"/>
+        <GradientStop Color="#FFC83737" Offset="0.3"/>
+        <GradientStop Color="#FFA02222" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- =========================================================
+         Typography  —  Fredoka (display) + Nunito (UI)
+         ========================================================= -->
+    <FontFamily x:Key="DefaultFont">avares://KatyaKatya/Resources/Fonts#Nunito</FontFamily>
+    <FontFamily x:Key="DisplayFont">avares://KatyaKatya/Resources/Fonts#Fredoka</FontFamily>
+
+    <!-- =========================================================
+         Corner Radii
+         ========================================================= -->
+    <CornerRadius x:Key="ButtonCornerRadius">12</CornerRadius>
+    <CornerRadius x:Key="InputCornerRadius">12</CornerRadius>
+    <CornerRadius x:Key="CardCornerRadius">18</CornerRadius>
+
+</ResourceDictionary>

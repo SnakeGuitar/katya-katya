@@ -1,0 +1,351 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- =========================================================
+         LiquidGlassCard — Border style for cards
+         ========================================================= -->
+    <Style Selector="Border.LiquidGlassCard">
+        <Setter Property="Background"       Value="{DynamicResource CardBackground}"/>
+        <Setter Property="BorderBrush"      Value="{DynamicResource PastelBorder}"/>
+        <Setter Property="BorderThickness"  Value="1.5"/>
+        <Setter Property="CornerRadius"     Value="{DynamicResource CardCornerRadius}"/>
+        <Setter Property="BoxShadow"        Value="4 4 25 0 #2EC84747"/>
+    </Style>
+
+    <!-- =========================================================
+         PastelButton  (red gradient, white text)
+         ========================================================= -->
+    <Style Selector="Button.PastelButton">
+        <Setter Property="Background"       Value="{DynamicResource PastelButtonBg}"/>
+        <Setter Property="Foreground"       Value="White"/>
+        <Setter Property="BorderBrush"      Value="{DynamicResource PastelBorder}"/>
+        <Setter Property="BorderThickness"  Value="1"/>
+        <Setter Property="FontSize"         Value="16"/>
+        <Setter Property="FontWeight"       Value="SemiBold"/>
+        <Setter Property="FontFamily"       Value="{DynamicResource DefaultFont}"/>
+        <Setter Property="Padding"          Value="20,8"/>
+        <Setter Property="CornerRadius"     Value="{DynamicResource ButtonCornerRadius}"/>
+        <Setter Property="Cursor"           Value="Hand"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+            </Transitions>
+        </Setter>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="Root"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        BoxShadow="3 3 12 0 #51FF8080"
+                        ClipToBounds="True">
+                    <Grid>
+                        <!-- Top highlight -->
+                        <Border BorderBrush="#4DFFFFFF"
+                                BorderThickness="0,1.2,0,0"
+                                CornerRadius="12"
+                                IsHitTestVisible="False"/>
+                        <!-- Bottom shadow edge -->
+                        <Border BorderBrush="#25000000"
+                                BorderThickness="0,0,0,1"
+                                CornerRadius="12"
+                                IsHitTestVisible="False"/>
+                        <ContentPresenter HorizontalContentAlignment="Center"
+                                          VerticalContentAlignment="Center"
+                                          Margin="{TemplateBinding Padding}"/>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.PastelButton:pointerover /template/ Border#Root">
+        <Setter Property="BoxShadow" Value="3 3 25 0 #D9FF3333"/>
+        <Setter Property="RenderTransform" Value="scale(1.04)"/>
+    </Style>
+
+    <Style Selector="Button.PastelButton:pressed /template/ Border#Root">
+        <Setter Property="RenderTransform" Value="scale(0.96)"/>
+    </Style>
+
+    <Style Selector="Button.PastelButton:disabled">
+        <Setter Property="Opacity" Value="0.55"/>
+    </Style>
+
+    <!-- =========================================================
+         PastelButtonSecondary  (translucent rose glass)
+         ========================================================= -->
+    <Style Selector="Button.PastelButtonSecondary">
+        <Setter Property="Background">
+            <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                <GradientStop Color="#D9F8E6E6" Offset="0"/>
+                <GradientStop Color="#99E8C4C4" Offset="1"/>
+            </LinearGradientBrush>
+        </Setter>
+        <Setter Property="Foreground"       Value="{DynamicResource PastelText}"/>
+        <Setter Property="BorderBrush"      Value="{DynamicResource PastelBorder}"/>
+        <Setter Property="BorderThickness"  Value="1"/>
+        <Setter Property="FontSize"         Value="16"/>
+        <Setter Property="FontWeight"       Value="SemiBold"/>
+        <Setter Property="FontFamily"       Value="{DynamicResource DefaultFont}"/>
+        <Setter Property="Padding"          Value="20,8"/>
+        <Setter Property="CornerRadius"     Value="{DynamicResource ButtonCornerRadius}"/>
+        <Setter Property="Cursor"           Value="Hand"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        BoxShadow="2 2 10 0 #20C84747">
+                    <ContentPresenter HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Margin="{TemplateBinding Padding}"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.PastelButtonSecondary:pointerover">
+        <Setter Property="Opacity" Value="0.85"/>
+    </Style>
+
+    <Style Selector="Button.PastelButtonSecondary:disabled">
+        <Setter Property="Opacity" Value="0.55"/>
+    </Style>
+
+    <!-- =========================================================
+         PastelButtonDanger  (red outline, fills on hover)
+         ========================================================= -->
+    <Style Selector="Button.PastelButtonDanger">
+        <Setter Property="Background"       Value="Transparent"/>
+        <Setter Property="Foreground"       Value="{DynamicResource PastelPrimary}"/>
+        <Setter Property="BorderBrush"      Value="{DynamicResource PastelPrimary}"/>
+        <Setter Property="BorderThickness"  Value="1.5"/>
+        <Setter Property="FontSize"         Value="13"/>
+        <Setter Property="FontWeight"       Value="SemiBold"/>
+        <Setter Property="FontFamily"       Value="{DynamicResource DefaultFont}"/>
+        <Setter Property="Padding"          Value="16,9"/>
+        <Setter Property="CornerRadius"     Value="12"/>
+        <Setter Property="Cursor"           Value="Hand"/>
+    </Style>
+
+    <Style Selector="Button.PastelButtonDanger:pointerover">
+        <Setter Property="Background"       Value="{DynamicResource PrimaryGradient}"/>
+        <Setter Property="Foreground"       Value="White"/>
+    </Style>
+
+    <!-- =========================================================
+         LinkButton  (transparent, red underlined text)
+         ========================================================= -->
+    <Style Selector="Button.LinkButton">
+        <Setter Property="Background"      Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground"      Value="{DynamicResource LinkText}"/>
+        <Setter Property="Cursor"          Value="Hand"/>
+        <Setter Property="FontSize"        Value="13"/>
+        <Setter Property="FontWeight"      Value="SemiBold"/>
+        <Setter Property="FontFamily"      Value="{DynamicResource DefaultFont}"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <TextBlock Text="{TemplateBinding Content}"
+                           Foreground="{TemplateBinding Foreground}"
+                           HorizontalAlignment="Center"
+                           TextDecorations="Underline"/>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.LinkButton:pointerover">
+        <Setter Property="Foreground" Value="{DynamicResource LinkTextHover}"/>
+    </Style>
+
+    <!-- =========================================================
+         PastelDropdownButton  (transparent, left-aligned)
+         ========================================================= -->
+    <Style Selector="Button.PastelDropdownButton">
+        <Setter Property="Background"      Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground"      Value="{DynamicResource PastelText}"/>
+        <Setter Property="Cursor"          Value="Hand"/>
+        <Setter Property="FontSize"        Value="14"/>
+        <Setter Property="FontFamily"      Value="{DynamicResource DefaultFont}"/>
+        <Setter Property="HorizontalAlignment"        Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding"         Value="12,10"/>
+        <Setter Property="CornerRadius"    Value="8"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="Root"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalAlignment="Center"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.PastelDropdownButton:pointerover /template/ Border#Root">
+        <Setter Property="Background" Value="{DynamicResource PastelSecondary}"/>
+    </Style>
+
+    <!-- =========================================================
+         PastelTextBox  (carved glass input)
+         ========================================================= -->
+    <Style Selector="TextBox.PastelTextBox">
+        <Setter Property="Background">
+            <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+                <GradientStop Color="#40FDFDFD" Offset="0"/>
+                <GradientStop Color="#25F2E4E4" Offset="1"/>
+            </LinearGradientBrush>
+        </Setter>
+        <Setter Property="Foreground"      Value="{DynamicResource PastelText}"/>
+        <Setter Property="BorderBrush"     Value="{DynamicResource PastelBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontSize"        Value="14"/>
+        <Setter Property="FontFamily"      Value="{DynamicResource DefaultFont}"/>
+        <Setter Property="Padding"         Value="12,8"/>
+        <Setter Property="CornerRadius"    Value="{DynamicResource InputCornerRadius}"/>
+        <Setter Property="MinHeight"       Value="40"/>
+    </Style>
+
+    <Style Selector="TextBox.PastelTextBox:focus">
+        <Setter Property="BorderBrush" Value="{DynamicResource PastelPrimary}"/>
+    </Style>
+
+    <!-- Password variant -->
+    <Style Selector="TextBox.PastelPasswordBox">
+        <Setter Property="PasswordChar" Value="●"/>
+        <Setter Property="Background">
+            <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+                <GradientStop Color="#40FDFDFD" Offset="0"/>
+                <GradientStop Color="#25F2E4E4" Offset="1"/>
+            </LinearGradientBrush>
+        </Setter>
+        <Setter Property="Foreground"      Value="{DynamicResource PastelText}"/>
+        <Setter Property="BorderBrush"     Value="{DynamicResource PastelBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontSize"        Value="14"/>
+        <Setter Property="FontFamily"      Value="{DynamicResource DefaultFont}"/>
+        <Setter Property="Padding"         Value="12,8"/>
+        <Setter Property="CornerRadius"    Value="{DynamicResource InputCornerRadius}"/>
+        <Setter Property="MinHeight"       Value="40"/>
+    </Style>
+
+    <Style Selector="TextBox.PastelPasswordBox:focus">
+        <Setter Property="BorderBrush" Value="{DynamicResource PastelPrimary}"/>
+    </Style>
+
+    <!-- =========================================================
+         TextBlock Styles
+         ========================================================= -->
+    <Style Selector="TextBlock.PastelTextBlock">
+        <Setter Property="Foreground"  Value="{DynamicResource PastelText}"/>
+        <Setter Property="FontFamily"  Value="{DynamicResource DefaultFont}"/>
+        <Setter Property="FontSize"    Value="16"/>
+        <Setter Property="FontWeight"  Value="Normal"/>
+    </Style>
+
+    <Style Selector="TextBlock.PastelHeading">
+        <Setter Property="Foreground"  Value="{DynamicResource PastelText}"/>
+        <Setter Property="FontFamily"  Value="{DynamicResource DisplayFont}"/>
+        <Setter Property="FontSize"    Value="30"/>
+        <Setter Property="FontWeight"  Value="Bold"/>
+    </Style>
+
+    <Style Selector="TextBlock.PastelLabel">
+        <Setter Property="Foreground"  Value="{DynamicResource PastelTextLight}"/>
+        <Setter Property="FontFamily"  Value="{DynamicResource DefaultFont}"/>
+        <Setter Property="FontSize"    Value="13"/>
+        <Setter Property="FontWeight"  Value="SemiBold"/>
+    </Style>
+
+    <Style Selector="TextBlock.PastelErrorText">
+        <Setter Property="Foreground"   Value="{DynamicResource PastelError}"/>
+        <Setter Property="FontFamily"   Value="{DynamicResource DefaultFont}"/>
+        <Setter Property="FontSize"     Value="12"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <!-- =========================================================
+         Section Divider (Rectangle)
+         ========================================================= -->
+    <Style Selector="Rectangle.SectionDivider">
+        <Setter Property="Height"  Value="1"/>
+        <Setter Property="Fill"    Value="{DynamicResource PastelBorder}"/>
+        <Setter Property="Margin"  Value="0,16,0,16"/>
+    </Style>
+
+    <!-- =========================================================
+         Toggle Switch  (ToggleSwitch)
+         ========================================================= -->
+    <Style Selector="ToggleSwitch.PastelToggle">
+        <Setter Property="OffContent"  Value=""/>
+        <Setter Property="OnContent"   Value=""/>
+        <Setter Property="Cursor"      Value="Hand"/>
+    </Style>
+
+    <!-- =========================================================
+         Traffic-light button styles (used in MainWindow)
+         ========================================================= -->
+    <Style Selector="Button.TrafficLight">
+        <Setter Property="Width"           Value="14"/>
+        <Setter Property="Height"          Value="14"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor"          Value="Hand"/>
+        <Setter Property="Padding"         Value="0"/>
+        <Setter Property="CornerRadius"    Value="7"/>
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Name="Btn"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="7"
+                        Width="14" Height="14">
+                    <TextBlock Name="Icon"
+                               Foreground="#44000000"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="10"
+                               IsVisible="False"/>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <!-- =========================================================
+         ComboBox PastelComboBox
+         ========================================================= -->
+    <Style Selector="ComboBox.PastelComboBox">
+        <Setter Property="Background"       Value="White"/>
+        <Setter Property="Foreground"       Value="{DynamicResource PastelText}"/>
+        <Setter Property="BorderBrush"      Value="{DynamicResource PastelBorder}"/>
+        <Setter Property="BorderThickness"  Value="1.5"/>
+        <Setter Property="FontSize"         Value="16"/>
+        <Setter Property="FontFamily"       Value="{DynamicResource DefaultFont}"/>
+        <Setter Property="Padding"          Value="14,0"/>
+        <Setter Property="Height"           Value="50"/>
+        <Setter Property="CornerRadius"     Value="{DynamicResource InputCornerRadius}"/>
+        <Setter Property="Cursor"           Value="Hand"/>
+    </Style>
+
+    <Style Selector="ComboBox.PastelComboBox:focus">
+        <Setter Property="BorderBrush" Value="{DynamicResource PastelPrimary}"/>
+    </Style>
+
+    <Style Selector="ComboBox.PastelComboBox:pointerover">
+        <Setter Property="BorderBrush" Value="{DynamicResource PastelPrimary}"/>
+    </Style>
+
+    <!-- =========================================================
+         Slider PastelSlider
+         ========================================================= -->
+    <Style Selector="Slider.PastelSlider">
+        <Setter Property="Foreground" Value="{DynamicResource PastelPrimary}"/>
+        <Setter Property="Minimum"    Value="0"/>
+        <Setter Property="Maximum"    Value="1"/>
+    </Style>
+
+</Styles>
