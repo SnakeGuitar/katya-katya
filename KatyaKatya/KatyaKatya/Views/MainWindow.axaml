@@ -26,10 +26,10 @@
         <Border Name="ResizeS"  Height="6" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="Transparent" Cursor="SizeNorthSouth" ZIndex="200"/>
         <Border Name="ResizeW"  Width="6"  HorizontalAlignment="Left"  VerticalAlignment="Stretch"  Background="Transparent" Cursor="SizeWestEast"   ZIndex="200"/>
         <Border Name="ResizeE"  Width="6"  HorizontalAlignment="Right" VerticalAlignment="Stretch"  Background="Transparent" Cursor="SizeWestEast"   ZIndex="200"/>
-        <Border Name="ResizeNW" Width="12" Height="12" HorizontalAlignment="Left"  VerticalAlignment="Top"    Background="Transparent" Cursor="SizeNorthwestSoutheast" ZIndex="201"/>
-        <Border Name="ResizeNE" Width="12" Height="12" HorizontalAlignment="Right" VerticalAlignment="Top"    Background="Transparent" Cursor="SizeNortheastSouthwest" ZIndex="201"/>
-        <Border Name="ResizeSW" Width="12" Height="12" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Background="Transparent" Cursor="SizeNortheastSouthwest" ZIndex="201"/>
-        <Border Name="ResizeSE" Width="12" Height="12" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Transparent" Cursor="SizeNorthwestSoutheast" ZIndex="201"/>
+        <Border Name="ResizeNW" Width="12" Height="12" HorizontalAlignment="Left"  VerticalAlignment="Top"    Background="Transparent" Cursor="TopLeftCorner"     ZIndex="201"/>
+        <Border Name="ResizeNE" Width="12" Height="12" HorizontalAlignment="Right" VerticalAlignment="Top"    Background="Transparent" Cursor="TopRightCorner"    ZIndex="201"/>
+        <Border Name="ResizeSW" Width="12" Height="12" HorizontalAlignment="Left"  VerticalAlignment="Bottom" Background="Transparent" Cursor="BottomLeftCorner"  ZIndex="201"/>
+        <Border Name="ResizeSE" Width="12" Height="12" HorizontalAlignment="Right" VerticalAlignment="Bottom" Background="Transparent" Cursor="BottomRightCorner" ZIndex="201"/>
 
     <Border Name="MainWindowBorder"
             Background="{DynamicResource PastelBackground}"
