@@ -182,7 +182,8 @@
                         CornerRadius="{TemplateBinding CornerRadius}"
                         Padding="{TemplateBinding Padding}">
                     <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                      VerticalAlignment="Center"/>
+                                      VerticalAlignment="Center"
+                                      Foreground="{TemplateBinding Foreground}"/>
                 </Border>
             </ControlTemplate>
         </Setter>
@@ -294,25 +295,33 @@
     <Style Selector="Button.TrafficLight">
         <Setter Property="Width"           Value="14"/>
         <Setter Property="Height"          Value="14"/>
+        <Setter Property="MinWidth"        Value="0"/>
+        <Setter Property="MinHeight"       Value="0"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Cursor"          Value="Hand"/>
         <Setter Property="Padding"         Value="0"/>
-        <Setter Property="CornerRadius"    Value="7"/>
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Name="Btn"
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="7"
-                        Width="14" Height="14">
+                <Panel Width="14" Height="14">
+                    <Ellipse Name="Dot" Fill="{TemplateBinding Background}"/>
                     <TextBlock Name="Icon"
-                               Foreground="#44000000"
+                               Text=""
+                               Foreground="#55000000"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               FontSize="10"
+                               FontSize="7"
                                IsVisible="False"/>
-                </Border>
+                </Panel>
             </ControlTemplate>
         </Setter>
+    </Style>
+
+    <Style Selector="Button.TrafficLight:pointerover /template/ Ellipse#Dot">
+        <Setter Property="Opacity" Value="0.75"/>
+    </Style>
+
+    <Style Selector="Button.TrafficLight:pressed /template/ Ellipse#Dot">
+        <Setter Property="Opacity" Value="0.5"/>
     </Style>
 
     <!-- =========================================================
