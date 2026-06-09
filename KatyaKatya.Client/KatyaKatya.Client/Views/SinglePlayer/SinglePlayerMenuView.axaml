@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.SinglePlayer"
+             xmlns:loc="using:KatyaKatya.Localization"
              x:Class="KatyaKatya.Views.SinglePlayer.SinglePlayerMenuView"
              x:DataType="vm:SinglePlayerMenuViewModel">
 
@@ -8,109 +9,97 @@
         <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
                Stretch="UniformToFill" IsHitTestVisible="False"/>
 
-        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Width="680">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="16"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="24"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Width="680" RowDefinitions="Auto,16,Auto,24,Auto">
             <TextBlock Grid.Row="0"
-                       Text="Single Player"
+                       Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Singleplayer]}"
                        Classes="PastelHeading"
                        HorizontalAlignment="Center"/>
 
-            <!-- Difficulty + custom settings card -->
             <Border Grid.Row="2"
                     Classes="LiquidGlassCard"
                     Padding="32,28">
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="28"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Difficulty selector -->
+                <Grid ColumnDefinitions="*,28,*">
                     <StackPanel Grid.Column="0" Spacing="0">
-                        <TextBlock Text="Select Difficulty"
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_SelectDifficulty]}"
                                    Classes="PastelTextBlock"
-                                   FontWeight="SemiBold" FontSize="15"
+                                   FontWeight="SemiBold"
+                                   FontSize="15"
                                    Foreground="{DynamicResource PastelPrimary}"
                                    Margin="0,0,0,14"/>
 
-                        <!-- Easy -->
                         <Button Command="{Binding SelectEasyCommand}"
-                                Height="56" Margin="0,0,0,10"
-                                HorizontalContentAlignment="Left" Padding="16,0"
-                                Classes="PastelButton">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
-                                <TextBlock Text="🟢" FontSize="16" VerticalAlignment="Center"/>
+                                Classes="DifficultyButton"
+                                Classes.selected="{Binding IsEasy}"
+                                Margin="0,0,0,10">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
+                                <TextBlock Text="E" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
                                 <StackPanel Spacing="0">
-                                    <TextBlock Text="Easy" FontSize="15" FontFamily="{DynamicResource DefaultFont}"/>
-                                    <TextBlock Text="4×4 cards · No timer" FontSize="11" Opacity="0.7" FontFamily="{DynamicResource DefaultFont}"/>
+                                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Button_Easy]}"
+                                               FontSize="15" FontFamily="{DynamicResource DefaultFont}"/>
+                                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_Easy_Desc]}"
+                                               FontSize="11" Opacity="0.7" FontFamily="{DynamicResource DefaultFont}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Button>
 
-                        <!-- Medium -->
                         <Button Command="{Binding SelectMediumCommand}"
-                                Height="56" Margin="0,0,0,10"
-                                HorizontalContentAlignment="Left" Padding="16,0"
-                                Classes="PastelButton">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
-                                <TextBlock Text="🟡" FontSize="16" VerticalAlignment="Center"/>
+                                Classes="DifficultyButton"
+                                Classes.selected="{Binding IsMedium}"
+                                Margin="0,0,0,10">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
+                                <TextBlock Text="M" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
                                 <StackPanel Spacing="0">
-                                    <TextBlock Text="Medium" FontSize="15" FontFamily="{DynamicResource DefaultFont}"/>
-                                    <TextBlock Text="4×6 cards · 30s timer" FontSize="11" Opacity="0.7" FontFamily="{DynamicResource DefaultFont}"/>
+                                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Button_Medium]}"
+                                               FontSize="15" FontFamily="{DynamicResource DefaultFont}"/>
+                                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_Medium_Desc]}"
+                                               FontSize="11" Opacity="0.7" FontFamily="{DynamicResource DefaultFont}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Button>
 
-                        <!-- Hard -->
                         <Button Command="{Binding SelectHardCommand}"
-                                Height="56" Margin="0,0,0,10"
-                                HorizontalContentAlignment="Left" Padding="16,0"
-                                Classes="PastelButton">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
-                                <TextBlock Text="🔴" FontSize="16" VerticalAlignment="Center"/>
+                                Classes="DifficultyButton"
+                                Classes.selected="{Binding IsHard}"
+                                Margin="0,0,0,10">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
+                                <TextBlock Text="H" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
                                 <StackPanel Spacing="0">
-                                    <TextBlock Text="Hard" FontSize="15" FontFamily="{DynamicResource DefaultFont}"/>
-                                    <TextBlock Text="6×6 cards · 20s timer" FontSize="11" Opacity="0.7" FontFamily="{DynamicResource DefaultFont}"/>
+                                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Button_Hard]}"
+                                               FontSize="15" FontFamily="{DynamicResource DefaultFont}"/>
+                                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_Hard_Desc]}"
+                                               FontSize="11" Opacity="0.7" FontFamily="{DynamicResource DefaultFont}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Button>
 
-                        <!-- Custom -->
                         <Button Command="{Binding SelectCustomCommand}"
-                                Height="56"
-                                HorizontalContentAlignment="Left" Padding="16,0"
-                                Classes="PastelButton">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
-                                <TextBlock Text="⚙️" FontSize="16" VerticalAlignment="Center"/>
+                                Classes="DifficultyButton"
+                                Classes.selected="{Binding IsCustomMode}">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
+                                <TextBlock Text="C" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
                                 <StackPanel Spacing="0">
-                                    <TextBlock Text="Custom" FontSize="15" FontFamily="{DynamicResource DefaultFont}"/>
-                                    <TextBlock Text="Choose your settings" FontSize="11" Opacity="0.7" FontFamily="{DynamicResource DefaultFont}"/>
+                                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Button_Custom]}"
+                                               FontSize="15" FontFamily="{DynamicResource DefaultFont}"/>
+                                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_Custom_Desc]}"
+                                               FontSize="11" Opacity="0.7" FontFamily="{DynamicResource DefaultFont}"/>
                                 </StackPanel>
                             </StackPanel>
                         </Button>
                     </StackPanel>
 
-                    <!-- Right: custom settings -->
                     <StackPanel Grid.Column="2"
                                 IsVisible="{Binding IsCustomMode}"
                                 Spacing="0">
-                        <TextBlock Text="Custom Settings"
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_CustomSettings]}"
                                    Classes="PastelTextBlock"
-                                   FontWeight="SemiBold" FontSize="15"
+                                   FontWeight="SemiBold"
+                                   FontSize="15"
                                    Foreground="{DynamicResource PastelPrimary}"
                                    Margin="0,0,0,14"/>
 
                         <TextBlock Classes="PastelTextBlock" FontSize="13" Margin="0,0,0,6">
-                            <Run Text="Card count: "/>
+                            <Run Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_CardCount]}"/>
+                            <Run Text=": "/>
                             <Run Text="{Binding CustomCardCount}" FontWeight="SemiBold"/>
                         </TextBlock>
                         <ComboBox ItemsSource="{Binding CustomCardCountOptions}"
@@ -119,18 +108,20 @@
                                   Margin="0,0,0,18"/>
 
                         <CheckBox IsChecked="{Binding CustomNoTimeLimit}"
-                                  Content="No time limit"
+                                  Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_NoTimeLimit]}"
                                   Foreground="{DynamicResource PastelText}"
                                   FontFamily="{DynamicResource DefaultFont}"
                                   Margin="0,0,0,12"/>
 
                         <StackPanel IsVisible="{Binding ShowCustomTurnTime}" Spacing="0">
                             <TextBlock Classes="PastelTextBlock" FontSize="13" Margin="0,0,0,6">
-                                <Run Text="Turn time: "/>
+                                <Run Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_TurnTime]}"/>
+                                <Run Text=": "/>
                                 <Run Text="{Binding CustomTurnTime}" FontWeight="SemiBold"/>
                                 <Run Text="s"/>
                             </TextBlock>
-                            <Slider Minimum="5" Maximum="120"
+                            <Slider Minimum="5"
+                                    Maximum="120"
                                     Value="{Binding CustomTurnTime}"
                                     TickFrequency="5"
                                     IsSnapToTickEnabled="True"
@@ -139,34 +130,34 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <!-- Right: preview for standard difficulties -->
                     <StackPanel Grid.Column="2"
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
                                 IsVisible="{Binding !IsCustomMode}"
                                 Spacing="16">
-                        <TextBlock Text="🃏" FontSize="52" HorizontalAlignment="Center"/>
-                        <TextBlock Text="Select a difficulty to start"
+                        <TextBlock Text="Cards" FontSize="30" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_SelectDifficulty]}"
                                    Classes="PastelTextBlock"
-                                   FontSize="14" Opacity="0.6"
+                                   FontSize="14"
+                                   Opacity="0.6"
                                    HorizontalAlignment="Center"
                                    TextAlignment="Center"/>
                     </StackPanel>
                 </Grid>
             </Border>
 
-            <!-- Action buttons -->
             <StackPanel Grid.Row="4"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         Spacing="24">
                 <Button Classes="LinkButton"
                         Command="{Binding GoBackCommand}"
-                        Content="← Back"/>
+                        Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"/>
                 <Button Classes="PastelButton"
                         Command="{Binding StartGameCommand}"
-                        Content="Play"
-                        Height="44" Padding="32,0"
+                        Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Play]}"
+                        Height="44"
+                        Padding="32,0"
                         FontSize="15"/>
             </StackPanel>
         </Grid>

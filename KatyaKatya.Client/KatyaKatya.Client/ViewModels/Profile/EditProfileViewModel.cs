@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KatyaKatya.Helpers;
+using KatyaKatya.Localization;
 using KatyaKatya.Models;
 using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Services.Network;
@@ -23,6 +24,7 @@ public partial class EditProfileViewModel : ObservableObject
     private readonly HubService _hub;
     private readonly ProfileLoader _profileLoader;
     private readonly IProfileService _profileService;
+    private readonly IFilePickerService _filePicker;
 
     [ObservableProperty] private bool _isLoading;
     [ObservableProperty] private string? _errorMessage;
@@ -51,7 +53,8 @@ public partial class EditProfileViewModel : ObservableObject
         IProfileService profileService,
         IDialogService dialog,
         HubService hub,
-        ProfileLoader profileLoader)
+        ProfileLoader profileLoader,
+        IFilePickerService filePicker)
     {
         _navigation = navigation;
         _session = session;
@@ -59,6 +62,7 @@ public partial class EditProfileViewModel : ObservableObject
         _dialog = dialog;
         _hub = hub;
         _profileLoader = profileLoader;
+        _filePicker = filePicker;
 
         _ = LoadProfileDataAsync();
     }
@@ -85,8 +89,8 @@ public partial class EditProfileViewModel : ObservableObject
         }
         catch (Exception)
         {
-            ErrorMessage = "Failed to load profile data.";
-            _dialog.ShowMessage(ErrorMessage, "Error", DialogButton.OK, DialogIcon.Error);
+            ErrorMessage = LocalizationManager.Instance["Error_UNKNOWN"];
+            _dialog.ShowMessage(ErrorMessage, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {
@@ -95,6 +99,16 @@ public partial class EditProfileViewModel : ObservableObject
     }
 
     // ── Avatar ──────────────────────────────────────────────
+
+    [RelayCommand]
+    private async Task ChangeAvatarAsync()
+    {
+        var picked = await _filePicker.PickImageAsync();
+        if (picked is null)
+            return;
+
+        await UpdateAvatarDirectAsync(picked.Bytes);
+    }
 
     public async Task UpdateAvatarDirectAsync(byte[] bytes)
     {
@@ -105,17 +119,20 @@ public partial class EditProfileViewModel : ObservableObject
             if (result.IsSuccess)
             {
                 AvatarBytes = bytes;
-                _dialog.ShowMessage("Avatar updated successfully!", "Success", DialogButton.OK, DialogIcon.Information);
+                _dialog.ShowMessage(LocalizationManager.Instance["EditProfile_Message_AvatarUpdated"],
+                    LocalizationManager.Instance["Global_Title_Success"], DialogButton.OK, DialogIcon.Information);
             }
             else
             {
                 var errMsg = ErrorResolver.Resolve(result.ErrorCode);
-                _dialog.ShowMessage(errMsg, "Error", DialogButton.OK, DialogIcon.Error);
+                _dialog.ShowMessage(errMsg, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
             }
         }
         catch (Exception ex)
         {
-            _dialog.ShowMessage($"Failed to update avatar: {ex.Message}", "Error", DialogButton.OK, DialogIcon.Error);
+            System.Diagnostics.Debug.WriteLine($"[EditProfile] Avatar update failed: {ex.Message}");
+            _dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
+                LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {
@@ -133,7 +150,8 @@ public partial class EditProfileViewModel : ObservableObject
 
         if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(last))
         {
-            _dialog.ShowMessage("First Name and Last Name are required.", "Warning", DialogButton.OK, DialogIcon.Warning);
+            _dialog.ShowMessage(LocalizationManager.Instance["Validation_Required"],
+                LocalizationManager.Instance["Global_Title_Warning"], DialogButton.OK, DialogIcon.Warning);
             return;
         }
 
@@ -143,17 +161,20 @@ public partial class EditProfileViewModel : ObservableObject
             var result = await _profileService.UpdatePersonalInfoAsync(name, last);
             if (result.IsSuccess)
             {
-                _dialog.ShowMessage("Personal info updated successfully!", "Success", DialogButton.OK, DialogIcon.Information);
+                _dialog.ShowMessage(LocalizationManager.Instance["EditProfile_Message_InfoUpdated"],
+                    LocalizationManager.Instance["Global_Title_Success"], DialogButton.OK, DialogIcon.Information);
             }
             else
             {
                 var errMsg = ErrorResolver.Resolve(result.ErrorCode);
-                _dialog.ShowMessage(errMsg, "Error", DialogButton.OK, DialogIcon.Error);
+                _dialog.ShowMessage(errMsg, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
             }
         }
         catch (Exception ex)
         {
-            _dialog.ShowMessage($"An error occurred: {ex.Message}", "Error", DialogButton.OK, DialogIcon.Error);
+            System.Diagnostics.Debug.WriteLine($"[EditProfile] Personal info update failed: {ex.Message}");
+            _dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
+                LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {
@@ -177,17 +198,20 @@ public partial class EditProfileViewModel : ObservableObject
             {
                 SocialNetworks.Add(result.Data);
                 NewSocialAccount = string.Empty;
-                _dialog.ShowMessage("Social account added successfully!", "Success", DialogButton.OK, DialogIcon.Information);
+                _dialog.ShowMessage(LocalizationManager.Instance["EditProfile_Message_SocialAdded"],
+                    LocalizationManager.Instance["Global_Title_Success"], DialogButton.OK, DialogIcon.Information);
             }
             else
             {
                 var errMsg = ErrorResolver.Resolve(result.ErrorCode);
-                _dialog.ShowMessage(errMsg, "Error", DialogButton.OK, DialogIcon.Error);
+                _dialog.ShowMessage(errMsg, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
             }
         }
         catch (Exception ex)
         {
-            _dialog.ShowMessage($"An error occurred: {ex.Message}", "Error", DialogButton.OK, DialogIcon.Error);
+            System.Diagnostics.Debug.WriteLine($"[EditProfile] Add social failed: {ex.Message}");
+            _dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
+                LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {
@@ -209,17 +233,20 @@ public partial class EditProfileViewModel : ObservableObject
                 {
                     SocialNetworks.Remove(item);
                 }
-                _dialog.ShowMessage("Social account removed successfully!", "Success", DialogButton.OK, DialogIcon.Information);
+                _dialog.ShowMessage(LocalizationManager.Instance["EditProfile_Message_SocialRemoved"],
+                    LocalizationManager.Instance["Global_Title_Success"], DialogButton.OK, DialogIcon.Information);
             }
             else
             {
                 var errMsg = ErrorResolver.Resolve(result.ErrorCode);
-                _dialog.ShowMessage(errMsg, "Error", DialogButton.OK, DialogIcon.Error);
+                _dialog.ShowMessage(errMsg, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
             }
         }
         catch (Exception ex)
         {
-            _dialog.ShowMessage($"An error occurred: {ex.Message}", "Error", DialogButton.OK, DialogIcon.Error);
+            System.Diagnostics.Debug.WriteLine($"[EditProfile] Remove social failed: {ex.Message}");
+            _dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
+                LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {
@@ -235,7 +262,8 @@ public partial class EditProfileViewModel : ObservableObject
         var username = NewUsername.Trim();
         if (string.IsNullOrWhiteSpace(username))
         {
-            _dialog.ShowMessage("Username is required.", "Warning", DialogButton.OK, DialogIcon.Warning);
+            _dialog.ShowMessage(LocalizationManager.Instance["Validation_Required"],
+                LocalizationManager.Instance["Global_Title_Warning"], DialogButton.OK, DialogIcon.Warning);
             return;
         }
 
@@ -247,7 +275,8 @@ public partial class EditProfileViewModel : ObservableObject
             var result = await _profileService.UpdateUsernameAsync(username);
             if (result.IsSuccess)
             {
-                _dialog.ShowMessage("Username updated successfully! Please log in again.", "Success", DialogButton.OK, DialogIcon.Information);
+                _dialog.ShowMessage(LocalizationManager.Instance["EditProfile_Message_UsernameUpdated"],
+                    LocalizationManager.Instance["Global_Title_Success"], DialogButton.OK, DialogIcon.Information);
                 await _hub.DisconnectAsync();
                 _session.EndSession();
                 _navigation.NavigateToRootWithFade<TitleScreenViewModel>();
@@ -255,12 +284,14 @@ public partial class EditProfileViewModel : ObservableObject
             else
             {
                 var errMsg = ErrorResolver.Resolve(result.ErrorCode);
-                _dialog.ShowMessage(errMsg, "Error", DialogButton.OK, DialogIcon.Error);
+                _dialog.ShowMessage(errMsg, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
             }
         }
         catch (Exception ex)
         {
-            _dialog.ShowMessage($"An error occurred: {ex.Message}", "Error", DialogButton.OK, DialogIcon.Error);
+            System.Diagnostics.Debug.WriteLine($"[EditProfile] Username update failed: {ex.Message}");
+            _dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
+                LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {
@@ -275,7 +306,8 @@ public partial class EditProfileViewModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(CurrentPassword) || string.IsNullOrWhiteSpace(NewPassword))
         {
-            _dialog.ShowMessage("Current Password and New Password are required.", "Warning", DialogButton.OK, DialogIcon.Warning);
+            _dialog.ShowMessage(LocalizationManager.Instance["Validation_Required"],
+                LocalizationManager.Instance["Global_Title_Warning"], DialogButton.OK, DialogIcon.Warning);
             return;
         }
 
@@ -285,19 +317,22 @@ public partial class EditProfileViewModel : ObservableObject
             var result = await _profileService.UpdatePasswordAsync(CurrentPassword, NewPassword);
             if (result.IsSuccess)
             {
-                _dialog.ShowMessage("Password updated successfully!", "Success", DialogButton.OK, DialogIcon.Information);
+                _dialog.ShowMessage(LocalizationManager.Instance["EditProfile_Message_PasswordUpdated"],
+                    LocalizationManager.Instance["Global_Title_Success"], DialogButton.OK, DialogIcon.Information);
                 CurrentPassword = string.Empty;
                 NewPassword = string.Empty;
             }
             else
             {
                 var errMsg = ErrorResolver.Resolve(result.ErrorCode);
-                _dialog.ShowMessage(errMsg, "Error", DialogButton.OK, DialogIcon.Error);
+                _dialog.ShowMessage(errMsg, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
             }
         }
         catch (Exception ex)
         {
-            _dialog.ShowMessage($"An error occurred: {ex.Message}", "Error", DialogButton.OK, DialogIcon.Error);
+            System.Diagnostics.Debug.WriteLine($"[EditProfile] Password update failed: {ex.Message}");
+            _dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
+                LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {

@@ -2,12 +2,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.SinglePlayer"
              xmlns:models="using:KatyaKatya.Models.Lobby"
+             xmlns:loc="using:KatyaKatya.Localization"
+             xmlns:controls="using:KatyaKatya.Controls"
              x:Class="KatyaKatya.Views.SinglePlayer.SinglePlayerGameView"
              x:DataType="vm:SinglePlayerGameViewModel">
 
     <Grid>
         <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
                Stretch="UniformToFill" IsHitTestVisible="False"/>
+
+        <controls:ParticleCanvas Name="ParticleCanvas"
+                                  ZIndex="250"
+                                  IsHitTestVisible="False"/>
 
         <Grid>
             <Grid.RowDefinitions>
@@ -36,11 +42,12 @@
                     <Button Grid.Column="0"
                             Classes="LinkButton"
                             Command="{Binding LeaveGameCommand}"
-                            Content="← Quit"
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Leave]}"
                             VerticalAlignment="Center"/>
 
                     <!-- Score -->
-                    <StackPanel Grid.Column="2"
+                    <StackPanel Name="StatsPanel"
+                                Grid.Column="2"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Spacing="0">
@@ -49,7 +56,7 @@
                                    FontSize="28"
                                    HorizontalAlignment="Center"
                                    Foreground="{DynamicResource PastelPrimary}"/>
-                        <TextBlock Text="Score"
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Score]}"
                                    Classes="PastelLabel"
                                    FontSize="11"
                                    HorizontalAlignment="Center"/>
@@ -65,7 +72,7 @@
                                    FontSize="28"
                                    HorizontalAlignment="Center"
                                    Foreground="{DynamicResource PastelPrimary}"/>
-                        <TextBlock Text="Turn"
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_TurnTime]}"
                                    Classes="PastelLabel"
                                    FontSize="11"
                                    HorizontalAlignment="Center"/>
@@ -155,11 +162,11 @@
                             Height="44"
                             Margin="0,0,0,10"
                             Command="{Binding PlayAgainCommand}"
-                            Content="Play Again"/>
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Button_PlayAgain]}"/>
                     <Button Classes="PastelButtonSecondary"
                             Height="44"
                             Command="{Binding CloseGameOverCommand}"
-                            Content="Back to Menu"/>
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"/>
                 </StackPanel>
             </Border>
         </Grid>

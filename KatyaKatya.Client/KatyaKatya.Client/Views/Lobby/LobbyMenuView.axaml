@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.Lobby"
+             xmlns:loc="using:KatyaKatya.Localization"
              x:Class="KatyaKatya.Views.Lobby.LobbyMenuView"
              x:DataType="vm:LobbyMenuViewModel">
 
@@ -34,10 +35,10 @@
                     HorizontalAlignment="Right" VerticalAlignment="Center"
                     Margin="0,0,24,0"
                     Command="{Binding CreateLobbyCommand}"
-                    Content="Host Lobby"/>
+                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_CreateGame]}"/>
 
             <TextBlock Grid.Row="1"
-                       Text="Multiplayer Lobbies"
+                       Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_PublicLobbies]}"
                        Classes="PastelHeading"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
@@ -58,14 +59,19 @@
 
                                     <StackPanel Grid.Column="0" Spacing="4">
                                         <TextBlock Classes="PastelTextBlock" FontWeight="SemiBold" FontSize="17">
-                                            <Run Text="Lobby by "/>
+                                            <Run Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_Host], Mode=OneWay}"/>
+                                            <Run Text=" "/>
                                             <Run Text="{Binding HostUsername}" FontWeight="Bold"/>
                                         </TextBlock>
                                         <TextBlock Classes="PastelLabel">
                                             <Run Text="{Binding CurrentPlayers}"/>
                                             <Run Text=" / "/>
                                             <Run Text="{Binding MaxPlayers}"/>
-                                            <Run Text=" players  ·  Code: "/>
+                                            <Run Text=" / "/>
+                                            <Run Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Players], Mode=OneWay}"/>
+                                            <Run Text="  "/>
+                                            <Run Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_GameCode], Mode=OneWay}"/>
+                                            <Run Text=": "/>
                                             <Run Text="{Binding GameCode}" FontWeight="SemiBold"/>
                                         </TextBlock>
                                     </StackPanel>
@@ -76,7 +82,7 @@
                                             IsEnabled="{Binding !IsFull}"
                                             Command="{Binding $parent[UserControl].DataContext.JoinPublicLobbyCommand}"
                                             CommandParameter="{Binding}"
-                                            Content="Join"/>
+                                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_JoinLobby]}"/>
                                 </Grid>
                             </Border>
                         </DataTemplate>

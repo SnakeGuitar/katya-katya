@@ -2,29 +2,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.MainMenu"
              xmlns:controls="using:KatyaKatya.Controls"
+             xmlns:loc="using:KatyaKatya.Localization"
              x:Class="KatyaKatya.Views.MainMenu.MainMenuView"
              x:DataType="vm:MainMenuViewModel">
 
     <Grid>
-        <!-- Full background with character -->
         <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/katya-main-background-only.png"
                Stretch="UniformToFill"
                IsHitTestVisible="False"/>
 
-        <!-- Left panel: logo + buttons -->
         <StackPanel HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Width="500">
 
-            <!-- Floating logo -->
-            <Image Source="avares://KatyaKatya/Resources/Images/Logos/logo-en.png"
+            <Image Source="{Binding LogoPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                    Height="280"
                    HorizontalAlignment="Center"
                    Stretch="Uniform"
                    Margin="0,0,0,20"
                    Classes="FloatingLogo"/>
 
-            <!-- Buttons card -->
             <Border Margin="60,0,60,0"
                     Classes="LiquidGlassCard"
                     Padding="0">
@@ -44,30 +41,29 @@
                         <Button Height="48" Margin="0,0,0,12"
                                 Classes="PastelButton"
                                 Command="{Binding GoToSingleplayerCommand}"
-                                Content="Single Player"/>
+                                Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Singleplayer]}"/>
 
                         <Button Height="48" Margin="0,0,0,12"
                                 Classes="PastelButton"
                                 Command="{Binding GoToMultiplayerCommand}"
-                                Content="Multiplayer"/>
+                                Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Multiplayer]}"/>
 
                         <Button Height="48" Margin="0,0,0,20"
                                 Classes="PastelButton"
                                 Command="{Binding GoToMoreCommand}"
-                                Content="More…"/>
+                                Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_More]}"/>
 
                         <Rectangle Classes="SectionDivider" Margin="20,0,20,4"/>
 
                         <Button HorizontalAlignment="Center"
                                 Classes="LinkButton"
                                 Command="{Binding LogoutCommand}"
-                                Content="Logout"/>
+                                Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Logout]}"/>
                     </StackPanel>
                 </Border>
             </Border>
         </StackPanel>
 
-        <!-- Katya character (right-bottom, clickable) -->
         <controls:AlphaHitTestButton HorizontalAlignment="Right"
                                      VerticalAlignment="Bottom"
                                      Background="Transparent"

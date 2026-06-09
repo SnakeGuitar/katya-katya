@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.Session"
+             xmlns:loc="using:KatyaKatya.Localization"
              x:Class="KatyaKatya.Views.Session.LoginView"
              x:DataType="vm:LoginViewModel">
 
@@ -15,7 +16,6 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Logo left -->
             <Image Grid.Column="0"
                    Source="{Binding LogoPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                    Width="280" Height="280"
@@ -24,7 +24,6 @@
                    Margin="40,0,0,0"
                    Stretch="Uniform"/>
 
-            <!-- Login card right -->
             <Border Grid.Column="1"
                     Classes="LiquidGlassCard"
                     Width="360"
@@ -34,19 +33,19 @@
                     Margin="0,0,40,0">
 
                 <StackPanel Spacing="0">
-                    <TextBlock Text="Login"
+                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Login]}"
                                Classes="PastelHeading"
                                HorizontalAlignment="Center"
                                Margin="0,0,0,24"/>
 
-                    <TextBlock Text="Username"
+                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Session_Field_Username]}"
                                Classes="PastelLabel"
                                Margin="0,0,0,6"/>
                     <TextBox Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Classes="PastelTextBox"
                              Margin="0,0,0,16"/>
 
-                    <TextBlock Text="Password"
+                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Session_Field_Password]}"
                                Classes="PastelLabel"
                                Margin="0,0,0,6"/>
                     <TextBox Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -63,12 +62,12 @@
                             Classes="PastelButton"
                             Command="{Binding LoginCommand}"
                             IsEnabled="{Binding !IsLoading}"
-                            Content="Login"/>
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Login]}"/>
 
                     <Button HorizontalAlignment="Center"
                             Classes="LinkButton"
                             Command="{Binding GoBackCommand}"
-                            Content="← Back"/>
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"/>
                 </StackPanel>
             </Border>
         </Grid>

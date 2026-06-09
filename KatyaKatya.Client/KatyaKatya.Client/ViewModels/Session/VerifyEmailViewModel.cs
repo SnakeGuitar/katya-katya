@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KatyaKatya.Localization;
 using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Services.Network;
 
@@ -39,13 +40,13 @@ public partial class VerifyEmailViewModel : ObservableObject
 
         if (!result.IsSuccess)
         {
-            ErrorMessage = result.ErrorMessage ?? "Verification failed.";
+            ErrorMessage = result.ErrorMessage ?? LocalizationManager.Instance["Error_UNKNOWN"];
             return;
         }
 
         if (!result.Data!.Valid)
         {
-            ErrorMessage = "Invalid PIN. Please check your email.";
+            ErrorMessage = LocalizationManager.Instance["Error_AUTH_PIN_INVALID"];
             return;
         }
 
@@ -62,7 +63,7 @@ public partial class VerifyEmailViewModel : ObservableObject
         PinResentMessage = null;
         var result = await _api.PostAsync("api/auth/resend-verification", new { Email });
         if (result.IsSuccess)
-            PinResentMessage = "PIN sent! Check your email.";
+            PinResentMessage = LocalizationManager.Instance["VerifyEmail_PinResentMessage"];
     }
 
     [RelayCommand]

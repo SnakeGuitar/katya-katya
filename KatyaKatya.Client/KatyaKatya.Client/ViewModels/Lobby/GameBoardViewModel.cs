@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KatyaKatya.Localization;
 using KatyaKatya.Models.Lobby;
 using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Services.Network;
@@ -247,7 +248,7 @@ public partial class GameBoardViewModel : ObservableObject
 
             string title;
             if (string.IsNullOrEmpty(winner))
-                title = "Tie!";
+                title = LocalizationManager.Instance["MatchSummary_Label_Tie"];
             else
                 title = $"{winner} wins!";
 
@@ -267,7 +268,7 @@ public partial class GameBoardViewModel : ObservableObject
 
         Dispatcher.UIThread.Invoke(() =>
         {
-            string formatted = isSystem ? $"⸻ {message} ⸻" : $"{sender}: {message}";
+            string formatted = isSystem ? $"- {message} -" : $"{sender}: {message}";
             ChatMessages.Add(formatted);
 
             while (ChatMessages.Count > MaxChatMessages)
@@ -283,7 +284,7 @@ public partial class GameBoardViewModel : ObservableObject
 
         Dispatcher.UIThread.Invoke(() =>
         {
-            string msg = $"⸻ {username} left the game ⸻";
+            string msg = $"- {username} left the game -";
             ChatMessages.Add(msg);
             ScrollChatToBottom?.Invoke();
 
@@ -300,7 +301,11 @@ public partial class GameBoardViewModel : ObservableObject
         Dispatcher.UIThread.Invoke(() =>
         {
             UnsubscribeEvents();
-            _dialog.ShowMessage("You have been kicked.", "Information", DialogButton.OK, DialogIcon.Information);
+            _dialog.ShowMessage(
+                LocalizationManager.Instance["Lobby_Message_Kicked"],
+                LocalizationManager.Instance["Global_Title_Information"],
+                DialogButton.OK,
+                DialogIcon.Information);
             _navigation.NavigateToRoot<LobbyMenuViewModel>();
         });
     }
@@ -380,8 +385,8 @@ public partial class GameBoardViewModel : ObservableObject
         if (player is null || player.IsCurrentUser) return;
 
         var result = _dialog.ShowMessage(
-            $"Vote to kick {player.Username}?",
-            "Confirm",
+            LocalizationManager.Instance.Format("KickVote_Message_VoteKickPlayer", player.Username),
+            LocalizationManager.Instance["Global_Title_Confirm"],
             DialogButton.YesNo, DialogIcon.Question);
 
         if (result != DialogResult.Yes) return;
@@ -400,8 +405,8 @@ public partial class GameBoardViewModel : ObservableObject
     private async Task LeaveGameAsync()
     {
         var result = _dialog.ShowMessage(
-            "Are you sure you want to leave?",
-            "Confirm",
+            LocalizationManager.Instance["Lobby_Message_LeaveLobby"],
+            LocalizationManager.Instance["Global_Title_Confirm"],
             DialogButton.YesNo, DialogIcon.Question);
 
         if (result != DialogResult.Yes) return;

@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.Session"
+             xmlns:loc="using:KatyaKatya.Localization"
              x:Class="KatyaKatya.Views.Session.TitleScreenView"
              x:DataType="vm:TitleScreenViewModel">
 
@@ -30,18 +31,18 @@
                     Margin="0,0,0,16"
                     Classes="PastelButton"
                     Command="{Binding GoToLoginCommand}"
-                    Content="Login"/>
+                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Login]}"/>
 
             <Button Height="40"
                     Margin="0,0,0,16"
                     Classes="PastelButton"
                     Command="{Binding GoToRegisterCommand}"
-                    Content="Register"/>
+                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Register]}"/>
 
             <Button Height="34"
                     Classes="LinkButton"
                     Command="{Binding GoToGuestLoginCommand}"
-                    Content="Play as Guest"/>
+                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Session_Guest_Title]}"/>
         </StackPanel>
     </Grid>
 </UserControl>

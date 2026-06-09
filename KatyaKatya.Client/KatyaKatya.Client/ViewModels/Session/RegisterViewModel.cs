@@ -4,6 +4,7 @@ using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Services.Network;
 using KatyaKatya.Services.Core;
 using KatyaKatya.Helpers;
+using KatyaKatya.Localization;
 
 namespace KatyaKatya.ViewModels.Session;
 
@@ -37,7 +38,7 @@ public partial class RegisterViewModel : ObservableObject
     {
         if (Password != ConfirmPassword)
         {
-            ErrorMessage = "Passwords do not match.";
+            ErrorMessage = LocalizationManager.Instance["Session_Register_Error_PasswordMismatch"];
             return;
         }
 
@@ -55,12 +56,11 @@ public partial class RegisterViewModel : ObservableObject
 
         if (result.IsSuccess)
         {
-            // Navigate to email verification
-            _navigation.NavigateTo<TitleScreenViewModel>();
+            _navigation.NavigateTo<VerifyEmailViewModel>(vm => vm.Email = Email);
         }
         else
         {
-            ErrorMessage = result.ErrorMessage ?? "Registration failed.";
+            ErrorMessage = ErrorResolver.Resolve(result.ErrorCode);
         }
     }
 

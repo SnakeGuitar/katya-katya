@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.Session"
+             xmlns:loc="using:KatyaKatya.Localization"
              x:Class="KatyaKatya.Views.Session.GuestLoginView"
              x:DataType="vm:GuestLoginViewModel">
 
@@ -16,7 +17,7 @@
             </Grid.ColumnDefinitions>
 
             <Image Grid.Column="0"
-                   Source="avares://KatyaKatya/Resources/Images/Logos/logo-en.png"
+                   Source="{Binding LogoPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                    Width="280" Height="280"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
@@ -32,22 +33,22 @@
                     Margin="0,0,40,0">
 
                 <StackPanel Spacing="0">
-                    <TextBlock Text="Guest Play"
+                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Session_Guest_Title]}"
                                Classes="PastelHeading"
                                HorizontalAlignment="Center"
                                Margin="0,0,0,8"/>
 
-                    <TextBlock Text="Play without an account. Progress won't be saved."
+                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Session_Guest_Description]}"
                                Classes="PastelTextBlock"
                                TextAlignment="Center"
                                TextWrapping="Wrap"
                                FontSize="13"
                                Margin="0,0,0,24"/>
 
-                    <TextBlock Text="Username"
+                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Session_Field_Username]}"
                                Classes="PastelLabel"
                                Margin="0,0,0,6"/>
-                    <TextBox Text="{Binding Username}"
+                    <TextBox Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Classes="PastelTextBox"
                              Margin="0,0,0,16"/>
 
@@ -61,12 +62,12 @@
                             Classes="PastelButton"
                             Command="{Binding LoginAsGuestCommand}"
                             IsEnabled="{Binding !IsLoading}"
-                            Content="Play"/>
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Play]}"/>
 
                     <Button HorizontalAlignment="Center"
                             Classes="LinkButton"
                             Command="{Binding GoBackCommand}"
-                            Content="← Back"/>
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"/>
                 </StackPanel>
             </Border>
         </Grid>

@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KatyaKatya.Helpers;
+using KatyaKatya.Localization;
 using KatyaKatya.Services.Core;
 using KatyaKatya.Services.Interfaces;
 
@@ -15,7 +15,7 @@ public sealed record LanguageOption(string Code, string NativeName)
 }
 
 /// <summary>
-/// Settings view model — music, theme, language, and fullscreen toggle.
+/// Settings view model: music, theme, language, and fullscreen toggle.
 /// </summary>
 public partial class SettingsViewModel : ObservableObject
 {
@@ -28,10 +28,10 @@ public partial class SettingsViewModel : ObservableObject
     public static IReadOnlyList<LanguageOption> Languages { get; } =
     [
         new("en-US", "English"),
-        new("es-MX", "Español (México)"),
-        new("ja-JP", "日本語"),
-        new("zh-CN", "中文（简体）"),
-        new("ko-KR", "한국어"),
+        new("es-MX", "Espanol (Mexico)"),
+        new("ja-JP", "Japanese"),
+        new("zh-CN", "Chinese (Simplified)"),
+        new("ko-KR", "Korean"),
     ];
 
     public static IReadOnlyList<string> Themes { get; } = ["Pastel", "Sketch"];
@@ -67,18 +67,18 @@ public partial class SettingsViewModel : ObservableObject
 
     public IReadOnlyList<string> AvailableTracks => _music.Tracks;
     public string LogoPath => LogoResolver.Resolve(_settings.LanguageCode, _settings.ThemeName);
-    public string SettingsTitle => T("Settings", "Configuracion");
-    public string LanguageLabel => T("Language", "Idioma");
-    public string RestartLanguageLabel => T("* Restart to apply language change", "* Reinicia para aplicar el idioma");
-    public string ThemeLabel => T("Theme", "Tema");
-    public string MusicLabel => T("Music", "Musica");
-    public string FullscreenLabel => T("Fullscreen", "Pantalla completa");
-    public string BackLabel => T("< Back", "< Volver");
+    public string SettingsTitle => LocalizationManager.Instance["Settings_Title"];
+    public string LanguageLabel => LocalizationManager.Instance["Settings_Language"];
+    public string RestartLanguageLabel => LocalizationManager.Instance["Settings_RestartLanguage"];
+    public string ThemeLabel => LocalizationManager.Instance["Settings_Theme"];
+    public string MusicLabel => LocalizationManager.Instance["Settings_Music"];
+    public string FullscreenLabel => LocalizationManager.Instance["Settings_Fullscreen"];
+    public string BackLabel => $"< {LocalizationManager.Instance["Settings_Back"]}";
 
     partial void OnSelectedLanguageChanged(LanguageOption value)
     {
         _settings.LanguageCode = value.Code;
-        CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(value.Code);
+        LocalizationManager.Instance.SetCulture(value.Code);
         LanguageChanged = true;
         NotifyLocalizedProperties();
     }
@@ -87,16 +87,13 @@ public partial class SettingsViewModel : ObservableObject
     partial void OnMusicVolumeChanged(double value) => _music.Volume = value;
     partial void OnSelectedTrackIndexChanged(int value) => _music.CurrentTrackIndex = value;
     partial void OnIsFullscreenChanged(bool value) => _window.SetFullscreen(value);
-    
+
     partial void OnSelectedThemeChanged(string value)
     {
         _settings.ThemeName = value;
         _theme.ApplyTheme(value);
         OnPropertyChanged(nameof(LogoPath));
     }
-
-    private string T(string en, string es)
-        => _settings.LanguageCode.StartsWith("es", StringComparison.OrdinalIgnoreCase) ? es : en;
 
     private void NotifyLocalizedProperties()
     {

@@ -5,6 +5,7 @@ using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Services.Network;
 using KatyaKatya.Services.Core;
 using KatyaKatya.Helpers;
+using KatyaKatya.Localization;
 using KatyaKatya.ViewModels.MainMenu;
 
 namespace KatyaKatya.ViewModels.Session;
@@ -41,14 +42,14 @@ public partial class LoginViewModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            ErrorMessage = "Please fill in all fields.";
+            ErrorMessage = LocalizationManager.Instance["Session_Login_Error_Required"];
             return;
         }
 
         IsLoading = true;
         ErrorMessage = string.Empty;
 
-        var result = await _api.PostAsync<LoginResponse>("api/auth/login", new { username = Username, password = Password });
+        var result = await _api.PostAsync<AuthResponse>("api/auth/login", new { username = Username, password = Password });
 
         IsLoading = false;
 
@@ -56,10 +57,10 @@ public partial class LoginViewModel : ObservableObject
         {
             _session.StartSession(new UserSession
             {
-                UserId = result.Data.UserId,
-                Username = result.Data.Username,
-                Email = result.Data.Email,
-                IsGuest = result.Data.IsGuest,
+                UserId = result.Data.User.Id,
+                Username = result.Data.User.Username,
+                Email = result.Data.User.Email,
+                IsGuest = result.Data.User.IsGuest,
                 AccessToken = result.Data.AccessToken,
                 RefreshToken = result.Data.RefreshToken
             });
@@ -69,7 +70,7 @@ public partial class LoginViewModel : ObservableObject
         }
         else
         {
-            ErrorMessage = result.ErrorMessage ?? "Login failed.";
+            ErrorMessage = ErrorResolver.Resolve(result.ErrorCode);
         }
     }
 
@@ -77,4 +78,3 @@ public partial class LoginViewModel : ObservableObject
     private void GoBack() => _navigation.GoBack();
 }
 
-internal record LoginResponse(int UserId, string Username, string Email, bool IsGuest, string AccessToken, string RefreshToken);

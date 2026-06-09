@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.Profile"
              xmlns:conv="using:KatyaKatya.Converters"
+             xmlns:loc="using:KatyaKatya.Localization"
              x:Class="KatyaKatya.Views.Profile.EditProfileView"
              x:DataType="vm:EditProfileViewModel">
 
@@ -22,7 +23,6 @@
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
 
-            <!-- Back button -->
             <Button Grid.Row="1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
@@ -37,121 +37,187 @@
                        Stretch="Uniform" Margin="14"/>
             </Button>
 
-            <!-- Title -->
             <TextBlock Grid.Row="1"
-                       Text="Edit Profile"
+                       Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_EditProfile]}"
                        Classes="PastelHeading"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
 
-            <!-- Content -->
-            <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled">
-                <StackPanel HorizontalAlignment="Center" MaxWidth="680" Margin="24" Spacing="20">
+            <ScrollViewer Grid.Row="2"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <StackPanel HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            Margin="20,20,20,40">
 
-                    <!-- Avatar -->
-                    <Border Classes="LiquidGlassCard" Padding="28,24">
-                        <StackPanel Orientation="Horizontal" Spacing="24" VerticalAlignment="Center">
-                            <Border Width="100" Height="100"
-                                    CornerRadius="50"
-                                    BorderBrush="{DynamicResource PastelPrimary}"
-                                    BorderThickness="3"
-                                    ClipToBounds="True"
-                                    Background="#10C84747">
-                                <Grid>
-                                    <TextBlock Text="👤" FontSize="38"
-                                               HorizontalAlignment="Center" VerticalAlignment="Center"
-                                               IsVisible="{Binding AvatarBytes, Converter={x:Static ObjectConverters.IsNull}}"/>
-                                    <Image Source="{Binding AvatarBytes, Converter={StaticResource ByteArrayToBitmap}}"
-                                           Stretch="UniformToFill"
-                                           IsVisible="{Binding AvatarBytes, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                    <Border Classes="LiquidGlassCard"
+                            Padding="56,42"
+                            Width="860">
+                        <Grid ColumnDefinitions="*,56,*">
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Avatar]}"
+                                           Classes="PastelLabel"
+                                           Margin="0,0,0,12"/>
+
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            Margin="0,0,0,12"
+                                            Spacing="16">
+                                    <Border Width="90" Height="90"
+                                            CornerRadius="45"
+                                            BorderBrush="{DynamicResource PastelPrimary}"
+                                            BorderThickness="2"
+                                            ClipToBounds="True"
+                                            Background="#10C84747">
+                                        <Grid>
+                                            <TextBlock Text="AV"
+                                                       FontSize="24"
+                                                       FontWeight="Bold"
+                                                       Foreground="{DynamicResource PastelPrimary}"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"
+                                                       IsVisible="{Binding AvatarBytes, Converter={x:Static ObjectConverters.IsNull}}"/>
+                                            <Image Source="{Binding AvatarBytes, Converter={StaticResource ByteArrayToBitmap}}"
+                                                   Stretch="UniformToFill"
+                                                   IsVisible="{Binding AvatarBytes, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                                        </Grid>
+                                    </Border>
+
+                                    <Button VerticalAlignment="Center"
+                                            Classes="PastelButtonSecondary"
+                                            Padding="16,6"
+                                            Command="{Binding ChangeAvatarCommand}"
+                                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Button_ChangeAvatar]}"/>
+                                </StackPanel>
+
+                                <Rectangle Classes="SectionDivider" Margin="0,22,0,22"/>
+
+                                <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_PersonalInfo]}"
+                                           Classes="PastelLabel"
+                                           Margin="0,0,0,12"/>
+
+                                <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Label_Name]}"
+                                           Classes="PastelLabel"
+                                           Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding FirstName}"
+                                         Classes="PastelTextBox"
+                                         Margin="0,0,0,12"/>
+
+                                <TextBlock Text="Last Name"
+                                           Classes="PastelLabel"
+                                           Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding LastName}"
+                                         Classes="PastelTextBox"
+                                         Margin="0,0,0,16"/>
+
+                                <TextBlock Text="{Binding ErrorMessage}"
+                                           Classes="PastelErrorText"
+                                           Margin="0,0,0,12"
+                                           IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+
+                                <Button Classes="PastelButton"
+                                        Padding="20,8"
+                                        HorizontalAlignment="Right"
+                                        Command="{Binding UpdatePersonalInfoCommand}"
+                                        IsEnabled="{Binding !IsLoading}"
+                                        Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Update]}"
+                                        Width="150"/>
+
+                                <Rectangle Classes="SectionDivider" Margin="0,22,0,22"/>
+
+                                <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Label_SocialNetworks]}"
+                                           Classes="PastelLabel"
+                                           Margin="0,0,0,12"/>
+
+                                <ItemsControl ItemsSource="{Binding SocialNetworks}"
+                                              Margin="0,0,0,12">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,0,0,8" ColumnDefinitions="*,Auto">
+                                                <TextBlock Grid.Column="0"
+                                                           Text="{Binding Account}"
+                                                           Classes="PastelTextBlock"
+                                                           Foreground="{DynamicResource PastelPrimary}"
+                                                           VerticalAlignment="Center"
+                                                           TextTrimming="CharacterEllipsis"/>
+                                                <Button Grid.Column="1"
+                                                        Content="x"
+                                                        Classes="PastelButtonDanger"
+                                                        Width="30" Height="28"
+                                                        Padding="0"
+                                                        FontSize="11"
+                                                        Command="{Binding $parent[UserControl].DataContext.RemoveSocialCommand}"
+                                                        CommandParameter="{Binding Id}"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <Grid ColumnDefinitions="*,Auto">
+                                    <TextBox Grid.Column="0"
+                                             Text="{Binding NewSocialAccount}"
+                                             Classes="PastelTextBox"
+                                             Margin="0,0,8,0"/>
+                                    <Button Grid.Column="1"
+                                            Content="+"
+                                            Classes="PastelButton"
+                                            Width="40"
+                                            Padding="0"
+                                            FontSize="18"
+                                            Command="{Binding AddSocialCommand}"/>
                                 </Grid>
-                            </Border>
-                            <StackPanel VerticalAlignment="Center" Spacing="4">
-                                <TextBlock Text="Profile Photo"
-                                           Classes="PastelTextBlock" FontWeight="SemiBold"/>
-                                <TextBlock Text="Use the avatar picker during registration to set your photo."
-                                           Classes="PastelLabel" FontSize="12"
-                                           TextWrapping="Wrap" MaxWidth="360"/>
                             </StackPanel>
-                        </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_ChangeUsername]}"
+                                           Classes="PastelLabel"
+                                           Margin="0,0,0,12"/>
+
+                                <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_NewUsername]}"
+                                           Classes="PastelLabel"
+                                           Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding NewUsername}"
+                                         Classes="PastelTextBox"
+                                         Margin="0,0,0,16"/>
+
+                                <Button Classes="PastelButton"
+                                        Padding="20,8"
+                                        HorizontalAlignment="Right"
+                                        Command="{Binding UpdateUsernameCommand}"
+                                        IsEnabled="{Binding !IsLoading}"
+                                        Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Update]}"
+                                        Width="150"/>
+
+                                <Rectangle Classes="SectionDivider" Margin="0,22,0,22"/>
+
+                                <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Button_UpdatePassword]}"
+                                           Classes="PastelLabel"
+                                           Margin="0,0,0,12"/>
+
+                                <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_ActualPassword]}"
+                                           Classes="PastelLabel"
+                                           Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding CurrentPassword}"
+                                         Classes="PastelPasswordBox"
+                                         Margin="0,0,0,12"/>
+
+                                <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[EditProfile_Label_NewPassword]}"
+                                           Classes="PastelLabel"
+                                           Margin="0,0,0,6"/>
+                                <TextBox Text="{Binding NewPassword}"
+                                         Classes="PastelPasswordBox"
+                                         Margin="0,0,0,16"/>
+
+                                <Button Classes="PastelButton"
+                                        Padding="20,8"
+                                        HorizontalAlignment="Right"
+                                        Command="{Binding UpdatePasswordCommand}"
+                                        IsEnabled="{Binding !IsLoading}"
+                                        Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Update]}"
+                                        Width="150"/>
+                            </StackPanel>
+                        </Grid>
                     </Border>
-
-                    <!-- Personal info -->
-                    <Border Classes="LiquidGlassCard" Padding="28,24">
-                        <StackPanel Spacing="0">
-                            <TextBlock Text="Personal Information"
-                                       Classes="PastelTextBlock" FontWeight="SemiBold"
-                                       Foreground="{DynamicResource PastelPrimary}"
-                                       Margin="0,0,0,18"/>
-
-                            <TextBlock Text="First Name" Classes="PastelLabel" Margin="0,0,0,6"/>
-                            <TextBox Text="{Binding FirstName}" Classes="PastelTextBox" Margin="0,0,0,14"/>
-
-                            <TextBlock Text="Last Name" Classes="PastelLabel" Margin="0,0,0,6"/>
-                            <TextBox Text="{Binding LastName}" Classes="PastelTextBox" Margin="0,0,0,18"/>
-
-                            <TextBlock Text="{Binding ErrorMessage}"
-                                       Classes="PastelErrorText" Margin="0,0,0,14"
-                                       IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
-
-                            <Button Height="40"
-                                    Classes="PastelButton"
-                                    Command="{Binding UpdatePersonalInfoCommand}"
-                                    IsEnabled="{Binding !IsLoading}"
-                                    Content="Save Personal Info"
-                                    HorizontalAlignment="Left" Padding="24,0"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Username -->
-                    <Border Classes="LiquidGlassCard" Padding="28,24">
-                        <StackPanel Spacing="0">
-                            <TextBlock Text="Username"
-                                       Classes="PastelTextBlock" FontWeight="SemiBold"
-                                       Foreground="{DynamicResource PastelPrimary}"
-                                       Margin="0,0,0,18"/>
-
-                            <TextBlock Text="New Username" Classes="PastelLabel" Margin="0,0,0,6"/>
-                            <TextBox Text="{Binding NewUsername}" Classes="PastelTextBox" Margin="0,0,0,18"/>
-
-                            <Button Height="40"
-                                    Classes="PastelButton"
-                                    Command="{Binding UpdateUsernameCommand}"
-                                    IsEnabled="{Binding !IsLoading}"
-                                    Content="Update Username"
-                                    HorizontalAlignment="Left" Padding="24,0"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Password -->
-                    <Border Classes="LiquidGlassCard" Padding="28,24">
-                        <StackPanel Spacing="0">
-                            <TextBlock Text="Change Password"
-                                       Classes="PastelTextBlock" FontWeight="SemiBold"
-                                       Foreground="{DynamicResource PastelPrimary}"
-                                       Margin="0,0,0,18"/>
-
-                            <TextBlock Text="Current Password" Classes="PastelLabel" Margin="0,0,0,6"/>
-                            <TextBox Text="{Binding CurrentPassword}"
-                                     Classes="PastelPasswordBox"
-                                     PasswordChar="●"
-                                     Margin="0,0,0,14"/>
-
-                            <TextBlock Text="New Password" Classes="PastelLabel" Margin="0,0,0,6"/>
-                            <TextBox Text="{Binding NewPassword}"
-                                     Classes="PastelPasswordBox"
-                                     PasswordChar="●"
-                                     Margin="0,0,0,18"/>
-
-                            <Button Height="40"
-                                    Classes="PastelButton"
-                                    Command="{Binding UpdatePasswordCommand}"
-                                    IsEnabled="{Binding !IsLoading}"
-                                    Content="Change Password"
-                                    HorizontalAlignment="Left" Padding="24,0"/>
-                        </StackPanel>
-                    </Border>
-
                 </StackPanel>
             </ScrollViewer>
         </Grid>

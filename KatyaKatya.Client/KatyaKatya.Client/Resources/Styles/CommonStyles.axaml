@@ -12,6 +12,30 @@
         <Setter Property="BoxShadow"        Value="4 4 25 0 #2EC84747"/>
     </Style>
 
+    <Style Selector="Border.BoardHud">
+        <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PastelBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Padding" Value="16,10"/>
+        <Setter Property="BoxShadow" Value="3 3 18 0 #243D1C1C"/>
+    </Style>
+
+    <Style Selector="Border.PlayerPill">
+        <Setter Property="Background" Value="#10000000"/>
+        <Setter Property="BorderBrush" Value="#30FFFFFF"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="12,10"/>
+    </Style>
+
+    <Style Selector="Border.GameOverCard">
+        <Setter Property="Background" Value="#F8F0F0"/>
+        <Setter Property="CornerRadius" Value="20"/>
+        <Setter Property="Padding" Value="40,32"/>
+        <Setter Property="BoxShadow" Value="6 6 40 0 #66000000"/>
+    </Style>
+
     <!-- =========================================================
          PastelButton  (red gradient, white text)
          ========================================================= -->
@@ -73,6 +97,83 @@
 
     <Style Selector="Button.PastelButton:disabled">
         <Setter Property="Opacity" Value="0.55"/>
+    </Style>
+
+    <Style Selector="Button.DifficultyButton">
+        <Setter Property="MinHeight" Value="56"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="Background" Value="{DynamicResource PastelSecondary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource PastelText}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PastelBorder}"/>
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource ButtonCornerRadius}"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FontFamily" Value="{DynamicResource DefaultFont}"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.12"/>
+                <BrushTransition Property="Background" Duration="0:0:0.12"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.DifficultyButton:pointerover">
+        <Setter Property="Opacity" Value="0.86"/>
+    </Style>
+
+    <Style Selector="Button.DifficultyButton.selected">
+        <Setter Property="Background" Value="{DynamicResource PrimaryGradient}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PastelPrimary}"/>
+    </Style>
+
+    <Style Selector="Button.GameCardButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="RenderTransformOrigin" Value="50%,50%"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.12"/>
+                <DoubleTransition Property="Opacity" Duration="0:0:0.12"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.GameCardButton:pointerover">
+        <Setter Property="RenderTransform" Value="scale(1.06)"/>
+    </Style>
+
+    <Style Selector="Button.GameCardButton:pressed">
+        <Setter Property="RenderTransform" Value="scale(0.96)"/>
+    </Style>
+
+    <Style Selector="Button.GameCardButton:disabled">
+        <Setter Property="Opacity" Value="0.72"/>
+        <Setter Property="Cursor" Value="Arrow"/>
+    </Style>
+
+    <Style Selector="Button.MiniDangerButton">
+        <Setter Property="Width" Value="28"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Background" Value="#18C84747"/>
+        <Setter Property="Foreground" Value="{DynamicResource PastelPrimary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PastelPrimary}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <Style Selector="Button.MiniDangerButton:pointerover">
+        <Setter Property="Background" Value="{DynamicResource PrimaryGradient}"/>
+        <Setter Property="Foreground" Value="White"/>
     </Style>
 
     <!-- =========================================================

@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:KatyaKatya.ViewModels.Common"
+        xmlns:loc="using:KatyaKatya.Localization"
         x:Class="KatyaKatya.Views.Common.DialogWindow"
         x:DataType="vm:DialogViewModel"
         Title="{Binding Title}"
@@ -45,25 +46,25 @@
                         Margin="0,20,0,0"
                         Spacing="8">
 
-                <Button Content="OK"
+                <Button Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Accept]}"
                         Command="{Binding OKCommand}"
                         IsVisible="{Binding IsOkVisible}"
                         Classes="PastelButton"
                         MinWidth="80" Height="36"/>
 
-                <Button Content="Cancel"
+                <Button Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Cancel]}"
                         Command="{Binding CancelCommand}"
                         IsVisible="{Binding IsCancelVisible}"
                         Classes="PastelButtonSecondary"
                         MinWidth="80" Height="36"/>
 
-                <Button Content="Yes"
+                <Button Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Accept]}"
                         Command="{Binding YesCommand}"
                         IsVisible="{Binding IsYesNoVisible}"
                         Classes="PastelButton"
                         MinWidth="80" Height="36"/>
 
-                <Button Content="No"
+                <Button Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Cancel]}"
                         Command="{Binding NoCommand}"
                         IsVisible="{Binding IsYesNoVisible}"
                         Classes="PastelButtonSecondary"

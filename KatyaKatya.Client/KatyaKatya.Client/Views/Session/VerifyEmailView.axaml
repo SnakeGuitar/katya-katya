@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.Session"
+             xmlns:loc="using:KatyaKatya.Localization"
              x:Class="KatyaKatya.Views.Session.VerifyEmailView"
              x:DataType="vm:VerifyEmailViewModel">
 
@@ -32,12 +33,12 @@
                     Margin="0,0,40,0">
 
                 <StackPanel Spacing="0">
-                    <TextBlock Text="Verify Email"
+                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[VerifyEmail_Title]}"
                                Classes="PastelHeading"
                                HorizontalAlignment="Center"
                                Margin="0,0,0,14"/>
 
-                    <TextBlock Text="Enter the 6-digit PIN sent to your email."
+                    <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[VerifyEmail_Description]}"
                                Classes="PastelTextBlock"
                                TextAlignment="Center"
                                TextWrapping="Wrap"
@@ -71,18 +72,18 @@
                             Classes="PastelButton"
                             Command="{Binding VerifyCommand}"
                             IsEnabled="{Binding !IsLoading}"
-                            Content="Verify"/>
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Verify]}"/>
 
                     <Button Margin="0,0,0,10"
                             HorizontalAlignment="Center"
                             Classes="LinkButton"
                             Command="{Binding ResendPinCommand}"
-                            Content="Resend PIN"/>
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_ResendPin]}"/>
 
                     <Button HorizontalAlignment="Center"
                             Classes="LinkButton"
                             Command="{Binding GoBackCommand}"
-                            Content="← Back"/>
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"/>
                 </StackPanel>
             </Border>
         </Grid>

@@ -1,6 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.Gallery"
+             xmlns:loc="using:KatyaKatya.Localization"
+             xmlns:behaviors="using:KatyaKatya.Behaviors"
              x:Class="KatyaKatya.Views.Gallery.GalleryView"
              x:DataType="vm:GalleryViewModel">
 
@@ -9,33 +11,27 @@
                Stretch="UniformToFill"
                IsHitTestVisible="False"/>
 
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="80"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="20"/>
-            </Grid.RowDefinitions>
-
-            <!-- Back button -->
+        <Grid RowDefinitions="40,80,*,20">
             <Button Grid.Row="1"
-                    HorizontalAlignment="Left" VerticalAlignment="Center"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
                     Margin="24,0,0,0"
                     Command="{Binding GoBackCommand}"
                     Width="48" Height="48"
                     Background="{DynamicResource PastelPrimary}"
-                    BorderThickness="0" CornerRadius="24" Cursor="Hand">
+                    BorderThickness="0"
+                    CornerRadius="24"
+                    Cursor="Hand">
                 <Image Source="avares://KatyaKatya/Resources/Images/Icons/return-icon.png"
                        Stretch="Uniform" Margin="14"/>
             </Button>
 
             <TextBlock Grid.Row="1"
-                       Text="Gallery"
+                       Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Gallery_Title]}"
                        Classes="PastelHeading"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"/>
 
-            <!-- Scattered sticker canvas -->
             <ScrollViewer Grid.Row="2">
                 <ItemsControl ItemsSource="{Binding Cards}">
                     <ItemsControl.ItemsPanel>
@@ -43,12 +39,10 @@
                             <Canvas Width="1220" Height="860"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    <!-- Canvas.Left/Top must be on the generated ContentPresenter container,
-                         not the DataTemplate root, because the Canvas positions its direct children. -->
                     <ItemsControl.ItemContainerTheme>
                         <ControlTheme TargetType="ContentPresenter">
-                            <Setter Property="Canvas.Left"   Value="{ReflectionBinding X}"/>
-                            <Setter Property="Canvas.Top"    Value="{ReflectionBinding Y}"/>
+                            <Setter Property="Canvas.Left" Value="{ReflectionBinding X}"/>
+                            <Setter Property="Canvas.Top" Value="{ReflectionBinding Y}"/>
                             <Setter Property="Canvas.ZIndex" Value="{ReflectionBinding ZIndex}"/>
                         </ControlTheme>
                     </ItemsControl.ItemContainerTheme>
@@ -91,39 +85,76 @@
             </ScrollViewer>
         </Grid>
 
-        <!-- Expanded overlay when a card is selected — Grid: dismiss-button fills all, card floats on top -->
         <Grid IsVisible="{Binding SelectedCard, Converter={x:Static ObjectConverters.IsNotNull}}"
               ZIndex="200">
-            <!-- Full-size dismiss button (the dark backdrop) -->
             <Button Background="#88000000"
                     BorderThickness="0"
                     Padding="0"
                     Command="{Binding CloseCardCommand}"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch"/>
-            <!-- Floating card -->
+
             <Border HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    MaxWidth="400" MaxHeight="560"
+                    Width="880"
+                    Height="620"
                     CornerRadius="16"
                     Background="White"
                     BoxShadow="6 6 30 0 #40000000"
-                    Padding="16">
-                <Grid>
-                    <Image Source="{Binding SelectedCard.Current.ImagePath, Converter={StaticResource StringAssetToBitmapConverter}}"
-                           Stretch="Uniform"/>
-                    <Button HorizontalAlignment="Left"
-                            VerticalAlignment="Bottom"
-                            Classes="PastelButtonSecondary"
-                            Command="{Binding SelectedCard.CycleCommand}"
-                            Content="Variant"
-                            Margin="0,0,0,4"/>
-                    <Button HorizontalAlignment="Right"
+                    Padding="20">
+                <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="64,*,64">
+                    <Button Grid.Row="0"
+                            Grid.Column="2"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Classes="LinkButton"
                             Command="{Binding CloseCardCommand}"
-                            Content="✕"
-                            Margin="0,0,4,0"/>
+                            Content="x"/>
+
+                    <Button Grid.Row="1"
+                            Grid.Column="0"
+                            Content="&lt;"
+                            Classes="PastelButtonSecondary"
+                            FontSize="24"
+                            Command="{Binding SelectedCard.CycleBackCommand}"
+                            VerticalAlignment="Center"/>
+
+                    <Border Grid.Row="1"
+                            Grid.Column="1"
+                            ClipToBounds="True"
+                            Background="#08000000"
+                            CornerRadius="12">
+                        <Image Source="{Binding SelectedCard.Current.ImagePath, Converter={StaticResource StringAssetToBitmapConverter}}"
+                               Stretch="Uniform"
+                               Margin="12"
+                               Cursor="SizeAll"
+                               behaviors:ZoomPanBehavior.IsEnabled="True"
+                               behaviors:ZoomPanBehavior.ResetZoomTrigger="{Binding SelectedCard.Current}"/>
+                    </Border>
+
+                    <Button Grid.Row="1"
+                            Grid.Column="2"
+                            Content="&gt;"
+                            Classes="PastelButtonSecondary"
+                            FontSize="24"
+                            Command="{Binding SelectedCard.CycleCommand}"
+                            VerticalAlignment="Center"/>
+
+                    <StackPanel Grid.Row="2"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="14"
+                                Margin="0,14,0,0">
+                        <TextBlock Text="{Binding SelectedCard.Current.Label}"
+                                   Classes="PastelTextBlock"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PastelPrimary}"/>
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Gallery_Hint_Cycle]}"
+                                   Classes="PastelLabel"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
                 </Grid>
             </Border>
         </Grid>

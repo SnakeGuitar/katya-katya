@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.Lobby"
+             xmlns:loc="using:KatyaKatya.Localization"
              x:Class="KatyaKatya.Views.Lobby.HostLobbyView"
              x:DataType="vm:HostLobbyViewModel">
 
@@ -8,29 +9,16 @@
         <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
                Stretch="UniformToFill" IsHitTestVisible="False"/>
 
-        <Grid Margin="24">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="300"/>
-            </Grid.ColumnDefinitions>
-
-            <!-- Left: players + settings + start -->
+        <Grid Margin="24" ColumnDefinitions="*,20,300">
             <Border Grid.Column="0" Classes="LiquidGlassCard" Padding="28,24">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <!-- Header with game code -->
+                <Grid RowDefinitions="Auto,*,Auto">
                     <StackPanel Grid.Row="0" Spacing="4" Margin="0,0,0,20">
-                        <TextBlock Text="Host Lobby"
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_CreateGame]}"
                                    Classes="PastelHeading"
                                    HorizontalAlignment="Center"/>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8">
-                            <TextBlock Text="Game Code:" Classes="PastelLabel" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_GameCode]}"
+                                       Classes="PastelLabel" VerticalAlignment="Center"/>
                             <TextBlock Text="{Binding GameCode}"
                                        Classes="PastelHeading"
                                        FontSize="22"
@@ -39,22 +27,18 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <!-- Players list -->
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                         <StackPanel Spacing="0">
-                            <TextBlock Text="Players" Classes="PastelLabel" FontSize="14" Margin="0,0,0,12"/>
+                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Players]}"
+                                       Classes="PastelLabel" FontSize="14" Margin="0,0,0,12"/>
                             <ItemsControl ItemsSource="{Binding Players}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid Margin="0,0,0,8">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
+                                        <Grid Margin="0,0,0,8" ColumnDefinitions="Auto,*,Auto,Auto">
                                             <TextBlock Grid.Column="0"
-                                                       Text="👤" FontSize="14"
+                                                       Text="AV"
+                                                       FontSize="12"
+                                                       FontWeight="Bold"
                                                        VerticalAlignment="Center"
                                                        Margin="0,0,8,0"/>
                                             <TextBlock Grid.Column="1"
@@ -71,12 +55,13 @@
                                                        Margin="8,0"/>
                                             <Button Grid.Column="3"
                                                     Classes="PastelButtonDanger"
-                                                    Height="28" Padding="10,0"
+                                                    Height="28"
+                                                    Padding="10,0"
                                                     FontSize="12"
                                                     IsVisible="{Binding !IsHost}"
                                                     Command="{Binding $parent[UserControl].DataContext.KickPlayerCommand}"
                                                     CommandParameter="{Binding}"
-                                                    Content="Kick"/>
+                                                    Content="x"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -84,14 +69,30 @@
                         </StackPanel>
                     </ScrollViewer>
 
-                    <!-- Game settings + actions -->
                     <StackPanel Grid.Row="2" Spacing="12" Margin="0,16,0,0">
                         <Rectangle Classes="SectionDivider" Height="1"/>
 
-                        <TextBlock Text="Card Count" Classes="PastelLabel" Margin="0,0,0,4"/>
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_NumberOfCards]}"
+                                   Classes="PastelLabel" Margin="0,0,0,4"/>
                         <ComboBox ItemsSource="{Binding CardCountOptions}"
                                   SelectedItem="{Binding SelectedCardCount}"
                                   Classes="PastelComboBox"/>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_TimerLimit]}"
+                                       Classes="PastelLabel"/>
+                            <Slider Minimum="5"
+                                    Maximum="120"
+                                    Value="{Binding TurnTimeSeconds}"
+                                    TickFrequency="5"
+                                    IsSnapToTickEnabled="True"
+                                    Classes="PastelSlider"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="4">
+                                <TextBlock Text="{Binding TurnTimeSeconds}" Classes="PastelLabel"/>
+                                <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_Seconds]}"
+                                           Classes="PastelLabel"/>
+                            </StackPanel>
+                        </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Spacing="12">
                             <Button Classes="PastelButton"
@@ -99,31 +100,27 @@
                                     HorizontalAlignment="Left"
                                     Command="{Binding StartGameCommand}"
                                     IsEnabled="{Binding HasPlayers}"
-                                    Content="Start Game"/>
+                                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_StartGame]}"/>
                             <Button Classes="LinkButton"
                                     Command="{Binding LeaveCommand}"
-                                    Content="← Leave"
+                                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Leave]}"
                                     VerticalAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
             </Border>
 
-            <!-- Right: chat -->
             <Border Grid.Column="2" Classes="LiquidGlassCard" Padding="16">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
+                <Grid RowDefinitions="Auto,*,Auto">
                     <TextBlock Grid.Row="0"
-                               Text="Chat"
-                               Classes="PastelLabel" FontSize="14"
+                               Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_Chat]}"
+                               Classes="PastelLabel"
+                               FontSize="14"
                                Margin="0,0,0,12"/>
 
-                    <ScrollViewer Grid.Row="1">
+                    <ScrollViewer Name="ChatScrollViewer"
+                                  Grid.Row="1"
+                                  VerticalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding ChatMessages}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -137,21 +134,21 @@
                         </ItemsControl>
                     </ScrollViewer>
 
-                    <Grid Grid.Row="2" Margin="0,8,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+                    <Grid Grid.Row="2" Margin="0,8,0,0" ColumnDefinitions="*,Auto">
                         <TextBox Grid.Column="0"
                                  Text="{Binding ChatMessage}"
                                  Classes="PastelTextBox"
-                                 PlaceholderText="Message…"/>
+                                 PlaceholderText="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_TypeMessage]}">
+                            <TextBox.KeyBindings>
+                                <KeyBinding Gesture="Enter" Command="{Binding SendChatMessageCommand}"/>
+                            </TextBox.KeyBindings>
+                        </TextBox>
                         <Button Grid.Column="1"
                                 Classes="PastelButton"
                                 Height="40" Padding="14,0"
                                 Margin="6,0,0,0"
                                 Command="{Binding SendChatMessageCommand}"
-                                Content="→"/>
+                                Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Send]}"/>
                     </Grid>
                 </Grid>
             </Border>

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KatyaKatya.Localization;
 using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Services.Network;
 using KatyaKatya.ViewModels.Session;
@@ -20,13 +21,7 @@ public partial class MainMenuViewModel : ObservableObject
     private readonly ISessionService _session;
     private readonly HubService _hub;
     private readonly KatyaKatya.Services.Core.ClientSettings _settings;
-
-    private static readonly string[] MoodPaths = new[]
-    {
-        "avares://KatyaKatya/Resources/Images/Backgrounds/katya-moods/main/katya-main-no-background.png",
-        "avares://KatyaKatya/Resources/Images/Backgrounds/katya-moods/in-love/katya-in-love-no-background.png",
-        "avares://KatyaKatya/Resources/Images/Backgrounds/katya-moods/shy/katya-shy-2-no-background.png"
-    };
+    private readonly KatyaKatya.Helpers.IThemeAssetService _themeAssets;
 
     [ObservableProperty]
     private string _welcomeMessage = string.Empty;
@@ -36,20 +31,29 @@ public partial class MainMenuViewModel : ObservableObject
 
     public string LogoPath => KatyaKatya.Helpers.LogoResolver.Resolve(_settings.LanguageCode, _settings.ThemeName);
 
-    public MainMenuViewModel(INavigationService navigation, ISessionService session, HubService hub, KatyaKatya.Services.Core.ClientSettings settings)
+    public MainMenuViewModel(
+        INavigationService navigation,
+        ISessionService session,
+        HubService hub,
+        KatyaKatya.Services.Core.ClientSettings settings,
+        KatyaKatya.Helpers.IThemeAssetService themeAssets)
     {
         _navigation = navigation;
         _session = session;
         _hub = hub;
         _settings = settings;
+        _themeAssets = themeAssets;
 
-        WelcomeMessage = $"Welcome, {_session.Current?.Username ?? "Player"}!";
+        WelcomeMessage = LocalizationManager.Instance.Format(
+            "Global_Message_Welcome",
+            _session.Current?.Username ?? "Player");
         PickMoodImage();
     }
 
     private void PickMoodImage()
     {
-        CurrentMoodImage = MoodPaths[Random.Shared.Next(MoodPaths.Length)];
+        var moodPaths = _themeAssets.MainMenuMoodImages(_settings.ThemeName);
+        CurrentMoodImage = moodPaths[Random.Shared.Next(moodPaths.Count)];
     }
 
     [RelayCommand]

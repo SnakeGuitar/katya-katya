@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KatyaKatya.Helpers;
+using KatyaKatya.Localization;
 using KatyaKatya.Models;
 using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Services.Network;
@@ -76,8 +77,8 @@ public partial class FriendsViewModel : ObservableObject
         }
         catch (Exception)
         {
-            ErrorMessage = "Failed to load social data.";
-            _dialog.ShowMessage(ErrorMessage, "Error", DialogButton.OK, DialogIcon.Error);
+            ErrorMessage = LocalizationManager.Instance["Error_UNKNOWN"];
+            _dialog.ShowMessage(ErrorMessage, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {
@@ -95,7 +96,8 @@ public partial class FriendsViewModel : ObservableObject
 
         if (username == _session.Current?.Username)
         {
-            _dialog.ShowMessage("You cannot add yourself as a friend.", "Error", DialogButton.OK, DialogIcon.Error);
+            _dialog.ShowMessage(LocalizationManager.Instance["Error_SOCIAL_CANNOT_ADD_SELF"],
+                LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
             return;
         }
 
@@ -106,18 +108,21 @@ public partial class FriendsViewModel : ObservableObject
 
             if (result.IsSuccess)
             {
-                _dialog.ShowMessage($"Friend request successfully sent to '{username}'!", "Success", DialogButton.OK, DialogIcon.Information);
+                _dialog.ShowMessage(LocalizationManager.Instance.Format("Friends_Message_RequestSent", username),
+                    LocalizationManager.Instance["Global_Title_Success"], DialogButton.OK, DialogIcon.Information);
                 SearchUsername = string.Empty;
             }
             else
             {
                 var errMsg = ErrorResolver.Resolve(result.ErrorCode);
-                _dialog.ShowMessage(errMsg, "Error", DialogButton.OK, DialogIcon.Error);
+                _dialog.ShowMessage(errMsg, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
             }
         }
         catch (Exception ex)
         {
-            _dialog.ShowMessage($"An error occurred: {ex.Message}", "Error", DialogButton.OK, DialogIcon.Error);
+            System.Diagnostics.Debug.WriteLine($"[Friends] Send request failed: {ex.Message}");
+            _dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
+                LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {
@@ -137,18 +142,21 @@ public partial class FriendsViewModel : ObservableObject
 
             if (result.IsSuccess)
             {
-                _dialog.ShowMessage("Friend request accepted!", "Success", DialogButton.OK, DialogIcon.Information);
+                _dialog.ShowMessage(LocalizationManager.Instance["Global_Title_Success"],
+                    LocalizationManager.Instance["Global_Title_Success"], DialogButton.OK, DialogIcon.Information);
                 await LoadDataAsync();
             }
             else
             {
                 var errMsg = ErrorResolver.Resolve(result.ErrorCode);
-                _dialog.ShowMessage(errMsg, "Error", DialogButton.OK, DialogIcon.Error);
+                _dialog.ShowMessage(errMsg, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
             }
         }
         catch (Exception ex)
         {
-            _dialog.ShowMessage($"An error occurred: {ex.Message}", "Error", DialogButton.OK, DialogIcon.Error);
+            System.Diagnostics.Debug.WriteLine($"[Friends] Accept request failed: {ex.Message}");
+            _dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
+                LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {
@@ -166,18 +174,21 @@ public partial class FriendsViewModel : ObservableObject
 
             if (result.IsSuccess)
             {
-                _dialog.ShowMessage("Friend request rejected.", "Information", DialogButton.OK, DialogIcon.Information);
+                _dialog.ShowMessage(LocalizationManager.Instance["Global_Title_Information"],
+                    LocalizationManager.Instance["Global_Title_Information"], DialogButton.OK, DialogIcon.Information);
                 await LoadDataAsync();
             }
             else
             {
                 var errMsg = ErrorResolver.Resolve(result.ErrorCode);
-                _dialog.ShowMessage(errMsg, "Error", DialogButton.OK, DialogIcon.Error);
+                _dialog.ShowMessage(errMsg, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
             }
         }
         catch (Exception ex)
         {
-            _dialog.ShowMessage($"An error occurred: {ex.Message}", "Error", DialogButton.OK, DialogIcon.Error);
+            System.Diagnostics.Debug.WriteLine($"[Friends] Reject request failed: {ex.Message}");
+            _dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
+                LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {
@@ -191,8 +202,8 @@ public partial class FriendsViewModel : ObservableObject
     private async Task RemoveFriendAsync(FriendDto friend)
     {
         var confirm = _dialog.ShowMessage(
-            $"Are you sure you want to remove '{friend.Username}' from your friends?",
-            "Confirm Removal",
+            LocalizationManager.Instance.Format("Friends_Message_RemoveFriend", friend.Username),
+            LocalizationManager.Instance["Global_Title_Confirm"],
             DialogButton.YesNo, DialogIcon.Question);
 
         if (confirm != DialogResult.Yes) return;
@@ -203,18 +214,21 @@ public partial class FriendsViewModel : ObservableObject
             var result = await _api.DeleteAsync($"api/social/friends/{friend.UserId}");
             if (result.IsSuccess)
             {
-                _dialog.ShowMessage("Friend removed.", "Success", DialogButton.OK, DialogIcon.Information);
+                _dialog.ShowMessage(LocalizationManager.Instance["Global_Title_Success"],
+                    LocalizationManager.Instance["Global_Title_Success"], DialogButton.OK, DialogIcon.Information);
                 await LoadDataAsync();
             }
             else
             {
                 var errMsg = ErrorResolver.Resolve(result.ErrorCode);
-                _dialog.ShowMessage(errMsg, "Error", DialogButton.OK, DialogIcon.Error);
+                _dialog.ShowMessage(errMsg, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
             }
         }
         catch (Exception ex)
         {
-            _dialog.ShowMessage($"An error occurred: {ex.Message}", "Error", DialogButton.OK, DialogIcon.Error);
+            System.Diagnostics.Debug.WriteLine($"[Friends] Remove friend failed: {ex.Message}");
+            _dialog.ShowMessage(LocalizationManager.Instance["Error_UNKNOWN"],
+                LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {

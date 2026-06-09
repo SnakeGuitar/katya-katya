@@ -2,124 +2,280 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.Lobby"
              xmlns:models="using:KatyaKatya.Models.Lobby"
+             xmlns:loc="using:KatyaKatya.Localization"
+             xmlns:controls="using:KatyaKatya.Controls"
              x:Class="KatyaKatya.Views.Board.GameBoardView"
              x:DataType="vm:GameBoardViewModel">
 
     <Grid>
         <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
-               Stretch="UniformToFill" IsHitTestVisible="False"/>
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"/>
 
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="64"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="16"/>
-            </Grid.RowDefinitions>
+        <controls:ParticleCanvas Name="ParticleCanvas"
+                                  ZIndex="250"
+                                  IsHitTestVisible="False"/>
 
-            <!-- Scores HUD -->
+        <Grid Margin="16"
+              RowDefinitions="Auto,*"
+              ColumnDefinitions="220,12,*,12,260"
+              Classes="BoardEntrance">
+
             <Border Grid.Row="0"
-                    Background="{DynamicResource CardBackground}"
-                    Padding="16,0"
-                    Margin="16,8,16,0"
-                    CornerRadius="12"
-                    BoxShadow="2 2 10 0 #1A3D1C1C">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    Grid.Column="0"
+                    Grid.ColumnSpan="5"
+                    Classes="BoardHud"
+                    Margin="0,0,0,12">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <StackPanel Grid.Column="0" Spacing="2" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding CurrentTurnPlayer}"
+                                   Classes="PastelHeading"
+                                   FontSize="18"
+                                   Foreground="{DynamicResource PastelPrimary}"/>
+                    </StackPanel>
 
-                    <!-- Active turn indicator -->
-                    <TextBlock Grid.Column="0"
-                               Text="{Binding CurrentTurnPlayer}"
-                               Classes="PastelTextBlock"
-                               FontWeight="SemiBold"
-                               VerticalAlignment="Center">
-                        <TextBlock.Foreground>
-                            <SolidColorBrush Color="#C84747"/>
-                        </TextBlock.Foreground>
-                    </TextBlock>
-
-                    <!-- Players with score + per-player time -->
                     <ItemsControl Grid.Column="1"
                                   ItemsSource="{Binding Players}"
                                   HorizontalAlignment="Center">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" Spacing="24"/>
+                                <StackPanel Orientation="Horizontal" Spacing="28"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="models:PlayerScoreViewModel">
-                                <StackPanel VerticalAlignment="Center" Spacing="0">
+                                <StackPanel Spacing="0" MinWidth="70">
                                     <TextBlock Text="{Binding Username}"
-                                               Classes="PastelLabel" FontSize="11"
+                                               Classes="PastelLabel"
+                                               FontSize="11"
                                                HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding Score}"
-                                               Classes="PastelHeading" FontSize="22"
-                                               HorizontalAlignment="Center"
-                                               Foreground="{DynamicResource PastelPrimary}"/>
+                                               Classes="PastelHeading ScorePulse"
+                                               FontSize="22"
+                                               Foreground="{DynamicResource PastelPrimary}"
+                                               HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding TimeDisplay}"
-                                               Classes="PastelLabel" FontSize="11"
-                                               HorizontalAlignment="Center"
-                                               Opacity="0.7"/>
+                                               Classes="PastelLabel"
+                                               FontSize="11"
+                                               Opacity="0.7"
+                                               HorizontalAlignment="Center"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+
+                    <Button Grid.Column="2"
+                            Classes="LinkButton"
+                            Command="{Binding LeaveGameCommand}"
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Leave]}"
+                            VerticalAlignment="Center"/>
                 </Grid>
             </Border>
 
-            <!-- Card grid — DataTemplate has no x:DataType; bindings use reflection.
-                 Button fires FlipCardCommand on the parent GameBoardViewModel. -->
-            <ItemsControl Grid.Row="1"
-                          ItemsSource="{Binding Cards}"
-                          Margin="16,8,16,0">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <UniformGrid Columns="{Binding BoardColumns}"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Margin="4"
-                                Padding="0"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                CornerRadius="12"
-                                Cursor="Hand"
-                                Command="{Binding $parent[UserControl].DataContext.FlipCardCommand}"
-                                CommandParameter="{Binding}">
-                            <Border CornerRadius="12" ClipToBounds="True">
-                                <Grid>
-                                    <Border Classes="CardBack"
-                                            Background="{DynamicResource PrimaryGradient}"
-                                            CornerRadius="12"
-                                            IsVisible="{Binding !IsFlipped}">
-                                        <TextBlock Text="🂠" FontSize="28"
+            <Border Grid.Row="1"
+                    Grid.Column="0"
+                    Classes="LiquidGlassCard"
+                    Padding="14,12">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBlock Grid.Row="0"
+                               Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Players]}"
+                               Classes="PastelTextBlock"
+                               FontWeight="SemiBold"
+                               FontSize="16"
+                               Foreground="{DynamicResource PastelPrimary}"
+                               Margin="0,0,0,10"/>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding Players}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="models:PlayerScoreViewModel">
+                                    <Border Classes="PlayerPill"
+                                            Margin="0,0,0,8">
+                                        <Grid RowDefinitions="Auto,Auto,Auto"
+                                              ColumnDefinitions="*,Auto">
+                                            <TextBlock Grid.Row="0"
+                                                       Grid.Column="0"
+                                                       Text="{Binding Username}"
+                                                       Classes="PastelTextBlock"
+                                                       FontSize="14"
+                                                       FontWeight="SemiBold"/>
+                                            <TextBlock Grid.Row="1"
+                                                       Grid.Column="0"
+                                                       Text="{Binding Score, StringFormat='Love {0}'}"
+                                                       Classes="PastelLabel"
+                                                       Margin="0,3,0,0"/>
+                                            <TextBlock Grid.Row="2"
+                                                       Grid.Column="0"
+                                                       Text="{Binding TimeDisplay}"
+                                                       Classes="PastelLabel"
+                                                       FontSize="11"
+                                                       Opacity="0.65"/>
+                                            <Button Grid.Row="0"
+                                                    Grid.RowSpan="3"
+                                                    Grid.Column="1"
+                                                    Classes="MiniDangerButton"
+                                                    Command="{ReflectionBinding $parent[UserControl].DataContext.VoteToKickCommand}"
+                                                    CommandParameter="{Binding}"
+                                                    IsVisible="{Binding !IsCurrentUser}"
+                                                    Content="!"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Grid.Column="2"
+                    Classes="LiquidGlassCard"
+                    Padding="16">
+                <Viewbox Stretch="Uniform">
+                    <ItemsControl ItemsSource="{Binding Cards}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows="{Binding BoardRows}" Columns="{Binding BoardColumns}"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="models:CardViewModel">
+                                <Button Width="90"
+                                        Height="90"
+                                        Margin="4"
+                                        Padding="0"
+                                        Classes="GameCardButton"
+                                        IsEnabled="{ReflectionBinding $parent[UserControl].DataContext.IsMyTurn}"
+                                        Command="{ReflectionBinding $parent[UserControl].DataContext.FlipCardCommand}"
+                                        CommandParameter="{Binding}">
+                                    <Grid>
+                                        <Border Classes="CardBack"
+                                                CornerRadius="12"
+                                                Background="{DynamicResource PrimaryGradient}"
+                                                IsVisible="{Binding !IsFlipped}">
+                                            <Image Source="avares://KatyaKatya/Resources/Images/Icons/love-points.png"
+                                                   Width="44"
+                                                   Height="44"
+                                                   Stretch="Uniform"
                                                    HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   Foreground="White"/>
-                                    </Border>
-                                    <Border Classes="CardFront"
-                                            Background="{DynamicResource CardBackground}"
-                                            CornerRadius="12"
-                                            BorderBrush="{DynamicResource PastelBorder}"
-                                            BorderThickness="1.5"
-                                            IsVisible="{Binding IsFlipped}">
-                                        <Image Source="{Binding DisplayImage}"
-                                               Stretch="Uniform" Margin="8"/>
-                                    </Border>
-                                    <Border CornerRadius="12"
-                                            Background="{DynamicResource MatchOverlayBrush}"
-                                            IsVisible="{Binding IsMatched}"
-                                            Classes="MatchPulse"/>
-                                </Grid>
-                            </Border>
-                        </Button>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                                                   VerticalAlignment="Center"/>
+                                        </Border>
+
+                                        <Border Classes="CardFront"
+                                                CornerRadius="12"
+                                                Background="{DynamicResource CardBackground}"
+                                                BorderBrush="{DynamicResource PastelBorder}"
+                                                BorderThickness="1.5"
+                                                IsVisible="{Binding IsFlipped}">
+                                            <Image Source="{Binding DisplayImage}"
+                                                   Stretch="Uniform"
+                                                   Margin="7"/>
+                                        </Border>
+
+                                        <Border Classes="MatchPulse"
+                                                CornerRadius="12"
+                                                Background="{DynamicResource MatchOverlayBrush}"
+                                                IsVisible="{Binding IsMatched}"/>
+                                    </Grid>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Viewbox>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Grid.Column="4"
+                    Classes="LiquidGlassCard"
+                    Padding="14,12">
+                <Grid RowDefinitions="Auto,*,Auto">
+                    <TextBlock Grid.Row="0"
+                               Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_Chat]}"
+                               Classes="PastelTextBlock"
+                               FontWeight="SemiBold"
+                               FontSize="16"
+                               Foreground="{DynamicResource PastelPrimary}"
+                               Margin="0,0,0,8"/>
+
+                    <Border Grid.Row="1"
+                            Background="#08000000"
+                            CornerRadius="10"
+                            Padding="8"
+                            Margin="0,0,0,8">
+                        <ScrollViewer Name="ChatScrollViewer"
+                                      VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding ChatMessages}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}"
+                                                   Classes="PastelTextBlock"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,0,0,4"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+
+                    <Grid Grid.Row="2" ColumnDefinitions="*,6,Auto">
+                        <TextBox Grid.Column="0"
+                                 Text="{Binding ChatMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Classes="PastelTextBox"
+                                 FontSize="12">
+                            <TextBox.KeyBindings>
+                                <KeyBinding Gesture="Enter"
+                                            Command="{Binding SendChatMessageCommand}"/>
+                            </TextBox.KeyBindings>
+                        </TextBox>
+                        <Button Grid.Column="2"
+                                Classes="PastelButton"
+                                Command="{Binding SendChatMessageCommand}"
+                                Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Send]}"
+                                Padding="12,4"
+                                FontSize="12"/>
+                    </Grid>
+                </Grid>
+            </Border>
         </Grid>
+
+        <Border IsVisible="{Binding ShowGameOver}"
+                Background="#DD000000"
+                Classes="GameOverVeil">
+            <Border Classes="GameOverCard"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    MinWidth="360">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="*"
+                               Classes="PastelHeading TrophyWiggle"
+                               FontSize="48"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,12"/>
+
+                    <TextBlock Text="{Binding GameOverTitle}"
+                               Classes="PastelHeading"
+                               FontSize="24"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,0,0,16"
+                               Foreground="{DynamicResource PastelPrimary}"/>
+
+                    <TextBlock Text="{Binding GameOverStats}"
+                               Classes="PastelTextBlock"
+                               FontSize="15"
+                               HorizontalAlignment="Center"
+                               TextAlignment="Center"
+                               Margin="0,0,0,24"/>
+
+                    <Button Command="{Binding CloseGameOverCommand}"
+                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Accept]}"
+                            Classes="PastelButton"
+                            Padding="28,10"
+                            FontSize="15"
+                            HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Border>
     </Grid>
 </UserControl>

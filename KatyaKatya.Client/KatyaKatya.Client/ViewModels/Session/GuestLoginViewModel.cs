@@ -5,6 +5,7 @@ using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Services.Network;
 using KatyaKatya.Services.Core;
 using KatyaKatya.Helpers;
+using KatyaKatya.Localization;
 using KatyaKatya.ViewModels.MainMenu;
 
 namespace KatyaKatya.ViewModels.Session;
@@ -38,14 +39,14 @@ public partial class GuestLoginViewModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(Username))
         {
-            ErrorMessage = "Please enter a username.";
+            ErrorMessage = LocalizationManager.Instance["Validation_USERNAME_EMPTY"];
             return;
         }
 
         IsLoading = true;
         ErrorMessage = string.Empty;
 
-        var result = await _api.PostAsync<LoginResponse>(
+        var result = await _api.PostAsync<AuthResponse>(
             "api/auth/login-guest", new { GuestUsername = Username });
 
         IsLoading = false;
@@ -54,9 +55,9 @@ public partial class GuestLoginViewModel : ObservableObject
         {
             _session.StartSession(new UserSession
             {
-                UserId = result.Data.UserId,
-                Username = result.Data.Username,
-                Email = result.Data.Email,
+                UserId = result.Data.User.Id,
+                Username = result.Data.User.Username,
+                Email = result.Data.User.Email,
                 IsGuest = true,
                 AccessToken = result.Data.AccessToken,
                 RefreshToken = result.Data.RefreshToken
@@ -67,7 +68,7 @@ public partial class GuestLoginViewModel : ObservableObject
         }
         else
         {
-            ErrorMessage = result.ErrorMessage ?? "Guest login failed.";
+            ErrorMessage = ErrorResolver.Resolve(result.ErrorCode);
         }
     }
 

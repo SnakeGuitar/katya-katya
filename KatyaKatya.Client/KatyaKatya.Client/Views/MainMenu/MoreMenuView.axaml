@@ -1,6 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.MainMenu"
+             xmlns:loc="using:KatyaKatya.Localization"
              x:Class="KatyaKatya.Views.MainMenu.MoreMenuView"
              x:DataType="vm:MoreMenuViewModel">
 
@@ -9,68 +10,65 @@
                Stretch="UniformToFill"
                IsHitTestVisible="False"/>
 
-        <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="32"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="28"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" RowDefinitions="Auto,32,Auto,28,Auto">
             <TextBlock Grid.Row="0"
-                       Text="More"
+                       Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_More]}"
                        Classes="PastelHeading"
                        HorizontalAlignment="Center"/>
 
-            <!-- Section cards -->
             <StackPanel Grid.Row="2"
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         Spacing="20">
 
-                <!-- Gallery card -->
                 <Button Command="{Binding GoToGalleryCommand}"
                         Background="{DynamicResource CardBackground}"
                         BorderThickness="0"
                         Cursor="Hand"
                         CornerRadius="{DynamicResource CardCornerRadius}"
                         Width="200" Height="180"
-                        Padding="28,32"
-                        >
+                        Padding="28,32">
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="🃏" FontSize="44" HorizontalAlignment="Center" Margin="0,0,0,12"/>
-                        <TextBlock Text="Gallery" Classes="PastelTextBlock" FontSize="15" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Cards" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Gallery_Title]}"
+                                   Classes="PastelTextBlock"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <!-- Profile card -->
                 <Button Command="{Binding GoToProfileCommand}"
                         Background="{DynamicResource CardBackground}"
                         BorderThickness="0"
                         Cursor="Hand"
                         CornerRadius="{DynamicResource CardCornerRadius}"
                         Width="200" Height="180"
-                        Padding="28,32"
-                        >
+                        Padding="28,32">
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="👤" FontSize="44" HorizontalAlignment="Center" Margin="0,0,0,12"/>
-                        <TextBlock Text="Profile" Classes="PastelTextBlock" FontSize="15" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="User" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Title]}"
+                                   Classes="PastelTextBlock"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <!-- Friends card -->
                 <Button Command="{Binding GoToFriendsCommand}"
                         Background="{DynamicResource CardBackground}"
                         BorderThickness="0"
                         Cursor="Hand"
                         CornerRadius="{DynamicResource CardCornerRadius}"
                         Width="200" Height="180"
-                        Padding="28,32"
-                        >
+                        Padding="28,32">
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="🤝" FontSize="44" HorizontalAlignment="Center" Margin="0,0,0,12"/>
-                        <TextBlock Text="Friends" Classes="PastelTextBlock" FontSize="15" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Social" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Friends_Title]}"
+                                   Classes="PastelTextBlock"
+                                   FontSize="15"
+                                   FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
@@ -79,7 +77,7 @@
                     HorizontalAlignment="Center"
                     Classes="LinkButton"
                     Command="{Binding GoBackCommand}"
-                    Content="← Back"/>
+                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"/>
         </Grid>
     </Grid>
 </UserControl>

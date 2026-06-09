@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KatyaKatya.Localization;
 using KatyaKatya.Models.Lobby;
 using KatyaKatya.Services.Interfaces;
 using KatyaKatya.ViewModels.MainMenu;
@@ -177,8 +178,8 @@ public partial class SinglePlayerGameViewModel : ObservableObject
     private void LeaveGame()
     {
         var result = _dialog.ShowMessage(
-            "Are you sure you want to leave?",
-            "Confirm",
+            LocalizationManager.Instance["Lobby_Message_LeaveLobby"],
+            LocalizationManager.Instance["Global_Title_Confirm"],
             DialogButton.YesNo, DialogIcon.Question);
 
         if (result != DialogResult.Yes) return;
@@ -273,8 +274,13 @@ public partial class SinglePlayerGameViewModel : ObservableObject
 
         int totalPairs = Cards.Count / 2;
 
-        GameOverTitle = "Puzzle Complete!";
-        GameOverStats = $"Pairs: {Score}/{totalPairs}  ·  Attempts: {Attempts}  ·  Time: {ElapsedDisplay}";
+        GameOverTitle = LocalizationManager.Instance["SinglePlayer_Label_GameOver_Complete"];
+        GameOverStats = LocalizationManager.Instance.Format(
+            "SinglePlayer_Label_GameOver_Stats",
+            Score,
+            totalPairs,
+            Attempts,
+            ElapsedDisplay);
 
         ShowGameOver = true;
     }

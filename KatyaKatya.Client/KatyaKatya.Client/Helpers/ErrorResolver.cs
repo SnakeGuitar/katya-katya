@@ -1,3 +1,5 @@
+using KatyaKatya.Localization;
+
 namespace KatyaKatya.Helpers;
 
 public static class ErrorResolver
@@ -5,59 +7,62 @@ public static class ErrorResolver
     public static string Resolve(string? errorCode)
     {
         if (string.IsNullOrWhiteSpace(errorCode))
-            return "An unknown error occurred. Please try again.";
+            return LocalizationManager.Instance["Error_UNKNOWN"];
 
-        return errorCode switch
+        var key = errorCode switch
         {
             // AUTH
-            "AUTH_EMAIL_ALREADY_REGISTERED" => "This email is already registered.",
-            "AUTH_EMAIL_ALREADY_IN_USE" => "This email is already in use.",
-            "AUTH_USERNAME_ALREADY_TAKEN" => "This username is already taken.",
-            "AUTH_INVALID_CREDENTIALS" => "Invalid username or password.",
-            "AUTH_GUEST_CANNOT_LOGIN" => "Guests cannot log in.",
-            "AUTH_EMAIL_NOT_VERIFIED" => "Your email is not verified yet.",
-            "AUTH_REGISTRATION_NOT_FOUND" => "Registration session not found.",
-            "AUTH_PIN_INVALID" => "Invalid verification PIN.",
-            "AUTH_REFRESH_TOKEN_INVALID" => "Session expired. Please log in again.",
+            "AUTH_EMAIL_ALREADY_REGISTERED" => "Error_AUTH_EMAIL_ALREADY_REGISTERED",
+            "AUTH_EMAIL_ALREADY_IN_USE" => "Error_AUTH_EMAIL_ALREADY_IN_USE",
+            "AUTH_USERNAME_ALREADY_TAKEN" => "Error_AUTH_USERNAME_ALREADY_TAKEN",
+            "AUTH_INVALID_CREDENTIALS" => "Error_AUTH_INVALID_CREDENTIALS",
+            "AUTH_GUEST_CANNOT_LOGIN" => "Error_AUTH_GUEST_CANNOT_LOGIN",
+            "AUTH_EMAIL_NOT_VERIFIED" => "Error_AUTH_EMAIL_NOT_VERIFIED",
+            "AUTH_REGISTRATION_NOT_FOUND" => "Error_AUTH_REGISTRATION_NOT_FOUND",
+            "AUTH_PIN_INVALID" => "Error_AUTH_PIN_INVALID",
+            "AUTH_REFRESH_TOKEN_INVALID" => "Error_AUTH_REFRESH_TOKEN_INVALID",
 
             // USER
-            "USER_NOT_FOUND" => "User not found.",
-            "USER_USERNAME_EMPTY" => "Username cannot be empty.",
-            "USER_USERNAME_TOO_LONG" => "Username is too long.",
-            "USER_NAME_TOO_LONG" => "First name is too long.",
-            "USER_LAST_NAME_TOO_LONG" => "Last name is too long.",
-            "USER_AVATAR_NULL" => "Avatar data cannot be empty.",
-            "USER_GUEST_CANNOT_CHANGE_PASSWORD" => "Guests cannot change password.",
-            "USER_EMAIL_ALREADY_VERIFIED" => "Email is already verified.",
-            "USER_NOT_A_GUEST" => "User is not a guest.",
-            "USER_PASSWORD_INCORRECT" => "The password you entered is incorrect.",
+            "USER_NOT_FOUND" => "Error_UNKNOWN",
+            "USER_USERNAME_EMPTY" => "Validation_USERNAME_EMPTY",
+            "USER_USERNAME_TOO_LONG" => "Error_UNKNOWN",
+            "USER_NAME_TOO_LONG" => "Error_UNKNOWN",
+            "USER_LAST_NAME_TOO_LONG" => "Error_UNKNOWN",
+            "USER_AVATAR_NULL" => "Error_UNKNOWN",
+            "USER_GUEST_CANNOT_CHANGE_PASSWORD" => "Error_UNKNOWN",
+            "USER_EMAIL_ALREADY_VERIFIED" => "Error_UNKNOWN",
+            "USER_NOT_A_GUEST" => "Error_UNKNOWN",
+            "USER_PASSWORD_INCORRECT" => "Error_UNKNOWN",
 
             // SOCIAL
-            "SOCIAL_FRIEND_REQUEST_NOT_FOUND" => "Friend request not found.",
-            "SOCIAL_FRIEND_REQUEST_ALREADY_SENT" => "A friend request has already been sent to this user.",
-            "SOCIAL_ALREADY_FRIENDS" => "You are already friends with this user.",
-            "SOCIAL_NOT_FRIENDS" => "You are not friends with this user.",
-            "SOCIAL_NETWORK_NOT_FOUND" => "Social network account not found.",
+            "SOCIAL_FRIEND_REQUEST_NOT_FOUND" => "Error_UNKNOWN",
+            "SOCIAL_FRIEND_REQUEST_ALREADY_SENT" => "Error_UNKNOWN",
+            "SOCIAL_ALREADY_FRIENDS" => "Error_UNKNOWN",
+            "SOCIAL_NOT_FRIENDS" => "Error_UNKNOWN",
+            "SOCIAL_NETWORK_NOT_FOUND" => "Error_UNKNOWN",
 
             // LOBBY
-            "LOBBY_NOT_FOUND" => "Lobby not found.",
-            "LOBBY_FULL" => "The lobby is full.",
-            "LOBBY_GAME_IN_PROGRESS" => "The lobby game is already in progress.",
-            "LOBBY_NOT_ENOUGH_PLAYERS" => "Not enough players in the lobby.",
-            "LOBBY_CODE_TAKEN" => "This lobby code is already taken.",
-            "LOBBY_NOT_IN_LOBBY" => "You are not in a lobby.",
+            "LOBBY_NOT_FOUND" => "Error_LOBBY_NOT_FOUND",
+            "LOBBY_FULL" => "Error_LOBBY_FULL",
+            "LOBBY_GAME_IN_PROGRESS" => "Error_LOBBY_GAME_IN_PROGRESS",
+            "LOBBY_NOT_ENOUGH_PLAYERS" => "Error_LOBBY_NOT_ENOUGH_PLAYERS",
+            "LOBBY_CODE_TAKEN" => "Error_LOBBY_CODE_TAKEN",
+            "LOBBY_NOT_IN_LOBBY" => "Error_LOBBY_NOT_IN_LOBBY",
 
             // VALIDATION
-            "VALIDATION_USERNAME_REQUIRED" => "Username is required.",
-            "VALIDATION_PASSWORD_REQUIRED" => "Password is required.",
-            "VALIDATION_EMAIL_REQUIRED" => "Email is required.",
-            "VALIDATION_EMAIL_INVALID_FORMAT" => "Invalid email format.",
-            "VALIDATION_PIN_REQUIRED" => "Verification PIN is required.",
-            "VALIDATION_AVATAR_REQUIRED" => "Avatar is required.",
+            "VALIDATION_USERNAME_REQUIRED" => "Validation_USERNAME_EMPTY",
+            "VALIDATION_USERNAME_EMPTY" => "Validation_USERNAME_EMPTY",
+            "VALIDATION_PASSWORD_REQUIRED" => "Error_UNKNOWN",
+            "VALIDATION_EMAIL_REQUIRED" => "Error_UNKNOWN",
+            "VALIDATION_EMAIL_INVALID_FORMAT" => "Error_UNKNOWN",
+            "VALIDATION_PIN_REQUIRED" => "Error_UNKNOWN",
+            "VALIDATION_AVATAR_REQUIRED" => "Error_UNKNOWN",
 
             // CLIENT-SIDE / GENERIC
-            "CONNECTION_ERROR" => "Could not connect to the server. Please check your internet connection.",
-            _ => $"An error occurred: {errorCode}"
+            "CONNECTION_ERROR" => "Error_CONNECTION_ERROR",
+            _ => "Error_UNKNOWN"
         };
+
+        return LocalizationManager.Instance[key];
     }
 }

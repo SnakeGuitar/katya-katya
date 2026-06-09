@@ -7,6 +7,7 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KatyaKatya.Helpers;
+using KatyaKatya.Localization;
 using KatyaKatya.Models.Lobby;
 using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Services.Network;
@@ -133,7 +134,7 @@ public partial class LobbyViewModel : ObservableObject
 
         Dispatcher.UIThread.Invoke(() =>
         {
-            string message = $"{username} joined the lobby";
+            string message = LocalizationManager.Instance.Format("Lobby_Notification_PlayerJoined", username);
             AddSystemMessage(message);
         });
     }
@@ -144,7 +145,7 @@ public partial class LobbyViewModel : ObservableObject
 
         Dispatcher.UIThread.Invoke(() =>
         {
-            string message = $"{username} left the lobby";
+            string message = LocalizationManager.Instance.Format("Lobby_Notification_PlayerLeft", username);
             AddSystemMessage(message);
         });
     }
@@ -155,7 +156,7 @@ public partial class LobbyViewModel : ObservableObject
 
         Dispatcher.UIThread.Invoke(() =>
         {
-            string formatted = isSystem ? $"⸻ {message} ⸻" : $"{sender}: {message}";
+            string formatted = isSystem ? $"- {message} -" : $"{sender}: {message}";
             ChatMessages.Add(formatted);
             ScrollChatToBottom?.Invoke();
         });
@@ -184,8 +185,8 @@ public partial class LobbyViewModel : ObservableObject
         {
             UnsubscribeEvents();
             _dialog.ShowMessage(
-                "You have been kicked.",
-                "Information",
+                LocalizationManager.Instance["Lobby_Message_Kicked"],
+                LocalizationManager.Instance["Global_Title_Information"],
                 DialogButton.OK, DialogIcon.Information);
             _navigation.GoBack();
         });
@@ -199,7 +200,7 @@ public partial class LobbyViewModel : ObservableObject
         {
             IsLoading = false;
             _dialog.ShowMessage(ErrorResolver.Resolve(errorCode),
-                "Error",
+                LocalizationManager.Instance["Global_Title_Error"],
                 DialogButton.OK, DialogIcon.Error);
         });
     }
@@ -228,8 +229,8 @@ public partial class LobbyViewModel : ObservableObject
         if (player.IsHost) return;
 
         var result = _dialog.ShowMessage(
-            $"Are you sure you want to vote to kick '{player.Username}'?",
-            "Confirm",
+            LocalizationManager.Instance.Format("KickVote_Message_VoteKickPlayer", player.Username),
+            LocalizationManager.Instance["Global_Title_Confirm"],
             DialogButton.YesNo, DialogIcon.Question);
 
         if (result != DialogResult.Yes) return;
@@ -248,8 +249,8 @@ public partial class LobbyViewModel : ObservableObject
     private async Task LeaveAsync()
     {
         var result = _dialog.ShowMessage(
-            "Are you sure you want to leave the lobby?",
-            "Confirm",
+            LocalizationManager.Instance["Lobby_Message_LeaveLobby"],
+            LocalizationManager.Instance["Global_Title_Confirm"],
             DialogButton.YesNo, DialogIcon.Question);
 
         if (result != DialogResult.Yes) return;
@@ -279,7 +280,7 @@ public partial class LobbyViewModel : ObservableObject
 
     private void AddSystemMessage(string message)
     {
-        ChatMessages.Add($"⸻ {message} ⸻");
+        ChatMessages.Add($"- {message} -");
         ScrollChatToBottom?.Invoke();
     }
 

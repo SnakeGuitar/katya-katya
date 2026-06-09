@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.IO;
 using Avalonia.Data.Converters;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
@@ -17,8 +18,15 @@ public class StringAssetToBitmapConverter : IValueConverter
         {
             try
             {
+                if (File.Exists(path))
+                {
+                    using var file = File.OpenRead(path);
+                    return new Bitmap(file);
+                }
+
                 var uri = new Uri(path);
-                return new Bitmap(AssetLoader.Open(uri));
+                using var stream = AssetLoader.Open(uri);
+                return new Bitmap(stream);
             }
             catch (Exception ex)
             {

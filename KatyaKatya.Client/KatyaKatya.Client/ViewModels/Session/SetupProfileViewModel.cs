@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KatyaKatya.Helpers;
 using KatyaKatya.Models;
 using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Services.Network;
@@ -17,6 +18,7 @@ public partial class SetupProfileViewModel : ObservableObject
     private readonly ApiClient _api;
     private readonly ISessionService _session;
     private readonly HubService _hub;
+    private readonly IFilePickerService _filePicker;
 
     [ObservableProperty] private string _email = string.Empty;
     [ObservableProperty] private string _pin = string.Empty;
@@ -29,21 +31,25 @@ public partial class SetupProfileViewModel : ObservableObject
         INavigationService navigation,
         ApiClient api,
         ISessionService session,
-        HubService hub)
+        HubService hub,
+        IFilePickerService filePicker)
     {
         _navigation = navigation;
         _api = api;
         _session = session;
         _hub = hub;
+        _filePicker = filePicker;
     }
 
     [RelayCommand]
     private async Task SelectAvatarAsync()
     {
-        // Platform file picker — requires TopLevel (injected at runtime from View code-behind
-        // or via a platform-specific IFilePicker service, not added here yet).
-        // For now, this is a no-op placeholder.
-        await Task.CompletedTask;
+        var picked = await _filePicker.PickImageAsync();
+        if (picked is null)
+            return;
+
+        AvatarBytes = picked.Bytes;
+        AvatarPreviewPath = picked.PreviewPath;
     }
 
     [RelayCommand]
@@ -52,14 +58,14 @@ public partial class SetupProfileViewModel : ObservableObject
         ErrorMessage = null;
         IsLoading = true;
 
-        var result = await _api.PostAsync<FinalizeRegistrationResponse>(
+        var result = await _api.PostAsync<AuthResponse>(
             "api/auth/finalize-registration", new { Email, Pin });
 
         IsLoading = false;
 
         if (!result.IsSuccess)
         {
-            ErrorMessage = result.ErrorMessage ?? "Registration failed.";
+            ErrorMessage = ErrorResolver.Resolve(result.ErrorCode);
             return;
         }
 
@@ -67,11 +73,11 @@ public partial class SetupProfileViewModel : ObservableObject
 
         _session.StartSession(new UserSession
         {
-            UserId    = data.UserId,
-            Username  = data.Username,
-            Email     = data.Email,
-            IsGuest   = data.IsGuest,
-            AccessToken  = data.AccessToken,
+            UserId = data.User.Id,
+            Username = data.User.Username,
+            Email = data.User.Email,
+            IsGuest = data.User.IsGuest,
+            AccessToken = data.AccessToken,
             RefreshToken = data.RefreshToken
         });
 
@@ -85,11 +91,3 @@ public partial class SetupProfileViewModel : ObservableObject
     [RelayCommand]
     private void GoBack() => _navigation.GoBack();
 }
-
-public record FinalizeRegistrationResponse(
-    int    UserId,
-    string Username,
-    string Email,
-    bool   IsGuest,
-    string AccessToken,
-    string RefreshToken);
