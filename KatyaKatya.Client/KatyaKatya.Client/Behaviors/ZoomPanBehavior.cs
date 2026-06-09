@@ -1,0 +1,136 @@
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Media;
+
+namespace KatyaKatya.Behaviors;
+
+public sealed class ZoomPanBehavior
+{
+    public static readonly AttachedProperty<bool> IsEnabledProperty =
+        AvaloniaProperty.RegisterAttached<ZoomPanBehavior, Control, bool>("IsEnabled");
+
+    public static readonly AttachedProperty<object?> ResetZoomTriggerProperty =
+        AvaloniaProperty.RegisterAttached<ZoomPanBehavior, Control, object?>("ResetZoomTrigger");
+
+    private static readonly AttachedProperty<Point?> LastPointerPositionProperty =
+        AvaloniaProperty.RegisterAttached<ZoomPanBehavior, Control, Point?>("LastPointerPosition");
+
+    private static readonly AttachedProperty<double> ZoomProperty =
+        AvaloniaProperty.RegisterAttached<ZoomPanBehavior, Control, double>("Zoom", 1.0);
+
+    private static readonly AttachedProperty<Vector> PanProperty =
+        AvaloniaProperty.RegisterAttached<ZoomPanBehavior, Control, Vector>("Pan");
+
+    static ZoomPanBehavior()
+    {
+        IsEnabledProperty.Changed.AddClassHandler<Control>(OnIsEnabledChanged);
+        ResetZoomTriggerProperty.Changed.AddClassHandler<Control>((control, _) => Reset(control));
+    }
+
+    public static bool GetIsEnabled(Control control) => control.GetValue(IsEnabledProperty);
+    public static void SetIsEnabled(Control control, bool value) => control.SetValue(IsEnabledProperty, value);
+
+    public static object? GetResetZoomTrigger(Control control) => control.GetValue(ResetZoomTriggerProperty);
+    public static void SetResetZoomTrigger(Control control, object? value) => control.SetValue(ResetZoomTriggerProperty, value);
+
+    private static void OnIsEnabledChanged(Control control, AvaloniaPropertyChangedEventArgs args)
+    {
+        if (args.NewValue is true)
+        {
+            control.PointerWheelChanged += OnPointerWheelChanged;
+            control.PointerPressed += OnPointerPressed;
+            control.PointerMoved += OnPointerMoved;
+            control.PointerReleased += OnPointerReleased;
+            Reset(control);
+        }
+        else
+        {
+            control.PointerWheelChanged -= OnPointerWheelChanged;
+            control.PointerPressed -= OnPointerPressed;
+            control.PointerMoved -= OnPointerMoved;
+            control.PointerReleased -= OnPointerReleased;
+            control.SetValue(LastPointerPositionProperty, null);
+        }
+    }
+
+    private static void OnPointerWheelChanged(object? sender, PointerWheelEventArgs e)
+    {
+        if (sender is not Control control)
+            return;
+
+        var zoom = control.GetValue(ZoomProperty);
+        zoom *= e.Delta.Y > 0 ? 1.2 : 1 / 1.2;
+        zoom = Math.Clamp(zoom, 1.0, 4.0);
+
+        control.SetValue(ZoomProperty, zoom);
+        ApplyTransform(control);
+        e.Handled = true;
+    }
+
+    private static void OnPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (sender is not Control control)
+            return;
+
+        if (!e.GetCurrentPoint(control).Properties.IsLeftButtonPressed)
+            return;
+
+        control.SetValue(LastPointerPositionProperty, e.GetPosition(control));
+        e.Pointer.Capture(control);
+        e.Handled = true;
+    }
+
+    private static void OnPointerMoved(object? sender, PointerEventArgs e)
+    {
+        if (sender is not Control control)
+            return;
+
+        var last = control.GetValue(LastPointerPositionProperty);
+        if (last is null)
+            return;
+
+        var current = e.GetPosition(control);
+        var delta = current - last.Value;
+        var pan = control.GetValue(PanProperty);
+        pan += new Vector(delta.X, delta.Y);
+
+        control.SetValue(PanProperty, pan);
+        control.SetValue(LastPointerPositionProperty, current);
+        ApplyTransform(control);
+        e.Handled = true;
+    }
+
+    private static void OnPointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        if (sender is not Control control)
+            return;
+
+        control.SetValue(LastPointerPositionProperty, null);
+        e.Pointer.Capture(null);
+        e.Handled = true;
+    }
+
+    private static void Reset(Control control)
+    {
+        control.SetValue(ZoomProperty, 1.0);
+        control.SetValue(PanProperty, default(Vector));
+        ApplyTransform(control);
+    }
+
+    private static void ApplyTransform(Control control)
+    {
+        var zoom = control.GetValue(ZoomProperty);
+        var pan = control.GetValue(PanProperty);
+
+        control.RenderTransformOrigin = RelativePoint.Center;
+        control.RenderTransform = new TransformGroup
+        {
+            Children =
+            {
+                new ScaleTransform(zoom, zoom),
+                new TranslateTransform(pan.X, pan.Y)
+            }
+        };
+    }
+}

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Avalonia;
 using Avalonia.Markup.Xaml.Styling;
+using KatyaKatya.Helpers;
 using KatyaKatya.Services.Interfaces;
 
 namespace KatyaKatya.Services.UI;
@@ -11,6 +12,8 @@ public class ThemeService : IThemeService
     private static readonly string PastelUri  = "avares://KatyaKatya/Resources/Themes/BaseTheme.axaml";
     private static readonly string SketchUri  = "avares://KatyaKatya/Resources/Themes/SketchTheme.axaml";
     private static readonly string BaseAvares = "avares://KatyaKatya/";
+
+    public string CurrentThemeName { get; private set; } = "Pastel";
 
     public void ApplyTheme(string themeName)
     {
@@ -27,5 +30,8 @@ public class ThemeService : IThemeService
 
         var uri = themeName == "Sketch" ? SketchUri : PastelUri;
         merged.Add(new ResourceInclude(new Uri(BaseAvares)) { Source = new Uri(uri) });
+
+        CurrentThemeName = themeName == "Sketch" ? "Sketch" : "Pastel";
+        ThemeAssets.SetCurrentTheme(CurrentThemeName);
     }
 }

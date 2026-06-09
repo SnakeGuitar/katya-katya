@@ -12,7 +12,7 @@
                IsHitTestVisible="False"/>
 
         <!-- Active view -->
-        <ContentControl Content="{Binding Navigation.CurrentViewModel}"
+        <ContentControl Content="{Binding DisplayedViewModel}"
                         Classes="ViewFade"/>
     </Grid>
 </UserControl>

@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:KatyaKatya.ViewModels"
+        xmlns:loc="using:KatyaKatya.Localization"
         x:Class="KatyaKatya.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="Katya Katya"
@@ -44,7 +45,8 @@
                    IsHitTestVisible="False"/>
 
             <!-- ─── Active view (fills the window) ─── -->
-            <ContentControl Content="{Binding Navigation.CurrentViewModel}"
+            <ContentControl Name="ViewHost"
+                            Content="{Binding DisplayedViewModel}"
                             Classes="ViewFade"/>
 
             <!-- ─── Drag area (top strip, below buttons) ─── -->
@@ -119,20 +121,20 @@
                             <Button Classes="PastelDropdownButton"
                                     Command="{Binding GoToProfileCommand}"
                                     Margin="0,0,0,4"
-                                    Content="Profile"/>
+                                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Profile]}"/>
                             <Button Classes="PastelDropdownButton"
                                     Command="{Binding GoToFriendsCommand}"
                                     Margin="0,0,0,4"
-                                    Content="Friends"/>
+                                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Friends]}"/>
                             <Button Classes="PastelDropdownButton"
                                     Command="{Binding GoToGuestRegisterCommand}"
                                     Margin="0,0,0,4"
-                                    Content="Register"
+                                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Register]}"
                                     IsVisible="{Binding IsGuestRegisterVisible}"/>
                             <Rectangle Classes="SectionDivider" Margin="8,4,8,8" Height="1"/>
                             <Button Classes="PastelDropdownButton"
                                     Command="{Binding GoToSettingsCommand}"
-                                    Content="Settings"/>
+                                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Settings]}"/>
                         </StackPanel>
                     </Border>
                 </Popup>

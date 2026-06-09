@@ -4,16 +4,15 @@ public static class LogoResolver
 {
     public static string Resolve(string languageCode, string themeName)
     {
-        string languagePrefix = languageCode.StartsWith("es", System.StringComparison.OrdinalIgnoreCase) ? "es" : "en";
-        bool isSketch = string.Equals(themeName, "Sketch", System.StringComparison.OrdinalIgnoreCase);
+        string languagePrefix = languageCode switch
+        {
+            not null when languageCode.StartsWith("es", System.StringComparison.OrdinalIgnoreCase) => "es",
+            not null when languageCode.StartsWith("ja", System.StringComparison.OrdinalIgnoreCase) => "jp",
+            not null when languageCode.StartsWith("zh", System.StringComparison.OrdinalIgnoreCase) => "zh",
+            not null when languageCode.StartsWith("ko", System.StringComparison.OrdinalIgnoreCase) => "ko",
+            _ => "en"
+        };
 
-        if (isSketch)
-        {
-            return $"avares://KatyaKatya/Resources/Images/Logos/sketch-logo-{languagePrefix}.png";
-        }
-        else
-        {
-            return $"avares://KatyaKatya/Resources/Images/Logos/logo-{languagePrefix}.png";
-        }
+        return ThemeAssets.GetLogoPath(themeName, languagePrefix);
     }
 }

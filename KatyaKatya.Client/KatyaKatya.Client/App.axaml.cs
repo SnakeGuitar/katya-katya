@@ -19,6 +19,7 @@ using KatyaKatya.ViewModels.Lobby;
 using KatyaKatya.ViewModels.SinglePlayer;
 using KatyaKatya.Views;
 using KatyaKatya.Helpers;
+using KatyaKatya.Localization;
 
 namespace KatyaKatya;
 
@@ -53,7 +54,9 @@ public partial class App : Application
             var navigation = _serviceProvider.GetRequiredService<INavigationService>();
             var settings = _serviceProvider.GetRequiredService<ClientSettings>();
             var theme = _serviceProvider.GetRequiredService<IThemeService>();
+            LocalizationManager.Instance.SetCulture(settings.LanguageCode);
             theme.ApplyTheme(settings.ThemeName);
+            _serviceProvider.GetRequiredService<IMusicService>();
             navigation.NavigateTo<SplashScreenViewModel>();
 
             desktop.ShutdownRequested += OnShutdown;
@@ -68,7 +71,9 @@ public partial class App : Application
             var navigation = _serviceProvider.GetRequiredService<INavigationService>();
             var settings = _serviceProvider.GetRequiredService<ClientSettings>();
             var theme = _serviceProvider.GetRequiredService<IThemeService>();
+            LocalizationManager.Instance.SetCulture(settings.LanguageCode);
             theme.ApplyTheme(settings.ThemeName);
+            _serviceProvider.GetRequiredService<IMusicService>();
             navigation.NavigateTo<SplashScreenViewModel>();
         }
 
@@ -84,7 +89,9 @@ public partial class App : Application
         services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IWindowService, WindowService>();
+        services.AddSingleton<IFilePickerService, FilePickerService>();
         services.AddSingleton<IThemeService, ThemeService>();
+        services.AddSingleton<IThemeAssetService, ThemeAssetService>();
         services.AddSingleton<IProfileService, ProfileService>();
         services.AddSingleton<ILobbyService, LobbyService>();
         services.AddSingleton<IChatService, ChatService>();
