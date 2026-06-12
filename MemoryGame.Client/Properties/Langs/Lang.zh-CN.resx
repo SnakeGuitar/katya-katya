@@ -326,6 +326,12 @@
 	<!-- =====================================================================
        Server Error Codes — HUB / LOBBY
        ===================================================================== -->
+	<data name="Error_InvalidGameCode">
+		<value>请输入有效的6位代码。</value>
+	</data>
+	<data name="GameBoard_Label_Winner">
+		<value>{0}获胜！</value>
+	</data>
 	<data name="Error_LOBBY_NOT_FOUND">
 		<value>未找到房间，游戏代码可能有误。</value>
 	</data>

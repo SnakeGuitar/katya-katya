@@ -156,6 +156,8 @@
   <!-- =====================================================================
        Server Error Codes — HUB / LOBBY
        ===================================================================== -->
+  <data name="Error_InvalidGameCode"><value>Ingresa un código válido de 6 dígitos.</value></data>
+  <data name="GameBoard_Label_Winner"><value>¡{0} gana!</value></data>
   <data name="Error_LOBBY_NOT_FOUND"><value>Sala no encontrada. El código de partida puede ser incorrecto.</value></data>
   <data name="Error_LOBBY_FULL"><value>Esta sala está llena.</value></data>
   <data name="Error_LOBBY_GAME_IN_PROGRESS"><value>Ya hay una partida en curso en esta sala.</value></data>
