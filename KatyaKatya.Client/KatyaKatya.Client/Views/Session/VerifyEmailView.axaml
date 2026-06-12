@@ -6,7 +6,7 @@
              x:DataType="vm:VerifyEmailViewModel">
 
     <Grid>
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill"
                IsHitTestVisible="False"/>
 
@@ -17,7 +17,7 @@
             </Grid.ColumnDefinitions>
 
             <Image Grid.Column="0"
-                   Source="avares://KatyaKatya/Resources/Images/Logos/logo-en.png"
+                   Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=LogoPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                    Width="280" Height="280"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"

@@ -6,7 +6,7 @@
              x:DataType="vm:LoginViewModel">
 
     <Grid>
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill"
                IsHitTestVisible="False"/>
 
@@ -58,6 +58,7 @@
                                IsVisible="{Binding ErrorMessage, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
 
                     <Button Height="46"
+                            HorizontalAlignment="Stretch"
                             Margin="0,0,0,16"
                             Classes="PastelButton"
                             Command="{Binding LoginCommand}"

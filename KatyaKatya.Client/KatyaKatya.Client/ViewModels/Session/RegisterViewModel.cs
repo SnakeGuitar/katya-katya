@@ -38,7 +38,7 @@ public partial class RegisterViewModel : ObservableObject
     {
         if (Password != ConfirmPassword)
         {
-            ErrorMessage = LocalizationManager.Instance["Session_Register_Error_PasswordMismatch"];
+            ErrorMessage = LocalizationManager.Instance["Validation_PasswordsDoNotMatch"];
             return;
         }
 

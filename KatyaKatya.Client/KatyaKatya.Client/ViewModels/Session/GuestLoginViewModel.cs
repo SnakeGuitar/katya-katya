@@ -39,7 +39,7 @@ public partial class GuestLoginViewModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(Username))
         {
-            ErrorMessage = LocalizationManager.Instance["Validation_USERNAME_EMPTY"];
+            ErrorMessage = LocalizationManager.Instance["Error_USER_USERNAME_EMPTY"];
             return;
         }
 

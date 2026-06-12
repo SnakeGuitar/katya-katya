@@ -42,7 +42,7 @@ public partial class LoginViewModel : ObservableObject
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            ErrorMessage = LocalizationManager.Instance["Session_Login_Error_Required"];
+            ErrorMessage = LocalizationManager.Instance["Validation_Required"];
             return;
         }
 
