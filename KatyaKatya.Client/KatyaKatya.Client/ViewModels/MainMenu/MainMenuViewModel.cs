@@ -29,7 +29,10 @@ public partial class MainMenuViewModel : ObservableObject
     [ObservableProperty]
     private string _currentMoodImage = string.Empty;
 
+    private string _assetsThemeName = string.Empty;
+
     public string LogoPath => KatyaKatya.Helpers.LogoResolver.Resolve(_settings.LanguageCode, _settings.ThemeName);
+    public string BackgroundPath => _themeAssets.MainMenuBackgroundPath(_settings.ThemeName);
 
     public MainMenuViewModel(
         INavigationService navigation,
@@ -54,6 +57,21 @@ public partial class MainMenuViewModel : ObservableObject
     {
         var moodPaths = _themeAssets.MainMenuMoodImages(_settings.ThemeName);
         CurrentMoodImage = moodPaths[Random.Shared.Next(moodPaths.Count)];
+        _assetsThemeName = _settings.ThemeName;
+    }
+
+    /// <summary>
+    /// Re-resolves theme-dependent assets if the theme changed since they were picked.
+    /// Called by the view on attach and on ThemeChanged, so a history-cached instance
+    /// returning from Settings doesn't keep showing the previous theme's art.
+    /// </summary>
+    public void RefreshThemeAssets()
+    {
+        if (_assetsThemeName == _settings.ThemeName) return;
+
+        PickMoodImage();
+        OnPropertyChanged(nameof(LogoPath));
+        OnPropertyChanged(nameof(BackgroundPath));
     }
 
     [RelayCommand]

@@ -1,15 +1,19 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.Session"
+             xmlns:controls="using:KatyaKatya.Controls"
              xmlns:loc="using:KatyaKatya.Localization"
              x:Class="KatyaKatya.Views.Session.TitleScreenView"
              x:DataType="vm:TitleScreenViewModel">
 
     <Grid>
         <!-- Background -->
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill"
                IsHitTestVisible="False"/>
+
+        <!-- Falling cherry-blossom petals -->
+        <controls:ParticleCanvas Name="PetalCanvas" IsHitTestVisible="False"/>
 
         <!-- Floating logo (top-center) -->
         <Image Source="{Binding LogoPath, Converter={StaticResource StringAssetToBitmapConverter}}"
@@ -28,18 +32,21 @@
                     Spacing="0">
 
             <Button Height="40"
+                    HorizontalAlignment="Stretch"
                     Margin="0,0,0,16"
                     Classes="PastelButton"
                     Command="{Binding GoToLoginCommand}"
                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Login]}"/>
 
             <Button Height="40"
+                    HorizontalAlignment="Stretch"
                     Margin="0,0,0,16"
                     Classes="PastelButton"
                     Command="{Binding GoToRegisterCommand}"
                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Register]}"/>
 
             <Button Height="34"
+                    HorizontalAlignment="Center"
                     Classes="LinkButton"
                     Command="{Binding GoToGuestLoginCommand}"
                     Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Session_Guest_Title]}"/>

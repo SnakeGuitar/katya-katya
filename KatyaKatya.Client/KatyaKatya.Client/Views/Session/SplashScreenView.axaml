@@ -2,15 +2,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:vm="using:KatyaKatya.ViewModels.Session"
              xmlns:conv="using:KatyaKatya.Converters"
+             xmlns:loc="using:KatyaKatya.Localization"
              x:Class="KatyaKatya.Views.Session.SplashScreenView"
              x:DataType="vm:SplashScreenViewModel">
 
     <Grid>
         <!-- Blurred background -->
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/katya-main-background-only.png"
+        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=MainMenuBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill"
                IsHitTestVisible="False"
-               Opacity="0.6"/>
+               Effect="blur(24)"/>
 
         <!-- Logo centered, fades in via FadeIn class -->
         <Border HorizontalAlignment="Center"

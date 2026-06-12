@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:KatyaKatya.ViewModels"
+        xmlns:controls="using:KatyaKatya.Controls"
         xmlns:loc="using:KatyaKatya.Localization"
         x:Class="KatyaKatya.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -40,9 +41,12 @@
         <Grid>
             <!-- Global background image -->
             <Image Name="GlobalBgImage"
-                   Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+                   Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                    Stretch="UniformToFill"
                    IsHitTestVisible="False"/>
+
+            <!-- Global dynamic background: mist, clouds, bokeh + mouse parallax -->
+            <controls:AnimatedBackground IsHitTestVisible="False"/>
 
             <!-- ─── Active view (fills the window) ─── -->
             <ContentControl Name="ViewHost"
@@ -101,7 +105,7 @@
                               Background="Transparent"
                               BorderThickness="0"
                               CornerRadius="28">
-                    <Image Source="avares://KatyaKatya/Resources/Images/Icons/menu-icon.png"
+                    <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=MenuIconPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                            Width="36" Height="36"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"/>

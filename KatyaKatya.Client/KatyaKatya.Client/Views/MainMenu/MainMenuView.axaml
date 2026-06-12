@@ -7,13 +7,17 @@
              x:DataType="vm:MainMenuViewModel">
 
     <Grid>
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/katya-main-background-only.png"
+        <Image Source="{Binding BackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill"
                IsHitTestVisible="False"/>
 
+        <!-- Falling cherry-blossom petals (behind the character) -->
+        <controls:ParticleCanvas Name="PetalCanvas" IsHitTestVisible="False"/>
+
         <StackPanel HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Width="500">
+                    Width="500"
+                    Margin="0,-18,0,0">
 
             <Image Source="{Binding LogoPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                    Height="280"
@@ -22,9 +26,32 @@
                    Margin="0,0,0,20"
                    Classes="FloatingLogo"/>
 
-            <Border Margin="60,0,60,0"
+            <Border Name="ButtonPanelBorder"
+                    Margin="60,0,60,0"
                     Classes="LiquidGlassCard"
-                    Padding="0">
+                    Padding="0"
+                    ClipToBounds="True">
+
+                <Grid>
+                    <!-- Interactive cursor glow overlay (center follows the pointer from code-behind) -->
+                    <Border Name="GlowOverlay"
+                            CornerRadius="{DynamicResource CardCornerRadius}"
+                            IsHitTestVisible="False"
+                            Opacity="0">
+                        <Border.Transitions>
+                            <Transitions>
+                                <DoubleTransition Property="Opacity" Duration="0:0:0.3" Easing="QuadraticEaseOut"/>
+                            </Transitions>
+                        </Border.Transitions>
+                        <Border.Background>
+                            <RadialGradientBrush Center="50%,50%" GradientOrigin="50%,50%">
+                                <GradientStop Color="#D5FFFFFF" Offset="0"/>
+                                <GradientStop Color="#65FFB6C1" Offset="0.4"/>
+                                <GradientStop Color="#25FFD1DC" Offset="0.8"/>
+                                <GradientStop Color="#00FFD1DC" Offset="1"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                    </Border>
 
                 <Border Padding="32,28,32,24">
                     <StackPanel Spacing="0">
@@ -40,16 +67,19 @@
 
                         <Button Height="48" Margin="0,0,0,12"
                                 Classes="PastelButton"
+                                HorizontalAlignment="Stretch"
                                 Command="{Binding GoToSingleplayerCommand}"
                                 Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Singleplayer]}"/>
 
                         <Button Height="48" Margin="0,0,0,12"
                                 Classes="PastelButton"
+                                HorizontalAlignment="Stretch"
                                 Command="{Binding GoToMultiplayerCommand}"
                                 Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Multiplayer]}"/>
 
                         <Button Height="48" Margin="0,0,0,20"
                                 Classes="PastelButton"
+                                HorizontalAlignment="Stretch"
                                 Command="{Binding GoToMoreCommand}"
                                 Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_More]}"/>
 
@@ -61,6 +91,7 @@
                                 Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Logout]}"/>
                     </StackPanel>
                 </Border>
+                </Grid>
             </Border>
         </StackPanel>
 
@@ -69,7 +100,7 @@
                                      Background="Transparent"
                                      BorderThickness="0"
                                      Padding="0"
-                                     MaxWidth="600"
+                                     MaxWidth="720"
                                      Cursor="Hand"
                                      RenderTransformOrigin="0.5,1"
                                      AlphaMaskSource="{Binding CurrentMoodImage}"
@@ -86,7 +117,8 @@
             </controls:AlphaHitTestButton.Styles>
             <Image Source="{Binding CurrentMoodImage, Converter={StaticResource StringAssetToBitmapConverter}}"
                    Stretch="Uniform"
-                   MaxHeight="780"/>
+                   MaxHeight="900"
+                   Margin="0,0,28,-8"/>
         </controls:AlphaHitTestButton>
     </Grid>
 </UserControl>
