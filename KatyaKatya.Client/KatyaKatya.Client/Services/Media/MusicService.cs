@@ -19,6 +19,8 @@ public class MusicService : IMusicService
     private int _currentTrack;
     private bool _initialized;
 
+    public event Action? TracksChanged;
+
     public MusicService(ClientSettings settings)
     {
         _settings = settings;
@@ -55,6 +57,8 @@ public class MusicService : IMusicService
                     .Select(t => Path.GetFileNameWithoutExtension(t))
                     .ToArray();
             }
+
+            TracksChanged?.Invoke();
 
             _player.Volume = (int)(_settings.MusicVolume * 100);
             _initialized = true;

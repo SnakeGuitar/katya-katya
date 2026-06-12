@@ -5,6 +5,8 @@ namespace KatyaKatya.Helpers;
 public interface IThemeAssetService
 {
     string LogoPath(string languageCode, string themeName);
+    string GlobalBackgroundPath(string themeName);
+    string MainMenuBackgroundPath(string themeName);
     IReadOnlyList<string> MainMenuMoodImages(string themeName);
     IReadOnlyList<Color> ParticleColors(string themeName);
 }
@@ -13,6 +15,12 @@ public sealed class ThemeAssetService : IThemeAssetService
 {
     public string LogoPath(string languageCode, string themeName) =>
         LogoResolver.Resolve(languageCode, themeName);
+
+    public string GlobalBackgroundPath(string themeName) =>
+        ThemeAssets.GetGlobalBackgroundPath(themeName);
+
+    public string MainMenuBackgroundPath(string themeName) =>
+        ThemeAssets.GetMainMenuBackgroundPath(themeName);
 
     public IReadOnlyList<string> MainMenuMoodImages(string themeName) =>
         ThemeAssets.GetMainMenuMoodImages(themeName);
@@ -25,8 +33,13 @@ public static class ThemeAssets
 {
     public static string CurrentThemeName { get; private set; } = "Pastel";
 
-    public static void SetCurrentTheme(string themeName) =>
+    public static event Action? ThemeChanged;
+
+    public static void SetCurrentTheme(string themeName)
+    {
         CurrentThemeName = IsSketch(themeName) ? "Sketch" : "Pastel";
+        ThemeChanged?.Invoke();
+    }
 
     public static string GetLogoPath(string themeName, string languagePrefix)
     {
@@ -36,6 +49,21 @@ public static class ThemeAssets
 
         return $"avares://KatyaKatya/Resources/Images/Logos/{fileName}";
     }
+
+    public static string GetGlobalBackgroundPath(string themeName) =>
+        IsSketch(themeName)
+            ? "avares://KatyaKatya/Resources/Images/Backgrounds/background-sketch.png"
+            : "avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png";
+
+    public static string GetMainMenuBackgroundPath(string themeName) =>
+        IsSketch(themeName)
+            ? "avares://KatyaKatya/Resources/Images/Backgrounds/background-sketch.png"
+            : "avares://KatyaKatya/Resources/Images/Backgrounds/katya-main-background-only.png";
+
+    public static string GetMenuIconPath(string themeName) =>
+        IsSketch(themeName)
+            ? "avares://KatyaKatya/Resources/Images/Icons/sketch-menu-icon.png"
+            : "avares://KatyaKatya/Resources/Images/Icons/menu-icon.png";
 
     public static IReadOnlyList<string> GetMainMenuMoodImages(string themeName) =>
         IsSketch(themeName) ? SketchMainMenuMoodImages : PastelMainMenuMoodImages;

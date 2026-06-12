@@ -5,6 +5,8 @@ namespace KatyaKatya.Services.Interfaces;
 /// </summary>
 public interface IMusicService : IDisposable
 {
+    event Action? TracksChanged;
+
     IReadOnlyList<string> Tracks { get; }
     int CurrentTrackIndex { get; set; }
     bool IsEnabled { get; set; }
