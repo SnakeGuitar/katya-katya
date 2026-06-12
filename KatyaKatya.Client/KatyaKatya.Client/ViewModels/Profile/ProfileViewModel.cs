@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KatyaKatya.Helpers;
+using KatyaKatya.Localization;
 using KatyaKatya.Models;
 using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Services.Network;
@@ -66,7 +67,9 @@ public partial class ProfileViewModel : ObservableObject
             RegistrationDate = _profileLoader.RegistrationDate.ToString("MMMM dd, yyyy");
 
             var name = $"{_profileLoader.Name} {_profileLoader.LastName}".Trim();
-            FullName = string.IsNullOrEmpty(name) ? "No personal info provided" : name;
+            FullName = string.IsNullOrEmpty(name)
+                ? LocalizationManager.Instance["Profile_Label_NoInfo"]
+                : name;
 
             if (_profileLoader.SocialNetworks is not null)
             {
@@ -76,8 +79,8 @@ public partial class ProfileViewModel : ObservableObject
         }
         catch (Exception)
         {
-            ErrorMessage = "Failed to load profile details.";
-            _dialog.ShowMessage(ErrorMessage, "Error", DialogButton.OK, DialogIcon.Error);
+            ErrorMessage = LocalizationManager.Instance["Error_UNKNOWN"];
+            _dialog.ShowMessage(ErrorMessage, LocalizationManager.Instance["Global_Title_Error"], DialogButton.OK, DialogIcon.Error);
         }
         finally
         {
@@ -98,8 +101,8 @@ public partial class ProfileViewModel : ObservableObject
     private async Task LogoutAsync()
     {
         var result = _dialog.ShowMessage(
-            "Are you sure you want to log out?",
-            "Confirm Logout",
+            LocalizationManager.Instance["Global_Button_Logout"] + "?",
+            LocalizationManager.Instance["Global_Title_Confirm"],
             DialogButton.YesNo,
             DialogIcon.Question);
 

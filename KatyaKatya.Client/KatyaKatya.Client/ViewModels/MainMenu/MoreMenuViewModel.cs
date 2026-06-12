@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using KatyaKatya.Localization;
 using KatyaKatya.Services.Interfaces;
 using KatyaKatya.ViewModels.Gallery;
 using KatyaKatya.ViewModels.Profile;
@@ -56,8 +57,8 @@ public partial class MoreMenuViewModel : ObservableObject
         if (_session.Current?.IsGuest != true) return true;
 
         _dialog.ShowMessage(
-            "This feature is not available for Guest accounts. Please register a full account to access this page.",
-            "Warning",
+            LocalizationManager.Instance["Menu_Error_RequiresFullAccount"],
+            LocalizationManager.Instance["Global_Title_Warning"],
             DialogButton.OK,
             DialogIcon.Warning);
 

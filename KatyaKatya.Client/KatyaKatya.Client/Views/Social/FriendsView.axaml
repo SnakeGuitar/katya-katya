@@ -6,7 +6,7 @@
              x:DataType="vm:FriendsViewModel">
 
     <Grid>
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill"
                IsHitTestVisible="False"/>
 
@@ -50,7 +50,14 @@
                         <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Friends_Label_MyFriends]}"
                                    Classes="PastelLabel" FontSize="14"
                                    Margin="0,0,0,16"/>
-                        <ScrollViewer MaxHeight="400">
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Friends_Label_NoFriends]}"
+                                   Classes="PastelTextBlock"
+                                   Foreground="{DynamicResource PastelTextLight}"
+                                   FontSize="14"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,24,0,24"
+                                   IsVisible="{Binding !HasFriends}"/>
+                        <ScrollViewer MaxHeight="400" IsVisible="{Binding HasFriends}">
                             <ItemsControl ItemsSource="{Binding Friends}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -60,16 +67,20 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0"
-                                                           Text="{Binding Username}"
-                                                           Classes="PastelTextBlock"
-                                                           VerticalAlignment="Center"/>
+                                                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                                    <TextBlock Text="{Binding Username}"
+                                                               Classes="PastelTextBlock"/>
+                                                    <TextBlock Text="{Binding FriendsSince, StringFormat='{}{0:MMM dd, yyyy}'}"
+                                                               Classes="PastelLabel"
+                                                               FontSize="11"/>
+                                                </StackPanel>
                                                 <Button Grid.Column="1"
                                                         Classes="PastelButtonDanger"
                                                         Content="x"
                                                         Command="{Binding $parent[UserControl].DataContext.RemoveFriendCommand}"
                                                         CommandParameter="{Binding}"
-                                                        Height="28" Padding="10,0"/>
+                                                        Height="28" Padding="10,0"
+                                                        VerticalAlignment="Center"/>
                                             </Grid>
                                         </Border>
                                     </DataTemplate>
@@ -98,7 +109,14 @@
                         <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Friends_Label_PendingRequests]}"
                                    Classes="PastelLabel" FontSize="14"
                                    Margin="0,0,0,12"/>
-                        <ScrollViewer MaxHeight="300">
+                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Friends_Label_NoRequests]}"
+                                   Classes="PastelTextBlock"
+                                   Foreground="{DynamicResource PastelTextLight}"
+                                   FontSize="13"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,16,0,16"
+                                   IsVisible="{Binding !HasRequests}"/>
+                        <ScrollViewer MaxHeight="300" IsVisible="{Binding HasRequests}">
                             <ItemsControl ItemsSource="{Binding PendingRequests}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>

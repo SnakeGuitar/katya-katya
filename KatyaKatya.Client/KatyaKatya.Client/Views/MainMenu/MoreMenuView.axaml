@@ -6,7 +6,7 @@
              x:DataType="vm:MoreMenuViewModel">
 
     <Grid>
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill"
                IsHitTestVisible="False"/>
 
@@ -29,7 +29,7 @@
                         Width="200" Height="180"
                         Padding="28,32">
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="Cards" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                        <TextBlock Text="🃏" FontSize="44" HorizontalAlignment="Center" Margin="0,0,0,12"/>
                         <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Gallery_Title]}"
                                    Classes="PastelTextBlock"
                                    FontSize="15"
@@ -46,7 +46,7 @@
                         Width="200" Height="180"
                         Padding="28,32">
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="User" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                        <TextBlock Text="👤" FontSize="44" HorizontalAlignment="Center" Margin="0,0,0,12"/>
                         <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Profile_Title]}"
                                    Classes="PastelTextBlock"
                                    FontSize="15"
@@ -63,7 +63,7 @@
                         Width="200" Height="180"
                         Padding="28,32">
                     <StackPanel HorizontalAlignment="Center">
-                        <TextBlock Text="Social" FontSize="28" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                        <TextBlock Text="🤝" FontSize="44" HorizontalAlignment="Center" Margin="0,0,0,12"/>
                         <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Friends_Title]}"
                                    Classes="PastelTextBlock"
                                    FontSize="15"
