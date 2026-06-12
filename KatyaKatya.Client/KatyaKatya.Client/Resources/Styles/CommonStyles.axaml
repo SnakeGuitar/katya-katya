@@ -9,7 +9,7 @@
         <Setter Property="BorderBrush"      Value="{DynamicResource PastelBorder}"/>
         <Setter Property="BorderThickness"  Value="1.5"/>
         <Setter Property="CornerRadius"     Value="{DynamicResource CardCornerRadius}"/>
-        <Setter Property="BoxShadow"        Value="4 4 25 0 #2EC84747"/>
+        <Setter Property="BoxShadow"        Value="{DynamicResource CardBoxShadow}"/>
     </Style>
 
     <Style Selector="Border.BoardHud">
@@ -27,6 +27,27 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Padding" Value="12,10"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <BrushTransition Property="Background" Duration="0:0:0.25"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
+    <!-- Active-turn highlight: white text overrides come after the Pastel* text styles below -->
+    <Style Selector="Border.PlayerPill.active">
+        <Setter Property="Background" Value="{DynamicResource PastelPrimary}"/>
+    </Style>
+
+    <Style Selector="Border.LobbyListItem">
+        <Setter Property="Background" Value="{DynamicResource PastelSecondary}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource PastelBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="{DynamicResource ButtonCornerRadius}"/>
+    </Style>
+
+    <Style Selector="Button:pointerover Border.LobbyListItem">
+        <Setter Property="Background" Value="{DynamicResource PastelAccent}"/>
     </Style>
 
     <Style Selector="Border.GameOverCard">
@@ -48,6 +69,9 @@
         <Setter Property="FontWeight"       Value="SemiBold"/>
         <Setter Property="FontFamily"       Value="{DynamicResource DefaultFont}"/>
         <Setter Property="Padding"          Value="20,8"/>
+        <Setter Property="MinWidth"         Value="132"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="CornerRadius"     Value="{DynamicResource ButtonCornerRadius}"/>
         <Setter Property="Cursor"           Value="Hand"/>
         <Setter Property="Transitions">
@@ -62,21 +86,23 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="{TemplateBinding CornerRadius}"
-                        BoxShadow="3 3 12 0 #51FF8080"
+                        BoxShadow="{DynamicResource ButtonShadow}"
                         ClipToBounds="True">
                     <Grid>
                         <!-- Top highlight -->
                         <Border BorderBrush="#4DFFFFFF"
                                 BorderThickness="0,1.2,0,0"
-                                CornerRadius="12"
+                                CornerRadius="{TemplateBinding CornerRadius}"
                                 IsHitTestVisible="False"/>
                         <!-- Bottom shadow edge -->
                         <Border BorderBrush="#25000000"
                                 BorderThickness="0,0,0,1"
-                                CornerRadius="12"
+                                CornerRadius="{TemplateBinding CornerRadius}"
                                 IsHitTestVisible="False"/>
-                        <ContentPresenter HorizontalContentAlignment="Center"
-                                          VerticalContentAlignment="Center"
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                           Content="{TemplateBinding Content}"
                                           Foreground="{TemplateBinding Foreground}"
                                           Margin="{TemplateBinding Padding}"/>
@@ -87,7 +113,7 @@
     </Style>
 
     <Style Selector="Button.PastelButton:pointerover /template/ Border#Root">
-        <Setter Property="BoxShadow" Value="3 3 25 0 #D9FF3333"/>
+        <Setter Property="BoxShadow" Value="{DynamicResource ButtonShadowHover}"/>
         <Setter Property="RenderTransform" Value="scale(1.04)"/>
     </Style>
 
@@ -201,7 +227,7 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="{TemplateBinding CornerRadius}"
-                        BoxShadow="2 2 10 0 #20C84747">
+                        BoxShadow="{DynamicResource SecondaryButtonShadow}">
                     <ContentPresenter HorizontalContentAlignment="Center"
                                       VerticalContentAlignment="Center"
                                       Content="{TemplateBinding Content}"
@@ -232,7 +258,10 @@
         <Setter Property="FontWeight"       Value="SemiBold"/>
         <Setter Property="FontFamily"       Value="{DynamicResource DefaultFont}"/>
         <Setter Property="Padding"          Value="16,9"/>
-        <Setter Property="CornerRadius"     Value="12"/>
+        <Setter Property="MinWidth"         Value="96"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="CornerRadius"     Value="{DynamicResource ButtonCornerRadius}"/>
         <Setter Property="Cursor"           Value="Hand"/>
     </Style>
 
@@ -461,6 +490,11 @@
         <Setter Property="Foreground" Value="{DynamicResource PastelPrimary}"/>
         <Setter Property="Minimum"    Value="0"/>
         <Setter Property="Maximum"    Value="1"/>
+    </Style>
+
+    <!-- Declared last so it overrides the Pastel* text foregrounds inside an active pill -->
+    <Style Selector="Border.PlayerPill.active TextBlock">
+        <Setter Property="Foreground" Value="White"/>
     </Style>
 
 </Styles>

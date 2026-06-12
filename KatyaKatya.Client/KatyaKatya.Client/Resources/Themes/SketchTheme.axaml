@@ -67,4 +67,12 @@
     <CornerRadius x:Key="InputCornerRadius">4</CornerRadius>
     <CornerRadius x:Key="CardCornerRadius">6</CornerRadius>
 
+    <!-- =========================================================
+         Shadows — neutral ink, no colored glow
+         ========================================================= -->
+    <BoxShadows x:Key="CardBoxShadow">4 4 22 0 #262B2B2B</BoxShadows>
+    <BoxShadows x:Key="ButtonShadow">3 3 12 0 #402B2B2B</BoxShadows>
+    <BoxShadows x:Key="ButtonShadowHover">3 3 22 0 #802B2B2B</BoxShadows>
+    <BoxShadows x:Key="SecondaryButtonShadow">2 2 10 0 #202B2B2B</BoxShadows>
+
 </ResourceDictionary>
