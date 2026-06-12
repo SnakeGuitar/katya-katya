@@ -89,17 +89,17 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <!-- Turn timer -->
+                    <!-- Total timer -->
                     <StackPanel Grid.Column="4"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Center"
                                 Spacing="0">
-                        <TextBlock Text="{Binding TurnTimerDisplay}"
+                        <TextBlock Text="{Binding TimeDisplay}"
                                    Classes="PastelHeading"
                                    FontSize="28"
                                    HorizontalAlignment="Center"
                                    Foreground="{DynamicResource PastelPrimary}"/>
-                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_TurnTime]}"
+                        <TextBlock Text="{Binding TimeLabel}"
                                    Classes="PastelLabel"
                                    FontSize="11"
                                    HorizontalAlignment="Center"/>

@@ -117,17 +117,17 @@
                                   FontFamily="{DynamicResource DefaultFont}"
                                   Margin="0,0,0,12"/>
 
-                        <StackPanel Spacing="0">
+                        <StackPanel Spacing="0"
+                                    IsVisible="{Binding ShowCustomTotalTime}">
                             <TextBlock Classes="PastelTextBlock" FontSize="13" Margin="0,0,0,6">
-                                <Run Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_TurnTime]}"/>
+                                <Run Text="{Binding CustomTotalTimeLabel}"/>
                                 <Run Text=": "/>
-                                <Run Text="{Binding CustomTurnTime}" FontWeight="SemiBold"/>
-                                <Run Text="s"/>
+                                <Run Text="{Binding CustomTotalTimeDisplay}" FontWeight="SemiBold"/>
                             </TextBlock>
-                            <Slider Minimum="5"
-                                    Maximum="120"
-                                    Value="{Binding CustomTurnTime}"
-                                    TickFrequency="5"
+                            <Slider Minimum="30"
+                                    Maximum="600"
+                                    Value="{Binding CustomTotalTimeSliderValue}"
+                                    TickFrequency="15"
                                     IsSnapToTickEnabled="True"
                                     Classes="PastelSlider"
                                     Margin="0,0,0,4"/>
