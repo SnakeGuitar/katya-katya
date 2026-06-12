@@ -6,7 +6,7 @@
              x:DataType="vm:SinglePlayerMenuViewModel">
 
     <Grid>
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill" IsHitTestVisible="False"/>
 
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Width="680" RowDefinitions="Auto,16,Auto,24,Auto">

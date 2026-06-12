@@ -8,7 +8,7 @@
              x:DataType="vm:SinglePlayerGameViewModel">
 
     <Grid>
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill" IsHitTestVisible="False"/>
 
         <controls:ParticleCanvas Name="ParticleCanvas"
@@ -45,21 +45,48 @@
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Leave]}"
                             VerticalAlignment="Center"/>
 
-                    <!-- Score -->
+                    <!-- Score / Attempts / Elapsed -->
                     <StackPanel Name="StatsPanel"
                                 Grid.Column="2"
+                                Orientation="Horizontal"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Spacing="0">
-                        <TextBlock Text="{Binding Score}"
-                                   Classes="PastelHeading ScorePulse"
-                                   FontSize="28"
-                                   HorizontalAlignment="Center"
-                                   Foreground="{DynamicResource PastelPrimary}"/>
-                        <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Score]}"
-                                   Classes="PastelLabel"
-                                   FontSize="11"
-                                   HorizontalAlignment="Center"/>
+                                Spacing="32">
+                        <StackPanel Spacing="0">
+                            <TextBlock Name="ScoreText"
+                                       Text="{Binding Score}"
+                                       Classes="PastelHeading"
+                                       Classes.ScorePulse="{Binding ScorePulseActive}"
+                                       FontSize="28"
+                                       HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource PastelPrimary}"/>
+                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Score]}"
+                                       Classes="PastelLabel"
+                                       FontSize="11"
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Spacing="0">
+                            <TextBlock Text="{Binding Attempts}"
+                                       Classes="PastelHeading"
+                                       FontSize="28"
+                                       HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource PastelPrimary}"/>
+                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_Attempts]}"
+                                       Classes="PastelLabel"
+                                       FontSize="11"
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Spacing="0">
+                            <TextBlock Text="{Binding ElapsedDisplay}"
+                                       Classes="PastelHeading"
+                                       FontSize="28"
+                                       HorizontalAlignment="Center"
+                                       Foreground="{DynamicResource PastelPrimary}"/>
+                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[SinglePlayer_Label_Elapsed]}"
+                                       Classes="PastelLabel"
+                                       FontSize="11"
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
                     </StackPanel>
 
                     <!-- Turn timer -->
@@ -103,17 +130,20 @@
                                 Command="{ReflectionBinding $parent[UserControl].DataContext.FlipCardCommand}"
                                 CommandParameter="{Binding}">
                             <Border CornerRadius="12" ClipToBounds="True">
-                                <Grid>
+                                <Grid Classes="CardFlip"
+                                      Classes.flipped="{Binding IsFlipped}"
+                                      Classes.matched="{Binding IsMatched}">
                                     <!-- Card back -->
                                     <Border Classes="CardBack"
                                             Background="{DynamicResource PrimaryGradient}"
                                             CornerRadius="12"
                                             IsVisible="{Binding !IsFlipped}">
-                                        <TextBlock Text="🂠"
-                                                   FontSize="28"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   Foreground="White"/>
+                                        <Image Source="avares://KatyaKatya/Resources/Images/Icons/love-points.png"
+                                               Width="44"
+                                               Height="44"
+                                               Stretch="Uniform"
+                                               HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"/>
                                     </Border>
                                     <!-- Card front -->
                                     <Border Classes="CardFront"
@@ -131,6 +161,10 @@
                                             Background="{DynamicResource MatchOverlayBrush}"
                                             IsVisible="{Binding IsMatched}"
                                             Classes="MatchPulse"/>
+                                    <Ellipse Classes="MatchRing"
+                                             Classes.matched="{Binding IsMatched}"
+                                             Stroke="{DynamicResource MatchRingBrush}"
+                                             StrokeThickness="3"/>
                                 </Grid>
                             </Border>
                         </Button>
@@ -140,15 +174,24 @@
         </Grid>
 
         <!-- Game-over overlay -->
-        <Grid IsVisible="{Binding ShowGameOver}"
-              ZIndex="300"
-              Background="#99000000">
+        <Border IsVisible="{Binding ShowGameOver}"
+                ZIndex="300"
+                Background="#99000000"
+                Classes="GameOverVeil"
+                Classes.open="{Binding ShowGameOver}">
             <Border HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Classes="LiquidGlassCard"
+                    Classes="LiquidGlassCard GameOverEntrance"
+                    Classes.open="{Binding ShowGameOver}"
                     Width="400"
                     Padding="36,32">
                 <StackPanel Spacing="0" HorizontalAlignment="Center">
+                    <TextBlock Text="🏆"
+                               Classes="TrophyWiggle"
+                               Classes.open="{Binding ShowGameOver}"
+                               FontSize="52"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,12"/>
                     <TextBlock Text="{Binding GameOverTitle}"
                                Classes="PastelHeading"
                                HorizontalAlignment="Center"
@@ -169,6 +212,6 @@
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"/>
                 </StackPanel>
             </Border>
-        </Grid>
+        </Border>
     </Grid>
 </UserControl>

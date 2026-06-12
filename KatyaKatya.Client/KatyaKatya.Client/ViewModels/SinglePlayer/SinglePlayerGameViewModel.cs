@@ -68,6 +68,15 @@ public partial class SinglePlayerGameViewModel : ObservableObject
     [ObservableProperty] private string _gameOverTitle    = string.Empty;
     [ObservableProperty] private string _gameOverStats    = string.Empty;
 
+    /// <summary>Toggled off/on around each score change so the ScorePulse animation re-runs.</summary>
+    [ObservableProperty] private bool   _scorePulseActive;
+
+    partial void OnScoreChanged(int value)
+    {
+        ScorePulseActive = false;
+        Dispatcher.UIThread.Post(() => ScorePulseActive = true);
+    }
+
     /// <summary>True while cards are NOT being processed — used by the view to enable/disable card buttons.</summary>
     public bool IsInteractionEnabled => !_isProcessing && !_isGameFinished;
 
