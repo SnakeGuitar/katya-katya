@@ -12,7 +12,7 @@ public partial class SplashScreenViewModel : ObservableObject
 {
     private readonly INavigationService _navigation;
     private readonly ClientSettings _settings;
-    private const int HoldDelayMs = 2800;
+    private const int HoldDelayMs = 3400;
 
     public event Action? FadeOutRequested;
 

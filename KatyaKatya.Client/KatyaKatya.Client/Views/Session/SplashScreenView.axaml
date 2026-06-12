@@ -6,18 +6,23 @@
              x:Class="KatyaKatya.Views.Session.SplashScreenView"
              x:DataType="vm:SplashScreenViewModel">
 
-    <Grid>
+    <Grid Background="{DynamicResource PastelBackground}">
         <!-- Blurred background -->
         <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=MainMenuBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill"
                IsHitTestVisible="False"
-               Effect="blur(24)"/>
+               Opacity="0.9"
+               Effect="blur(18)"/>
 
-        <!-- Logo centered, fades in via FadeIn class -->
-        <Border HorizontalAlignment="Center"
+        <Border Background="#DDFEF1F1"
+                IsHitTestVisible="False"/>
+
+        <!-- Logo centered; code-behind drives the entrance timing. -->
+        <Border Name="LogoContainer"
+                HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Width="360" Height="360"
-                Classes="FadeIn">
+                Opacity="0">
             <Image Source="{Binding LogoPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                    Stretch="Uniform"/>
         </Border>
