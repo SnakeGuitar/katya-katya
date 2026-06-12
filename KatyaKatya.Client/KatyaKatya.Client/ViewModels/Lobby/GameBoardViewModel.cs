@@ -250,7 +250,7 @@ public partial class GameBoardViewModel : ObservableObject
             if (string.IsNullOrEmpty(winner))
                 title = LocalizationManager.Instance["MatchSummary_Label_Tie"];
             else
-                title = $"{winner} wins!";
+                title = LocalizationManager.Instance.Format("GameBoard_Label_Winner", winner);
 
             var scoreSummary = string.Join("\n",
                 Players.OrderByDescending(p => p.Score)

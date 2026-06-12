@@ -8,7 +8,7 @@
              x:DataType="vm:GameBoardViewModel">
 
     <Grid>
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill"
                IsHitTestVisible="False"/>
 
@@ -50,7 +50,8 @@
                                                FontSize="11"
                                                HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding Score}"
-                                               Classes="PastelHeading ScorePulse"
+                                               Classes="PastelHeading"
+                                               Classes.ScorePulse="{Binding ScorePulseActive}"
                                                FontSize="22"
                                                Foreground="{DynamicResource PastelPrimary}"
                                                HorizontalAlignment="Center"/>
@@ -90,6 +91,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="models:PlayerScoreViewModel">
                                     <Border Classes="PlayerPill"
+                                            Classes.active="{Binding IsActive}"
                                             Margin="0,0,0,8">
                                         <Grid RowDefinitions="Auto,Auto,Auto"
                                               ColumnDefinitions="*,Auto">
@@ -101,7 +103,7 @@
                                                        FontWeight="SemiBold"/>
                                             <TextBlock Grid.Row="1"
                                                        Grid.Column="0"
-                                                       Text="{Binding Score, StringFormat='Love {0}'}"
+                                                       Text="{Binding Score, StringFormat='❤ {0}'}"
                                                        Classes="PastelLabel"
                                                        Margin="0,3,0,0"/>
                                             <TextBlock Grid.Row="2"
@@ -117,7 +119,7 @@
                                                     Command="{ReflectionBinding $parent[UserControl].DataContext.VoteToKickCommand}"
                                                     CommandParameter="{Binding}"
                                                     IsVisible="{Binding !IsCurrentUser}"
-                                                    Content="!"/>
+                                                    Content="⚑"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
@@ -148,7 +150,9 @@
                                         IsEnabled="{ReflectionBinding $parent[UserControl].DataContext.IsMyTurn}"
                                         Command="{ReflectionBinding $parent[UserControl].DataContext.FlipCardCommand}"
                                         CommandParameter="{Binding}">
-                                    <Grid>
+                                    <Grid Classes="CardFlip"
+                                          Classes.flipped="{Binding IsFlipped}"
+                                          Classes.matched="{Binding IsMatched}">
                                         <Border Classes="CardBack"
                                                 CornerRadius="12"
                                                 Background="{DynamicResource PrimaryGradient}"
@@ -176,6 +180,11 @@
                                                 CornerRadius="12"
                                                 Background="{DynamicResource MatchOverlayBrush}"
                                                 IsVisible="{Binding IsMatched}"/>
+
+                                        <Ellipse Classes="MatchRing"
+                                                 Classes.matched="{Binding IsMatched}"
+                                                 Stroke="{DynamicResource MatchRingBrush}"
+                                                 StrokeThickness="3"/>
                                     </Grid>
                                 </Button>
                             </DataTemplate>
@@ -241,14 +250,17 @@
 
         <Border IsVisible="{Binding ShowGameOver}"
                 Background="#DD000000"
-                Classes="GameOverVeil">
-            <Border Classes="GameOverCard"
+                Classes="GameOverVeil"
+                Classes.open="{Binding ShowGameOver}">
+            <Border Classes="GameOverCard GameOverEntrance"
+                    Classes.open="{Binding ShowGameOver}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     MinWidth="360">
                 <StackPanel HorizontalAlignment="Center">
-                    <TextBlock Text="*"
-                               Classes="PastelHeading TrophyWiggle"
+                    <TextBlock Text="🏆"
+                               Classes="TrophyWiggle"
+                               Classes.open="{Binding ShowGameOver}"
                                FontSize="48"
                                HorizontalAlignment="Center"
                                Margin="0,0,0,12"/>

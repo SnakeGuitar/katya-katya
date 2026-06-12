@@ -1,3 +1,4 @@
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace KatyaKatya.Models.Lobby;
@@ -19,9 +20,22 @@ public partial class PlayerScoreViewModel : ObservableObject
     [ObservableProperty]
     private string _timeDisplay = "--";
 
+    /// <summary>
+    /// Toggled off/on around each score change so the view's ScorePulse
+    /// class (and its attached animation) re-runs on every update.
+    /// </summary>
+    [ObservableProperty]
+    private bool _scorePulseActive;
+
     public PlayerScoreViewModel(string username, bool isCurrentUser)
     {
         Username = username;
         IsCurrentUser = isCurrentUser;
+    }
+
+    partial void OnScoreChanged(int value)
+    {
+        ScorePulseActive = false;
+        Dispatcher.UIThread.Post(() => ScorePulseActive = true);
     }
 }

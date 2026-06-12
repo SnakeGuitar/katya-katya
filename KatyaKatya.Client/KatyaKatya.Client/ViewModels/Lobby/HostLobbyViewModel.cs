@@ -291,7 +291,7 @@ public partial class HostLobbyViewModel : ObservableObject
         if (player.IsHost) return;
 
         var result = _dialog.ShowMessage(
-            $"Kick {player.Username}?",
+            LocalizationManager.Instance.Format("KickVote_Message_VoteKickPlayer", player.Username),
             LocalizationManager.Instance["Global_Title_Confirm"],
             DialogButton.YesNo, DialogIcon.Question);
 

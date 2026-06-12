@@ -6,7 +6,7 @@
              x:DataType="vm:HostLobbyViewModel">
 
     <Grid>
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill" IsHitTestVisible="False"/>
 
         <Grid Margin="24" ColumnDefinitions="*,20,300">
@@ -36,9 +36,8 @@
                                     <DataTemplate>
                                         <Grid Margin="0,0,0,8" ColumnDefinitions="Auto,*,Auto,Auto">
                                             <TextBlock Grid.Column="0"
-                                                       Text="AV"
-                                                       FontSize="12"
-                                                       FontWeight="Bold"
+                                                       Text="👤"
+                                                       FontSize="16"
                                                        VerticalAlignment="Center"
                                                        Margin="0,0,8,0"/>
                                             <TextBlock Grid.Column="1"
@@ -46,10 +45,8 @@
                                                        Classes="PastelTextBlock"
                                                        VerticalAlignment="Center"/>
                                             <TextBlock Grid.Column="2"
-                                                       Text="HOST"
-                                                       Classes="PastelLabel"
-                                                       Foreground="{DynamicResource PastelPrimary}"
-                                                       FontSize="11"
+                                                       Text="👑"
+                                                       FontSize="16"
                                                        VerticalAlignment="Center"
                                                        IsVisible="{Binding IsHost}"
                                                        Margin="8,0"/>
@@ -61,7 +58,7 @@
                                                     IsVisible="{Binding !IsHost}"
                                                     Command="{Binding $parent[UserControl].DataContext.KickPlayerCommand}"
                                                     CommandParameter="{Binding}"
-                                                    Content="x"/>
+                                                    Content="✕"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -82,7 +79,7 @@
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_TimerLimit]}"
                                        Classes="PastelLabel"/>
                             <Slider Minimum="5"
-                                    Maximum="120"
+                                    Maximum="60"
                                     Value="{Binding TurnTimeSeconds}"
                                     TickFrequency="5"
                                     IsSnapToTickEnabled="True"

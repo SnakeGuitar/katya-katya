@@ -6,89 +6,182 @@
              x:DataType="vm:LobbyMenuViewModel">
 
     <Grid>
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
-               Stretch="UniformToFill" IsHitTestVisible="False"/>
+        <Image Source="{Binding BackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
+               Stretch="UniformToFill"
+               IsHitTestVisible="False"/>
 
-        <Grid>
+        <Grid HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Height="492">
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="80"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Back -->
-            <Button Grid.Row="1"
-                    HorizontalAlignment="Left" VerticalAlignment="Center"
-                    Margin="24,0,0,0"
-                    Command="{Binding GoBackCommand}"
-                    Width="48" Height="48"
-                    Background="{DynamicResource PastelPrimary}"
-                    BorderThickness="0" CornerRadius="24" Cursor="Hand">
-                <Image Source="avares://KatyaKatya/Resources/Images/Icons/return-icon.png"
-                       Stretch="Uniform" Margin="14"/>
-            </Button>
-
-            <!-- Host lobby button -->
-            <Button Grid.Row="1"
-                    Classes="PastelButton" Height="40" Padding="20,0"
-                    HorizontalAlignment="Right" VerticalAlignment="Center"
-                    Margin="0,0,24,0"
-                    Command="{Binding CreateLobbyCommand}"
-                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_CreateGame]}"/>
-
-            <TextBlock Grid.Row="1"
-                       Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_PublicLobbies]}"
+            <TextBlock Grid.Row="0"
+                       Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MainMenu_Button_Multiplayer]}"
                        Classes="PastelHeading"
                        HorizontalAlignment="Center"
-                       VerticalAlignment="Center"/>
+                       Margin="0,0,0,20"/>
 
-            <!-- Lobby list — DataTemplate uses reflection bindings (no x:DataType) -->
-            <ScrollViewer Grid.Row="2" Margin="24" HorizontalScrollBarVisibility="Disabled">
-                <ItemsControl ItemsSource="{Binding PublicLobbies}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border Classes="LiquidGlassCard"
-                                    Padding="20,16"
-                                    Margin="0,0,0,10">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="320"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="480"/>
+                </Grid.ColumnDefinitions>
 
-                                    <StackPanel Grid.Column="0" Spacing="4">
-                                        <TextBlock Classes="PastelTextBlock" FontWeight="SemiBold" FontSize="17">
-                                            <Run Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_Host], Mode=OneWay}"/>
-                                            <Run Text=" "/>
-                                            <Run Text="{Binding HostUsername}" FontWeight="Bold"/>
-                                        </TextBlock>
-                                        <TextBlock Classes="PastelLabel">
-                                            <Run Text="{Binding CurrentPlayers}"/>
-                                            <Run Text=" / "/>
-                                            <Run Text="{Binding MaxPlayers}"/>
-                                            <Run Text=" / "/>
-                                            <Run Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_Players], Mode=OneWay}"/>
-                                            <Run Text="  "/>
-                                            <Run Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_GameCode], Mode=OneWay}"/>
-                                            <Run Text=": "/>
-                                            <Run Text="{Binding GameCode}" FontWeight="SemiBold"/>
-                                        </TextBlock>
-                                    </StackPanel>
+                <StackPanel Grid.Column="0">
+                    <Border Classes="LiquidGlassCard" Padding="24,20" Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_CreateGame]}"
+                                       Classes="PastelTextBlock"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PastelPrimary}"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,12"/>
 
-                                    <Button Grid.Column="1"
-                                            Classes="PastelButton"
-                                            Height="36" Padding="20,0"
-                                            IsEnabled="{Binding !IsFull}"
-                                            Command="{Binding $parent[UserControl].DataContext.JoinPublicLobbyCommand}"
-                                            CommandParameter="{Binding}"
-                                            Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_JoinLobby]}"/>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                            <CheckBox IsChecked="{Binding IsPublic}"
+                                      Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_CheckBox_Public]}"
+                                      HorizontalAlignment="Center"
+                                      FontFamily="{DynamicResource DefaultFont}"
+                                      FontSize="13"
+                                      Foreground="{DynamicResource PastelText}"
+                                      Margin="0,0,0,12"
+                                      IsEnabled="{Binding !IsGuest}"/>
+
+                            <Button Classes="PastelButton"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{Binding CreateLobbyCommand}"
+                                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_CreateLobby]}"
+                                    IsEnabled="{Binding !IsGuest}"/>
+
+                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Menu_Error_RequiresFullAccount]}"
+                                       Classes="PastelErrorText"
+                                       HorizontalAlignment="Center"
+                                       TextAlignment="Center"
+                                       Margin="0,8,0,0"
+                                       IsVisible="{Binding IsGuest}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Classes="LiquidGlassCard" Padding="24,20" Height="220">
+                        <StackPanel>
+                            <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_JoinGame]}"
+                                       Classes="PastelTextBlock"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="{DynamicResource PastelPrimary}"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,0,0,12"/>
+
+                            <TextBox Text="{Binding JoinCode, Mode=TwoWay}"
+                                     MaxLength="6"
+                                     Classes="PastelTextBox"
+                                     PlaceholderText="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Label_GameCode]}"
+                                     Margin="0,0,0,10"/>
+
+                            <Button Classes="PastelButton"
+                                    HorizontalAlignment="Stretch"
+                                    Command="{Binding JoinByCodeCommand}"
+                                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_JoinLobby]}"
+                                    IsEnabled="{Binding !IsLoading}"/>
+
+                            <TextBlock Text="{Binding JoinCodeError}"
+                                       Classes="PastelErrorText"
+                                       Margin="0,6,0,0"
+                                       IsVisible="{Binding JoinCodeError}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <Border Grid.Column="2"
+                        Classes="LiquidGlassCard"
+                        Padding="24,20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_PublicLobbies]}"
+                                   Classes="PastelTextBlock"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
+                                   Foreground="{DynamicResource PastelPrimary}"
+                                   Margin="0,0,0,12"/>
+
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_NoPublicLobbies]}"
+                                   Classes="PastelTextBlock"
+                                   FontSize="13"
+                                   Opacity="0.6"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   IsVisible="{Binding HasNoPublicLobbies}"/>
+
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding PublicLobbies}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Margin="0,0,0,6"
+                                                Padding="0"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Command="{Binding $parent[UserControl].DataContext.JoinPublicLobbyCommand}"
+                                                CommandParameter="{Binding}">
+                                            <Border Classes="LobbyListItem"
+                                                    Padding="14,10">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <StackPanel>
+                                                        <TextBlock Text="{Binding GameCode}"
+                                                                   Classes="PastelTextBlock"
+                                                                   FontWeight="Bold"
+                                                                   FontSize="15"/>
+                                                        <TextBlock Classes="PastelLabel" Opacity="0.75">
+                                                            <Run Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Lobby_Label_Host], Mode=OneWay}"/>
+                                                            <Run Text=": "/>
+                                                            <Run Text="{Binding HostUsername}"/>
+                                                        </TextBlock>
+                                                    </StackPanel>
+
+                                                    <Border Grid.Column="1"
+                                                            BorderBrush="{DynamicResource PastelPrimary}"
+                                                            BorderThickness="1"
+                                                            CornerRadius="{DynamicResource ButtonCornerRadius}"
+                                                            Padding="8,3"
+                                                            VerticalAlignment="Center">
+                                                        <TextBlock Classes="PastelLabel" FontWeight="SemiBold">
+                                                            <Run Text="{Binding CurrentPlayers}"/>
+                                                            <Run Text="/"/>
+                                                            <Run Text="{Binding MaxPlayers}"/>
+                                                        </TextBlock>
+                                                    </Border>
+                                                </Grid>
+                                            </Border>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Button Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    Margin="0,20,0,0"
+                    Classes="LinkButton"
+                    Command="{Binding GoBackCommand}"
+                    Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Back]}"/>
         </Grid>
     </Grid>
 </UserControl>

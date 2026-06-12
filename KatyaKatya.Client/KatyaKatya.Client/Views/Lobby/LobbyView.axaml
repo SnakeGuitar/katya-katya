@@ -6,7 +6,7 @@
              x:DataType="vm:LobbyViewModel">
 
     <Grid>
-        <Image Source="avares://KatyaKatya/Resources/Images/Backgrounds/background-minimalistic.png"
+        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill" IsHitTestVisible="False"/>
 
         <Grid RowDefinitions="40,80,*,16">
@@ -50,11 +50,10 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border Padding="8,12" Margin="0,0,0,4">
-                                        <Grid ColumnDefinitions="Auto,*,Auto">
+                                        <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                                             <TextBlock Grid.Column="0"
-                                                       Text="AV"
-                                                       FontSize="12"
-                                                       FontWeight="Bold"
+                                                       Text="👤"
+                                                       FontSize="16"
                                                        VerticalAlignment="Center"
                                                        Margin="0,0,10,0"/>
                                             <TextBlock Grid.Column="1"
@@ -62,12 +61,18 @@
                                                        Classes="PastelTextBlock"
                                                        VerticalAlignment="Center"/>
                                             <TextBlock Grid.Column="2"
-                                                       Text="HOST"
-                                                       Classes="PastelLabel"
-                                                       Foreground="{DynamicResource PastelPrimary}"
-                                                       FontSize="11"
+                                                       Text="👑"
+                                                       FontSize="16"
                                                        VerticalAlignment="Center"
                                                        IsVisible="{Binding IsHost}"/>
+                                            <Button Grid.Column="3"
+                                                    Classes="MiniDangerButton"
+                                                    Margin="8,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    IsVisible="{Binding !IsHost}"
+                                                    Command="{Binding $parent[UserControl].DataContext.VoteToKickCommand}"
+                                                    CommandParameter="{Binding}"
+                                                    Content="⚑"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>

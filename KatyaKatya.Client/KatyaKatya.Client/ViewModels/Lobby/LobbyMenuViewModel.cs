@@ -6,7 +6,9 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using KatyaKatya.Helpers;
+using KatyaKatya.Localization;
 using KatyaKatya.Models.Lobby;
+using KatyaKatya.Services.Core;
 using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Services.Network;
 using KatyaKatya.ViewModels.MainMenu;
@@ -25,6 +27,7 @@ public partial class LobbyMenuViewModel : ObservableObject
     private readonly ILobbyService _lobbyService;
     private readonly IDialogService _dialog;
     private readonly HubService _hub;
+    private readonly ClientSettings _settings;
 
     private readonly DispatcherTimer _refreshTimer;
     private bool _disposed;
@@ -43,22 +46,28 @@ public partial class LobbyMenuViewModel : ObservableObject
     [ObservableProperty]
     private string? _joinCodeError;
 
+    [ObservableProperty]
+    private bool _hasNoPublicLobbies = true;
+
     public ObservableCollection<LobbySummaryDto> PublicLobbies { get; } = new();
 
     public bool IsGuest => _session.Current?.IsGuest == true;
+    public string BackgroundPath => ThemeAssets.GetGlobalBackgroundPath(_settings.ThemeName);
 
     public LobbyMenuViewModel(
         INavigationService navigation,
         ISessionService session,
         ILobbyService lobbyService,
         IDialogService dialog,
-        HubService hub)
+        HubService hub,
+        ClientSettings settings)
     {
         _navigation = navigation;
         _session = session;
         _lobbyService = lobbyService;
         _dialog = dialog;
         _hub = hub;
+        _settings = settings;
 
         _lobbyService.PublicLobbiesUpdated += OnPublicLobbiesReceived;
         _lobbyService.LobbyCreated += OnLobbyCreated;
@@ -105,8 +114,8 @@ public partial class LobbyMenuViewModel : ObservableObject
         if (IsGuest)
         {
             _dialog.ShowMessage(
-                "Guest accounts cannot create lobbies. Please register an account.",
-                "Warning",
+                LocalizationManager.Instance["Menu_Error_RequiresFullAccount"],
+                LocalizationManager.Instance["Global_Title_Warning"],
                 DialogButton.OK, DialogIcon.Warning);
             return;
         }
@@ -144,11 +153,11 @@ public partial class LobbyMenuViewModel : ObservableObject
         {
             IsLoading = false;
             string errorMessage = ex is TimeoutException 
-                ? "Timed out connecting to server." 
-                : $"Network error: {ex.Message}";
+                ? LocalizationManager.Instance.TryGet("Error_ConnectionTimeout") ?? "Timed out connecting to server."
+                : $"{LocalizationManager.Instance["Global_Title_Error"]}: {ex.Message}";
 
             _dialog.ShowMessage(errorMessage,
-                "Error",
+                LocalizationManager.Instance["Global_Title_Error"],
                 DialogButton.OK, DialogIcon.Error);
         }
     }
@@ -183,7 +192,7 @@ public partial class LobbyMenuViewModel : ObservableObject
             else
             {
                 _dialog.ShowMessage(ErrorResolver.Resolve(errorCode),
-                    "Error",
+                    LocalizationManager.Instance["Global_Title_Error"],
                     DialogButton.OK, DialogIcon.Error);
             }
         });
@@ -197,7 +206,7 @@ public partial class LobbyMenuViewModel : ObservableObject
 
         if (code.Length != 6 || !int.TryParse(code, out _))
         {
-            JoinCodeError = "Enter a valid 6-digit code.";
+            JoinCodeError = LocalizationManager.Instance["Error_InvalidGameCode"];
             return;
         }
 
@@ -214,7 +223,7 @@ public partial class LobbyMenuViewModel : ObservableObject
             IsLoading = false;
             _isJoining = false;
             _dialog.ShowMessage($"Join failed: {ex.Message}",
-                "Error",
+                LocalizationManager.Instance["Global_Title_Error"],
                 DialogButton.OK, DialogIcon.Error);
         }
     }
@@ -243,8 +252,8 @@ public partial class LobbyMenuViewModel : ObservableObject
         if (lobby.IsFull)
         {
             _dialog.ShowMessage(
-                "This lobby is full.",
-                "Information",
+                LocalizationManager.Instance["Error_LOBBY_FULL"],
+                LocalizationManager.Instance["Global_Title_Information"],
                 DialogButton.OK, DialogIcon.Information);
             return;
         }
@@ -262,6 +271,8 @@ public partial class LobbyMenuViewModel : ObservableObject
             PublicLobbies.Clear();
             foreach (var lobby in lobbies)
                 PublicLobbies.Add(lobby);
+
+            HasNoPublicLobbies = PublicLobbies.Count == 0;
         });
     }
 
