@@ -35,7 +35,8 @@ public class DialogService : IDialogService
 
         if (owner != null)
         {
-            dialog.Show(owner);
+            // ShowDialog (vs Show) disables the owner window — true modality
+            _ = dialog.ShowDialog(owner);
         }
         else
         {
