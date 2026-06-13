@@ -7,13 +7,8 @@
              x:DataType="vm:SplashScreenViewModel">
 
     <Grid>
-        <!-- Same image as GlobalBgImage + TitleScreen — fading this reveals the identical
-             crisp version behind it, so there is no color/brightness change during fade-out. -->
-        <Image Name="BgImage"
-               Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
-               Stretch="UniformToFill"
-               IsHitTestVisible="False"
-               Effect="blur(18)"/>
+        <!-- No background image here: the MainWindow paints the global background + the
+             animated cloud layer behind this (transparent) view, so they show on the splash too. -->
 
         <!-- Logo — code-behind animates opacity on load -->
         <Border Name="LogoContainer"
