@@ -18,9 +18,9 @@
              which otherwise sits over this area and swallows clicks on the Quit button. -->
         <Grid Margin="0,44,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="56"/>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="16"/>
+                <RowDefinition Height="6"/>
             </Grid.RowDefinitions>
 
             <!-- HUD -->
@@ -114,8 +114,8 @@
                  is CardViewModel, not SinglePlayerGameViewModel. -->
             <Border Grid.Row="1"
                     Classes="LiquidGlassCard"
-                    Margin="16,8,16,0"
-                    Padding="16">
+                    Margin="16,4,16,4"
+                    Padding="10">
                 <Viewbox Stretch="Uniform">
                     <ItemsControl ItemsSource="{Binding Cards}">
                         <ItemsControl.ItemsPanel>
@@ -128,7 +128,7 @@
                             <DataTemplate x:DataType="models:CardViewModel">
                                 <Button Width="90"
                                         Height="126"
-                                        Margin="4"
+                                        Margin="2"
                                         Padding="0"
                                         Background="Transparent"
                                         BorderThickness="0"

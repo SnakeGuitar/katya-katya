@@ -132,7 +132,7 @@
             <Border Grid.Row="1"
                     Grid.Column="2"
                     Classes="LiquidGlassCard"
-                    Padding="16">
+                    Padding="10">
                 <Viewbox Stretch="Uniform">
                     <ItemsControl ItemsSource="{Binding Cards}">
                         <ItemsControl.ItemsPanel>
@@ -144,7 +144,7 @@
                             <DataTemplate x:DataType="models:CardViewModel">
                                 <Button Width="90"
                                         Height="126"
-                                        Margin="4"
+                                        Margin="2"
                                         Padding="0"
                                         Classes="GameCardButton"
                                         IsEnabled="{ReflectionBinding $parent[UserControl].DataContext.IsMyTurn}"
