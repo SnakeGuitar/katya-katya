@@ -12,8 +12,9 @@
                IsHitTestVisible="False"/>
 
         <!-- Animated clouds/mist over the menu's own background (MainMenu uses a different
-             background than the global one, so the layer is injected here directly). -->
-        <controls:AnimatedBackground IsHitTestVisible="False"/>
+             background than the global one, so the layer is injected here directly).
+             Dialed back here so it doesn't overpower the character scene. -->
+        <controls:AnimatedBackground IsHitTestVisible="False" Opacity="0.45"/>
 
         <!-- Falling cherry-blossom petals (behind the character) -->
         <controls:ParticleCanvas Name="PetalCanvas" IsHitTestVisible="False"/>

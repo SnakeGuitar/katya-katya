@@ -164,7 +164,7 @@ public sealed class AnimatedBackground : Canvas
             GradientOrigin = new RelativePoint(0.5, 0.5, RelativeUnit.Relative),
         };
         brush.GradientStops.Add(new GradientStop(Colors.Transparent, 0.0));
-        brush.GradientStops.Add(new GradientStop(Color.FromArgb(95, 20, 10, 20), 1.0));
+        brush.GradientStops.Add(new GradientStop(Color.FromArgb(45, 20, 10, 20), 1.0));
 
         _vignette = new Border
         {
