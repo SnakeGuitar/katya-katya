@@ -1,11 +1,10 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using Avalonia.VisualTree;
 using Microsoft.Extensions.DependencyInjection;
 using KatyaKatya.Rendering.Core;
+using KatyaKatya.Rendering.Skia;
 using SkiaSharp;
 
 namespace KatyaKatya.Controls;
@@ -15,11 +14,13 @@ namespace KatyaKatya.Controls;
 /// "juice" engine for match feedback (vector hearts/stars/sparkles with
 /// gradient shaders, motion-blur trails, radial shockwaves and floating
 /// score texts). Port of the WPF GameAnimationService.
-/// Driven by the shared <see cref="IGameLoop"/> rather than its own timer.
+/// Driven by the shared <see cref="IGameLoop"/>; painted by a Skia
+/// <see cref="ParticleDrawOperation"/> straight onto the render surface
+/// (no per-frame WriteableBitmap).
 /// </summary>
 public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetrics, IDisposable
 {
-    private enum ShapeKind { Heart, Star, Sparkle }
+    internal enum ShapeKind { Heart, Star, Sparkle }
 
     private const int MaxBurstParticles = 50;
 
@@ -31,18 +32,12 @@ public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetric
     private readonly List<Shockwave> _shockwaves = [];
     private readonly List<FloatingText> _floatingTexts = [];
 
-    // Cached native graphics resources (zero allocations per frame)
-    private readonly SKPath _heartPath;
-    private readonly SKPath _starPath;
-    private readonly SKPath _sparklePath;
-    private readonly SKShader _heartShader;
-    private readonly SKShader _starShader;
-    private readonly SKShader _sparkleShader;
-    private readonly SKTypeface _fontTypeface;
-    private readonly SKFont _textFont;
-    private readonly SKPaint _paint;
+    // Long-lived Skia resources, plus a double-buffered scene snapshot. The render thread
+    // reads one buffer while the UI thread fills the other next frame.
+    private readonly ParticleResources _res = new();
+    private readonly ParticleScene[] _scenes = [new ParticleScene(), new ParticleScene()];
+    private int _sceneIndex;
 
-    private WriteableBitmap? _bitmap;
     private bool _runningBackground;
 
     // Automatic combo tracking (matches chained within the window escalate the effect)
@@ -52,20 +47,6 @@ public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetric
     public ParticleCanvas()
     {
         IsHitTestVisible = false;
-
-        _heartPath = CreateHeartPath(16f);
-        _starPath = CreateStarPath(16f, 6.5f);
-        _sparklePath = CreateSparklePath(16f);
-
-        _heartShader = CreateGradient(new SKColor(255, 105, 180), new SKColor(255, 182, 193)); // Rose gold
-        _starShader = CreateGradient(new SKColor(255, 215, 0), new SKColor(255, 140, 0));      // Magical gold
-        _sparkleShader = CreateGradient(new SKColor(0, 255, 255), new SKColor(0, 128, 255));   // Electric blue
-
-        _fontTypeface = SKTypeface.FromFamilyName("Nunito")
-                        ?? SKTypeface.FromFamilyName("Segoe UI")
-                        ?? SKTypeface.Default;
-        _textFont = new SKFont(_fontTypeface, 22f);
-        _paint = new SKPaint { IsAntialias = true };
     }
 
     // ── Loop integration ──────────────────────────────────────────────────
@@ -83,8 +64,14 @@ public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetric
         _loop?.Unregister(this);
     }
 
+    /// <summary>
+    /// Debug kill-switch: when true, every particle canvas stops ticking and rendering.
+    /// Used by the perf toggles (F10) to isolate the canvas's per-frame cost.
+    /// </summary>
+    public static bool DiagnosticsDisabled;
+
     /// <summary>True while ambient petals run or any burst effect is still alive.</summary>
-    public bool IsActive => _runningBackground || HasActiveEffects();
+    public bool IsActive => !DiagnosticsDisabled && (_runningBackground || HasActiveEffects());
 
     string? IFrameDebugMetrics.DebugMetrics =>
         $"particles petals:{_petals.Count} bursts:{_bursts.Count} sw:{_shockwaves.Count}";
@@ -239,32 +226,34 @@ public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetric
     {
         base.Render(context);
 
-        if (Bounds.Width <= 1 || Bounds.Height <= 1)
+        if (DiagnosticsDisabled)
             return;
 
-        EnsureBitmap();
-        if (_bitmap is null)
+        if (Bounds.Width <= 1 || Bounds.Height <= 1 || !HasActiveEffects())
             return;
 
-        RenderSkiaFrame();
-        var source = new Rect(0, 0, _bitmap.PixelSize.Width, _bitmap.PixelSize.Height);
-        var destination = new Rect(Bounds.Size);
-        context.DrawImage(_bitmap, source, destination);
+        // Snapshot the live simulation (UI thread) into the back buffer, then hand it to a
+        // Skia draw operation that runs on the render thread.
+        var scene = _scenes[_sceneIndex];
+        _sceneIndex ^= 1;
+        scene.Clear();
+
+        foreach (var s in _shockwaves)
+            scene.AddShockwave(s);
+        foreach (var petal in _petals)
+            scene.AddPetal(petal.X, petal.Y, petal.Size, petal.SkiaColor);
+        foreach (var b in _bursts)
+            scene.AddBurst(b);
+        foreach (var ft in _floatingTexts)
+            scene.AddText(ft);
+
+        context.Custom(new ParticleDrawOperation(new Rect(Bounds.Size), scene, _res));
     }
 
     public void Dispose()
     {
         _loop?.Unregister(this);
-        _bitmap?.Dispose();
-        _heartPath.Dispose();
-        _starPath.Dispose();
-        _sparklePath.Dispose();
-        _heartShader.Dispose();
-        _starShader.Dispose();
-        _sparkleShader.Dispose();
-        _textFont.Dispose();
-        _fontTypeface.Dispose();
-        _paint.Dispose();
+        _res.Dispose();
     }
 
     // ── Simulation ────────────────────────────────────────────────────────
@@ -349,234 +338,9 @@ public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetric
     private bool HasActiveEffects() =>
         _petals.Count > 0 || _bursts.Count > 0 || _shockwaves.Count > 0 || _floatingTexts.Count > 0;
 
-    // ── Rendering ─────────────────────────────────────────────────────────
-
-    private void EnsureBitmap()
-    {
-        var width = Math.Max(1, (int)Math.Ceiling(Bounds.Width));
-        var height = Math.Max(1, (int)Math.Ceiling(Bounds.Height));
-        if (_bitmap is not null && _bitmap.PixelSize.Width == width && _bitmap.PixelSize.Height == height)
-            return;
-
-        _bitmap?.Dispose();
-        _bitmap = new WriteableBitmap(
-            new PixelSize(width, height),
-            new Vector(96, 96),
-            PixelFormat.Bgra8888,
-            AlphaFormat.Premul);
-    }
-
-    private void RenderSkiaFrame()
-    {
-        if (_bitmap is null)
-            return;
-
-        using var framebuffer = _bitmap.Lock();
-        var info = new SKImageInfo(
-            framebuffer.Size.Width,
-            framebuffer.Size.Height,
-            SKColorType.Bgra8888,
-            SKAlphaType.Premul);
-        using var surface = SKSurface.Create(info, framebuffer.Address, framebuffer.RowBytes);
-        var canvas = surface.Canvas;
-        canvas.Clear(SKColors.Transparent);
-
-        // 1. Shockwaves
-        foreach (var s in _shockwaves)
-        {
-            var t = s.Age / s.Lifetime;
-            _paint.Shader = null;
-            _paint.Style = SKPaintStyle.Stroke;
-            _paint.StrokeWidth = 8f * (1f - t);
-            _paint.Color = s.Color.WithAlpha((byte)((1f - t) * 255));
-            canvas.DrawCircle(s.CenterX, s.CenterY, s.CurrentRadius, _paint);
-        }
-
-        // 2. Ambient petals
-        _paint.Style = SKPaintStyle.Fill;
-        _paint.Shader = null;
-        foreach (var petal in _petals)
-        {
-            _paint.Color = petal.SkiaColor;
-            DrawHeart(canvas, _paint, petal.X, petal.Y, petal.Size);
-        }
-
-        // 3. Burst particles with motion-blur trail
-        foreach (var p in _bursts)
-        {
-            if (p.Age < p.Delay)
-                continue;
-
-            var t = Math.Clamp((p.Age - p.Delay) / p.Lifetime, 0f, 1f);
-            var angle = p.StartAngle + (p.TargetAngle - p.StartAngle) * t;
-            var scale = CalculateScale(t) * (p.Size / 24f);
-            var opacity = t > 0.55f ? 1f - (t - 0.55f) / 0.45f : 1f;
-            var (path, shader) = GetShape(p.Kind);
-
-            // 3A. Fading trail clones
-            for (var h = p.HistoryCount - 1; h >= 0; h--)
-            {
-                float hx = h == 0 ? p.HistoryX0 : p.HistoryX1;
-                float hy = h == 0 ? p.HistoryY0 : p.HistoryY1;
-
-                var indexFactor = (h + 1) / 3f;
-                var trailScale = scale * (1f - indexFactor);
-                var trailOpacity = opacity * (1f - indexFactor * 0.8f);
-                if (trailScale <= 0f || trailOpacity <= 0f)
-                    continue;
-
-                canvas.Save();
-                canvas.Translate(hx, hy);
-                canvas.RotateDegrees(angle);
-                canvas.Scale(trailScale, trailScale);
-                _paint.Shader = shader;
-                _paint.Color = p.Color.WithAlpha((byte)(trailOpacity * 255));
-                canvas.DrawPath(path, _paint);
-                canvas.Restore();
-            }
-
-            // 3B. Main particle
-            canvas.Save();
-            canvas.Translate(p.X, p.Y);
-            canvas.RotateDegrees(angle);
-            canvas.Scale(scale, scale);
-            _paint.Shader = shader;
-            _paint.Color = p.Color.WithAlpha((byte)(opacity * 255));
-            canvas.DrawPath(path, _paint);
-            canvas.Restore();
-        }
-
-        _paint.Shader = null;
-
-        // 4. Floating score texts — dark outline + bright fill
-        foreach (var ft in _floatingTexts)
-        {
-            var t = ft.Age / ft.Lifetime;
-            var opacity = 1f - t * t;
-            var alpha = (byte)(Math.Clamp(opacity, 0f, 1f) * 255);
-            if (alpha == 0)
-                continue;
-
-            var scale = GetBounceScale(t) * ft.Scale;
-
-            canvas.Save();
-            canvas.Translate(ft.X, ft.Y);
-            canvas.Scale(scale, scale);
-
-            var textX = -_textFont.MeasureText(ft.Text) / 2f;
-
-            _paint.Style = SKPaintStyle.Stroke;
-            _paint.StrokeWidth = 4.5f;
-            _paint.Color = SKColors.Black.WithAlpha(alpha);
-            canvas.DrawText(ft.Text, textX, 0f, _textFont, _paint);
-
-            _paint.Style = SKPaintStyle.Fill;
-            _paint.Color = ft.Color.WithAlpha(alpha);
-            canvas.DrawText(ft.Text, textX, 0f, _textFont, _paint);
-
-            canvas.Restore();
-        }
-
-        _paint.Style = SKPaintStyle.Fill;
-        surface.Canvas.Flush();
-    }
-
-    private (SKPath Path, SKShader Shader) GetShape(ShapeKind kind) => kind switch
-    {
-        ShapeKind.Star => (_starPath, _starShader),
-        ShapeKind.Sparkle => (_sparklePath, _sparkleShader),
-        _ => (_heartPath, _heartShader),
-    };
-
-    // ── Easing curves (ported from the WPF engine) ────────────────────────
-
-    private static float CalculateScale(float t)
-    {
-        // Elastic pop-in → settle → shrink out
-        if (t <= 0.2f)
-        {
-            var p = t / 0.2f;
-            return 0.3f + 0.9f * (p * (2f - p));
-        }
-        if (t <= 0.4f)
-        {
-            var p = (t - 0.2f) / 0.2f;
-            return 1.2f - 0.2f * (p * (2f - p));
-        }
-        var q = (t - 0.4f) / 0.6f;
-        return 1.0f - q * (2f - q);
-    }
-
-    private static float GetBounceScale(float t)
-    {
-        // "Damage number" pop curve
-        if (t < 0.3f) return t / 0.3f * 1.3f;
-        if (t < 0.6f) return 1.3f - 0.35f * ((t - 0.3f) / 0.3f);
-        if (t < 0.8f) return 0.95f + 0.1f * ((t - 0.6f) / 0.2f);
-        return 1.05f - 0.05f * ((t - 0.8f) / 0.2f);
-    }
-
-    // ── Geometry / shader factories ───────────────────────────────────────
-
-    private static SKShader CreateGradient(SKColor from, SKColor to) =>
-        SKShader.CreateLinearGradient(
-            new SKPoint(-16, -16), new SKPoint(16, 16),
-            [from, to], null, SKShaderTileMode.Clamp);
-
-    private static SKPath CreateHeartPath(float size)
-    {
-        var path = new SKPath();
-        path.MoveTo(0, -size * 0.35f);
-        path.CubicTo(-size * 0.5f, -size * 0.8f, -size * 0.9f, -size * 0.2f, 0, size * 0.55f);
-        path.CubicTo(size * 0.9f, -size * 0.2f, size * 0.5f, -size * 0.8f, 0, -size * 0.35f);
-        path.Close();
-        return path;
-    }
-
-    private static SKPath CreateStarPath(float radius, float innerRadius)
-    {
-        var path = new SKPath();
-        const int points = 5;
-        var angleStep = Math.PI / points;
-        var angle = -Math.PI / 2;
-
-        path.MoveTo((float)(Math.Cos(angle) * radius), (float)(Math.Sin(angle) * radius));
-        for (var i = 0; i < points * 2; i++)
-        {
-            angle += angleStep;
-            var r = i % 2 == 0 ? innerRadius : radius;
-            path.LineTo((float)(Math.Cos(angle) * r), (float)(Math.Sin(angle) * r));
-        }
-        path.Close();
-        return path;
-    }
-
-    private static SKPath CreateSparklePath(float radius)
-    {
-        // 4-point sparkle with soft curves toward the centre
-        var path = new SKPath();
-        path.MoveTo(0, -radius);
-        path.QuadTo(0, 0, radius, 0);
-        path.QuadTo(0, 0, 0, radius);
-        path.QuadTo(0, 0, -radius, 0);
-        path.QuadTo(0, 0, 0, -radius);
-        path.Close();
-        return path;
-    }
-
-    private static void DrawHeart(SKCanvas canvas, SKPaint paint, float x, float y, float s)
-    {
-        using var path = new SKPath();
-        path.MoveTo(x, y + s * 0.35f);
-        path.CubicTo(x - s * 1.35f, y - s * 0.5f, x - s * 0.85f, y - s * 1.45f, x, y - s * 0.75f);
-        path.CubicTo(x + s * 0.85f, y - s * 1.45f, x + s * 1.35f, y - s * 0.5f, x, y + s * 0.35f);
-        path.Close();
-        canvas.DrawPath(path, paint);
-    }
-
     // ── Particle data ─────────────────────────────────────────────────────
 
-    private struct BurstParticle
+    internal struct BurstParticle
     {
         public float X, Y;
         public float VelocityX, VelocityY;
@@ -590,7 +354,7 @@ public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetric
         public int HistoryCount;
     }
 
-    private struct Shockwave
+    internal struct Shockwave
     {
         public float CenterX, CenterY;
         public float CurrentRadius, MaxRadius;
@@ -598,7 +362,7 @@ public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetric
         public SKColor Color;
     }
 
-    private struct FloatingText
+    internal struct FloatingText
     {
         public string Text;
         public float X, Y;
