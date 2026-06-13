@@ -48,11 +48,12 @@
         <GradientStop Color="#B3C04848" Offset="1"/>
     </LinearGradientBrush>
 
-    <!-- Primary button gradient — glossy liquid-glass tint: luminous top, deep base -->
+    <!-- Primary button gradient — glossy liquid-glass tint: luminous top, deep base.
+         Slightly translucent so the background glows faintly through the glass. -->
     <LinearGradientBrush x:Key="PastelButtonBg" StartPoint="50%,0%" EndPoint="50%,100%">
-        <GradientStop Color="#FFF07A7A" Offset="0"/>
-        <GradientStop Color="#FFCB3B3B" Offset="0.45"/>
-        <GradientStop Color="#FF9E2020" Offset="1"/>
+        <GradientStop Color="#ECF07A7A" Offset="0"/>
+        <GradientStop Color="#E6CB3B3B" Offset="0.45"/>
+        <GradientStop Color="#E69E2020" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- =========================================================
@@ -72,7 +73,7 @@
          Shadows — Liquid Glass: soft outer depth + inset specular rim + inner glow
          (inset goes first in Avalonia's BoxShadow syntax)
          ========================================================= -->
-    <BoxShadows x:Key="CardBoxShadow">0 10 30 -6 #33000000, inset 0 1 1 0 #C0FFFFFF, inset 0 -16 22 -10 #18FFFFFF</BoxShadows>
+    <BoxShadows x:Key="CardBoxShadow">0 10 30 -6 #33000000, 0 0 22 1 #2CE06A6A, inset 0 1 1 0 #C0FFFFFF, inset 0 -16 22 -10 #18FFFFFF</BoxShadows>
     <BoxShadows x:Key="ButtonShadow">0 6 16 -2 #4DC83737, inset 0 1 1 0 #80FFFFFF, inset 0 -8 12 -6 #2E000000</BoxShadows>
     <BoxShadows x:Key="ButtonShadowHover">0 9 26 -2 #80E84545, inset 0 1 2 0 #99FFFFFF, inset 0 -8 12 -6 #2E000000</BoxShadows>
     <BoxShadows x:Key="SecondaryButtonShadow">0 4 14 -2 #25C84747, inset 0 1 1 0 #99FFFFFF</BoxShadows>

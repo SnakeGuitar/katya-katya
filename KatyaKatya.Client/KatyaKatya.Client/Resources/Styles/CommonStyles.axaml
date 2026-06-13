@@ -12,6 +12,22 @@
         <Setter Property="BoxShadow"        Value="{DynamicResource CardBoxShadow}"/>
     </Style>
 
+    <!-- Ambient "liquid" motion: panels gently breathe up and down so they don't feel
+         static. Excludes the game-over card, whose entrance animation also drives the
+         vertical transform (they would otherwise fight). -->
+    <Style Selector="Border.LiquidGlassCard:not(.GameOverEntrance)">
+        <Style.Animations>
+            <Animation Duration="0:0:6" IterationCount="INFINITE" PlaybackDirection="Alternate" Easing="SineEaseInOut">
+                <KeyFrame Cue="0%">
+                    <Setter Property="TranslateTransform.Y" Value="-3"/>
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="TranslateTransform.Y" Value="3"/>
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+
     <Style Selector="Border.BoardHud">
         <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource PastelBorder}"/>
@@ -112,9 +128,19 @@
         </Setter>
     </Style>
 
+    <!-- Smooth spring for hover/press motion on the button surface -->
+    <Style Selector="Button.PastelButton /template/ Border#Root">
+        <Setter Property="RenderTransformOrigin" Value="50%,50%"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.16" Easing="QuadraticEaseOut"/>
+            </Transitions>
+        </Setter>
+    </Style>
+
     <Style Selector="Button.PastelButton:pointerover /template/ Border#Root">
         <Setter Property="BoxShadow" Value="{DynamicResource ButtonShadowHover}"/>
-        <Setter Property="RenderTransform" Value="scale(1.04)"/>
+        <Setter Property="RenderTransform" Value="scale(1.05) translateY(-2px)"/>
     </Style>
 
     <Style Selector="Button.PastelButton:pressed /template/ Border#Root">
