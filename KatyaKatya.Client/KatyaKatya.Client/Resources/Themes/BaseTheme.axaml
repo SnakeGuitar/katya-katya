@@ -34,11 +34,12 @@
         <GradientStop Color="#40C84747" Offset="1.0"/>
     </LinearGradientBrush>
 
-    <!-- Liquid Glass card background -->
-    <LinearGradientBrush x:Key="CardBackground" StartPoint="0%,0%" EndPoint="100%,100%">
-        <GradientStop Color="#66FFFFFF" Offset="0"/>
-        <GradientStop Color="#33F9ECEC" Offset="0.4"/>
-        <GradientStop Color="#1AE5C5C5" Offset="1"/>
+    <!-- Liquid Glass card background — bright specular sheen at the top fading to a
+         faint translucent base so the animated clouds glow through the material. -->
+    <LinearGradientBrush x:Key="CardBackground" StartPoint="0%,0%" EndPoint="0%,100%">
+        <GradientStop Color="#7AFFFFFF" Offset="0"/>
+        <GradientStop Color="#47FFF6F6" Offset="0.5"/>
+        <GradientStop Color="#22EFD6D6" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- Primary gradient — warm rose -->
@@ -47,11 +48,11 @@
         <GradientStop Color="#B3C04848" Offset="1"/>
     </LinearGradientBrush>
 
-    <!-- Primary button gradient -->
+    <!-- Primary button gradient — glossy liquid-glass tint: luminous top, deep base -->
     <LinearGradientBrush x:Key="PastelButtonBg" StartPoint="50%,0%" EndPoint="50%,100%">
-        <GradientStop Color="#FFE65A5A" Offset="0"/>
-        <GradientStop Color="#FFC83737" Offset="0.3"/>
-        <GradientStop Color="#FFA02222" Offset="1"/>
+        <GradientStop Color="#FFF07A7A" Offset="0"/>
+        <GradientStop Color="#FFCB3B3B" Offset="0.45"/>
+        <GradientStop Color="#FF9E2020" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- =========================================================
@@ -63,16 +64,17 @@
     <!-- =========================================================
          Corner Radii
          ========================================================= -->
-    <CornerRadius x:Key="ButtonCornerRadius">12</CornerRadius>
-    <CornerRadius x:Key="InputCornerRadius">12</CornerRadius>
-    <CornerRadius x:Key="CardCornerRadius">18</CornerRadius>
+    <CornerRadius x:Key="ButtonCornerRadius">14</CornerRadius>
+    <CornerRadius x:Key="InputCornerRadius">14</CornerRadius>
+    <CornerRadius x:Key="CardCornerRadius">22</CornerRadius>
 
     <!-- =========================================================
-         Shadows — warm rose glow accents
+         Shadows — Liquid Glass: soft outer depth + inset specular rim + inner glow
+         (inset goes first in Avalonia's BoxShadow syntax)
          ========================================================= -->
-    <BoxShadows x:Key="CardBoxShadow">4 4 25 0 #2EC84747</BoxShadows>
-    <BoxShadows x:Key="ButtonShadow">3 3 12 0 #51FF8080</BoxShadows>
-    <BoxShadows x:Key="ButtonShadowHover">3 3 25 0 #D9FF3333</BoxShadows>
-    <BoxShadows x:Key="SecondaryButtonShadow">2 2 10 0 #20C84747</BoxShadows>
+    <BoxShadows x:Key="CardBoxShadow">0 10 30 -6 #33000000, inset 0 1 1 0 #C0FFFFFF, inset 0 -16 22 -10 #18FFFFFF</BoxShadows>
+    <BoxShadows x:Key="ButtonShadow">0 6 16 -2 #4DC83737, inset 0 1 1 0 #80FFFFFF, inset 0 -8 12 -6 #2E000000</BoxShadows>
+    <BoxShadows x:Key="ButtonShadowHover">0 9 26 -2 #80E84545, inset 0 1 2 0 #99FFFFFF, inset 0 -8 12 -6 #2E000000</BoxShadows>
+    <BoxShadows x:Key="SecondaryButtonShadow">0 4 14 -2 #25C84747, inset 0 1 1 0 #99FFFFFF</BoxShadows>
 
 </ResourceDictionary>
