@@ -25,15 +25,7 @@ public partial class SplashScreenView : UserControl
         await FadeAsync(LogoContainer, 0, 1, 3000);
         await Task.Delay(1200);
 
-        // Fade individual elements (not the UserControl) so no container opacity
-        // is ever composited against the window's transparent background.
-        // BgImage uses the same GlobalBackgroundPath as the window behind it,
-        // so fading it to transparent is a blur-to-crisp reveal — no darkening.
-        await Task.WhenAll(
-            FadeAsync(LogoContainer, 1, 0, 1000),
-            FadeAsync(BgImage,       1, 0, 1000)
-        );
-
+        IsVisible = false;
         vm.NavigateToTitleScreen();
     }
 
