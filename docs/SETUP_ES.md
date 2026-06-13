@@ -100,7 +100,7 @@ docker-compose up -d db
 
 ### 2. Configurar `appsettings.Development.json`
 
-Abre `MemoryGame.Server/src/MemoryGame.API/appsettings.Development.json` y asegúrate de que tenga:
+Abre `KatyaKatya.Server/src/KatyaKatya.API/appsettings.Development.json` y asegúrate de que tenga:
 
 ```json
 {
@@ -130,7 +130,7 @@ Abre `MemoryGame.Server/src/MemoryGame.API/appsettings.Development.json` y aseg�
 ### 3. Ejecutar las migraciones
 
 ```bash
-cd MemoryGame.Server/src/MemoryGame.API
+cd KatyaKatya.Server/src/KatyaKatya.API
 dotnet ef database update
 ```
 
@@ -154,12 +154,12 @@ El servidor estará disponible en `http://localhost:5059`.
 
 ```
 MemoryGame-Revival/
-├── MemoryGame.Server/
+├── KatyaKatya.Server/
 │   └── src/
-│       ├── MemoryGame.API/          # Controladores, Hubs SignalR, Middleware
-│       ├── MemoryGame.Application/  # Comandos, Queries, DTOs (MediatR)
-│       ├── MemoryGame.Domain/       # Entidades y lógica de dominio
-│       └── MemoryGame.Infrastructure/ # EF Core, repositorios, servicios externos
+│       ├── KatyaKatya.API/          # Controladores, Hubs SignalR, Middleware
+│       ├── KatyaKatya.Application/  # Comandos, Queries, DTOs (MediatR)
+│       ├── KatyaKatya.Domain/       # Entidades y lógica de dominio
+│       └── KatyaKatya.Infrastructure/ # EF Core, repositorios, servicios externos
 ├── KatyaKatya.Client/               # Cliente Avalonia activo (.NET 9, multiplataforma)
 │   └── KatyaKatya.Client/
 │       ├── Views/                   # AXAML

@@ -15,8 +15,8 @@ services:
 
   api:
     build:
-      context: ./MemoryGame.Server
-      dockerfile: src/MemoryGame.API/Dockerfile
+      context: ./KatyaKatya.Server
+      dockerfile: src/KatyaKatya.API/Dockerfile
     restart: unless-stopped
     env_file:
       - .env

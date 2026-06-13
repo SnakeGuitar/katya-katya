@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/KatyaKatya.API/KatyaKatya.API.csproj" />
+    <Project Path="src/KatyaKatya.Application/KatyaKatya.Application.csproj" />
+    <Project Path="src/KatyaKatya.Domain/KatyaKatya.Domain.csproj" />
+    <Project Path="src/KatyaKatya.Infrastructure/KatyaKatya.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/KatyaKatya.Application.Tests/KatyaKatya.Application.Tests.csproj" />
+    <Project Path="tests/KatyaKatya.Domain.Tests/KatyaKatya.Domain.Tests.csproj" />
+    <Project Path="tests/KatyaKatya.Infrastructure.Tests/KatyaKatya.Infrastructure.Tests.csproj" />
+  </Folder>
+</Solution>

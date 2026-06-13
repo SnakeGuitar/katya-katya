@@ -78,7 +78,7 @@ MemoryGame-Revival/
 │   └── Platforms/
 │       ├── Desktop/            ← Windows/Mac/Linux entry point
 │       └── Android/            ← Android entry point
-└── MemoryGame.Server/          ← Unchanged (rename to KatyaKatya.Server later)
+└── KatyaKatya.Server/          ← ASP.NET Core backend (inner projects still MemoryGame.*)
 ```
 
 ### Why Not In-Place Rewrite?
