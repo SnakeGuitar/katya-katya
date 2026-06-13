@@ -46,7 +46,7 @@
                    IsHitTestVisible="False"/>
 
             <!-- Global dynamic background: mist, clouds, bokeh + mouse parallax -->
-            <controls:AnimatedBackground IsHitTestVisible="False"/>
+            <controls:AnimatedBackground Name="GlobalAnimatedBg" IsHitTestVisible="False"/>
 
             <!-- ─── Active view (fills the window) ─── -->
             <ContentControl Name="ViewHost"

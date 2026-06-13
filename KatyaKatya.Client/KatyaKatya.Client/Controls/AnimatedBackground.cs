@@ -80,7 +80,23 @@ public sealed class AnimatedBackground : Canvas, IFrameUpdatable, IFrameDebugMet
     }
 
     /// <summary>The background animates continuously while it is attached.</summary>
-    public bool IsActive => true;
+    public bool IsActive => _enabled;
+
+    private bool _enabled = true;
+
+    /// <summary>
+    /// Hide the background and detach it from the loop (or re-enable it). Used by the
+    /// debug perf toggles to measure the background's real per-frame cost.
+    /// </summary>
+    public void SetEnabled(bool on)
+    {
+        _enabled = on;
+        IsVisible = on;
+        if (on)
+            _loop?.Register(this);
+        else
+            _loop?.Unregister(this);
+    }
 
     string? IFrameDebugMetrics.DebugMetrics =>
         $"bg layers:{_mist.Count + _clouds.Count + _bubbles.Count}";

@@ -119,6 +119,20 @@ public partial class MainWindow : Window
             _perfOverlay.IsVisible = !_perfOverlay.IsVisible;
             e.Handled = true;
         }
+        // F9 toggles the global animated background — use it to isolate how much of the
+        // frame budget the background costs vs. the rest of the active scene.
+        else if (e.Key == Key.F9)
+        {
+            GlobalAnimatedBg.SetEnabled(!GlobalAnimatedBg.IsVisible);
+            e.Handled = true;
+        }
+        // F10 toggles the Skia particle canvas (per-frame WriteableBitmap path).
+        else if (e.Key == Key.F10)
+        {
+            Controls.ParticleCanvas.DiagnosticsDisabled = !Controls.ParticleCanvas.DiagnosticsDisabled;
+            _loop?.Wake();
+            e.Handled = true;
+        }
 
         base.OnKeyDown(e);
     }
