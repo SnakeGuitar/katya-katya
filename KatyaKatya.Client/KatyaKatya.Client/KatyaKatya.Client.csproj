@@ -16,22 +16,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\..\MemoryGame.Client\Properties\Langs\Lang.resx"
-                      Link="Localization\Lang.resx" />
-    <EmbeddedResource Include="..\..\MemoryGame.Client\Properties\Langs\Lang.es-MX.resx"
-                      Link="Localization\Lang.es-MX.resx">
+    <EmbeddedResource Update="Localization\Lang.es-MX.resx">
       <Culture>es-MX</Culture>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\..\MemoryGame.Client\Properties\Langs\Lang.ja-JP.resx"
-                      Link="Localization\Lang.ja-JP.resx">
+    <EmbeddedResource Update="Localization\Lang.ja-JP.resx">
       <Culture>ja-JP</Culture>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\..\MemoryGame.Client\Properties\Langs\Lang.zh-CN.resx"
-                      Link="Localization\Lang.zh-CN.resx">
+    <EmbeddedResource Update="Localization\Lang.zh-CN.resx">
       <Culture>zh-CN</Culture>
     </EmbeddedResource>
-    <EmbeddedResource Include="..\..\MemoryGame.Client\Properties\Langs\Lang.ko-KR.resx"
-                      Link="Localization\Lang.ko-KR.resx">
+    <EmbeddedResource Update="Localization\Lang.ko-KR.resx">
       <Culture>ko-KR</Culture>
     </EmbeddedResource>
   </ItemGroup>
