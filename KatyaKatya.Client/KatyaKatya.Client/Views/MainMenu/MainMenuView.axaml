@@ -95,31 +95,25 @@
             </Border>
         </StackPanel>
 
-        <controls:AlphaHitTestButton HorizontalAlignment="Right"
-                                     VerticalAlignment="Bottom"
-                                     Background="Transparent"
-                                     BorderThickness="0"
-                                     Padding="0"
-                                     MaxWidth="720"
-                                     MaxHeight="900"
-                                     Margin="0,0,28,-8"
-                                     Cursor="Hand"
-                                     RenderTransformOrigin="0.5,1"
-                                     AlphaMaskSource="{Binding CurrentMoodImage}"
-                                     Command="{Binding GoToDatingCommand}">
-            <controls:AlphaHitTestButton.Transitions>
+        <controls:AlphaHitTestImage HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Stretch="Uniform"
+                                    MaxHeight="1080"
+                                    Margin="0,0,12,-30"
+                                    Cursor="Hand"
+                                    RenderTransformOrigin="0.5,1"
+                                    Source="{Binding CurrentMoodImage, Converter={StaticResource StringAssetToBitmapConverter}}"
+                                    Command="{Binding GoToDatingCommand}">
+            <controls:AlphaHitTestImage.Transitions>
                 <Transitions>
                     <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.18"/>
                 </Transitions>
-            </controls:AlphaHitTestButton.Transitions>
-            <controls:AlphaHitTestButton.Styles>
-                <Style Selector="controls|AlphaHitTestButton:pointerover">
-                    <Setter Property="RenderTransform" Value="scale(1.04)"/>
+            </controls:AlphaHitTestImage.Transitions>
+            <controls:AlphaHitTestImage.Styles>
+                <Style Selector="controls|AlphaHitTestImage:pointerover">
+                    <Setter Property="RenderTransform" Value="scale(1.05)"/>
                 </Style>
-            </controls:AlphaHitTestButton.Styles>
-            <Image Source="{Binding CurrentMoodImage, Converter={StaticResource StringAssetToBitmapConverter}}"
-                   Stretch="Uniform"
-                   IsHitTestVisible="False"/>
-        </controls:AlphaHitTestButton>
+            </controls:AlphaHitTestImage.Styles>
+        </controls:AlphaHitTestImage>
     </Grid>
 </UserControl>
