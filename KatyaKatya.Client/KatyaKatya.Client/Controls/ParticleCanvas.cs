@@ -256,7 +256,7 @@ public sealed class ParticleCanvas : Control, IDisposable
         var dt = (float)Math.Clamp((now - _lastFrame).TotalSeconds, 0.001, 0.05);
         _lastFrame = now;
 
-        if (_runningBackground && _rng.NextDouble() < 0.18 && Bounds.Width > 0)
+        if (_runningBackground && _petals.Count < 18 && _rng.NextDouble() < 0.025 && Bounds.Width > 0)
         {
             _petals.Add(PetalParticle.Spawn(_rng, Bounds.Width));
         }
@@ -603,21 +603,36 @@ public sealed class ParticleCanvas : Control, IDisposable
 
     private sealed class PetalParticle
     {
-        private readonly double _spin;
+        private readonly double _swayAmplitude;  // px — matches WPF's 30–110 px range
+        private readonly double _swayFrequency;  // rad/s — slow oscillation for lazy drift
+        private readonly double _baseOpacity;
         private readonly double _initialLife;
         private double _life;
+        private double _age;
 
         public float X { get; private set; }
         public float Y { get; private set; }
         public float Size { get; }
-        public SKColor SkiaColor => _baseColor.WithAlpha((byte)Math.Clamp(255 * _life / _initialLife, 0, _baseColor.Alpha));
+
+        public SKColor SkiaColor
+        {
+            get
+            {
+                var ratio = _life / _initialLife;
+                // Hold full opacity until the last 30 % of lifetime, then fade out
+                var opacity = _baseOpacity * (ratio < 0.3 ? ratio / 0.3 : 1.0);
+                return _baseColor.WithAlpha((byte)Math.Clamp(255 * opacity, 0, 255));
+            }
+        }
+
         public bool IsAlive => _life > 0;
 
         private readonly SKColor _baseColor;
-        private float _velocityX;
+        private readonly float _velocityX;
         private float _velocityY;
 
-        private PetalParticle(float x, float y, float vx, float vy, SKColor color, float size, double life, double spin)
+        private PetalParticle(float x, float y, float vx, float vy, SKColor color, float size,
+            double life, double swayAmplitude, double swayFrequency, double baseOpacity)
         {
             X = x; Y = y;
             _velocityX = vx; _velocityY = vy;
@@ -625,7 +640,9 @@ public sealed class ParticleCanvas : Control, IDisposable
             Size = size;
             _life = life;
             _initialLife = life;
-            _spin = spin;
+            _swayAmplitude = swayAmplitude;
+            _swayFrequency = swayFrequency;
+            _baseOpacity = baseOpacity;
         }
 
         public static PetalParticle Spawn(Random rng, double canvasWidth)
@@ -635,19 +652,25 @@ public sealed class ParticleCanvas : Control, IDisposable
             return new PetalParticle(
                 x: (float)(rng.NextDouble() * canvasWidth),
                 y: -18f,
-                vx: (float)((rng.NextDouble() - 0.5) * 20),
-                vy: (float)(22 + rng.NextDouble() * 35),
+                vx: (float)((rng.NextDouble() - 0.5) * 30),
+                vy: (float)(10 + rng.NextDouble() * 20),
                 color: new SKColor(c.R, c.G, c.B, c.A),
-                size: (float)(3 + rng.NextDouble() * 5),
-                life: 4.5 + rng.NextDouble() * 1.5,
-                spin: (rng.NextDouble() - 0.5) * 40);
+                size: (float)(5 + rng.NextDouble() * 9),
+                life: 6.0 + rng.NextDouble() * 3.0,
+                swayAmplitude: 30 + rng.NextDouble() * 80,
+                swayFrequency: 0.35 + rng.NextDouble() * 0.4,
+                baseOpacity: 0.55 + rng.NextDouble() * 0.3);
         }
 
         public void Update(double dt)
         {
             _life -= dt;
-            _velocityY += (float)(30 * dt);
-            X += (float)(_velocityX * dt + Math.Sin(_life * _spin) * dt);
+            _age  += dt;
+            // Gentle gravity — petals accelerate slowly like WPF's SineEase.EaseIn
+            _velocityY += (float)(15 * dt);
+            // Sinusoidal sway: derivative of A*sin(ω*age) = A*ω*cos(ω*age)
+            var swayDelta = _swayAmplitude * _swayFrequency * Math.Cos(_swayFrequency * _age) * dt;
+            X += (float)(_velocityX * dt + swayDelta);
             Y += (float)(_velocityY * dt);
         }
     }
