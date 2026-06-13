@@ -7,6 +7,7 @@ using Avalonia.Styling;
 using Avalonia.VisualTree;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
+using Avalonia.Rendering;
 using KatyaKatya.Services.Interfaces;
 using KatyaKatya.Rendering.Core;
 using KatyaKatya.ViewModels;
@@ -131,6 +132,18 @@ public partial class MainWindow : Window
         {
             Controls.ParticleCanvas.DiagnosticsDisabled = !Controls.ParticleCanvas.DiagnosticsDisabled;
             _loop?.Wake();
+            e.Handled = true;
+        }
+        // F8 toggles Avalonia's native renderer overlays: FPS + dirty rects + render/layout
+        // time graphs. Dirty rects show exactly which regions recompose each frame.
+        else if (e.Key == Key.F8)
+        {
+            RendererDiagnostics.DebugOverlays = RendererDiagnostics.DebugOverlays == RendererDebugOverlays.None
+                ? RendererDebugOverlays.Fps
+                  | RendererDebugOverlays.DirtyRects
+                  | RendererDebugOverlays.RenderTimeGraph
+                  | RendererDebugOverlays.LayoutTimeGraph
+                : RendererDebugOverlays.None;
             e.Handled = true;
         }
 
