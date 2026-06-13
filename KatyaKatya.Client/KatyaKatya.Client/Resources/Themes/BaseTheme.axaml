@@ -38,13 +38,13 @@
          faint translucent base so the animated clouds glow through the material. The
          slightly diagonal sweep gives the surface a more "wet glass" light direction. -->
     <LinearGradientBrush x:Key="CardBackground" StartPoint="0%,0%" EndPoint="20%,100%">
-        <GradientStop Color="#A6FFFFFF" Offset="0"/>
-        <GradientStop Color="#72FFFBFB" Offset="0.14"/>
-        <GradientStop Color="#38FFF2F2" Offset="0.42"/>
+        <GradientStop Color="#B6FFFFFF" Offset="0"/>
+        <GradientStop Color="#84FFFBFB" Offset="0.14"/>
+        <GradientStop Color="#4AFFF2F2" Offset="0.42"/>
         <!-- Bright band ~60% reads as a refracted light bend through the glass -->
-        <GradientStop Color="#54FFFFFF" Offset="0.60"/>
-        <GradientStop Color="#22F2DADA" Offset="0.80"/>
-        <GradientStop Color="#16EFD6D6" Offset="1"/>
+        <GradientStop Color="#62FFFFFF" Offset="0.60"/>
+        <GradientStop Color="#34F2DADA" Offset="0.80"/>
+        <GradientStop Color="#28EFD6D6" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- Diagonal specular streak overlaid on glass surfaces for a liquid highlight. -->
@@ -64,10 +64,10 @@
     <!-- Primary button gradient — glossy liquid-glass tint: luminous top, deep base.
          Slightly translucent so the background glows faintly through the glass. -->
     <LinearGradientBrush x:Key="PastelButtonBg" StartPoint="50%,0%" EndPoint="50%,100%">
-        <GradientStop Color="#E6FF9D9D" Offset="0"/>
-        <GradientStop Color="#D2E96868" Offset="0.14"/>
-        <GradientStop Color="#C6CB3B3B" Offset="0.5"/>
-        <GradientStop Color="#C69E2020" Offset="1"/>
+        <GradientStop Color="#CCFF9D9D" Offset="0"/>
+        <GradientStop Color="#B4E96868" Offset="0.14"/>
+        <GradientStop Color="#A6CB3B3B" Offset="0.5"/>
+        <GradientStop Color="#A69E2020" Offset="1"/>
     </LinearGradientBrush>
 
     <!-- =========================================================
