@@ -8,7 +8,11 @@ using Avalonia.VisualTree;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using KatyaKatya.Services.Interfaces;
+using KatyaKatya.Rendering.Core;
 using KatyaKatya.ViewModels;
+#if DEBUG
+using KatyaKatya.Rendering.Diagnostics;
+#endif
 
 namespace KatyaKatya.Views;
 
@@ -18,7 +22,11 @@ public partial class MainWindow : Window
     private bool _isAnimatingNavigation;
 
     private readonly ISoundService? _sound;
+    private readonly IGameLoop? _loop;
     private Button? _lastHoveredButton;
+#if DEBUG
+    private PerfOverlay? _perfOverlay;
+#endif
 
     public MainWindow()
     {
@@ -26,6 +34,11 @@ public partial class MainWindow : Window
         DataContextChanged += OnDataContextChanged;
 
         _sound = App.Services?.GetService<ISoundService>();
+        _loop = App.Services?.GetService<IGameLoop>();
+
+#if DEBUG
+        InitPerfOverlay();
+#endif
 
         // Global UI sound effects: hover tick + click pop on every button.
         // PointerMoved bubbles to the window, so we detect the button under the
@@ -87,8 +100,35 @@ public partial class MainWindow : Window
             _viewModel.AnimatedNavigationRequested += OnAnimatedNavigationRequested;
     }
 
+#if DEBUG
+    private void InitPerfOverlay()
+    {
+        if (_loop is null || Content is not Grid root)
+            return;
+
+        _perfOverlay = new PerfOverlay { IsVisible = false };
+        _perfOverlay.Attach(_loop);
+        root.Children.Add(_perfOverlay);
+    }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        // F12 toggles the developer performance overlay.
+        if (e.Key == Key.F12 && _perfOverlay is not null)
+        {
+            _perfOverlay.IsVisible = !_perfOverlay.IsVisible;
+            e.Handled = true;
+        }
+
+        base.OnKeyDown(e);
+    }
+#endif
+
     private async void OnAnimatedNavigationRequested(ObservableObject? nextViewModel)
     {
+        if (_loop is not null)
+            _loop.CurrentContext = nextViewModel?.GetType().Name;
+
         if (_viewModel is null)
             return;
 
