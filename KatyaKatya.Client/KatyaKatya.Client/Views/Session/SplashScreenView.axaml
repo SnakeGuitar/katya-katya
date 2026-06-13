@@ -6,13 +6,13 @@
              x:Class="KatyaKatya.Views.Session.SplashScreenView"
              x:DataType="vm:SplashScreenViewModel">
 
-    <!-- No solid background: the window's GlobalBgImage shows through as this fades out -->
     <Grid>
-        <!-- Blurred background image for diffusion effect -->
-        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=MainMenuBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
+        <!-- Same image as GlobalBgImage + TitleScreen — fading this reveals the identical
+             crisp version behind it, so there is no color/brightness change during fade-out. -->
+        <Image Name="BgImage"
+               Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
                Stretch="UniformToFill"
                IsHitTestVisible="False"
-               Opacity="0.65"
                Effect="blur(18)"/>
 
         <!-- Logo — code-behind animates opacity on load -->
