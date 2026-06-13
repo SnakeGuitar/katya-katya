@@ -1,6 +1,7 @@
 using System.IO;
 using LibVLCSharp.Shared;
 using KatyaKatya.Services.Interfaces;
+using VlcMedia = LibVLCSharp.Shared.Media;
 
 namespace KatyaKatya.Services.Media;
 
@@ -14,8 +15,8 @@ public class SoundService : ISoundService
     private LibVLC? _libVlc;
     private MediaPlayer? _hoverPlayer;
     private MediaPlayer? _clickPlayer;
-    private string? _hoverPath;
-    private string? _clickPath;
+    private VlcMedia? _hoverMedia;
+    private VlcMedia? _clickMedia;
     private bool _initialized;
 
     public bool IsEnabled { get; set; } = true;
@@ -37,12 +38,21 @@ public class SoundService : ISoundService
             if (!Directory.Exists(soundsDir))
                 soundsDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Sounds");
 
-            _hoverPath = Path.Combine(soundsDir, "hover.wav");
-            _clickPath = Path.Combine(soundsDir, "click.wav");
+            var hoverPath = Path.Combine(soundsDir, "hover.wav");
+            var clickPath = Path.Combine(soundsDir, "click.wav");
 
             // Hover should sit clearly below the music; the click is a touch louder.
             _hoverPlayer = new MediaPlayer(_libVlc) { Volume = 45 };
             _clickPlayer = new MediaPlayer(_libVlc) { Volume = 70 };
+
+            // Pre-create one Media per effect and keep it alive for the lifetime of the
+            // service. Creating a Media per play and disposing it while LibVLC was still
+            // playing it asynchronously caused a native use-after-free (0xC0000005) on the
+            // next Stop(); reusing a long-lived Media also avoids per-event allocation.
+            if (File.Exists(hoverPath))
+                _hoverMedia = new VlcMedia(_libVlc, new Uri(hoverPath));
+            if (File.Exists(clickPath))
+                _clickMedia = new VlcMedia(_libVlc, new Uri(clickPath));
 
             _initialized = true;
         }
@@ -53,32 +63,41 @@ public class SoundService : ISoundService
         }
     }
 
-    public void PlayHover() => Play(_hoverPlayer, _hoverPath);
+    public void PlayHover() => Play(_hoverPlayer, _hoverMedia);
 
-    public void PlayClick() => Play(_clickPlayer, _clickPath);
+    public void PlayClick() => Play(_clickPlayer, _clickMedia);
 
-    private void Play(MediaPlayer? player, string? path)
+    private void Play(MediaPlayer? player, VlcMedia? media)
     {
-        if (!IsEnabled || !_initialized || player is null || _libVlc is null
-            || path is null || !File.Exists(path))
+        if (!IsEnabled || !_initialized || player is null || media is null)
             return;
 
-        try
+        // LibVLC player controls must not run on the UI thread (Stop() blocks and can
+        // deadlock). Hand the work to a background thread, serialized per player so two
+        // rapid events can't drive concurrent native Stop()/Play() on the same player.
+        Task.Run(() =>
         {
-            player.Stop();
-            using var media = new LibVLCSharp.Shared.Media(_libVlc, new Uri(path));
-            player.Play(media);
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[SoundService] play failed: {ex.Message}");
-        }
+            try
+            {
+                lock (player)
+                {
+                    player.Stop();
+                    player.Play(media);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[SoundService] play failed: {ex.Message}");
+            }
+        });
     }
 
     public void Dispose()
     {
         _hoverPlayer?.Dispose();
         _clickPlayer?.Dispose();
+        _hoverMedia?.Dispose();
+        _clickMedia?.Dispose();
         _libVlc?.Dispose();
     }
 }
