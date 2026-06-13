@@ -22,7 +22,7 @@ public interface IGameLoop
     /// <summary>Snapshot of the most recently produced frame.</summary>
     FrameTime LastFrame { get; }
 
-    /// <summary>Number of systems currently reporting <see cref="IFrameUpdatable.IsAnimating"/>.</summary>
+    /// <summary>Number of systems currently reporting <see cref="IFrameUpdatable.IsActive"/>.</summary>
     int ActiveSystemCount { get; }
 
     /// <summary>All registered systems, in registration order (for diagnostics).</summary>

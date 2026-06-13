@@ -49,7 +49,7 @@ public sealed class GameLoop : IGameLoop
         {
             var count = 0;
             foreach (var system in _systems)
-                if (system.IsAnimating)
+                if (system.IsActive)
                     count++;
             return count;
         }
@@ -120,7 +120,7 @@ public sealed class GameLoop : IGameLoop
             if (i >= _systems.Count)
                 continue;
             var system = _systems[i];
-            if (system.IsAnimating)
+            if (system.IsActive)
             {
                 anyAnimating = true;
                 system.Tick(in frame);

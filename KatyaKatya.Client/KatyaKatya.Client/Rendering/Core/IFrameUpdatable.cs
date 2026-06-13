@@ -9,9 +9,10 @@ public interface IFrameUpdatable
     /// <summary>
     /// True while this system has live animation that needs ticking. When every
     /// registered system reports false, the loop parks its timer until something
-    /// calls <see cref="IGameLoop.Wake"/> again.
+    /// calls <see cref="IGameLoop.Wake"/> again. (Named <c>IsActive</c> rather than
+    /// <c>IsAnimating</c> to avoid colliding with <c>AvaloniaObject.IsAnimating</c>.)
     /// </summary>
-    bool IsAnimating { get; }
+    bool IsActive { get; }
 
     /// <summary>Advance one frame using the shared <paramref name="time"/>.</summary>
     void Tick(in FrameTime time);

@@ -80,7 +80,7 @@ public sealed class AnimatedBackground : Canvas, IFrameUpdatable, IFrameDebugMet
     }
 
     /// <summary>The background animates continuously while it is attached.</summary>
-    public bool IsAnimating => true;
+    public bool IsActive => true;
 
     string? IFrameDebugMetrics.DebugMetrics =>
         $"bg layers:{_mist.Count + _clouds.Count + _bubbles.Count}";

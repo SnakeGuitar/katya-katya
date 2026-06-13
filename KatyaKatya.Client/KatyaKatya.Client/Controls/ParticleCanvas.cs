@@ -84,7 +84,7 @@ public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetric
     }
 
     /// <summary>True while ambient petals run or any burst effect is still alive.</summary>
-    public bool IsAnimating => _runningBackground || HasActiveEffects();
+    public bool IsActive => _runningBackground || HasActiveEffects();
 
     string? IFrameDebugMetrics.DebugMetrics =>
         $"particles petals:{_petals.Count} bursts:{_bursts.Count} sw:{_shockwaves.Count}";
