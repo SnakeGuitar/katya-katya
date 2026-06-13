@@ -38,11 +38,12 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Quit -->
+                    <!-- Quit — left-indented so the window traffic-light buttons (top-left) don't overlap it -->
                     <Button Grid.Column="0"
                             Classes="LinkButton"
                             Command="{Binding LeaveGameCommand}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Leave]}"
+                            Margin="68,0,0,0"
                             VerticalAlignment="Center"/>
 
                     <!-- Score / Attempts / Elapsed -->

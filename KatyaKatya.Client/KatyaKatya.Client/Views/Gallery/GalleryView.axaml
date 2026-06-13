@@ -7,7 +7,7 @@
              x:DataType="vm:GalleryViewModel">
 
     <UserControl.Styles>
-        <!-- Hover lift for the scattered gallery cards -->
+        <!-- Loose-photo hover lift: scale + deepen drop shadow (parity with WPF gallery) -->
         <Style Selector="Button.GalleryCard">
             <Setter Property="RenderTransformOrigin" Value="50%,50%"/>
             <Setter Property="Transitions">
@@ -17,10 +17,17 @@
             </Setter>
         </Style>
         <Style Selector="Button.GalleryCard:pointerover">
-            <Setter Property="RenderTransform" Value="scale(1.05)"/>
+            <Setter Property="RenderTransform" Value="scale(1.06)"/>
         </Style>
-        <Style Selector="Button.GalleryCard:pointerover Border.CardBody">
-            <Setter Property="BoxShadow" Value="6 6 26 0 #66000000"/>
+        <Style Selector="Button.GalleryCard Image.Photo">
+            <Setter Property="Effect">
+                <DropShadowEffect Color="Black" BlurRadius="14" OffsetX="0" OffsetY="5" Opacity="0.28"/>
+            </Setter>
+        </Style>
+        <Style Selector="Button.GalleryCard:pointerover Image.Photo">
+            <Setter Property="Effect">
+                <DropShadowEffect Color="Black" BlurRadius="26" OffsetX="0" OffsetY="10" Opacity="0.42"/>
+            </Setter>
         </Style>
     </UserControl.Styles>
 
@@ -62,6 +69,10 @@
                             <Setter Property="Canvas.Left" Value="{ReflectionBinding X}"/>
                             <Setter Property="Canvas.Top" Value="{ReflectionBinding Y}"/>
                             <Setter Property="Canvas.ZIndex" Value="{ReflectionBinding ZIndex}"/>
+                            <!-- Hovered photo jumps to the front so it isn't clipped by neighbors -->
+                            <Style Selector="^:pointerover">
+                                <Setter Property="Canvas.ZIndex" Value="999"/>
+                            </Style>
                         </ControlTheme>
                     </ItemsControl.ItemContainerTheme>
                     <ItemsControl.ItemTemplate>
@@ -75,29 +86,15 @@
                                     Cursor="Hand"
                                     MaxWidth="{Binding MaxWidth}"
                                     MaxHeight="{Binding MaxHeight}">
-                                <Border Classes="CardBody"
-                                        CornerRadius="12"
-                                        Background="White"
-                                        BorderBrush="{DynamicResource PastelBorder}"
-                                        BorderThickness="1.5"
-                                        BoxShadow="3 3 12 0 #30000000"
-                                        RenderTransformOrigin="0.5,0.5">
-                                    <Border.RenderTransform>
+                                <!-- Loose photo: just the rotated image with a soft drop shadow -->
+                                <Image Classes="Photo"
+                                       Source="{Binding Current.ImagePath, Converter={StaticResource StringAssetToBitmapConverter}}"
+                                       Stretch="Uniform"
+                                       RenderTransformOrigin="50%,50%">
+                                    <Image.RenderTransform>
                                         <RotateTransform Angle="{Binding Rotation}"/>
-                                    </Border.RenderTransform>
-                                    <Grid>
-                                        <Image Source="{Binding Current.ImagePath, Converter={StaticResource StringAssetToBitmapConverter}}"
-                                               Stretch="Uniform"
-                                               Margin="8"/>
-                                        <TextBlock Text="{Binding Current.Label}"
-                                                   Classes="PastelLabel"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Bottom"
-                                                   Margin="0,0,0,8"
-                                                   Background="#88FFFFFF"
-                                                   Padding="4,2"/>
-                                    </Grid>
-                                </Border>
+                                    </Image.RenderTransform>
+                                </Image>
                             </Button>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
