@@ -655,7 +655,7 @@ public sealed class ParticleCanvas : Control, IDisposable
                 vx: (float)((rng.NextDouble() - 0.5) * 30),
                 vy: (float)(10 + rng.NextDouble() * 20),
                 color: new SKColor(c.R, c.G, c.B, c.A),
-                size: (float)(5 + rng.NextDouble() * 9),
+                size: (float)(14 + rng.NextDouble() * 16),
                 life: 6.0 + rng.NextDouble() * 3.0,
                 swayAmplitude: 30 + rng.NextDouble() * 80,
                 swayFrequency: 0.35 + rng.NextDouble() * 0.4,
