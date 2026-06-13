@@ -32,8 +32,8 @@
                     <ColumnDefinition Width="480"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0">
-                    <Border Classes="LiquidGlassCard" Padding="24,20" Margin="0,0,0,16">
+                <Grid Grid.Column="0" RowDefinitions="Auto,16,*">
+                    <Border Grid.Row="0" Classes="LiquidGlassCard" Padding="24,20">
                         <StackPanel>
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_CreateGame]}"
                                        Classes="PastelTextBlock"
@@ -67,7 +67,7 @@
                         </StackPanel>
                     </Border>
 
-                    <Border Classes="LiquidGlassCard" Padding="24,20" Height="220">
+                    <Border Grid.Row="2" Classes="LiquidGlassCard" Padding="24,20">
                         <StackPanel>
                             <TextBlock Text="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[MultiplayerMenu_Label_JoinGame]}"
                                        Classes="PastelTextBlock"
@@ -95,7 +95,7 @@
                                        IsVisible="{Binding JoinCodeError}"/>
                         </StackPanel>
                     </Border>
-                </StackPanel>
+                </Grid>
 
                 <Border Grid.Column="2"
                         Classes="LiquidGlassCard"
