@@ -14,8 +14,13 @@ public partial class CardViewModel : ObservableObject
 {
     private const int DecodeWidth = 256;
 
-    private static readonly Bitmap BackImage = Load(
-        "avares://KatyaKatya/Resources/Images/Icons/love-points.png");
+    /// <summary>
+    /// The card back, decoded once to display width and shared by every card. Binding all
+    /// backs to this single small bitmap avoids 30+ full-resolution (1060x1484) decodes of
+    /// card-reverse.png, which made the board re-rasterize at ~55 ms/frame.
+    /// </summary>
+    public static Bitmap CardBack { get; } = Load(
+        "avares://KatyaKatya/Resources/Images/Cards/card-reverse.png");
 
     private static readonly Dictionary<string, Bitmap> FrontCache = new();
 
@@ -36,7 +41,7 @@ public partial class CardViewModel : ObservableObject
     public Bitmap DisplayImage =>
         (IsFlipped || IsMatched) && ImageIdentifier is not null
             ? GetFront(ImageIdentifier)
-            : BackImage;
+            : CardBack;
 
     public CardViewModel(int index)
     {

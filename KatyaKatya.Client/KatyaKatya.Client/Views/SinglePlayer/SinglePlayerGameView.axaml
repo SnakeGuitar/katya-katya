@@ -147,7 +147,7 @@
                                                     ClipToBounds="True"
                                                     Background="{DynamicResource PrimaryGradient}"
                                                     IsVisible="{Binding !IsFlipped}">
-                                                <Image Source="avares://KatyaKatya/Resources/Images/Cards/card-reverse.png"
+                                                <Image Source="{x:Static models:CardViewModel.CardBack}"
                                                        Stretch="Uniform"/>
                                             </Border>
                                             <!-- Card front -->
