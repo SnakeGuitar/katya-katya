@@ -90,6 +90,11 @@ public class GameSession
             second.IsMatched = true;
             Scores[CurrentPlayer]++;
 
+            // Match → same player keeps playing. Clear the flip state so their next
+            // flip starts a fresh pair instead of being evaluated against this card.
+            FirstFlippedCard = null;
+            IsWaitingForSecondFlip = false;
+
             if (Board.All(c => c.IsMatched))
                 IsFinished = true;
 
