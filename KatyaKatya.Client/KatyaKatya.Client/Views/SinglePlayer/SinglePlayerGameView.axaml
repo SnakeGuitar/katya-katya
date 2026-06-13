@@ -127,7 +127,7 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="models:CardViewModel">
                                 <Button Width="90"
-                                        Height="90"
+                                        Height="126"
                                         Margin="4"
                                         Padding="0"
                                         Background="Transparent"
