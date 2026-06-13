@@ -5,16 +5,10 @@ using KatyaKatya.Helpers;
 
 namespace KatyaKatya.ViewModels.Session;
 
-/// <summary>
-/// Drives the splash screen timing.
-/// </summary>
 public partial class SplashScreenViewModel : ObservableObject
 {
     private readonly INavigationService _navigation;
     private readonly ClientSettings _settings;
-    private const int HoldDelayMs = 3400;
-
-    public event Action? FadeOutRequested;
 
     public string LogoPath => LogoResolver.Resolve(_settings.LanguageCode, _settings.ThemeName);
 
@@ -24,14 +18,10 @@ public partial class SplashScreenViewModel : ObservableObject
         _settings = settings;
     }
 
-    public async Task StartAsync()
-    {
-        await Task.Delay(HoldDelayMs);
-        FadeOutRequested?.Invoke();
-    }
-
     public void NavigateToTitleScreen()
     {
-        _navigation.NavigateToRootWithFade<TitleScreenViewModel>();
+        // NavigateToRoot (no animation): ViewHost.Opacity stays 1 the entire time,
+        // so the rounded-corner clip is never composited at partial opacity.
+        _navigation.NavigateToRoot<TitleScreenViewModel>();
     }
 }

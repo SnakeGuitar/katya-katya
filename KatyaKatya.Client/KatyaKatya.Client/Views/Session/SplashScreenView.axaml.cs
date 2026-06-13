@@ -12,13 +12,7 @@ public partial class SplashScreenView : UserControl
     public SplashScreenView()
     {
         InitializeComponent();
-
         Loaded += OnLoaded;
-        DetachedFromVisualTree += (_, _) =>
-        {
-            if (DataContext is SplashScreenViewModel vm)
-                vm.FadeOutRequested -= OnFadeOutRequested;
-        };
     }
 
     private async void OnLoaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -27,39 +21,29 @@ public partial class SplashScreenView : UserControl
             return;
 
         _started = true;
-        vm.FadeOutRequested += OnFadeOutRequested;
-        await AnimateOpacityAsync(LogoContainer, 0, 1, 1100);
-        await vm.StartAsync();
+
+        await FadeAsync(LogoContainer, 0, 1, 1100);
+        await Task.Delay(1200);
+        // Fade out the UserControl itself — ViewHost stays at Opacity=1 so the
+        // MainWindowBorder rounded-corner clip is never composited at partial opacity.
+        await FadeAsync(this, 1, 0, 1200);
+
+        vm.NavigateToTitleScreen();
     }
 
-    private void OnFadeOutRequested()
-    {
-        if (DataContext is SplashScreenViewModel vm)
-            vm.NavigateToTitleScreen();
-    }
-
-    private static Task AnimateOpacityAsync(Control target, double from, double to, int milliseconds)
+    private static Task FadeAsync(Control target, double from, double to, int ms)
     {
         target.Opacity = from;
         var animation = new Animation
         {
-            Duration = TimeSpan.FromMilliseconds(milliseconds),
+            Duration = TimeSpan.FromMilliseconds(ms),
             FillMode = FillMode.Forward,
             Children =
             {
-                new KeyFrame
-                {
-                    Cue = new Cue(0d),
-                    Setters = { new Setter(OpacityProperty, from) }
-                },
-                new KeyFrame
-                {
-                    Cue = new Cue(1d),
-                    Setters = { new Setter(OpacityProperty, to) }
-                }
+                new KeyFrame { Cue = new Cue(0d), Setters = { new Setter(OpacityProperty, from) } },
+                new KeyFrame { Cue = new Cue(1d), Setters = { new Setter(OpacityProperty, to) } }
             }
         };
-
         return animation.RunAsync(target, CancellationToken.None);
     }
 }
