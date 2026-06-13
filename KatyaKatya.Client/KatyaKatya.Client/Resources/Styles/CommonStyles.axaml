@@ -5,32 +5,26 @@
          LiquidGlassCard — Border style for cards
          ========================================================= -->
     <Style Selector="Border.LiquidGlassCard">
-        <Setter Property="Background"       Value="{DynamicResource CardBackground}"/>
-        <Setter Property="BorderBrush"      Value="{DynamicResource PastelBorder}"/>
-        <Setter Property="BorderThickness"  Value="1.5"/>
-        <Setter Property="CornerRadius"     Value="{DynamicResource CardCornerRadius}"/>
-        <Setter Property="BoxShadow"        Value="{DynamicResource CardBoxShadow}"/>
+        <Setter Property="Background"          Value="{DynamicResource CardBackground}"/>
+        <Setter Property="BorderBrush"         Value="{DynamicResource PastelBorder}"/>
+        <Setter Property="BorderThickness"     Value="1.5"/>
+        <Setter Property="CornerRadius"        Value="{DynamicResource CardCornerRadius}"/>
+        <Setter Property="BoxShadow"           Value="{DynamicResource CardBoxShadow}"/>
+        <Setter Property="RenderTransformOrigin" Value="50%,50%"/>
+        <Setter Property="Transitions">
+            <Transitions>
+                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.28" Easing="QuadraticEaseOut"/>
+                <BoxShadowsTransition Property="BoxShadow" Duration="0:0:0.28"/>
+            </Transitions>
+        </Setter>
     </Style>
 
-    <!-- Ambient "liquid" motion: panels gently breathe up and down so they don't feel
-         static. Excludes the game-over card, whose entrance animation also drives the
-         vertical transform (they would otherwise fight). -->
-    <Style Selector="Border.LiquidGlassCard:not(.GameOverEntrance)">
-        <Style.Animations>
-            <!-- Float + gentle scale "breathing" so the glass feels alive. -->
-            <Animation Duration="0:0:4.5" IterationCount="INFINITE" PlaybackDirection="Alternate" Easing="SineEaseInOut">
-                <KeyFrame Cue="0%">
-                    <Setter Property="TranslateTransform.Y" Value="-7"/>
-                    <Setter Property="ScaleTransform.ScaleX" Value="0.994"/>
-                    <Setter Property="ScaleTransform.ScaleY" Value="0.994"/>
-                </KeyFrame>
-                <KeyFrame Cue="100%">
-                    <Setter Property="TranslateTransform.Y" Value="7"/>
-                    <Setter Property="ScaleTransform.ScaleX" Value="1.006"/>
-                    <Setter Property="ScaleTransform.ScaleY" Value="1.006"/>
-                </KeyFrame>
-            </Animation>
-        </Style.Animations>
+    <!-- Hover motion: panels gently lift and glow when pointed at — like the MainView
+         character, but softer since these are large surfaces. Excludes the game-over
+         card, whose entrance animation also drives the vertical transform. -->
+    <Style Selector="Border.LiquidGlassCard:not(.GameOverEntrance):pointerover">
+        <Setter Property="RenderTransform" Value="scale(1.02) translateY(-4px)"/>
+        <Setter Property="BoxShadow"       Value="{DynamicResource CardBoxShadowHover}"/>
     </Style>
 
     <Style Selector="Border.BoardHud">
@@ -149,11 +143,11 @@
 
     <Style Selector="Button.PastelButton:pointerover /template/ Border#Root">
         <Setter Property="BoxShadow" Value="{DynamicResource ButtonShadowHover}"/>
-        <Setter Property="RenderTransform" Value="scale(1.07) translateY(-3px)"/>
+        <Setter Property="RenderTransform" Value="scale(1.035) translateY(-2px)"/>
     </Style>
 
     <Style Selector="Button.PastelButton:pressed /template/ Border#Root">
-        <Setter Property="RenderTransform" Value="scale(0.95) translateY(1px)"/>
+        <Setter Property="RenderTransform" Value="scale(0.97) translateY(1px)"/>
     </Style>
 
     <Style Selector="Button.PastelButton:disabled">
