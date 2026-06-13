@@ -1,0 +1,53 @@
+flowchart TB
+    subgraph UI["Avalonia UI Layer"]
+        Shell["MainWindow Shell"]
+        Hud["HUD, Buttons, Dialogue Box"]
+        StaticViews["Settings, Profile, Menus"]
+    end
+
+    subgraph Loop["Unified Frame Loop"]
+        GameLoop["GameLoop"]
+        FrameTime["FrameTime"]
+        Budget["Frame Budget Policy"]
+    end
+
+    subgraph Skia["Skia Rendering Layer"]
+        SceneControl["SkiaSceneControl"]
+        DrawOperation["SkiaSceneDrawOperation"]
+        SceneSnapshot["Immutable SceneSnapshot"]
+        RenderLayers["Render Layers"]
+        Effects["Particles, Parallax, Transitions"]
+    end
+
+    subgraph Assets["Asset Pipeline"]
+        Manifest["Asset Manifests"]
+        Preloader["Async Preloader"]
+        Cache["VisualAssetStore"]
+        NativeAssets["Cached SKImage And Shaders"]
+    end
+
+    Shell --> Hud
+    Shell --> StaticViews
+    Shell --> SceneControl
+    GameLoop --> FrameTime
+    GameLoop --> Budget
+    GameLoop --> SceneControl
+    SceneControl --> SceneSnapshot
+    SceneControl --> DrawOperation
+    DrawOperation --> RenderLayers
+    RenderLayers --> Effects
+    RenderLayers --> NativeAssets
+    Manifest --> Preloader
+    Preloader --> Cache
+    Cache --> NativeAssets
+
+    classDef ui fill:#e3f2fd,stroke:#1565c0,color:#061f3c
+    classDef loop fill:#fff3e0,stroke:#ef6c00,color:#332000
+    classDef skia fill:#e8f5e9,stroke:#2e7d32,color:#0d2d12
+    classDef assets fill:#f3e5f5,stroke:#6a1b9a,color:#230732
+
+    class Shell,Hud,StaticViews ui
+    class GameLoop,FrameTime,Budget loop
+    class SceneControl,DrawOperation,SceneSnapshot,RenderLayers,Effects skia
+    class Manifest,Preloader,Cache,NativeAssets assets
+

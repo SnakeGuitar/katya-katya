@@ -1,0 +1,58 @@
+flowchart LR
+    subgraph Sources["Measured Sources"]
+        Loop["GameLoop Tick"]
+        Skia["Skia Draw Operation"]
+        Assets["Asset Loads"]
+        UI["Avalonia Layout And Render"]
+        Memory["Memory Minigame Board"]
+        Sound["SoundService SFX"]
+        Glass["Liquid Glass Hover Effects"]
+    end
+
+    subgraph Metrics["Collected Metrics"]
+        FPS["FPS"]
+        FrameMs["Frame Time"]
+        UpdateMs["Update Time"]
+        RenderMs["Render Time"]
+        Allocations["Per Frame Allocations"]
+        CacheSize["Asset Cache Size"]
+        SlowFrames["Slow Frame Log"]
+        SfxLatency["SFX Playback Latency"]
+        EffectState["Active Optional Effects"]
+    end
+
+    subgraph Output["Developer Output"]
+        Overlay["Debug Overlay"]
+        Logs["Debug Logs"]
+        Presets["Graphics Preset Decisions"]
+    end
+
+    Loop --> FPS
+    Loop --> FrameMs
+    Loop --> UpdateMs
+    Skia --> RenderMs
+    Assets --> CacheSize
+    UI --> FrameMs
+    Memory --> Allocations
+    Sound --> SfxLatency
+    Glass --> EffectState
+    Glass --> FrameMs
+    FrameMs --> SlowFrames
+
+    FPS --> Overlay
+    FrameMs --> Overlay
+    UpdateMs --> Overlay
+    RenderMs --> Overlay
+    CacheSize --> Overlay
+    SfxLatency --> Overlay
+    EffectState --> Overlay
+    SlowFrames --> Logs
+    SlowFrames --> Presets
+
+    classDef source fill:#e3f2fd,stroke:#1565c0,color:#061f3c
+    classDef metric fill:#fff8e1,stroke:#f9a825,color:#332600
+    classDef output fill:#e8f5e9,stroke:#2e7d32,color:#0d2d12
+
+    class Loop,Skia,Assets,UI,Memory,Sound,Glass source
+    class FPS,FrameMs,UpdateMs,RenderMs,Allocations,CacheSize,SlowFrames,SfxLatency,EffectState metric
+    class Overlay,Logs,Presets output

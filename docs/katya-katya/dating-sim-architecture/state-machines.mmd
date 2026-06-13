@@ -1,0 +1,87 @@
+stateDiagram-v2
+    direction TB
+
+    state "Application Flow" as AppFlow {
+        [*] --> Splash
+        Splash --> Title
+        Title --> Authenticated
+        Authenticated --> MainMenu
+        MainMenu --> DatingHub: select Katya
+        MainMenu --> MemoryMinigame: earn coins
+        MainMenu --> Settings
+        DatingHub --> CharacterDetail
+        DatingHub --> DialogueScene: play unlocked scene
+        DatingHub --> GiftFlow: send gift
+        DatingHub --> DateFlow: go on date
+        CharacterDetail --> DatingHub
+        GiftFlow --> DialogueScene: reaction scene
+        GiftFlow --> DatingHub: no scene
+        DateFlow --> DialogueScene
+        DialogueScene --> DatingHub
+        MemoryMinigame --> CompletionReward
+        CompletionReward --> DatingHub
+        Settings --> MainMenu
+    }
+
+    state "Dating Hub" as DatingHubMachine {
+        [*] --> LoadingProgress
+        LoadingProgress --> ShowingKatya
+        ShowingKatya --> ChoosingAction
+        ChoosingAction --> InsufficientCoins: cannot afford
+        ChoosingAction --> GiftSelected
+        ChoosingAction --> DateSelected
+        ChoosingAction --> SceneSelected
+        GiftSelected --> ApplyingInteraction
+        DateSelected --> ApplyingInteraction
+        ApplyingInteraction --> CheckingUnlocks
+        CheckingUnlocks --> ShowingUnlock: milestone reached
+        CheckingUnlocks --> ShowingKatya: no unlock
+        ShowingUnlock --> SceneSelected
+        SceneSelected --> [*]
+        InsufficientCoins --> ShowingKatya
+    }
+
+    state "Dialogue Scene" as DialogueMachine {
+        [*] --> PreloadingAssets
+        PreloadingAssets --> EnterTransition
+        EnterTransition --> ShowingLine
+        ShowingLine --> WaitingAdvance: no choices
+        ShowingLine --> WaitingChoice: choices available
+        WaitingAdvance --> ResolvingNode
+        WaitingChoice --> ApplyingChoiceEffects
+        ApplyingChoiceEffects --> UpdatingAffinity
+        UpdatingAffinity --> UpdatingMood
+        UpdatingMood --> ResolvingNode
+        ResolvingNode --> ShowingLine: next node
+        ResolvingNode --> ExitTransition: scene complete
+        ExitTransition --> [*]
+    }
+
+    state "Katya Mood And Affinity" as MoodMachine {
+        [*] --> Happy
+        Happy --> Happy: good interaction
+        Happy --> Upset: penalty threshold reached
+        Upset --> Upset: unreconciled interaction
+        Upset --> ReconciliationAvailable: player can make it up
+        ReconciliationAvailable --> Happy: reconciliation complete
+        Happy --> MilestoneUnlocked: level threshold reached
+        MilestoneUnlocked --> Happy
+    }
+
+    state "Memory Minigame" as MemoryMachine {
+        [*] --> BoardSetup
+        BoardSetup --> AwaitingFirstCard
+        AwaitingFirstCard --> AwaitingSecondCard: first flip
+        AwaitingSecondCard --> ResolvingPair: second flip
+        ResolvingPair --> AwaitingFirstCard: mismatch
+        ResolvingPair --> CheckingCompletion: match
+        CheckingCompletion --> AwaitingFirstCard: pairs remain
+        CheckingCompletion --> Completed: all pairs matched
+        AwaitingFirstCard --> Abandoned: player leaves
+        AwaitingSecondCard --> Abandoned: player leaves
+        Completed --> RewardCalculated
+        Abandoned --> PenaltyCalculated
+        RewardCalculated --> [*]
+        PenaltyCalculated --> [*]
+    }
+

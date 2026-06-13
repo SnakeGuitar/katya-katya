@@ -1,0 +1,17 @@
+stateDiagram-v2
+    [*] --> NotRequested
+    NotRequested --> Queued: scene selected
+    Queued --> Loading: async preload starts
+    Loading --> Decoded: resource stream decoded
+    Decoded --> NativeCached: SKImage or shader cached
+    NativeCached --> InUse: scene active
+    InUse --> RecentlyUsed: scene transition away
+    RecentlyUsed --> InUse: scene returns soon
+    RecentlyUsed --> Evictable: memory pressure or cache limit
+    Evictable --> Disposed: release native resource
+    Disposed --> NotRequested
+
+    Loading --> Failed: missing or corrupt asset
+    Failed --> Placeholder: use fallback
+    Placeholder --> NotRequested
+

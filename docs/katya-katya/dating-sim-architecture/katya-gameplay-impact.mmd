@@ -1,0 +1,67 @@
+flowchart TB
+    subgraph Mood["Mood State"]
+        Happy["Happy"]
+        Shy["Shy"]
+        Proud["Proud"]
+        Thoughtful["Thoughtful"]
+        Hurt["Hurt"]
+        Upset["Upset"]
+        Reconcile["Reconciliation Available"]
+    end
+
+    subgraph Output["Visible Output"]
+        Expression["Expression change"]
+        Tone["Dialogue tone change"]
+        MemoryRef["References past action"]
+        Praise["Praise or encouragement"]
+        Cold["Shorter colder response"]
+        Special["Special scene"]
+    end
+
+    subgraph Impact["Gameplay Impact"]
+        Gain["Love points gain"]
+        Penalty["Love points penalty inside current level"]
+        Reduced["Reduced gains while upset"]
+        Unlock["Story scene unlock"]
+        Diary["Diary or memory log unlock"]
+        Preference["Gift preference discovery"]
+        Bonus["Coin or streak bonus"]
+        ReconcileScene["Exclusive reconciliation scene"]
+    end
+
+    Happy --> Expression
+    Happy --> Tone
+    Happy --> Gain
+
+    Shy --> Expression
+    Shy --> Special
+    Shy --> Unlock
+
+    Proud --> Praise
+    Proud --> Bonus
+
+    Thoughtful --> Tone
+    Thoughtful --> MemoryRef
+    Thoughtful --> Diary
+
+    Hurt --> Cold
+    Hurt --> Penalty
+    Hurt --> Upset
+
+    Upset --> Reduced
+    Upset --> Reconcile
+    Reconcile --> ReconcileScene
+    ReconcileScene --> Happy
+
+    MemoryRef --> Diary
+    Special --> Unlock
+    Tone --> Preference
+
+    classDef mood fill:#fff3e0,stroke:#ef6c00,color:#332000
+    classDef output fill:#ede7f6,stroke:#5e35b1,color:#1c103c
+    classDef impact fill:#e8f5e9,stroke:#2e7d32,color:#0d2d12
+
+    class Happy,Shy,Proud,Thoughtful,Hurt,Upset,Reconcile mood
+    class Expression,Tone,MemoryRef,Praise,Cold,Special output
+    class Gain,Penalty,Reduced,Unlock,Diary,Preference,Bonus,ReconcileScene impact
+

@@ -1,0 +1,49 @@
+flowchart TB
+    subgraph Positive["Positive Triggers"]
+        GoodChoice["Supportive dialogue"]
+        LikedGift["Liked gift"]
+        DateTaken["Date taken"]
+        PerfectGame["Perfect memory game"]
+        DailyReturn["Daily return or streak"]
+        LateNight["Late night visit"]
+    end
+
+    subgraph Negative["Negative Triggers"]
+        BadChoice["Cold dialogue"]
+        BadGift["Disliked gift"]
+        Abandon["Abandoned memory game"]
+        Inactive["Three or more days inactive"]
+        Ignore["Milestone ignored"]
+    end
+
+    subgraph Reactions["Katya Reactions"]
+        Happy["Happy"]
+        Shy["Shy"]
+        Proud["Proud / Excited"]
+        Thoughtful["Thoughtful"]
+        Hurt["Hurt"]
+        Upset["Upset"]
+    end
+
+    GoodChoice --> Happy
+    LikedGift --> Shy
+    DateTaken --> Happy
+    PerfectGame --> Proud
+    DailyReturn --> Happy
+    LateNight --> Thoughtful
+
+    BadChoice --> Hurt
+    BadGift --> Hurt
+    Abandon --> Hurt
+    Inactive --> Hurt
+    Ignore --> Hurt
+    Hurt --> Upset
+
+    classDef positive fill:#e8f5e9,stroke:#2e7d32,color:#0d2d12
+    classDef negative fill:#ffebee,stroke:#c62828,color:#3b0707
+    classDef reaction fill:#e3f2fd,stroke:#1565c0,color:#061f3c
+
+    class GoodChoice,LikedGift,DateTaken,PerfectGame,DailyReturn,LateNight positive
+    class BadChoice,BadGift,Abandon,Inactive,Ignore negative
+    class Happy,Shy,Proud,Thoughtful,Hurt,Upset reaction
+

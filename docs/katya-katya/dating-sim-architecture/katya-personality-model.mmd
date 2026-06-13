@@ -1,0 +1,39 @@
+flowchart TB
+    Katya["Katya"]
+
+    Warm["Warm"]
+    Playful["Playful"]
+    Observant["Observant"]
+    Vulnerable["Vulnerable"]
+    Romantic["Romantic"]
+    Sensitive["Sensitive"]
+
+    WarmDetail["Encourages the player and responds kindly to care"]
+    PlayfulDetail["Teases lightly, celebrates wins, softens tension"]
+    ObservantDetail["Remembers gifts, streaks, time of day, habits"]
+    VulnerableDetail["Opens up at higher affinity and during quiet scenes"]
+    RomanticDetail["Romance escalates gradually through milestones"]
+    SensitiveDetail["Reacts emotionally to neglect, bad choices, abandonment"]
+
+    Katya --> Warm
+    Katya --> Playful
+    Katya --> Observant
+    Katya --> Vulnerable
+    Katya --> Romantic
+    Katya --> Sensitive
+
+    Warm --> WarmDetail
+    Playful --> PlayfulDetail
+    Observant --> ObservantDetail
+    Vulnerable --> VulnerableDetail
+    Romantic --> RomanticDetail
+    Sensitive --> SensitiveDetail
+
+    classDef core fill:#fce4ec,stroke:#ad1457,color:#310515
+    classDef trait fill:#ede7f6,stroke:#5e35b1,color:#1c103c
+    classDef detail fill:#fff8e1,stroke:#f9a825,color:#332600
+
+    class Katya core
+    class Warm,Playful,Observant,Vulnerable,Romantic,Sensitive trait
+    class WarmDetail,PlayfulDetail,ObservantDetail,VulnerableDetail,RomanticDetail,SensitiveDetail detail
+

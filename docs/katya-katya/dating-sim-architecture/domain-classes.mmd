@@ -1,0 +1,158 @@
+classDiagram
+    direction TB
+
+    class DatingEngine {
+        +GetHubState() DatingHubState
+        +CompleteMemoryGame(MemoryGameResult result) RewardResult
+        +SendGift(string giftId) InteractionResult
+        +GoOnDate(string dateId) InteractionResult
+        +ApplyDialogueChoice(DialogueChoice choice) ChoiceResult
+        +CheckMilestones() UnlockResult
+    }
+
+    class DatingProgress {
+        +int Coins
+        +int DailyStreak
+        +int WinStreak
+        +DateTime FirstInteractionAt
+        +IReadOnlyList~CharacterAffinity~ Affinities
+        +IReadOnlyList~GiftLogEntry~ GiftLog
+        +IReadOnlySet~string~ UnlockedSceneIds
+    }
+
+    class CharacterProfile {
+        +string Id
+        +string DisplayNameKey
+        +string AssetBaseId
+        +IReadOnlyList~ExpressionDefinition~ Expressions
+        +IReadOnlyList~AffinityTier~ AffinityTiers
+    }
+
+    class CharacterAffinity {
+        +string CharacterId
+        +int LovePoints
+        +int Level
+        +RelationshipMood Mood
+        +int PenaltyCount
+        +DateTime LastInteractionAt
+    }
+
+    class AffinitySystem {
+        +ApplyGain(CharacterAffinity affinity, int points)
+        +ApplyPenalty(CharacterAffinity affinity, PenaltyEvent penalty)
+        +GetTier(CharacterAffinity affinity) AffinityTier
+        +GetNextThreshold(CharacterAffinity affinity) int
+    }
+
+    class MoodSystem {
+        +EvaluateMood(CharacterAffinity affinity)
+        +CanReconcile(CharacterAffinity affinity) bool
+        +ApplyReconciliation(CharacterAffinity affinity)
+    }
+
+    class GiftDefinition {
+        +string Id
+        +int CoinCost
+        +int AffinityGain
+        +string ReactionSceneId
+        +string[] PreferredMoodIds
+    }
+
+    class DateDefinition {
+        +string Id
+        +int CoinCost
+        +int AffinityGain
+        +string SceneId
+        +int RequiredLevel
+    }
+
+    class DialogueEngine {
+        +StartScene(string sceneId)
+        +Advance() DialogueStep
+        +Choose(string choiceId) DialogueStep
+        +CurrentState DialogueState
+    }
+
+    class SceneDefinition {
+        +string Id
+        +string BackgroundId
+        +string MusicId
+        +int RequiredLevel
+        +string EntryNodeId
+        +IReadOnlyList~SceneCharacter~ Characters
+    }
+
+    class DialogueNode {
+        +string Id
+        +string SpeakerId
+        +string TextKey
+        +string ExpressionId
+        +IReadOnlyList~DialogueChoice~ Choices
+    }
+
+    class DialogueChoice {
+        +string Id
+        +string TextKey
+        +string NextNodeId
+        +IReadOnlyList~DialogueEffect~ Effects
+        +IReadOnlyList~DialogueCondition~ Conditions
+    }
+
+    class MemoryGameSession {
+        +MemoryBoard Board
+        +MemoryGameStatus Status
+        +FlipCard(int index) MemoryMoveResult
+        +Complete() MemoryGameResult
+        +Abandon() MemoryGameResult
+    }
+
+    class MemoryGameResult {
+        +bool Completed
+        +int Difficulty
+        +int PairsMatched
+        +int Attempts
+        +double ElapsedSeconds
+        +bool WasPerfect
+        +bool WasAbandoned
+    }
+
+    class RewardService {
+        +CalculateCoins(MemoryGameResult result) int
+        +CalculateDrops(MemoryGameResult result) IReadOnlyList~RewardDrop~
+        +ApplyReward(DatingProgress progress, RewardResult reward)
+    }
+
+    class VisualNovelSceneRenderer {
+        +SetScene(SceneRenderState state)
+        +Update(FrameTime time)
+        +Draw(SkiaRenderContext context)
+    }
+
+    class SceneRenderState {
+        +string BackgroundId
+        +string CharacterId
+        +string ExpressionId
+        +string TransitionId
+        +RelationshipMood Mood
+    }
+
+    DatingEngine --> DatingProgress
+    DatingEngine --> AffinitySystem
+    DatingEngine --> MoodSystem
+    DatingEngine --> GiftDefinition
+    DatingEngine --> DateDefinition
+    DatingEngine --> RewardService
+    DatingProgress --> CharacterAffinity
+    CharacterProfile --> CharacterAffinity
+
+    DialogueEngine --> SceneDefinition
+    DialogueEngine --> DialogueNode
+    DialogueNode --> DialogueChoice
+    DialogueChoice --> DatingEngine
+    SceneDefinition --> VisualNovelSceneRenderer
+    VisualNovelSceneRenderer --> SceneRenderState
+
+    MemoryGameSession --> MemoryGameResult
+    MemoryGameResult --> RewardService
+    RewardService --> DatingProgress
+

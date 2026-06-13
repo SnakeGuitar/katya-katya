@@ -1,0 +1,51 @@
+sequenceDiagram
+    autonumber
+    actor Player
+    participant View as DialogueSceneViewModel
+    participant Dialogue as DialogueEngine
+    participant Choice as ChoiceResolver
+    participant Dating as DatingEngine
+    participant Affinity as AffinitySystem
+    participant Mood as MoodSystem
+    participant Flags as StoryFlagStore
+    participant Unlocks as MilestoneUnlockSystem
+    participant Render as VisualNovelSceneRenderer
+    participant Save as DatingProgressRepository
+
+    Player->>View: Advance dialogue
+    View->>Dialogue: Advance()
+    Dialogue-->>View: Dialogue node with choices
+    View-->>Player: Display localized choices
+
+    Player->>View: Select choice
+    View->>Dialogue: Choose(choiceId)
+    Dialogue->>Choice: Resolve conditions and effects
+    Choice-->>Dialogue: Valid effects and next node
+
+    Dialogue->>Dating: ApplyDialogueChoice(choice)
+    Dating->>Affinity: Apply affinity gains or penalties
+    Affinity-->>Dating: Updated level and love points
+    Dating->>Mood: Evaluate mood
+    Mood-->>Dating: Happy or Upset
+    Dating->>Flags: Set story flags
+    Dating->>Unlocks: Check milestone scenes
+    Unlocks-->>Dating: UnlockResult
+    Dating->>Save: Persist progress
+
+    alt Choice changes expression
+        Dialogue->>Render: Animate Katya expression
+    end
+
+    alt Choice unlocks milestone
+        Dialogue-->>View: Show unlock notification
+    end
+
+    alt Next dialogue node exists
+        Dialogue-->>View: Next line
+        View-->>Player: Continue scene
+    else Scene complete
+        Dialogue-->>View: Scene complete
+        View->>Render: Exit transition
+        View-->>Player: Return to Dating Hub
+    end
+

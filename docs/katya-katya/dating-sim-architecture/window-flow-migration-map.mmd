@@ -1,0 +1,32 @@
+flowchart LR
+    subgraph Current["Current Area"]
+        DatingTodo["Dating Placeholder"]
+        SinglePlayer["Single Player Memory"]
+        GameOver["Memory Game Over"]
+        Gallery["Gallery"]
+        Lobby["Lobby / Multiplayer"]
+        ProfileSettings["Profile / Settings / Friends"]
+    end
+
+    subgraph Target["Target Area"]
+        DatingHub["Dating Hub"]
+        MemoryMinigame["Memory Minigame"]
+        RewardModal["Reward And Affinity Modal"]
+        SceneGallery["Scene Gallery And Memories"]
+        OptionalLegacy["Optional Legacy Multiplayer"]
+        SharedShell["Shared Shell Screens"]
+    end
+
+    DatingTodo -->|"Implement as first-class flow"| DatingHub
+    SinglePlayer -->|"Extract rules and keep as activity"| MemoryMinigame
+    GameOver -->|"Replace reward-only ending"| RewardModal
+    Gallery -->|"Expand into story collection"| SceneGallery
+    Lobby -->|"Keep outside core dating loop"| OptionalLegacy
+    ProfileSettings -->|"Retain with minor navigation cleanup"| SharedShell
+
+    classDef current fill:#ffebee,stroke:#c62828,color:#3b0707
+    classDef target fill:#e8f5e9,stroke:#2e7d32,color:#0d2d12
+
+    class DatingTodo,SinglePlayer,GameOver,Gallery,Lobby,ProfileSettings current
+    class DatingHub,MemoryMinigame,RewardModal,SceneGallery,OptionalLegacy,SharedShell target
+

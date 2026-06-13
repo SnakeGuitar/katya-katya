@@ -1,0 +1,36 @@
+flowchart TB
+    Current["Current XAML Board"]
+    Current --> Nested["Many nested controls per card"]
+    Current --> Binding["Hot bindings and template updates"]
+    Current --> ImageLoad["Image decode risk near gameplay"]
+    Current --> Layout["Layout and visual tree pressure"]
+
+    Step1["Step 1 - Short Term"]
+    Step1 --> Preload["Preload card faces before start"]
+    Step1 --> Simplify["Simplify card template"]
+    Step1 --> Transform["Use transform-only animations"]
+    Step1 --> PauseFx["Pause unrelated effects during game"]
+
+    Step2["Step 2 - Medium Term"]
+    Step2 --> ExtractRules["Move rules into MemoryGameSession"]
+    Step2 --> ThinVm["Make ViewModel a presentation adapter"]
+    Step2 --> RewardResult["Emit MemoryGameResult"]
+
+    Step3["Step 3 - Long Term"]
+    Step3 --> SkiaBoard["Skia-rendered board"]
+    Step3 --> HitTest["Coordinate hit testing"]
+    Step3 --> BatchDraw["Batch card drawing"]
+    Step3 --> LowLayout["Minimal Avalonia layout cost"]
+
+    Current --> Step1
+    Step1 --> Step2
+    Step2 --> Step3
+
+    classDef risk fill:#ffebee,stroke:#c62828,color:#3b0707
+    classDef step fill:#e3f2fd,stroke:#1565c0,color:#061f3c
+    classDef action fill:#e8f5e9,stroke:#2e7d32,color:#0d2d12
+
+    class Current,Nested,Binding,ImageLoad,Layout risk
+    class Step1,Step2,Step3 step
+    class Preload,Simplify,Transform,PauseFx,ExtractRules,ThinVm,RewardResult,SkiaBoard,HitTest,BatchDraw,LowLayout action
+

@@ -1,0 +1,58 @@
+sequenceDiagram
+    autonumber
+    actor Player
+    participant Hub as DatingHubViewModel
+    participant Dating as DatingEngine
+    participant MemoryVm as MemoryGameViewModel
+    participant Memory as MemoryGameSession
+    participant Rewards as RewardService
+    participant Progress as DatingProgressRepository
+    participant Unlocks as MilestoneUnlockSystem
+    participant Dialogue as DialogueEngine
+    participant Renderer as VisualNovelSceneRenderer
+
+    Player->>Hub: Open Dating Hub
+    Hub->>Dating: GetHubState()
+    Dating->>Progress: Load current progress
+    Progress-->>Dating: Coins, affinity, unlocks
+    Dating-->>Hub: Katya status, actions, available scenes
+
+    Player->>Hub: Choose Play Memory Minigame
+    Hub->>MemoryVm: Navigate with difficulty
+    MemoryVm->>Memory: Start board
+
+    loop Until completed or abandoned
+        Player->>MemoryVm: Flip card
+        MemoryVm->>Memory: FlipCard(index)
+        Memory-->>MemoryVm: Move result
+    end
+
+    MemoryVm->>Memory: Complete()
+    Memory-->>MemoryVm: MemoryGameResult
+    MemoryVm->>Dating: CompleteMemoryGame(result)
+    Dating->>Rewards: Calculate reward
+    Rewards-->>Dating: Coins, drops, streak effects
+    Dating->>Progress: Save updated coins and stats
+    Dating->>Unlocks: Check reward-based unlocks
+    Unlocks-->>Dating: Optional scene unlocks
+    Dating-->>MemoryVm: RewardResult
+
+    MemoryVm-->>Player: Show completion modal
+    Player->>MemoryVm: Continue
+    MemoryVm->>Hub: Return to Dating Hub
+
+    Player->>Hub: Buy gift or date
+    Hub->>Dating: SendGift or GoOnDate
+    Dating->>Progress: Spend coins and update affinity
+    Dating->>Unlocks: Check affinity milestones
+    Unlocks-->>Dating: New scene id if unlocked
+    Dating-->>Hub: InteractionResult
+
+    alt Story scene unlocked
+        Hub->>Dialogue: StartScene(sceneId)
+        Dialogue->>Renderer: Set background, Katya expression, mood effects
+        Renderer-->>Player: Present visual novel scene
+    else No scene unlocked
+        Hub-->>Player: Update coins and affinity meter
+    end
+

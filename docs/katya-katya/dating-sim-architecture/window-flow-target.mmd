@@ -1,0 +1,73 @@
+flowchart TB
+    Splash["Splash Screen"]
+    Title["Title Screen"]
+    Auth["Login / Register / Guest"]
+    Setup["Setup Profile"]
+    Menu["Main Menu"]
+
+    Hub["Dating Hub - Katya"]
+    Detail["Katya Detail"]
+    Dialogue["Visual Novel Scene"]
+    Gift["Gift Flow"]
+    Date["Date Flow"]
+    Shop["Gift Shop / Inventory"]
+    Reward["Reward And Affinity Modal"]
+
+    MemorySetup["Memory Minigame Setup"]
+    MemoryGame["Memory Minigame"]
+
+    Gallery["Scene Gallery"]
+    Diary["Diary / Memory Log"]
+    Stats["Relationship Stats"]
+    Settings["Settings"]
+    Profile["Profile"]
+    Social["Friends / Social"]
+    LegacyLobby["Legacy Multiplayer Optional"]
+
+    Splash --> Title
+    Title --> Auth
+    Auth --> Setup
+    Auth --> Menu
+    Setup --> Menu
+
+    Menu --> Hub
+    Hub --> Detail
+    Detail --> Hub
+
+    Hub --> Dialogue
+    Dialogue --> Hub
+
+    Hub --> Gift
+    Gift --> Dialogue
+    Gift --> Hub
+
+    Hub --> Date
+    Date --> Dialogue
+
+    Hub --> Shop
+    Shop --> Gift
+
+    Hub --> MemorySetup
+    MemorySetup --> MemoryGame
+    MemoryGame --> Reward
+    Reward --> Hub
+
+    Hub --> Gallery
+    Hub --> Diary
+    Hub --> Stats
+
+    Menu --> Settings
+    Menu --> Profile
+    Menu --> Social
+    Menu --> LegacyLobby
+
+    classDef main fill:#e3f2fd,stroke:#1565c0,color:#061f3c
+    classDef dating fill:#e8f5e9,stroke:#2e7d32,color:#0d2d12
+    classDef mini fill:#fff3e0,stroke:#ef6c00,color:#332000
+    classDef secondary fill:#f3e5f5,stroke:#6a1b9a,color:#230732
+
+    class Splash,Title,Auth,Setup,Menu main
+    class Hub,Detail,Dialogue,Gift,Date,Shop,Reward,Gallery,Diary,Stats dating
+    class MemorySetup,MemoryGame mini
+    class Settings,Profile,Social,LegacyLobby secondary
+

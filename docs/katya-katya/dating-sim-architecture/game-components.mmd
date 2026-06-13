@@ -1,0 +1,138 @@
+flowchart TB
+    subgraph Shell["Avalonia Shell And Navigation"]
+        MainWindow["MainWindow"]
+        Navigation["NavigationService"]
+        MainMenu["Main Menu"]
+        DatingHubView["Dating Hub View"]
+        DialogueView["Dialogue Scene View"]
+        MemoryView["Memory Minigame View"]
+        SettingsView["Settings And Profile Views"]
+    end
+
+    subgraph UIState["MVVM Presentation State"]
+        MainVm["MainWindowViewModel"]
+        DatingHubVm["DatingHubViewModel"]
+        CharacterVm["CharacterDetailViewModel"]
+        DialogueVm["DialogueSceneViewModel"]
+        MemoryVm["MemoryGameViewModel"]
+        CompletionVm["GameCompletionViewModel"]
+    end
+
+    subgraph DatingCore["Dating Simulator Core"]
+        DatingEngine["DatingEngine"]
+        AffinitySystem["AffinitySystem"]
+        MoodSystem["MoodSystem"]
+        GiftSystem["GiftSystem"]
+        DateSystem["DateSystem"]
+        MilestoneSystem["MilestoneUnlockSystem"]
+        Economy["CoinWallet And RewardService"]
+        Progress["DatingProgressRepository"]
+    end
+
+    subgraph NarrativeCore["Visual Novel And Narrative Core"]
+        DialogueEngine["DialogueEngine"]
+        SceneDirector["SceneDirector"]
+        ChoiceResolver["ChoiceResolver"]
+        StoryFlags["StoryFlagStore"]
+        DialogueContent["Dialogue Content JSON"]
+        SceneCatalog["Scene Catalog"]
+    end
+
+    subgraph Minigames["Auxiliary Minigames"]
+        MemorySession["MemoryGameSession"]
+        MemoryRules["Memory Rules"]
+        MemoryRewards["MemoryRewardCalculator"]
+        DailyChallenge["DailyChallengeService"]
+    end
+
+    subgraph Rendering["Skia Visual Novel Renderer"]
+        SkiaScene["SkiaSceneControl"]
+        RenderLoop["GameLoop"]
+        SceneRenderer["VisualNovelSceneRenderer"]
+        CharacterRenderer["CharacterRenderer"]
+        BackgroundRenderer["BackgroundRenderer"]
+        EffectsRenderer["Emotion And Particle Effects"]
+        AssetStore["VisualAssetStore"]
+    end
+
+    subgraph Content["Game Content And Assets"]
+        KatyaSprites["Katya Sprites And Expressions"]
+        Backgrounds["Dating Scene Backgrounds"]
+        Music["Music And SFX"]
+        Gifts["Gift Definitions"]
+        Dates["Date Definitions"]
+        Localization["Localized Text"]
+    end
+
+    MainWindow --> Navigation
+    Navigation --> MainMenu
+    Navigation --> DatingHubView
+    Navigation --> DialogueView
+    Navigation --> MemoryView
+    Navigation --> SettingsView
+
+    MainWindow --> MainVm
+    DatingHubView --> DatingHubVm
+    DialogueView --> DialogueVm
+    MemoryView --> MemoryVm
+    MemoryView --> CompletionVm
+    DatingHubView --> CharacterVm
+
+    DatingHubVm --> DatingEngine
+    CharacterVm --> DatingEngine
+    DialogueVm --> DialogueEngine
+    DialogueVm --> DatingEngine
+    MemoryVm --> MemorySession
+    CompletionVm --> DatingEngine
+
+    DatingEngine --> AffinitySystem
+    DatingEngine --> MoodSystem
+    DatingEngine --> GiftSystem
+    DatingEngine --> DateSystem
+    DatingEngine --> MilestoneSystem
+    DatingEngine --> Economy
+    DatingEngine --> Progress
+
+    DialogueEngine --> SceneDirector
+    DialogueEngine --> ChoiceResolver
+    DialogueEngine --> StoryFlags
+    DialogueEngine --> DialogueContent
+    SceneDirector --> SceneCatalog
+
+    MemorySession --> MemoryRules
+    MemorySession --> MemoryRewards
+    MemoryRewards --> Economy
+    DailyChallenge --> MemorySession
+
+    DialogueView --> SkiaScene
+    DatingHubView --> SkiaScene
+    SkiaScene --> SceneRenderer
+    RenderLoop --> SkiaScene
+    SceneRenderer --> CharacterRenderer
+    SceneRenderer --> BackgroundRenderer
+    SceneRenderer --> EffectsRenderer
+    SceneRenderer --> AssetStore
+
+    AssetStore --> KatyaSprites
+    AssetStore --> Backgrounds
+    DatingEngine --> Gifts
+    DatingEngine --> Dates
+    DialogueEngine --> Localization
+    SceneRenderer --> Music
+
+    classDef shell fill:#fce4ec,stroke:#ad1457,color:#310515
+    classDef vm fill:#ede7f6,stroke:#5e35b1,color:#1c103c
+    classDef dating fill:#e8f5e9,stroke:#2e7d32,color:#0d2d12
+    classDef narrative fill:#fff3e0,stroke:#ef6c00,color:#332000
+    classDef mini fill:#e0f2f1,stroke:#00796b,color:#00312b
+    classDef render fill:#e3f2fd,stroke:#1565c0,color:#061f3c
+    classDef content fill:#fffde7,stroke:#f9a825,color:#332b00
+
+    class MainWindow,Navigation,MainMenu,DatingHubView,DialogueView,MemoryView,SettingsView shell
+    class MainVm,DatingHubVm,CharacterVm,DialogueVm,MemoryVm,CompletionVm vm
+    class DatingEngine,AffinitySystem,MoodSystem,GiftSystem,DateSystem,MilestoneSystem,Economy,Progress dating
+    class DialogueEngine,SceneDirector,ChoiceResolver,StoryFlags,DialogueContent,SceneCatalog narrative
+    class MemorySession,MemoryRules,MemoryRewards,DailyChallenge mini
+    class SkiaScene,RenderLoop,SceneRenderer,CharacterRenderer,BackgroundRenderer,EffectsRenderer,AssetStore render
+    class KatyaSprites,Backgrounds,Music,Gifts,Dates,Localization content
+

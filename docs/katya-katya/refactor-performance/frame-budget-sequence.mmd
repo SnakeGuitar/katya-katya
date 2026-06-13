@@ -1,0 +1,26 @@
+sequenceDiagram
+    autonumber
+    participant Ticker as GameLoop
+    participant Update as Active Systems
+    participant Scene as Scene Snapshot
+    participant UI as Avalonia Render
+    participant Skia as Skia Draw Operation
+    participant Metrics as Performance Overlay
+
+    Ticker->>Ticker: Wait for target frame interval
+    Ticker->>Ticker: Calculate delta time
+    Ticker->>Update: Update simulation systems
+    Update-->>Ticker: Updated particles, transitions, parallax
+    Ticker->>Scene: Capture immutable snapshot
+    Scene-->>Ticker: Snapshot ready
+    Ticker->>UI: Invalidate visual
+    UI->>Skia: Execute custom draw operation
+    Skia-->>UI: Frame rendered
+    Ticker->>Metrics: Record update ms, render ms, FPS
+
+    alt Frame over budget
+        Metrics->>Ticker: Mark slow frame
+        Ticker->>Ticker: Reduce optional effects if needed
+    else Frame healthy
+        Metrics->>Ticker: Keep target preset
+    end
