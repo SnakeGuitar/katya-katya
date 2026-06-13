@@ -16,7 +16,9 @@
                                   ZIndex="250"
                                   IsHitTestVisible="False"/>
 
-        <Grid Margin="16"
+        <!-- Top margin clears the 48px window drag strip (MainWindow DragArea, ZIndex 50),
+             which otherwise sits over the HUD and swallows clicks on the Leave button. -->
+        <Grid Margin="16,44,16,16"
               RowDefinitions="Auto,*"
               ColumnDefinitions="220,12,*,12,260"
               Classes="BoardEntrance">
@@ -155,14 +157,10 @@
                                           Classes.matched="{Binding IsMatched}">
                                         <Border Classes="CardBack"
                                                 CornerRadius="12"
-                                                Background="{DynamicResource PrimaryGradient}"
+                                                ClipToBounds="True"
                                                 IsVisible="{Binding !IsFlipped}">
-                                            <Image Source="avares://KatyaKatya/Resources/Images/Icons/love-points.png"
-                                                   Width="44"
-                                                   Height="44"
-                                                   Stretch="Uniform"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"/>
+                                            <Image Source="avares://KatyaKatya/Resources/Images/Cards/card-reverse.png"
+                                                   Stretch="UniformToFill"/>
                                         </Border>
 
                                         <Border Classes="CardFront"

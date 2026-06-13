@@ -15,7 +15,9 @@
                                   ZIndex="250"
                                   IsHitTestVisible="False"/>
 
-        <Grid>
+        <!-- Top margin clears the 48px window drag strip (MainWindow DragArea, ZIndex 50),
+             which otherwise sits over this area and swallows clicks on the Quit button. -->
+        <Grid Margin="0,44,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="56"/>
                 <RowDefinition Height="*"/>
@@ -38,12 +40,11 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Quit — left-indented so the window traffic-light buttons (top-left) don't overlap it -->
+                    <!-- Quit -->
                     <Button Grid.Column="0"
                             Classes="LinkButton"
                             Command="{Binding LeaveGameCommand}"
                             Content="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=[Global_Button_Leave]}"
-                            Margin="68,0,0,0"
                             VerticalAlignment="Center"/>
 
                     <!-- Score / Attempts / Elapsed -->
@@ -143,15 +144,11 @@
                                               Classes.matched="{Binding IsMatched}">
                                             <!-- Card back -->
                                             <Border Classes="CardBack"
-                                                    Background="{DynamicResource PrimaryGradient}"
                                                     CornerRadius="12"
+                                                    ClipToBounds="True"
                                                     IsVisible="{Binding !IsFlipped}">
-                                                <Image Source="avares://KatyaKatya/Resources/Images/Icons/love-points.png"
-                                                       Width="44"
-                                                       Height="44"
-                                                       Stretch="Uniform"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center"/>
+                                                <Image Source="avares://KatyaKatya/Resources/Images/Cards/card-reverse.png"
+                                                       Stretch="UniformToFill"/>
                                             </Border>
                                             <!-- Card front -->
                                             <Border Classes="CardFront"
