@@ -7,10 +7,8 @@
              x:DataType="vm:TitleScreenViewModel">
 
     <Grid>
-        <!-- Background -->
-        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
-               Stretch="UniformToFill"
-               IsHitTestVisible="False"/>
+        <!-- No background image here: the MainWindow paints the global background + the
+             animated cloud layer behind the (transparent) view, so they show through. -->
 
         <!-- Falling cherry-blossom petals -->
         <controls:ParticleCanvas Name="PetalCanvas" IsHitTestVisible="False"/>

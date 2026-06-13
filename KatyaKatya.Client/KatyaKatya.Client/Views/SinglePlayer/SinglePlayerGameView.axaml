@@ -146,9 +146,10 @@
                                             <Border Classes="CardBack"
                                                     CornerRadius="12"
                                                     ClipToBounds="True"
+                                                    Background="{DynamicResource PrimaryGradient}"
                                                     IsVisible="{Binding !IsFlipped}">
                                                 <Image Source="avares://KatyaKatya/Resources/Images/Cards/card-reverse.png"
-                                                       Stretch="UniformToFill"/>
+                                                       Stretch="Uniform"/>
                                             </Border>
                                             <!-- Card front -->
                                             <Border Classes="CardFront"
