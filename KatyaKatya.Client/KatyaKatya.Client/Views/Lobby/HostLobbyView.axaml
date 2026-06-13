@@ -6,8 +6,7 @@
              x:DataType="vm:HostLobbyViewModel">
 
     <Grid>
-        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
-               Stretch="UniformToFill" IsHitTestVisible="False"/>
+        <!-- No background image: MainWindow's global background + animated clouds show through. -->
 
         <Grid Margin="24" ColumnDefinitions="*,20,300">
             <Border Grid.Column="0" Classes="LiquidGlassCard" Padding="28,24">

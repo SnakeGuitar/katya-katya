@@ -11,6 +11,10 @@
                Stretch="UniformToFill"
                IsHitTestVisible="False"/>
 
+        <!-- Animated clouds/mist over the menu's own background (MainMenu uses a different
+             background than the global one, so the layer is injected here directly). -->
+        <controls:AnimatedBackground IsHitTestVisible="False"/>
+
         <!-- Falling cherry-blossom petals (behind the character) -->
         <controls:ParticleCanvas Name="PetalCanvas" IsHitTestVisible="False"/>
 

@@ -6,9 +6,7 @@
              x:DataType="vm:VerifyEmailViewModel">
 
     <Grid>
-        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
-               Stretch="UniformToFill"
-               IsHitTestVisible="False"/>
+        <!-- No background image: MainWindow's global background + animated clouds show through. -->
 
         <Grid>
             <Grid.ColumnDefinitions>

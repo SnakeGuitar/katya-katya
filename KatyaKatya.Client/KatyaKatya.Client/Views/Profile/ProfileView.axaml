@@ -11,9 +11,7 @@
     </UserControl.Resources>
 
     <Grid>
-        <Image Source="{Binding Source={x:Static loc:LocalizationManager.Instance}, Path=GlobalBackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
-               Stretch="UniformToFill"
-               IsHitTestVisible="False"/>
+        <!-- No background image: MainWindow's global background + animated clouds show through. -->
 
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center"
               MaxWidth="900" Width="661">

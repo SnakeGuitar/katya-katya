@@ -5,9 +5,7 @@
              x:DataType="vm:SettingsViewModel">
 
     <Grid>
-        <Image Source="{Binding BackgroundPath, Converter={StaticResource StringAssetToBitmapConverter}}"
-               Stretch="UniformToFill"
-               IsHitTestVisible="False"/>
+        <!-- No background image: MainWindow's global background + animated clouds show through. -->
 
         <Grid>
             <Grid.ColumnDefinitions>
