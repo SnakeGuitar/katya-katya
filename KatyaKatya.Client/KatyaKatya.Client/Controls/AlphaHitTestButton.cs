@@ -49,7 +49,7 @@ public class AlphaHitTestButton : Button, ICustomHitTest
         if (ix < 0 || iy < 0 || ix >= sourceWidth || iy >= sourceHeight)
             return false;
 
-        return mask.GetPixel(ix, iy).Alpha >= 24;
+        return mask.GetPixel(ix, iy).Alpha >= 4;
     }
 
     private SKBitmap? GetMask()
