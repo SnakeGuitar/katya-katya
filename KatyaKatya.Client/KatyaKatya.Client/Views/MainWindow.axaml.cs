@@ -72,14 +72,14 @@ public partial class MainWindow : Window
         _isAnimatingNavigation = true;
         try
         {
-            await AnimateOpacityAsync(ViewHost, ViewHost.Opacity, 0, 180);
+            await AnimateOpacityAsync(FadeOverlay, 0, 1, 180);
             _viewModel.CommitAnimatedNavigation(nextViewModel);
-            await AnimateOpacityAsync(ViewHost, 0, 1, 240);
+            await AnimateOpacityAsync(FadeOverlay, 1, 0, 240);
         }
         finally
         {
             _isAnimatingNavigation = false;
-            ViewHost.Opacity = 1;
+            FadeOverlay.Opacity = 0;
         }
     }
 

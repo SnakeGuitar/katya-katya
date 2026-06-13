@@ -145,5 +145,10 @@
             </Grid>
         </Grid>
     </Border>
+
+    <!-- Outside MainWindowBorder: not clipped by CornerRadius, so opacity animation
+         never composites against the rounded-corner clip boundary. -->
+    <Rectangle Name="FadeOverlay" Fill="White" Opacity="0" IsHitTestVisible="False"/>
+
     </Grid>
 </Window>
