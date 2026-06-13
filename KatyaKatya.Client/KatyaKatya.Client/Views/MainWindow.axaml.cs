@@ -4,7 +4,10 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+using Avalonia.VisualTree;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
+using KatyaKatya.Services.Interfaces;
 using KatyaKatya.ViewModels;
 
 namespace KatyaKatya.Views;
@@ -14,10 +17,21 @@ public partial class MainWindow : Window
     private MainWindowViewModel? _viewModel;
     private bool _isAnimatingNavigation;
 
+    private readonly ISoundService? _sound;
+    private Button? _lastHoveredButton;
+
     public MainWindow()
     {
         InitializeComponent();
         DataContextChanged += OnDataContextChanged;
+
+        _sound = App.Services?.GetService<ISoundService>();
+
+        // Global UI sound effects: hover tick + click pop on every button.
+        // PointerMoved bubbles to the window, so we detect the button under the
+        // cursor and fire the tick once when it changes. Button.Click also bubbles.
+        AddHandler(PointerMovedEvent, OnGlobalPointerMoved, RoutingStrategies.Bubble, handledEventsToo: true);
+        AddHandler(Button.ClickEvent, OnGlobalButtonClick, RoutingStrategies.Bubble, handledEventsToo: true);
 
         DragArea.PointerPressed += (_, e) =>
         {
@@ -34,6 +48,22 @@ public partial class MainWindow : Window
         ResizeSW.PointerPressed += (_, e) => BeginResizeDrag(WindowEdge.SouthWest, e);
         ResizeSE.PointerPressed += (_, e) => BeginResizeDrag(WindowEdge.SouthEast, e);
     }
+
+    private void OnGlobalPointerMoved(object? sender, PointerEventArgs e)
+    {
+        var button = (e.Source as Visual)?.FindAncestorOfType<Button>(includeSelf: true);
+
+        if (ReferenceEquals(button, _lastHoveredButton))
+            return;
+
+        _lastHoveredButton = button;
+
+        if (button is not null && button.IsEffectivelyEnabled)
+            _sound?.PlayHover();
+    }
+
+    private void OnGlobalButtonClick(object? sender, RoutedEventArgs e)
+        => _sound?.PlayClick();
 
     private void OnCloseClicked(object? sender, RoutedEventArgs e)
         => Close();

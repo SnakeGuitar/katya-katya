@@ -57,6 +57,7 @@ public partial class App : Application
             LocalizationManager.Instance.SetCulture(settings.LanguageCode);
             theme.ApplyTheme(settings.ThemeName);
             _serviceProvider.GetRequiredService<IMusicService>();
+            _serviceProvider.GetRequiredService<ISoundService>();
             navigation.NavigateTo<SplashScreenViewModel>();
 
             desktop.ShutdownRequested += OnShutdown;
@@ -74,6 +75,7 @@ public partial class App : Application
             LocalizationManager.Instance.SetCulture(settings.LanguageCode);
             theme.ApplyTheme(settings.ThemeName);
             _serviceProvider.GetRequiredService<IMusicService>();
+            _serviceProvider.GetRequiredService<ISoundService>();
             navigation.NavigateTo<SplashScreenViewModel>();
         }
 
@@ -84,6 +86,7 @@ public partial class App : Application
     {
         // Services (singleton)
         services.AddSingleton<IMusicService, MusicService>();
+        services.AddSingleton<ISoundService, SoundService>();
         services.AddSingleton<ClientSettings>();
         services.AddSingleton<ISessionService, SessionService>();
         services.AddSingleton<IDialogService, DialogService>();

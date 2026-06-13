@@ -34,12 +34,22 @@
         <GradientStop Color="#40C84747" Offset="1.0"/>
     </LinearGradientBrush>
 
-    <!-- Liquid Glass card background — bright specular sheen at the top fading to a
-         faint translucent base so the animated clouds glow through the material. -->
-    <LinearGradientBrush x:Key="CardBackground" StartPoint="0%,0%" EndPoint="0%,100%">
-        <GradientStop Color="#7AFFFFFF" Offset="0"/>
-        <GradientStop Color="#47FFF6F6" Offset="0.5"/>
-        <GradientStop Color="#22EFD6D6" Offset="1"/>
+    <!-- Liquid Glass card background — a crisp specular sheen at the top rolls into a
+         faint translucent base so the animated clouds glow through the material. The
+         slightly diagonal sweep gives the surface a more "wet glass" light direction. -->
+    <LinearGradientBrush x:Key="CardBackground" StartPoint="0%,0%" EndPoint="14%,100%">
+        <GradientStop Color="#A0FFFFFF" Offset="0"/>
+        <GradientStop Color="#6CFFFBFB" Offset="0.18"/>
+        <GradientStop Color="#42FFF2F2" Offset="0.55"/>
+        <GradientStop Color="#1CEFD6D6" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Diagonal specular streak overlaid on glass surfaces for a liquid highlight. -->
+    <LinearGradientBrush x:Key="GlassSheen" StartPoint="0%,0%" EndPoint="100%,100%">
+        <GradientStop Color="#00FFFFFF" Offset="0.0"/>
+        <GradientStop Color="#58FFFFFF" Offset="0.15"/>
+        <GradientStop Color="#12FFFFFF" Offset="0.33"/>
+        <GradientStop Color="#00FFFFFF" Offset="0.62"/>
     </LinearGradientBrush>
 
     <!-- Primary gradient — warm rose -->
@@ -51,8 +61,9 @@
     <!-- Primary button gradient — glossy liquid-glass tint: luminous top, deep base.
          Slightly translucent so the background glows faintly through the glass. -->
     <LinearGradientBrush x:Key="PastelButtonBg" StartPoint="50%,0%" EndPoint="50%,100%">
-        <GradientStop Color="#ECF07A7A" Offset="0"/>
-        <GradientStop Color="#E6CB3B3B" Offset="0.45"/>
+        <GradientStop Color="#F5FF9D9D" Offset="0"/>
+        <GradientStop Color="#EEE96868" Offset="0.14"/>
+        <GradientStop Color="#E6CB3B3B" Offset="0.5"/>
         <GradientStop Color="#E69E2020" Offset="1"/>
     </LinearGradientBrush>
 
@@ -73,9 +84,9 @@
          Shadows — Liquid Glass: soft outer depth + inset specular rim + inner glow
          (inset goes first in Avalonia's BoxShadow syntax)
          ========================================================= -->
-    <BoxShadows x:Key="CardBoxShadow">0 10 30 -6 #33000000, 0 0 22 1 #2CE06A6A, inset 0 1 1 0 #C0FFFFFF, inset 0 -16 22 -10 #18FFFFFF</BoxShadows>
-    <BoxShadows x:Key="ButtonShadow">0 6 16 -2 #4DC83737, inset 0 1 1 0 #80FFFFFF, inset 0 -8 12 -6 #2E000000</BoxShadows>
-    <BoxShadows x:Key="ButtonShadowHover">0 9 26 -2 #80E84545, inset 0 1 2 0 #99FFFFFF, inset 0 -8 12 -6 #2E000000</BoxShadows>
+    <BoxShadows x:Key="CardBoxShadow">0 16 40 -8 #40000000, 0 0 32 2 #42E86A6A, inset 0 1.5 1 0 #DCFFFFFF, inset 0 0 0 1 #4CFFFFFF, inset 0 -20 28 -12 #22FFFFFF</BoxShadows>
+    <BoxShadows x:Key="ButtonShadow">0 8 18 -3 #59C83737, inset 0 1.5 1 0 #9EFFFFFF, inset 0 0 0 1 #38FFFFFF, inset 0 -9 13 -7 #33000000</BoxShadows>
+    <BoxShadows x:Key="ButtonShadowHover">0 13 34 -3 #94E84545, inset 0 2 2 0 #BAFFFFFF, inset 0 0 0 1 #4FFFFFFF, inset 0 -9 13 -7 #33000000</BoxShadows>
     <BoxShadows x:Key="SecondaryButtonShadow">0 4 14 -2 #25C84747, inset 0 1 1 0 #99FFFFFF</BoxShadows>
 
 </ResourceDictionary>

@@ -36,9 +36,12 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <!-- Copy music files to output directory so LibVLC can access them by path -->
+  <!-- Copy music + sound-effect files to output directory so LibVLC can access them by path -->
   <ItemGroup>
     <Content Include="Resources\Music\**\*.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Sounds\**\*.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
