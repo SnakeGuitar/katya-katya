@@ -69,20 +69,22 @@ Esto levanta dos servicios:
 - **db** — PostgreSQL 17 en el puerto `5432`
 - **api** — API REST + SignalR en el puerto `5000`
 
-### 4. Configurar el cliente WPF
+### 4. Configurar el cliente
 
-El cliente se conecta al servidor local. Abre `MemoryGame.Client/appsettings.json` (o similar) y verifica que la URL base apunte a `http://localhost:5059` si corres el servidor localmente, o `http://localhost:5000` si usas Docker.
+El cliente se conecta al servidor local. La URL base está fija en `KatyaKatya.Client/KatyaKatya.Client/App.axaml.cs` (`ApiBaseUrl` / `HubUrl`). Ponla en `http://127.0.0.1:5000/` si usas Docker, o `http://127.0.0.1:5059/` si corres el servidor localmente.
 
 ### 5. Correr el cliente
 
 Abre una terminal en la carpeta del cliente:
 
 ```bash
-cd MemoryGame.Client
+cd KatyaKatya.Client/KatyaKatya.Client
 dotnet run
 ```
 
-O simplemente ábrelo en Visual Studio y presiona F5.
+O abre `KatyaKatya.Client/KatyaKatya.slnx` y presiona F5.
+
+> El antiguo cliente WPF quedó en `legacy/MemoryGame.Client/`, congelado — no se compila ni se ejecuta.
 
 ---
 
@@ -158,11 +160,13 @@ MemoryGame-Revival/
 │       ├── MemoryGame.Application/  # Comandos, Queries, DTOs (MediatR)
 │       ├── MemoryGame.Domain/       # Entidades y lógica de dominio
 │       └── MemoryGame.Infrastructure/ # EF Core, repositorios, servicios externos
-├── MemoryGame.Client/               # Cliente WPF (Windows)
-│   ├── Views/                       # XAML
-│   ├── ViewModels/                  # MVVM + CommunityToolkit
-│   ├── Services/                    # API client, navegación, música, etc.
-│   └── Resources/                   # Imágenes, fuentes, música
+├── KatyaKatya.Client/               # Cliente Avalonia activo (.NET 9, multiplataforma)
+│   └── KatyaKatya.Client/
+│       ├── Views/                   # AXAML
+│       ├── ViewModels/              # MVVM + CommunityToolkit
+│       ├── Services/                # API client, navegación, música, etc.
+│       └── Resources/               # Imágenes, fuentes, música
+├── legacy/MemoryGame.Client/        # Cliente WPF archivado (solo referencia, no se compila)
 ├── docker-compose.yml
 ├── .env.example
 └── README.md

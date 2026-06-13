@@ -69,20 +69,22 @@ This starts two services:
 - **db** — PostgreSQL 17 on port `5432`
 - **api** — REST API + SignalR on port `5000`
 
-### 4. Configure the WPF client
+### 4. Configure the client
 
-The client connects to the local server. Open `MemoryGame.Client/appsettings.json` (or similar) and verify the base URL points to `http://localhost:5059` if running the server locally, or `http://localhost:5000` if using Docker.
+The client connects to the local server. The base URL is hard-coded in `KatyaKatya.Client/KatyaKatya.Client/App.axaml.cs` (`ApiBaseUrl` / `HubUrl`). Set it to `http://127.0.0.1:5000/` when using Docker, or `http://127.0.0.1:5059/` when running the server locally.
 
 ### 5. Run the client
 
 Open a terminal in the client folder:
 
 ```bash
-cd MemoryGame.Client
+cd KatyaKatya.Client/KatyaKatya.Client
 dotnet run
 ```
 
-Or simply open it in Visual Studio and press F5.
+Or open `KatyaKatya.Client/KatyaKatya.slnx` and press F5.
+
+> The old WPF client lives under `legacy/MemoryGame.Client/` and is frozen — not built or run.
 
 ---
 
@@ -158,11 +160,13 @@ MemoryGame-Revival/
 │       ├── MemoryGame.Application/  # Commands, Queries, DTOs (MediatR)
 │       ├── MemoryGame.Domain/       # Entities and domain logic
 │       └── MemoryGame.Infrastructure/ # EF Core, repositories, external services
-├── MemoryGame.Client/               # WPF Client (Windows)
-│   ├── Views/                       # XAML
-│   ├── ViewModels/                  # MVVM + CommunityToolkit
-│   ├── Services/                    # API client, navigation, music, etc.
-│   └── Resources/                   # Images, fonts, music
+├── KatyaKatya.Client/               # Active Avalonia client (.NET 9, cross-platform)
+│   └── KatyaKatya.Client/
+│       ├── Views/                   # AXAML
+│       ├── ViewModels/              # MVVM + CommunityToolkit
+│       ├── Services/                # API client, navigation, music, etc.
+│       └── Resources/               # Images, fonts, music
+├── legacy/MemoryGame.Client/        # Archived WPF client (reference only, not built)
 ├── docker-compose.yml
 ├── .env.example
 └── docs/

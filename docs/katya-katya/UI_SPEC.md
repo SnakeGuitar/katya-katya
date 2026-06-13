@@ -3,9 +3,9 @@
 ## Views
 
 ### Dating Hub
-**Path**: `MemoryGame.Client/Views/Dating/DatingHubView.xaml`
+**Path**: `KatyaKatya.Client/KatyaKatya.Client/Views/Dating/DatingHubView.axaml`
 **Navigation**: From MainMenu → "Dating" button
-**ViewModel**: `MemoryGame.Client/ViewModels/Dating/DatingHubViewModel.cs`
+**ViewModel**: `KatyaKatya.Client/KatyaKatya.Client/ViewModels/Dating/DatingHubViewModel.cs`
 
 **Content**:
 - Header: "Katya's Heart" or similar
@@ -24,9 +24,9 @@
 - Refresh on navigation from SinglePlayerGameViewModel
 
 ### Character Detail
-**Path**: `MemoryGame.Client/Views/Dating/CharacterDetailView.xaml`
+**Path**: `KatyaKatya.Client/KatyaKatya.Client/Views/Dating/CharacterDetailView.axaml`
 **Navigation**: From DatingHub → character card
-**ViewModel**: `MemoryGame.Client/ViewModels/Dating/CharacterDetailViewModel.cs`
+**ViewModel**: `KatyaKatya.Client/KatyaKatya.Client/ViewModels/Dating/CharacterDetailViewModel.cs`
 
 **Content**:
 - Back button
@@ -101,11 +101,12 @@ MainMenu
 - **Rounded**: 8px–12px for cards/buttons
 
 ## Localization
-All UI strings must be added to `MemoryGame.Client/Localization/` resource dictionaries:
-- `Strings.es-MX.xaml` (Spanish - Mexico)
-- `Strings.ja-JP.xaml` (Japanese)
-- `Strings.zh-CN.xaml` (Chinese Simplified)
-- `Strings.ko-KR.xaml` (Korean)
+All UI strings must be added to the `.resx` resources under `KatyaKatya.Client/KatyaKatya.Client/Localization/` (read at runtime through `LocalizationManager`, base name `KatyaKatya.Localization.Lang`):
+- `Lang.resx` (neutral / en-US fallback)
+- `Lang.es-MX.resx` (Spanish - Mexico)
+- `Lang.ja-JP.resx` (Japanese)
+- `Lang.zh-CN.resx` (Chinese Simplified)
+- `Lang.ko-KR.resx` (Korean)
 
 Key strings:
 - `DATING_HUB_TITLE` = "Katya's Heart" (or locale equivalent)
