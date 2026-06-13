@@ -118,7 +118,8 @@
                 </Style>
             </controls:AlphaHitTestButton.Styles>
             <Image Source="{Binding CurrentMoodImage, Converter={StaticResource StringAssetToBitmapConverter}}"
-                   Stretch="Uniform"/>
+                   Stretch="Uniform"
+                   IsHitTestVisible="False"/>
         </controls:AlphaHitTestButton>
     </Grid>
 </UserControl>
