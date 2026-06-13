@@ -3,7 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
-using Avalonia.Threading;
+using Avalonia.VisualTree;
+using Microsoft.Extensions.DependencyInjection;
+using KatyaKatya.Rendering.Core;
 using SkiaSharp;
 
 namespace KatyaKatya.Controls;
@@ -13,14 +15,15 @@ namespace KatyaKatya.Controls;
 /// "juice" engine for match feedback (vector hearts/stars/sparkles with
 /// gradient shaders, motion-blur trails, radial shockwaves and floating
 /// score texts). Port of the WPF GameAnimationService.
+/// Driven by the shared <see cref="IGameLoop"/> rather than its own timer.
 /// </summary>
-public sealed class ParticleCanvas : Control, IDisposable
+public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetrics, IDisposable
 {
     private enum ShapeKind { Heart, Star, Sparkle }
 
     private const int MaxBurstParticles = 50;
 
-    private readonly DispatcherTimer _timer;
+    private IGameLoop? _loop;
     private readonly Random _rng = new();
 
     private readonly List<PetalParticle> _petals = [];
@@ -40,7 +43,6 @@ public sealed class ParticleCanvas : Control, IDisposable
     private readonly SKPaint _paint;
 
     private WriteableBitmap? _bitmap;
-    private DateTime _lastFrame = DateTime.UtcNow;
     private bool _runningBackground;
 
     // Automatic combo tracking (matches chained within the window escalate the effect)
@@ -50,8 +52,6 @@ public sealed class ParticleCanvas : Control, IDisposable
     public ParticleCanvas()
     {
         IsHitTestVisible = false;
-        _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
-        _timer.Tick += OnTick;
 
         _heartPath = CreateHeartPath(16f);
         _starPath = CreateStarPath(16f, 6.5f);
@@ -68,19 +68,39 @@ public sealed class ParticleCanvas : Control, IDisposable
         _paint = new SKPaint { IsAntialias = true };
     }
 
+    // ── Loop integration ──────────────────────────────────────────────────
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        _loop ??= App.Services?.GetService<IGameLoop>();
+        _loop?.Register(this);
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        _loop?.Unregister(this);
+    }
+
+    /// <summary>True while ambient petals run or any burst effect is still alive.</summary>
+    public bool IsAnimating => _runningBackground || HasActiveEffects();
+
+    string? IFrameDebugMetrics.DebugMetrics =>
+        $"particles petals:{_petals.Count} bursts:{_bursts.Count} sw:{_shockwaves.Count}";
+
     // ── Public API ────────────────────────────────────────────────────────
 
     public void Start()
     {
         _runningBackground = true;
-        EnsureTimer();
+        _loop?.Wake();
     }
 
     public void Stop()
     {
         _runningBackground = false;
-        if (!HasActiveEffects())
-            _timer.Stop();
+        // The loop parks itself once no system is animating.
     }
 
     /// <summary>
@@ -162,7 +182,7 @@ public sealed class ParticleCanvas : Control, IDisposable
             Color = color,
         });
 
-        EnsureTimer();
+        _loop?.Wake();
     }
 
     public void PlayGameOver()
@@ -212,7 +232,7 @@ public sealed class ParticleCanvas : Control, IDisposable
             }
         }
 
-        EnsureTimer();
+        _loop?.Wake();
     }
 
     public override void Render(DrawingContext context)
@@ -234,8 +254,7 @@ public sealed class ParticleCanvas : Control, IDisposable
 
     public void Dispose()
     {
-        _timer.Stop();
-        _timer.Tick -= OnTick;
+        _loop?.Unregister(this);
         _bitmap?.Dispose();
         _heartPath.Dispose();
         _starPath.Dispose();
@@ -250,11 +269,9 @@ public sealed class ParticleCanvas : Control, IDisposable
 
     // ── Simulation ────────────────────────────────────────────────────────
 
-    private void OnTick(object? sender, EventArgs e)
+    public void Tick(in FrameTime time)
     {
-        var now = DateTime.UtcNow;
-        var dt = (float)Math.Clamp((now - _lastFrame).TotalSeconds, 0.001, 0.05);
-        _lastFrame = now;
+        var dt = (float)Math.Clamp(time.DeltaSeconds, 0.001, 0.05);
 
         if (_runningBackground && _petals.Count < 18 && _rng.NextDouble() < 0.025 && Bounds.Width > 0)
         {
@@ -327,20 +344,10 @@ public sealed class ParticleCanvas : Control, IDisposable
         }
 
         InvalidateVisual();
-
-        if (!_runningBackground && !HasActiveEffects())
-            _timer.Stop();
     }
 
     private bool HasActiveEffects() =>
         _petals.Count > 0 || _bursts.Count > 0 || _shockwaves.Count > 0 || _floatingTexts.Count > 0;
-
-    private void EnsureTimer()
-    {
-        _lastFrame = DateTime.UtcNow;
-        if (!_timer.IsEnabled)
-            _timer.Start();
-    }
 
     // ── Rendering ─────────────────────────────────────────────────────────
 

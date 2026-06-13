@@ -20,6 +20,7 @@ using KatyaKatya.ViewModels.SinglePlayer;
 using KatyaKatya.Views;
 using KatyaKatya.Helpers;
 using KatyaKatya.Localization;
+using KatyaKatya.Rendering.Core;
 
 namespace KatyaKatya;
 
@@ -85,6 +86,7 @@ public partial class App : Application
     private static void ConfigureServices(IServiceCollection services)
     {
         // Services (singleton)
+        services.AddSingleton<IGameLoop, GameLoop>();
         services.AddSingleton<IMusicService, MusicService>();
         services.AddSingleton<ISoundService, SoundService>();
         services.AddSingleton<ClientSettings>();

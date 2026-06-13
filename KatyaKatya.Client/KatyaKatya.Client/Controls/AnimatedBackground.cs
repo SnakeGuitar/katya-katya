@@ -3,7 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
 using Avalonia.Media;
-using Avalonia.Threading;
+using Microsoft.Extensions.DependencyInjection;
+using KatyaKatya.Rendering.Core;
 
 namespace KatyaKatya.Controls;
 
@@ -11,9 +12,9 @@ namespace KatyaKatya.Controls;
 /// GPU-composited dynamic background: ambient mist layers, volumetric puffy
 /// clouds drifting in opposite directions, floating bokeh bubbles, a soft
 /// spotlight and a vignette — all with mouse parallax. Port of the WPF
-/// GameBackgroundService.
+/// GameBackgroundService. Driven by the shared <see cref="IGameLoop"/>.
 /// </summary>
-public sealed class AnimatedBackground : Canvas
+public sealed class AnimatedBackground : Canvas, IFrameUpdatable, IFrameDebugMetrics
 {
     private static readonly Random Rng = new();
 
@@ -49,7 +50,7 @@ public sealed class AnimatedBackground : Canvas
         public float SpeedFactor;
     }
 
-    private readonly DispatcherTimer _timer;
+    private IGameLoop? _loop;
     private readonly List<MistState> _mist = [];
     private readonly List<Control> _mistElements = [];
     private readonly List<CloudState> _clouds = [];
@@ -60,7 +61,6 @@ public sealed class AnimatedBackground : Canvas
     private Border? _spotlight;
     private Border? _vignette;
     private TopLevel? _topLevel;
-    private DateTime _lastFrame = DateTime.UtcNow;
 
     // Smoothed mouse parallax
     private float _targetMouseX, _targetMouseY;
@@ -70,8 +70,6 @@ public sealed class AnimatedBackground : Canvas
     {
         IsHitTestVisible = false;
         ClipToBounds = true;
-        _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(16) };
-        _timer.Tick += OnTick;
 
         // Back-to-front layers
         CreateSpotlight();
@@ -81,6 +79,12 @@ public sealed class AnimatedBackground : Canvas
         CreateVignette();
     }
 
+    /// <summary>The background animates continuously while it is attached.</summary>
+    public bool IsAnimating => true;
+
+    string? IFrameDebugMetrics.DebugMetrics =>
+        $"bg layers:{_mist.Count + _clouds.Count + _bubbles.Count}";
+
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
@@ -89,8 +93,8 @@ public sealed class AnimatedBackground : Canvas
         if (_topLevel is not null)
             _topLevel.PointerMoved += OnPointerMoved;
 
-        _lastFrame = DateTime.UtcNow;
-        _timer.Start();
+        _loop ??= App.Services?.GetService<IGameLoop>();
+        _loop?.Register(this);
     }
 
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
@@ -103,7 +107,7 @@ public sealed class AnimatedBackground : Canvas
             _topLevel = null;
         }
 
-        _timer.Stop();
+        _loop?.Unregister(this);
     }
 
     protected override void OnSizeChanged(SizeChangedEventArgs e)
@@ -501,12 +505,10 @@ public sealed class AnimatedBackground : Canvas
 
     // ── Per-frame update ──────────────────────────────────────────────────
 
-    private void OnTick(object? sender, EventArgs e)
+    public void Tick(in FrameTime time)
     {
-        var now = DateTime.UtcNow;
-        var dt = (float)(now - _lastFrame).TotalSeconds;
-        _lastFrame = now;
-        if (dt <= 0 || dt > 0.1f)
+        var dt = (float)time.DeltaSeconds;
+        if (dt <= 0)
             return;
 
         var width = (float)Bounds.Width;
