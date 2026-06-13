@@ -4,7 +4,7 @@
              xmlns:models="using:KatyaKatya.Models.Lobby"
              xmlns:loc="using:KatyaKatya.Localization"
              xmlns:controls="using:KatyaKatya.Controls"
-             x:Class="KatyaKatya.Views.Board.GameBoardView"
+             x:Class="KatyaKatya.Views.Lobby.GameBoardView"
              x:DataType="vm:GameBoardViewModel">
 
     <Grid>

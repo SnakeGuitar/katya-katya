@@ -2,7 +2,7 @@ using Avalonia.Controls;
 using System.ComponentModel;
 using KatyaKatya.ViewModels.Lobby;
 
-namespace KatyaKatya.Views.Board;
+namespace KatyaKatya.Views.Lobby;
 
 public partial class GameBoardView : UserControl
 {
