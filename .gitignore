@@ -410,3 +410,4 @@ appsettings.Development.json
 diff.txt
 *.diff
 *.patch
+/KatyaKatya.Server/.idea
