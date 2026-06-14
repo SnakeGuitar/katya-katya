@@ -27,6 +27,15 @@
         <Setter Property="BoxShadow"       Value="{DynamicResource CardBoxShadowHover}"/>
     </Style>
 
+    <Style Selector="Window.ReducedMotion Border.LiquidGlassCard">
+        <Setter Property="Transitions" Value="{x:Null}"/>
+    </Style>
+
+    <Style Selector="Window.ReducedMotion Border.LiquidGlassCard:not(.GameOverEntrance):pointerover">
+        <Setter Property="RenderTransform" Value="none"/>
+        <Setter Property="BoxShadow" Value="{DynamicResource CardBoxShadow}"/>
+    </Style>
+
     <Style Selector="Border.BoardHud">
         <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource PastelBorder}"/>
@@ -141,13 +150,26 @@
         </Setter>
     </Style>
 
+    <Style Selector="Window.ReducedMotion Button.PastelButton /template/ Border#Root">
+        <Setter Property="Transitions" Value="{x:Null}"/>
+    </Style>
+
     <Style Selector="Button.PastelButton:pointerover /template/ Border#Root">
         <Setter Property="BoxShadow" Value="{DynamicResource ButtonShadowHover}"/>
         <Setter Property="RenderTransform" Value="scale(1.035) translateY(-2px)"/>
     </Style>
 
+    <Style Selector="Window.ReducedMotion Button.PastelButton:pointerover /template/ Border#Root">
+        <Setter Property="BoxShadow" Value="{DynamicResource ButtonShadow}"/>
+        <Setter Property="RenderTransform" Value="none"/>
+    </Style>
+
     <Style Selector="Button.PastelButton:pressed /template/ Border#Root">
         <Setter Property="RenderTransform" Value="scale(0.97) translateY(1px)"/>
+    </Style>
+
+    <Style Selector="Window.ReducedMotion Button.PastelButton:pressed /template/ Border#Root">
+        <Setter Property="RenderTransform" Value="none"/>
     </Style>
 
     <Style Selector="Button.PastelButton:disabled">

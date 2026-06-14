@@ -1,4 +1,4 @@
-namespace KatyaKatya.Rendering.Core;
+namespace KatyaKatya.Engine.Core;
 
 /// <summary>
 /// Immutable snapshot of timing for a single frame, produced by <see cref="IGameLoop"/>

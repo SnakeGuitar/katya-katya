@@ -6,6 +6,10 @@ namespace KatyaKatya.Services.Interfaces;
 public interface ISoundService : IDisposable
 {
     bool IsEnabled { get; set; }
+    int FailureCount { get; }
+    DateTime? LastHoverAt { get; }
+    DateTime? LastClickAt { get; }
+    string DebugMetrics { get; }
 
     /// <summary>Plays the soft hover tick.</summary>
     void PlayHover();

@@ -8,11 +8,13 @@ using Avalonia.VisualTree;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using Avalonia.Rendering;
+using KatyaKatya.Engine.Assets;
 using KatyaKatya.Services.Interfaces;
-using KatyaKatya.Rendering.Core;
+using KatyaKatya.Engine.Core;
+using KatyaKatya.Engine.Settings;
 using KatyaKatya.ViewModels;
 #if DEBUG
-using KatyaKatya.Rendering.Diagnostics;
+using KatyaKatya.Engine.Diagnostics;
 #endif
 
 namespace KatyaKatya.Views;
@@ -24,6 +26,8 @@ public partial class MainWindow : Window
 
     private readonly ISoundService? _sound;
     private readonly IGameLoop? _loop;
+    private readonly IGraphicsSettingsService? _graphicsSettings;
+    private readonly IVisualAssetStore? _assets;
     private Button? _lastHoveredButton;
 #if DEBUG
     private PerfOverlay? _perfOverlay;
@@ -36,6 +40,9 @@ public partial class MainWindow : Window
 
         _sound = App.Services?.GetService<ISoundService>();
         _loop = App.Services?.GetService<IGameLoop>();
+        _graphicsSettings = App.Services?.GetService<IGraphicsSettingsService>();
+        _assets = App.Services?.GetService<IVisualAssetStore>();
+        Classes.Set("ReducedMotion", _graphicsSettings?.EnableGlassMotion == false);
 
 #if DEBUG
         InitPerfOverlay();
@@ -109,6 +116,8 @@ public partial class MainWindow : Window
 
         _perfOverlay = new PerfOverlay { IsVisible = false };
         _perfOverlay.Attach(_loop);
+        if (_graphicsSettings is not null && _assets is not null && _sound is not null)
+            _perfOverlay.AttachServices(_graphicsSettings, _assets, _sound);
         root.Children.Add(_perfOverlay);
     }
 
@@ -127,7 +136,7 @@ public partial class MainWindow : Window
             GlobalAnimatedBg.SetEnabled(!GlobalAnimatedBg.IsVisible);
             e.Handled = true;
         }
-        // F10 toggles the Skia particle canvas (per-frame WriteableBitmap path).
+        // F10 toggles the Skia particle canvas to isolate particle draw/update cost.
         else if (e.Key == Key.F10)
         {
             Controls.ParticleCanvas.DiagnosticsDisabled = !Controls.ParticleCanvas.DiagnosticsDisabled;

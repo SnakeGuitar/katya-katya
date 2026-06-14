@@ -107,8 +107,11 @@ public partial class SinglePlayerGameViewModel : ObservableObject
 
         _gameTimer?.Stop();
 
+        var board = GenerateBoard(cardCount);
+        CardViewModel.PreloadFronts(board.Select(card => card.ImageId));
+
         Cards.Clear();
-        foreach (var (index, imageId) in GenerateBoard(cardCount))
+        foreach (var (index, imageId) in board)
         {
             var card = new CardViewModel(index) { ImageIdentifier = imageId };
             Cards.Add(card);

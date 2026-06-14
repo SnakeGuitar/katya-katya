@@ -5,7 +5,7 @@ using Avalonia.Skia;
 using KatyaKatya.Controls;
 using SkiaSharp;
 
-namespace KatyaKatya.Rendering.Skia;
+namespace KatyaKatya.Engine.Skia;
 
 /// <summary>
 /// Long-lived Skia resources shared by every particle frame: the vector shapes, their

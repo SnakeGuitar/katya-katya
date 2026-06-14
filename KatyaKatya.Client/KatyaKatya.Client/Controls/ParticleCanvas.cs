@@ -3,8 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 using Microsoft.Extensions.DependencyInjection;
-using KatyaKatya.Rendering.Core;
-using KatyaKatya.Rendering.Skia;
+using KatyaKatya.Engine.Core;
+using KatyaKatya.Engine.Settings;
+using KatyaKatya.Engine.Skia;
 using SkiaSharp;
 
 namespace KatyaKatya.Controls;
@@ -25,6 +26,7 @@ public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetric
     private const int MaxBurstParticles = 50;
 
     private IGameLoop? _loop;
+    private IGraphicsSettingsService? _graphicsSettings;
     private readonly Random _rng = new();
 
     private readonly List<PetalParticle> _petals = [];
@@ -55,6 +57,7 @@ public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetric
     {
         base.OnAttachedToVisualTree(e);
         _loop ??= App.Services?.GetService<IGameLoop>();
+        _graphicsSettings ??= App.Services?.GetService<IGraphicsSettingsService>();
         _loop?.Register(this);
     }
 
@@ -71,7 +74,10 @@ public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetric
     public static bool DiagnosticsDisabled;
 
     /// <summary>True while ambient petals run or any burst effect is still alive.</summary>
-    public bool IsActive => !DiagnosticsDisabled && (_runningBackground || HasActiveEffects());
+    public bool IsActive =>
+        !DiagnosticsDisabled
+        && (_graphicsSettings?.EnableParticles ?? true)
+        && (_runningBackground || HasActiveEffects());
 
     string? IFrameDebugMetrics.DebugMetrics =>
         $"particles petals:{_petals.Count} bursts:{_bursts.Count} sw:{_shockwaves.Count}";
@@ -226,7 +232,7 @@ public sealed class ParticleCanvas : Control, IFrameUpdatable, IFrameDebugMetric
     {
         base.Render(context);
 
-        if (DiagnosticsDisabled)
+        if (DiagnosticsDisabled || _graphicsSettings?.EnableParticles == false)
             return;
 
         if (Bounds.Width <= 1 || Bounds.Height <= 1 || !HasActiveEffects())

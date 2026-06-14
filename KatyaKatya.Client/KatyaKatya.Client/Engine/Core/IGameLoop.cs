@@ -1,4 +1,4 @@
-namespace KatyaKatya.Rendering.Core;
+namespace KatyaKatya.Engine.Core;
 
 /// <summary>
 /// The single frame ticker for the whole client. Owns one timer, computes delta and

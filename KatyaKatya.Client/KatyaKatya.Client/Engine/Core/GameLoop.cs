@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Avalonia.Threading;
 
-namespace KatyaKatya.Rendering.Core;
+namespace KatyaKatya.Engine.Core;
 
 /// <summary>
 /// Single UI-thread frame ticker built on one <see cref="DispatcherTimer"/> plus a

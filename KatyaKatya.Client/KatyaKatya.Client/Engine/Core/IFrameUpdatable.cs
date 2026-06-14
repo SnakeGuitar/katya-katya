@@ -1,4 +1,4 @@
-namespace KatyaKatya.Rendering.Core;
+namespace KatyaKatya.Engine.Core;
 
 /// <summary>
 /// A simulation/animation system driven by the single shared <see cref="IGameLoop"/>.

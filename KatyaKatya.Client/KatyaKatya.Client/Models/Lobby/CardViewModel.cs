@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Avalonia.Media.Imaging;
-using Avalonia.Platform;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
+using KatyaKatya.Engine.Assets;
 
 namespace KatyaKatya.Models.Lobby;
 
@@ -21,8 +22,6 @@ public partial class CardViewModel : ObservableObject
     /// </summary>
     public static Bitmap CardBack { get; } = Load(
         "avares://KatyaKatya/Resources/Images/Cards/card-reverse.png");
-
-    private static readonly Dictionary<string, Bitmap> FrontCache = new();
 
     public int Index { get; }
 
@@ -49,26 +48,19 @@ public partial class CardViewModel : ObservableObject
     }
 
     private static Bitmap GetFront(string id)
-    {
-        if (FrontCache.TryGetValue(id, out var cached))
-            return cached;
+        => Load($"avares://KatyaKatya/Resources/Images/Cards/{id}.png");
 
-        var img = Load($"avares://KatyaKatya/Resources/Images/Cards/{id}.png");
-        FrontCache[id] = img;
-        return img;
-    }
+    public static void PreloadFronts(IEnumerable<string> ids)
+        => AssetStore.PreloadBitmaps(
+            ids.Distinct().Select(id => new VisualAssetId($"avares://KatyaKatya/Resources/Images/Cards/{id}.png")),
+            AssetLoadOptions.Width(DecodeWidth));
 
     private static Bitmap Load(string uri)
     {
-        try
-        {
-            using var stream = AssetLoader.Open(new Uri(uri));
-            return Bitmap.DecodeToWidth(stream, DecodeWidth);
-        }
-        catch (Exception ex)
-        {
-            System.Diagnostics.Debug.WriteLine($"[CardViewModel] Error loading card bitmap {uri}: {ex.Message}");
-            return new WriteableBitmap(new Avalonia.PixelSize(1, 1), new Avalonia.Vector(96, 96), Avalonia.Platform.PixelFormat.Bgra8888, Avalonia.Platform.AlphaFormat.Premul);
-        }
+        return AssetStore.GetBitmap(new VisualAssetId(uri), AssetLoadOptions.Width(DecodeWidth));
     }
+
+    private static IVisualAssetStore AssetStore =>
+        App.Services?.GetService<IVisualAssetStore>()
+        ?? throw new InvalidOperationException("VisualAssetStore is not available.");
 }

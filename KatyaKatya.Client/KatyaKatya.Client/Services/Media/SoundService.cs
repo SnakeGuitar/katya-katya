@@ -1,5 +1,6 @@
 using System.IO;
 using LibVLCSharp.Shared;
+using KatyaKatya.Engine.Settings;
 using KatyaKatya.Services.Interfaces;
 using VlcMedia = LibVLCSharp.Shared.Media;
 
@@ -12,17 +13,27 @@ namespace KatyaKatya.Services.Media;
 /// </summary>
 public class SoundService : ISoundService
 {
+    private static readonly TimeSpan HoverThrottle = TimeSpan.FromMilliseconds(45);
+
+    private readonly IGraphicsSettingsService _graphicsSettings;
     private LibVLC? _libVlc;
     private MediaPlayer? _hoverPlayer;
     private MediaPlayer? _clickPlayer;
     private VlcMedia? _hoverMedia;
     private VlcMedia? _clickMedia;
     private bool _initialized;
+    private DateTime _lastHoverAttempt = DateTime.MinValue;
 
     public bool IsEnabled { get; set; } = true;
+    public int FailureCount { get; private set; }
+    public DateTime? LastHoverAt { get; private set; }
+    public DateTime? LastClickAt { get; private set; }
+    public string DebugMetrics =>
+        $"sfx enabled:{IsEnabled && _graphicsSettings.EnableUiSfx} failures:{FailureCount}";
 
-    public SoundService()
+    public SoundService(IGraphicsSettingsService graphicsSettings)
     {
+        _graphicsSettings = graphicsSettings;
         // Initialize off the UI thread so we never block startup.
         Task.Run(TryInitialize);
     }
@@ -58,18 +69,32 @@ public class SoundService : ISoundService
         }
         catch (Exception ex)
         {
+            FailureCount++;
             System.Diagnostics.Debug.WriteLine($"[SoundService] VLC unavailable: {ex.Message}");
             _initialized = false;
         }
     }
 
-    public void PlayHover() => Play(_hoverPlayer, _hoverMedia);
+    public void PlayHover()
+    {
+        var now = DateTime.UtcNow;
+        if (now - _lastHoverAttempt < HoverThrottle)
+            return;
 
-    public void PlayClick() => Play(_clickPlayer, _clickMedia);
+        _lastHoverAttempt = now;
+        LastHoverAt = now;
+        Play(_hoverPlayer, _hoverMedia);
+    }
+
+    public void PlayClick()
+    {
+        LastClickAt = DateTime.UtcNow;
+        Play(_clickPlayer, _clickMedia);
+    }
 
     private void Play(MediaPlayer? player, VlcMedia? media)
     {
-        if (!IsEnabled || !_initialized || player is null || media is null)
+        if (!IsEnabled || !_graphicsSettings.EnableUiSfx || !_initialized || player is null || media is null)
             return;
 
         // LibVLC player controls must not run on the UI thread (Stop() blocks and can
@@ -87,6 +112,7 @@ public class SoundService : ISoundService
             }
             catch (Exception ex)
             {
+                FailureCount++;
                 System.Diagnostics.Debug.WriteLine($"[SoundService] play failed: {ex.Message}");
             }
         });
