@@ -25,11 +25,14 @@ Game/
   Narrative/
   Economy/
   MiniGames/
-Rendering/
+Engine/
   Core/
   Skia/
   VisualNovel/
   Assets/
+  Effects/
+  Diagnostics/
+  Settings/
 Feedback/
   Audio/
   HapticsOrJuice/

@@ -78,10 +78,10 @@ Acceptance criteria:
 Create:
 
 ```text
-Rendering/Core/IGameLoop.cs
-Rendering/Core/GameLoop.cs
-Rendering/Core/IFrameUpdatable.cs
-Rendering/Core/FrameTime.cs
+Engine/Core/IGameLoop.cs
+Engine/Core/GameLoop.cs
+Engine/Core/IFrameUpdatable.cs
+Engine/Core/FrameTime.cs
 ```
 
 Responsibilities:
@@ -108,8 +108,8 @@ Create:
 
 ```text
 Controls/SkiaSceneControl.cs
-Rendering/Skia/SkiaSceneDrawOperation.cs
-Rendering/Skia/SkiaRenderContext.cs
+Engine/Skia/SkiaSceneDrawOperation.cs
+Engine/Skia/SkiaRenderContext.cs
 ```
 
 Rules:
@@ -129,11 +129,11 @@ Acceptance criteria:
 Convert `AnimatedBackground` from many Avalonia controls into Skia layers:
 
 ```text
-Rendering/Effects/RomanticBackgroundRenderer.cs
-Rendering/Effects/MistLayer.cs
-Rendering/Effects/CloudLayer.cs
-Rendering/Effects/BokehLayer.cs
-Rendering/Effects/VignetteLayer.cs
+Engine/Effects/RomanticBackgroundRenderer.cs
+Engine/Effects/MistLayer.cs
+Engine/Effects/CloudLayer.cs
+Engine/Effects/BokehLayer.cs
+Engine/Effects/VignetteLayer.cs
 ```
 
 Rendering approach:
@@ -154,10 +154,10 @@ Acceptance criteria:
 Create:
 
 ```text
-Rendering/Assets/IVisualAssetStore.cs
-Rendering/Assets/VisualAssetStore.cs
-Rendering/Assets/VisualAssetId.cs
-Rendering/Assets/AssetManifest.cs
+Engine/Assets/IVisualAssetStore.cs
+Engine/Assets/VisualAssetStore.cs
+Engine/Assets/VisualAssetId.cs
+Engine/Assets/AssetManifest.cs
 ```
 
 Responsibilities:
@@ -244,10 +244,10 @@ Acceptance criteria:
 Create:
 
 ```text
-Rendering/VisualNovel/VisualNovelSceneRenderer.cs
-Rendering/VisualNovel/CharacterRenderer.cs
-Rendering/VisualNovel/SceneTransitionRenderer.cs
-Rendering/VisualNovel/EmotionEffectRenderer.cs
+Engine/VisualNovel/VisualNovelSceneRenderer.cs
+Engine/VisualNovel/CharacterRenderer.cs
+Engine/VisualNovel/SceneTransitionRenderer.cs
+Engine/VisualNovel/EmotionEffectRenderer.cs
 ```
 
 Layer order:
