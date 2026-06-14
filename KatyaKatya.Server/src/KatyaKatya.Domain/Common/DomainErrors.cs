@@ -33,6 +33,8 @@ public static class DomainErrors
         public const string EmailAlreadyVerified       = "USER_EMAIL_ALREADY_VERIFIED";
         public const string NotAGuest                  = "USER_NOT_A_GUEST";
         public const string PasswordIncorrect          = "USER_PASSWORD_INCORRECT";
+        public const string CoinsCannotBeNegative      = "USER_COINS_CANNOT_BE_NEGATIVE";
+        public const string InsufficientCoins          = "USER_INSUFFICIENT_COINS";
     }
 
     /// <summary>Session errors.</summary>
@@ -61,5 +63,22 @@ public static class DomainErrors
     public static class Match
     {
         public const string NotFound                   = "MATCH_NOT_FOUND";
+    }
+
+    /// <summary>Dating progression errors.</summary>
+    public static class Dating
+    {
+        public const string CharacterNameEmpty         = "DATING_CHARACTER_NAME_EMPTY";
+        public const string CharacterNameTooLong       = "DATING_CHARACTER_NAME_TOO_LONG";
+        public const string CharacterAssetKeyEmpty     = "DATING_CHARACTER_ASSET_KEY_EMPTY";
+        public const string CharacterAssetKeyTooLong   = "DATING_CHARACTER_ASSET_KEY_TOO_LONG";
+        public const string CharacterNotFound          = "DATING_CHARACTER_NOT_FOUND";
+        public const string AffinityAlreadyExists      = "DATING_AFFINITY_ALREADY_EXISTS";
+        public const string GiftTypeEmpty              = "DATING_GIFT_TYPE_EMPTY";
+        public const string GiftTypeTooLong            = "DATING_GIFT_TYPE_TOO_LONG";
+        public const string DateActivityKeyEmpty       = "DATING_DATE_ACTIVITY_KEY_EMPTY";
+        public const string DateActivityKeyTooLong     = "DATING_DATE_ACTIVITY_KEY_TOO_LONG";
+        public const string DialogueKeyEmpty           = "DATING_DIALOGUE_KEY_EMPTY";
+        public const string DialogueKeyTooLong         = "DATING_DIALOGUE_KEY_TOO_LONG";
     }
 }

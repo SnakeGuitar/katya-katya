@@ -14,6 +14,7 @@ public class User : BaseEntity
     public bool IsGuest { get; private set; }
     public bool VerifiedEmail { get; private set; }
     public DateTime RegistrationDate { get; private set; }
+    public int Coins { get; private set; }
 
     private User() { }
 
@@ -26,7 +27,8 @@ public class User : BaseEntity
             PasswordHash = passwordHash,
             IsGuest = false,
             VerifiedEmail = false,
-            RegistrationDate = DateTime.UtcNow
+            RegistrationDate = DateTime.UtcNow,
+            Coins = 0
         };
     }
 
@@ -39,8 +41,28 @@ public class User : BaseEntity
             PasswordHash = string.Empty,
             IsGuest = true,
             VerifiedEmail = false,
-            RegistrationDate = DateTime.UtcNow
+            RegistrationDate = DateTime.UtcNow,
+            Coins = 0
         };
+    }
+
+    public void AddCoins(int amount)
+    {
+        if (amount < 0)
+            throw new DomainException(DomainErrors.User.CoinsCannotBeNegative);
+
+        Coins += amount;
+    }
+
+    public void SpendCoins(int amount)
+    {
+        if (amount < 0)
+            throw new DomainException(DomainErrors.User.CoinsCannotBeNegative);
+
+        if (Coins < amount)
+            throw new DomainException(DomainErrors.User.InsufficientCoins);
+
+        Coins -= amount;
     }
 
     public void ChangeUsername(string newUsername)

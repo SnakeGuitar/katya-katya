@@ -137,4 +137,37 @@ public class UserTests
     [Fact]
     public void PromoteFromGuest_OnRegisteredUser_Throws() =>
         ((Action)(() => Registered().PromoteFromGuest("x@y.com", "h"))).Should().Throw<DomainException>();
+
+    [Fact]
+    public void CreateRegistered_StartsWithZeroCoins() =>
+        Registered().Coins.Should().Be(0);
+
+    [Fact]
+    public void AddCoins_IncreasesCoins()
+    {
+        var user = Registered();
+
+        user.AddCoins(50);
+
+        user.Coins.Should().Be(50);
+    }
+
+    [Fact]
+    public void SpendCoins_DecreasesCoins()
+    {
+        var user = Registered();
+        user.AddCoins(50);
+
+        user.SpendCoins(20);
+
+        user.Coins.Should().Be(30);
+    }
+
+    [Fact]
+    public void SpendCoins_WhenInsufficient_Throws()
+    {
+        var user = Registered();
+
+        ((Action)(() => user.SpendCoins(1))).Should().Throw<DomainException>();
+    }
 }
