@@ -405,3 +405,8 @@ FodyWeavers.xsd
 env
 appsettings.json
 appsettings.Development.json
+
+# Local diff/patch artifacts can contain secrets from reviewed files
+diff.txt
+*.diff
+*.patch
