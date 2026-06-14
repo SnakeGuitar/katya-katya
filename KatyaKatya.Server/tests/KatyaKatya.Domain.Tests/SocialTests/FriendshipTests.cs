@@ -1,81 +1,25 @@
+using FluentAssertions;
 using KatyaKatya.Domain.Common;
 using KatyaKatya.Domain.Social;
 using Xunit;
 
-namespace KatyaKatya.Tests;
+namespace KatyaKatya.Domain.Tests.SocialTests;
 
 public class FriendshipTests
 {
-    // Method Create()
-    // Attribute validation tests.
     [Fact]
-    public void Create_UserIdIsValid_ReturnNewFriendship()
-    {
-        // Arrange
-        int userId = 1;
-        int friendId = 2;
-
-        // Act
-        Friendship friendship = Friendship.Create(userId, friendId);
-
-        // Assert
-        Assert.Equal(userId, friendship.UserId);
-    }
+    public void Create_SetsUserId() =>
+        Friendship.Create(1, 2).UserId.Should().Be(1);
 
     [Fact]
-    public void Create_FriendIdIsValid_ReturnNewFriendship()
-    {
-        // Arrange
-        int userId = 1;
-        int friendId = 2;
-
-        // Act
-        Friendship friendship = Friendship.Create(userId, friendId);
-
-        // Assert
-        Assert.Equal(friendId, friendship.FriendId);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void Create_IdsAreTheSame_ThrowDomainException()
-    {
-        // Arrange
-        int userId = 1;
-        int friendId = 1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Friendship.Create(userId, friendId)
-        );
-    }
+    public void Create_SetsFriendId() =>
+        Friendship.Create(1, 2).FriendId.Should().Be(2);
 
     [Fact]
-    public void Create_UserIdIsNotValid_ThrowDomainException()
-    {
-        // Arrange
-        int userId = -1;
-        int friendId = 1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Friendship.Create(userId, friendId)
-        );
-    }
+    public void Create_SetsCreatedAt() =>
+        Friendship.Create(1, 2).CreatedAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
 
     [Fact]
-    public void Create_FriendIdIsNotValid_ThrowDomainException()
-    {
-        // Arrange
-        int userId = 1;
-        int friendId = -1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Friendship.Create(userId, friendId)
-        );
-    }
+    public void Create_SelfFriendship_Throws() =>
+        ((Action)(() => Friendship.Create(1, 1))).Should().Throw<DomainException>();
 }

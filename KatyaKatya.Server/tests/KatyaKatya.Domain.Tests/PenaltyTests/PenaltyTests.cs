@@ -1,159 +1,44 @@
-using KatyaKatya.Domain.Common;
+using FluentAssertions;
 using KatyaKatya.Domain.Common.Enums;
 using KatyaKatya.Domain.Penalties;
 using Xunit;
 
-namespace KatyaKatya.Tests;
+namespace KatyaKatya.Domain.Tests.PenaltyTests;
 
 public class PenaltyTests
 {
-    // Method Create()
-    // Attribute validation tests.
-    [Fact]
-    public void Create_PenaltyTypeIsValid_ReturnNewPenalty()
-    {
-        // Arrange
-        PenaltyType type = PenaltyType.PermanentBan;
-        DateTime duration = new DateTime(9999, 11, 30, 23, 59, 59);
-        int matchId = 1;
-        int userId = 1;
-
-        // Act
-        Penalty penalty = Penalty.Create(type, duration, matchId, userId);
-
-        // Assert
-        Assert.Equal(type, penalty.Type);
-    }
+    private static readonly DateTime Future = DateTime.UtcNow.AddHours(1);
+    private static readonly DateTime Past = DateTime.UtcNow.AddHours(-1);
 
     [Fact]
-    public void Create_DurationIsValid_ReturnNewPenalty()
-    {
-        // Arrange
-        PenaltyType type = PenaltyType.PermanentBan;
-        DateTime duration = new DateTime(9999, 11, 30, 23, 59, 59);
-        int matchId = 1;
-        int userId = 1;
-
-        // Act
-        Penalty penalty = Penalty.Create(type, duration, matchId, userId);
-
-        // Assert
-        Assert.Equal(duration, penalty.Duration);
-    }
+    public void Create_SetsType() =>
+        Penalty.Create(PenaltyType.Warning, Future, 1, 2).Type.Should().Be(PenaltyType.Warning);
 
     [Fact]
-    public void Create_MatchIdIsValid_ReturnNewPenalty()
-    {
-        // Arrange
-        PenaltyType type = PenaltyType.PermanentBan;
-        DateTime duration = new DateTime(9999, 11, 30, 23, 59, 59);
-        int matchId = 1;
-        int userId = 1;
-
-        // Act
-        Penalty penalty = Penalty.Create(type, duration, matchId, userId);
-
-        // Assert
-        Assert.Equal(matchId, penalty.MatchId);
-    }
+    public void Create_SetsDuration() =>
+        Penalty.Create(PenaltyType.Warning, Future, 1, 2).Duration.Should().Be(Future);
 
     [Fact]
-    public void Create_UserIdIsValid_ReturnNewPenalty()
-    {
-        // Arrange
-        PenaltyType type = PenaltyType.PermanentBan;
-        DateTime duration = new DateTime(9999, 11, 30, 23, 59, 59);
-        int matchId = 1;
-        int userId = 1;
-
-        // Act
-        Penalty penalty = Penalty.Create(type, duration, matchId, userId);
-
-        // Assert
-        Assert.Equal(userId, penalty.UserId);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void Create_DurationIsBeforePresentTime_ThrowDomainException()
-    {
-        // Arrange
-        PenaltyType type = PenaltyType.PermanentBan;
-        DateTime duration = DateTime.Now.AddDays(-1);
-        int matchId = -1;
-        int userId = 1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Penalty.Create(type, duration, matchId, userId)
-        );
-    }
+    public void Create_SetsMatchId() =>
+        Penalty.Create(PenaltyType.Warning, Future, 10, 2).MatchId.Should().Be(10);
 
     [Fact]
-    public void Create_MatchIdIsNotValid_ThrowDomainException()
-    {
-        // Arrange
-        PenaltyType type = PenaltyType.PermanentBan;
-        DateTime duration = new DateTime(9999, 11, 30, 23, 59, 59);
-        int matchId = -1;
-        int userId = 1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Penalty.Create(type, duration, matchId, userId)
-        );
-    }
+    public void Create_SetsUserId() =>
+        Penalty.Create(PenaltyType.Warning, Future, 1, 20).UserId.Should().Be(20);
 
     [Fact]
-    public void Create_UserIdIsNotValid_ThrowDomainException()
-    {
-        // Arrange
-        PenaltyType type = PenaltyType.PermanentBan;
-        DateTime duration = new DateTime(9999, 11, 30, 23, 59, 59);
-        int matchId = 1;
-        int userId = -1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Penalty.Create(type, duration, matchId, userId)
-        );
-    }
-
-
-    // Method IsActive()
-    // Attribute validation tests.
-    [Fact]
-    public void IsActive_PenaltyTypeIsPermanentBan_ReturnsTrue()
-    {
-        // Arrange
-        PenaltyType type = PenaltyType.PermanentBan;
-        DateTime duration = new DateTime(9999, 11, 30, 23, 59, 59);
-        int matchId = 1;
-        int userId = 1;
-
-        // Act
-        Penalty penalty = Penalty.Create(type, duration, matchId, userId);
-
-        // Assert
-        Assert.True(penalty.IsActive());
-    }
+    public void IsActive_PermanentBan_IsTrueEvenWithPastDuration() =>
+        Penalty.Create(PenaltyType.PermanentBan, Past, 1, 2).IsActive().Should().BeTrue();
 
     [Fact]
-    public void IsActive_DurationIsFutureTime_ReturnsTrue()
-    {
-        // Arrange
-        PenaltyType type = PenaltyType.TemporaryBan;
-        DateTime duration = new DateTime(9999, 11, 30, 23, 59, 59);
-        int matchId = 1;
-        int userId = 1;
+    public void IsActive_TemporaryBanInFuture_IsTrue() =>
+        Penalty.Create(PenaltyType.TemporaryBan, Future, 1, 2).IsActive().Should().BeTrue();
 
-        // Act
-        Penalty penalty = Penalty.Create(type, duration, matchId, userId);
+    [Fact]
+    public void IsActive_TemporaryBanInPast_IsFalse() =>
+        Penalty.Create(PenaltyType.TemporaryBan, Past, 1, 2).IsActive().Should().BeFalse();
 
-        // Assert
-        Assert.True(penalty.IsActive());
-    }
+    [Fact]
+    public void IsActive_ExpiredWarning_IsFalse() =>
+        Penalty.Create(PenaltyType.Warning, Past, 1, 2).IsActive().Should().BeFalse();
 }

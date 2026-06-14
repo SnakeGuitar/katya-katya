@@ -1,127 +1,53 @@
-using Xunit;
-using KatyaKatya.Domain.Users;
+using FluentAssertions;
 using KatyaKatya.Domain.Common;
+using KatyaKatya.Domain.Users;
+using Xunit;
 
-namespace KatyaKatya.Tests;
+namespace KatyaKatya.Domain.Tests.UsersTests;
 
 public class UserSessionTests
 {
-    // Method CreateRegistered()
-    // Attribute validation tests.
+    private static UserSession Create(TimeSpan? duration = null) =>
+        UserSession.Create("token-abc", 7, duration ?? TimeSpan.FromHours(1));
+
     [Fact]
-    public void Create_TokenIsValid_ReturnNewUserSession()
+    public void Create_SetsToken() =>
+        Create().Token.Should().Be("token-abc");
+
+    [Fact]
+    public void Create_SetsUserId() =>
+        Create().UserId.Should().Be(7);
+
+    [Fact]
+    public void Create_SetsFutureExpiry() =>
+        Create().ExpiresAt.Should().BeAfter(DateTime.UtcNow);
+
+    [Fact]
+    public void Create_FreshSession_IsNotExpired() =>
+        Create().IsExpired().Should().BeFalse();
+
+    [Fact]
+    public void Create_EmptyToken_Throws() =>
+        ((Action)(() => UserSession.Create("", 1, TimeSpan.FromHours(1)))).Should().Throw<DomainException>();
+
+    [Fact]
+    public void Create_NegativeDuration_IsExpired() =>
+        Create(TimeSpan.FromMinutes(-1)).IsExpired().Should().BeTrue();
+
+    [Fact]
+    public void Renew_ExtendsExpiry()
     {
-        // Arrange
-        string token = "a7e6ffba123";
-        int userId = 1;
-        TimeSpan duration = new TimeSpan(1, 0, 0); // One hour.
-
-        // Act
-        UserSession session = UserSession.Create(token, userId, duration);
-
-        // Assert
-        Assert.Equal(token, session.Token);
+        var session = Create(TimeSpan.FromMinutes(1));
+        var before = session.ExpiresAt;
+        session.Renew(TimeSpan.FromHours(2));
+        session.ExpiresAt.Should().BeAfter(before);
     }
 
     [Fact]
-    public void Create_UserIdIsValid_ReturnNewUserSession()
+    public void Renew_OnExpiredSession_MakesItValidAgain()
     {
-        // Arrange
-        string token = "a7e6ffba123";
-        int userId = 1;
-        TimeSpan duration = new TimeSpan(1, 0, 0); // One hour.
-
-        // Act
-        UserSession session = UserSession.Create(token, userId, duration);
-
-        // Assert
-        Assert.Equal(userId, session.UserId);
+        var session = Create(TimeSpan.FromMinutes(-1));
+        session.Renew(TimeSpan.FromHours(1));
+        session.IsExpired().Should().BeFalse();
     }
-
-    // Exception throw tests.
-    [Fact]
-    public void Create_TokenIsNull_ThrowDomainException()
-    {
-        // Arrange
-        int userId = 1;
-        TimeSpan duration = new TimeSpan(1, 0, 0); // One hour.
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            UserSession.Create(null, userId, duration)
-        );
-    }
-
-    [Fact]
-    public void Create_TokenIsWhiteSpace_ThrowDomainException()
-    {
-        // Arrange
-        string token = " ";
-        int userId = 1;
-        TimeSpan duration = new TimeSpan(1, 0, 0); // One hour.
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            UserSession.Create(token, userId, duration)
-        );
-    }
-
-
-    // Method IsExpired()
-    // Attribute validation tests.
-    [Fact]
-    public void IsExpired_Expired_ReturnTrue()
-    {
-        // Arrange
-        string token = "a7e6ffba123";
-        int userId = 1;
-        TimeSpan duration = new TimeSpan(0); // No time.
-
-        UserSession session = UserSession.Create(token, userId, duration);
-
-        // Act
-        bool expired = session.IsExpired();
-
-        // Assert
-        Assert.True(expired);
-    }
-
-    [Fact]
-    public void IsExpired_NotExpired_ReturnFalse()
-    {
-        // Arrange
-        string token = "a7e6ffba123";
-        int userId = 1;
-        TimeSpan duration = new TimeSpan(1, 0, 0); // One hour.
-
-        UserSession session = UserSession.Create(token, userId, duration);
-
-        // Act
-        bool expired = session.IsExpired();
-
-        // Assert
-        Assert.False(expired);
-    }
-
-
-    // Method Renew()
-    [Fact]
-    public void Renew_DurationIsValid_UpdateExpirationDate()
-    {
-        // Arrange
-        string token = "a7e6ffba123";
-        int userId = 1;
-        TimeSpan duration = new TimeSpan(0, 0, 0, 1); // One millisecond.
-
-        UserSession session = UserSession.Create(token, userId, duration);
-
-        // Act
-        session.Renew(new TimeSpan(1, 0, 0)); // Adds one hour.
-
-        // Assert
-        Assert.True(session.ExpiresAt > DateTime.UtcNow);
-    }
-    
 }

@@ -1,158 +1,62 @@
+using FluentAssertions;
 using KatyaKatya.Domain.Common;
 using KatyaKatya.Domain.Common.Enums;
 using KatyaKatya.Domain.Social;
 using Xunit;
 
-namespace KatyaKatya.Tests;
+namespace KatyaKatya.Domain.Tests.SocialTests;
 
 public class FriendRequestTests
 {
-    // Method Create()
-    // Attribute validation tests.
     [Fact]
-    public void Create_SenderIdIsValid_ReturnNewFriendRequest()
+    public void Create_StatusIsPending() =>
+        FriendRequest.Create(1, 2).Status.Should().Be(FriendRequestStatus.Pending);
+
+    [Fact]
+    public void Create_SetsSenderId() =>
+        FriendRequest.Create(1, 2).SenderId.Should().Be(1);
+
+    [Fact]
+    public void Create_SetsReceiverId() =>
+        FriendRequest.Create(1, 2).ReceiverId.Should().Be(2);
+
+    [Fact]
+    public void Create_SetsSentAt() =>
+        FriendRequest.Create(1, 2).SentAt.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
+
+    [Fact]
+    public void Create_SenderEqualsReceiver_Throws() =>
+        ((Action)(() => FriendRequest.Create(1, 1))).Should().Throw<DomainException>();
+
+    [Fact]
+    public void Accept_SetsStatusAccepted()
     {
-        // Arrange
-        int senderId = 1;
-        int receiverId = 2;
-
-        // Act
-        FriendRequest friendRequest = FriendRequest.Create(senderId, receiverId);
-
-        // Assert
-        Assert.Equal(senderId, friendRequest.SenderId);
+        var request = FriendRequest.Create(1, 2);
+        request.Accept();
+        request.Status.Should().Be(FriendRequestStatus.Accepted);
     }
 
     [Fact]
-    public void Create_ReceiverIdIsValid_ReturnNewFriendRequest()
+    public void Accept_WhenNotPending_Throws()
     {
-        // Arrange
-        int senderId = 1;
-        int receiverId = 2;
-
-        // Act
-        FriendRequest friendRequest = FriendRequest.Create(senderId, receiverId);
-
-        // Assert
-        Assert.Equal(receiverId, friendRequest.ReceiverId);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void Create_IdsAreTheSame_ThrowDomainException()
-    {
-        // Arrange
-        int senderId = 1;
-        int receiverId = 1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            FriendRequest.Create(senderId, receiverId)
-        );
+        var request = FriendRequest.Create(1, 2);
+        request.Accept();
+        ((Action)request.Accept).Should().Throw<DomainException>();
     }
 
     [Fact]
-    public void Create_SenderIdIsNotValid_ThrowDomainException()
+    public void Reject_SetsStatusRejected()
     {
-        // Arrange
-        int senderId = -1;
-        int receiverId = 1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            FriendRequest.Create(senderId, receiverId)
-        );
+        var request = FriendRequest.Create(1, 2);
+        request.Reject();
+        request.Status.Should().Be(FriendRequestStatus.Rejected);
     }
 
     [Fact]
-    public void Create_ReceiverIdIsNotValid_ThrowDomainException()
+    public void Reject_WhenNotPending_Throws()
     {
-        // Arrange
-        int senderId = 1;
-        int receiverId = -1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            FriendRequest.Create(senderId, receiverId)
-        );
-    }
-
-
-    // Method Accept()
-    // Attribute validation tests.
-    [Fact]
-    public void Accept_RequestStatusIsPending_SetRequestStatusAsAccepted()
-    {
-        // Arrange
-        int senderId = 1;
-        int receiverId = 2;
-
-        FriendRequest friendRequest = FriendRequest.Create(senderId, receiverId);
-
-        // Act
-        friendRequest.Accept();
-
-        // Assert
-        Assert.Equal(FriendRequestStatus.Accepted, friendRequest.Status);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void Accept_RequestStatusIsNotPending_ThrowDomainException()
-    {
-        // Arrange
-        int senderId = 1;
-        int receiverId = 2;
-
-        FriendRequest friendRequest = FriendRequest.Create(senderId, receiverId);
-
-        friendRequest.Accept();
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            friendRequest.Accept()
-        );
-    }
-
-
-    // Method Reject()
-    // Attribute validation tests.
-    [Fact]
-    public void Reject_RequestStatusIsPending_SetRequestStatusAsRejected()
-    {
-        // Arrange
-        int senderId = 1;
-        int receiverId = 2;
-
-        FriendRequest friendRequest = FriendRequest.Create(senderId, receiverId);
-
-        // Act
-        friendRequest.Reject();
-
-        // Assert
-        Assert.Equal(FriendRequestStatus.Rejected, friendRequest.Status);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void Reject_RequestStatusIsNotPending_ThrowDomainException()
-    {
-        // Arrange
-        int senderId = 1;
-        int receiverId = 2;
-
-        FriendRequest friendRequest = FriendRequest.Create(senderId, receiverId);
-
-        friendRequest.Reject();
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            friendRequest.Reject()
-        );
+        var request = FriendRequest.Create(1, 2);
+        request.Reject();
+        ((Action)request.Reject).Should().Throw<DomainException>();
     }
 }

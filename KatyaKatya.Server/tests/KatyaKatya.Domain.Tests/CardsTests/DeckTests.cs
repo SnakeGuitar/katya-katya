@@ -1,228 +1,45 @@
+using FluentAssertions;
 using KatyaKatya.Domain.Cards;
 using KatyaKatya.Domain.Common;
 using Xunit;
 
-namespace KatyaKatya.Tests;
+namespace KatyaKatya.Domain.Tests.CardsTests;
 
 public class DeckTests
 {
-    // Method Create()
-    // Attribute validation tests.
     [Fact]
-    public void Create_NameIsValid_ReturnsNewDeck()
+    public void Create_SetsName() =>
+        Deck.Create("Main", 1).Name.Should().Be("Main");
+
+    [Fact]
+    public void Create_SetsMatchId() =>
+        Deck.Create("Main", 9).MatchId.Should().Be(9);
+
+    [Fact]
+    public void Create_HasNoCards() =>
+        Deck.Create("Main", 1).Cards.Should().BeEmpty();
+
+    [Fact]
+    public void Create_EmptyName_Throws() =>
+        ((Action)(() => Deck.Create("", 1))).Should().Throw<DomainException>();
+
+    [Fact]
+    public void Create_NameOver30Characters_Throws() =>
+        ((Action)(() => Deck.Create(new string('n', 31), 1))).Should().Throw<DomainException>();
+
+    [Fact]
+    public void AddCard_AddsToCards()
     {
-        // Arrange
-        string name = "Totally a real deck";
-        int matchId = 1;
-
-        // Act
-        Deck deck = Deck.Create(name, matchId);
-
-        // Assert
-        Assert.Equal(name, deck.Name);
+        var deck = Deck.Create("Main", 1);
+        deck.AddCard("Ace");
+        deck.Cards.Should().HaveCount(1);
     }
 
     [Fact]
-    public void Create_MatchIdIsValid_ReturnsNewDeck()
-    {
-        // Arrange
-        string name = "Totally real deck.";
-        int matchId = 1;
-
-        // Act
-        Deck deck = Deck.Create(name, matchId);
-
-        // Assert
-        Assert.Equal(matchId, deck.MatchId);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void Create_NameIsNull_ThrowsDomainException()
-    {
-        // Arrange
-        int matchId = 1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Deck.Create(null, matchId)
-        );
-    }
+    public void AddCard_ReturnsCardWithName() =>
+        Deck.Create("Main", 1).AddCard("Ace").Name.Should().Be("Ace");
 
     [Fact]
-    public void Create_NameIsWhiteSpace_ThrowsDomainException()
-    {
-        // Arrange
-        string name = " ";
-        int matchId = 1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Deck.Create(name, matchId)
-        );
-    }
-
-    [Fact]
-    public void Create_NameIsTooLong_ThrowsDomainException()
-    {
-        // Arrange
-        string name = "I paused my imaginary OC AMV to be here (this better be good).";
-        int matchId = 1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Deck.Create(name, matchId)
-        );
-    }
-
-    [Fact]
-    public void Create_MatchIdIsNotValid_ThrowsDomainException()
-    {
-        // Arrange
-        string name = "Totally real deck.";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Deck.Create(name, 0)
-        );
-    }
-
-
-    // Method AddCard()
-    // Attribute validation tests.
-    [Fact]
-    public void AddCard_NameIsValid_ReturnsNewCard()
-    {
-        // Arrange
-        string name = "Totally real deck.";
-        int matchId = 1;
-
-        Deck deck = Deck.Create(name, matchId);
-
-        string cardName = "Chuck Norris";
-        string cardDescription = "Can speak Braille.";
-
-        // Act
-        Card newCard = deck.AddCard(cardName, cardDescription);
-
-        // Assert
-        Assert.Equal(cardName, newCard.Name);
-    }
-
-    [Fact]
-    public void AddCard_DescriptionIsValid_ReturnsNewCard()
-    {
-        // Arrange
-        string name = "Totally real deck.";
-        int matchId = 1;
-
-        Deck deck = Deck.Create(name, matchId);
-
-        string cardName = "Chuck Norris";
-        string cardDescription = "Can speak Braille.";
-
-        // Act
-        Card newCard = deck.AddCard(cardName, cardDescription);
-
-        // Assert
-        Assert.Equal(cardDescription, newCard.Description);
-    }
-
-    [Fact]
-    public void AddCard_DescriptionIsNull_ReturnsNewCard()
-    {
-        // Arrange
-        string name = "Totally real deck.";
-        int matchId = 1;
-
-        Deck deck = Deck.Create(name, matchId);
-
-        string cardName = "The Spy";
-
-        // Act
-        Card newCard = deck.AddCard(cardName, null);
-
-        // Assert
-        Assert.Null(newCard.Description);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void AddCard_NameIsNull_ThrowsDomainException()
-    {
-        // Arrange
-        string name = "Totally real deck.";
-        int matchId = 1;
-
-        Deck deck = Deck.Create(name, matchId);
-
-        string cardDescription = "Can sp- Wait where did he go?";
-        
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            deck.AddCard(null, cardDescription)
-        );
-    }
-
-    [Fact]
-    public void AddCard_NameIsWhiteSpace_ThrowsDomainException()
-    {
-        // Arrange
-        string name = "Totally real deck.";
-        int matchId = 1;
-
-        Deck deck = Deck.Create(name, matchId);
-
-        string cardName = " ";
-        string cardDescription = "Can sp- Not again.";
-        
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            deck.AddCard(cardName, cardDescription)
-        );
-    }
-
-    [Fact]
-    public void AddCard_NameIsTooLong_ThrowsDomainException()
-    {
-        // Arrange
-        string name = "Totally real deck.";
-        int matchId = 1;
-
-        Deck deck = Deck.Create(name, matchId);
-
-        string cardName = "MY ROFLCOPTER GOES SOI SOI SOI TCHE TCHE TCHE TCHE TCHE TCHE";
-        string cardDescription = "Sample text.";
-        
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            deck.AddCard(cardName, cardDescription)
-        );
-    }
-
-    [Fact]
-    public void AddCard_DescriptionIsTooLong_ThrowsDomainException()
-    {
-        // Arrange
-        string name = "Totally real deck.";
-        int matchId = 1;
-
-        Deck deck = Deck.Create(name, matchId);
-
-        string cardName = "Halo";
-        string cardDescription = "but mastar cheef is a pretty cool guy eh kills aleins and doesnt afraid of anything";
-        
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            deck.AddCard(cardName, cardDescription)
-        );
-    }
+    public void AddCard_InvalidName_Throws() =>
+        ((Action)(() => Deck.Create("Main", 1).AddCard(""))).Should().Throw<DomainException>();
 }

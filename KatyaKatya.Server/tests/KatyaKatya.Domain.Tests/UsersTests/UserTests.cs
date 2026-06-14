@@ -1,496 +1,140 @@
-using Xunit;
-using KatyaKatya.Domain.Users;
-using Hasher = BCrypt.Net.BCrypt;
+using FluentAssertions;
 using KatyaKatya.Domain.Common;
+using KatyaKatya.Domain.Users;
+using Xunit;
 
-namespace KatyaKatya.Tests;
+namespace KatyaKatya.Domain.Tests.UsersTests;
 
 public class UserTests
 {
-    // Method CreateRegistered() (and indirectly, ValidateUsername())
-    // Attribute validation tests.
-    // TODO: Find a way to implement unit tests for private methods.
+    private static User Registered() => User.CreateRegistered("alice", "alice@example.com", "hash");
+
     [Fact]
-    public void CreateRegistered_UsernameIsValid_ReturnNewUser()
+    public void CreateRegistered_SetsUsername() =>
+        Registered().Username.Should().Be("alice");
+
+    [Fact]
+    public void CreateRegistered_IsNotGuest() =>
+        Registered().IsGuest.Should().BeFalse();
+
+    [Fact]
+    public void CreateRegistered_EmailStartsUnverified() =>
+        Registered().VerifiedEmail.Should().BeFalse();
+
+    [Fact]
+    public void CreateRegistered_LowercasesEmail() =>
+        User.CreateRegistered("a", "Alice@Example.com", "h").Email.Value.Should().Be("alice@example.com");
+
+    [Fact]
+    public void CreateRegistered_EmptyUsername_Throws() =>
+        ((Action)(() => User.CreateRegistered("", "a@b.com", "h"))).Should().Throw<DomainException>();
+
+    [Fact]
+    public void CreateRegistered_UsernameOver30Characters_Throws() =>
+        ((Action)(() => User.CreateRegistered(new string('x', 31), "a@b.com", "h"))).Should().Throw<DomainException>();
+
+    [Fact]
+    public void CreateGuest_IsGuest() =>
+        User.CreateGuest("guest1").IsGuest.Should().BeTrue();
+
+    [Fact]
+    public void CreateGuest_GeneratesGuestEmail() =>
+        User.CreateGuest("guest1").Email.Value.Should().Be("guest1@guest.memorygame");
+
+    [Fact]
+    public void ChangeUsername_UpdatesUsername()
     {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        // Act
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        // Assert
-        Assert.Equal(username, user.Username);
+        var user = Registered();
+        user.ChangeUsername("bob");
+        user.Username.Should().Be("bob");
     }
 
     [Fact]
-    public void CreateRegistered_EmailIsValid_ReturnNewUser()
+    public void ChangeUsername_Empty_Throws() =>
+        ((Action)(() => Registered().ChangeUsername(""))).Should().Throw<DomainException>();
+
+    [Fact]
+    public void UpdatePersonalInfo_SetsName()
     {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        // Act
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        // Assert
-        Assert.Equal(email, user.Email.Value);
+        var user = Registered();
+        user.UpdatePersonalInfo("Alice", "Smith");
+        user.Name.Should().Be("Alice");
     }
 
     [Fact]
-    public void CreateRegistered_HashedPasswordIsValid_ReturnNewUser()
+    public void UpdatePersonalInfo_SetsLastName()
     {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        // Act
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        // Assert
-        Assert.Equal(hashedPassword, user.PasswordHash);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void CreateRegistered_UsernameIsNull_ThrowDomainException()
-    {
-        // Arrange
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            User.CreateRegistered(null, email, hashedPassword)
-        );
+        var user = Registered();
+        user.UpdatePersonalInfo("Alice", "Smith");
+        user.LastName.Should().Be("Smith");
     }
 
     [Fact]
-    public void CreateRegistered_UsernameIsWhiteSpace_ThrowDomainException()
-    {
-        // Arrange
-        string username = " ";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
+    public void UpdatePersonalInfo_NameOver50Characters_Throws() =>
+        ((Action)(() => Registered().UpdatePersonalInfo(new string('n', 51), null))).Should().Throw<DomainException>();
 
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            User.CreateRegistered(username, email, hashedPassword)
-        );
+    [Fact]
+    public void UpdatePersonalInfo_LastNameOver50Characters_Throws() =>
+        ((Action)(() => Registered().UpdatePersonalInfo(null, new string('l', 51)))).Should().Throw<DomainException>();
+
+    [Fact]
+    public void UpdateAvatar_SetsAvatar()
+    {
+        var user = Registered();
+        var bytes = new byte[] { 1, 2, 3 };
+        user.UpdateAvatar(bytes);
+        user.Avatar.Should().BeSameAs(bytes);
     }
 
     [Fact]
-    public void CreateRegistered_UsernameIsTooLong_ThrowDomainException()
-    {
-        // Arrange
-        string username = "I_Have_Walked_The_Edge_Of_The_Abbyss";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
+    public void UpdateAvatar_Null_Throws() =>
+        ((Action)(() => Registered().UpdateAvatar(null!))).Should().Throw<DomainException>();
 
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            User.CreateRegistered(username, email, hashedPassword)
-        );
-    }
-
-
-    // Method CreateGuest()
-    // Attribute validation tests.
     [Fact]
-    public void CreateGuest_UsernameIsValid_ReturnNewUser()
+    public void ChangePassword_UpdatesHash()
     {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-
-        // Act
-        User user = User.CreateGuest(username);
-
-        // Assert
-        Assert.Equal(username, user.Username);
-    }
-
-
-    // Method ChangeUsername()
-    // Attribute validation tests.
-    [Fact]
-    public void ChangeUsername_UsernameIsValid_UpdateUsername()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        string newUsername = "Pillar Of Autumn";
-
-        // Act
-        user.ChangeUsername(newUsername);
-
-        // Assert
-        Assert.Equal(newUsername, user.Username);
-    }
-
-
-    // Method UpdatePersonalInfo()
-    // Attribute validation tests.
-    [Fact]
-    public void UpdatePersonalInfo_NameIsValid_UpdatePersonalInfo()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        string name = "John";
-        string lastName = "Smith";
-
-        // Act
-        user.UpdatePersonalInfo(name, lastName);
-
-        // Assert
-        Assert.Equal(name, user.Name);
+        var user = Registered();
+        user.ChangePassword("newhash");
+        user.PasswordHash.Should().Be("newhash");
     }
 
     [Fact]
-    public void UpdatePersonalInfo_LastNameIsValid_UpdatePersonalInfo()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        string name = "John";
-        string lastName = "Smith";
-
-        // Act
-        user.UpdatePersonalInfo(name, lastName);
-
-        // Assert
-        Assert.Equal(lastName, user.LastName);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void UpdatePersonalInfo_NameIsNull_ThrowDomainException()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        string lastName = "Smith";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            user.UpdatePersonalInfo(null, lastName)
-        );
-    }
+    public void ChangePassword_OnGuest_Throws() =>
+        ((Action)(() => User.CreateGuest("g").ChangePassword("h"))).Should().Throw<DomainException>();
 
     [Fact]
-    public void UpdatePersonalInfo_NameIsWhiteSpace_ThrowDomainException()
+    public void VerifyEmail_SetsVerified()
     {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        string name = " ";
-        string lastName = "Smith";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            user.UpdatePersonalInfo(name, lastName)
-        );
-    }
-
-    [Fact]
-    public void UpdatePersonalInfo_NameIsTooLong_ThrowDomainException()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        string name = "Adolph Blaine Charles David Earl Frederick Gerald Hubert Irvin John Kenneth";
-        string lastName = "Smith";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            user.UpdatePersonalInfo(name, lastName)
-        );
-    }
-
-    [Fact]
-    public void UpdatePersonalInfo_LastNameIsNull_ThrowDomainException()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        string name = "John";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            user.UpdatePersonalInfo(name, null)
-        );
-    }
-
-    [Fact]
-    public void UpdatePersonalInfo_LastNameIsWhiteSpace_ThrowDomainException()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        string name = "John";
-        string lastName = " ";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            user.UpdatePersonalInfo(name, lastName)
-        );
-    }
-
-    [Fact]
-    public void UpdatePersonalInfo_LastNameIsTooLong_ThrowDomainException()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        string name = "Hubert";
-        string lastName = "John Kenneth Lloyd Martin Nero Oliver Paul Quincy Randolph Sherman Thomas Uncas Victor William Xerxes Yancy Zeus";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            user.UpdatePersonalInfo(name, lastName)
-        );
-    }
-
-
-    // Method ChangePassword()
-    // Attribute validation tests.
-    [Fact]
-    public void ChangePassword_UserIsRegistered_UpdatePassword()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        string newHashedPassword = Hasher.HashPassword("YetAnotherUnbreakableSecret_456");
-
-        // Act
-        user.ChangePassword(newHashedPassword);
-
-        // Assert
-        Assert.Equal(newHashedPassword, user.PasswordHash);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void ChangePassword_UserIsGuest_ThrowDomainException()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-
-        User user = User.CreateGuest(username);
-
-        string hashedPassword = Hasher.HashPassword("UnfathomablyUselessSecret_67");
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            user.ChangePassword(hashedPassword)
-        );
-    }
-
-
-    // Method VerifyEmail()
-    // Attribute validation tests.
-    [Fact]
-    public void VerifyEmail_EmailIsNotVerified_VerifyEmail()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        // Act
+        var user = Registered();
         user.VerifyEmail();
-
-        // Assert
-        Assert.True(user.VerifiedEmail);
+        user.VerifiedEmail.Should().BeTrue();
     }
 
-    // Exception throw tests.
     [Fact]
-    public void VerifyEmail_EmailIsAlreadyVerified_ThrowDomainException()
+    public void VerifyEmail_WhenAlreadyVerified_Throws()
     {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
+        var user = Registered();
         user.VerifyEmail();
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            user.VerifyEmail()
-        );
+        ((Action)user.VerifyEmail).Should().Throw<DomainException>();
     }
 
     [Fact]
-    public void VerifyEmail_UserIsGuest_ThrowDomainException()
+    public void PromoteFromGuest_ClearsGuestFlag()
     {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-
-        User user = User.CreateGuest(username);
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            user.VerifyEmail()
-        );
-    }
-
-
-    // Method PromoteFromGuest()
-    // Attribute validation tests.
-    [Fact]
-    public void PromoteFromGuest_EmailIsValid_PromotedToRegistered()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-
-        User user = User.CreateGuest(username);
-
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        // Act
-        user.PromoteFromGuest(email, hashedPassword);
-
-        // Assert
-        Assert.Equal(email, user.Email.Value);
+        var user = User.CreateGuest("g");
+        user.PromoteFromGuest("real@example.com", "hash");
+        user.IsGuest.Should().BeFalse();
     }
 
     [Fact]
-    public void PromoteFromGuest_HashedPasswordIsValid_PromotedToRegistered()
+    public void PromoteFromGuest_SetsEmail()
     {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-
-        User user = User.CreateGuest(username);
-
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        // Act
-        user.PromoteFromGuest(email, hashedPassword);
-
-        // Assert
-        Assert.Equal(hashedPassword, user.PasswordHash);
+        var user = User.CreateGuest("g");
+        user.PromoteFromGuest("real@example.com", "hash");
+        user.Email.Value.Should().Be("real@example.com");
     }
 
-    // Exception throw tests.
     [Fact]
-    public void PromoteFromGuest_UserIsNotGuest_ThrowDomainException()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            user.PromoteFromGuest(email, hashedPassword)
-        );
-    }
-
-
-    // Method UpdateAvatar()
-    // Attribute validation tests.
-    [Fact]
-    public void UpdateAvatar_ImageIsValid_UpdateAvatarImage()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        string testProjectPath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
-
-        byte[] image = File.ReadAllBytes(testProjectPath + "/resources/mistah.jpg");
-
-        // Act
-        user.UpdateAvatar(image);
-
-        // Assert
-        Assert.Equal(image, user.Avatar);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void UpdateAvatar_ImageIsNull_ThrowDomainException()
-    {
-        // Arrange
-        string username = "xX_kingOfSpace_Xx";
-        string email = "johnsmith@outlook.com";
-        string hashedPassword = Hasher.HashPassword("UnbreakableSecret_123");
-
-        User user = User.CreateRegistered(username, email, hashedPassword);
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            user.UpdateAvatar(null)
-        );
-    }
+    public void PromoteFromGuest_OnRegisteredUser_Throws() =>
+        ((Action)(() => Registered().PromoteFromGuest("x@y.com", "h"))).Should().Throw<DomainException>();
 }

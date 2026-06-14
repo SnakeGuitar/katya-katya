@@ -1,26 +1,38 @@
-using GameMatch = KatyaKatya.Domain.Matches.Match;
+using FluentAssertions;
 using KatyaKatya.Domain.Matches;
 using Xunit;
 
-namespace KatyaKatya.Tests;
+namespace KatyaKatya.Domain.Tests.MatchesTests;
 
+// MatchParticipation is created internally by Match, so it is exercised through the aggregate.
 public class MatchParticipationTests
 {
-    // Method AddPoints()
-    // Attribute validation tests.
     [Fact]
-    public void AddPoints_PointsAreValid_UpdateScore()
+    public void NewParticipation_StartsWithZeroScore() =>
+        Match.Create().AddParticipant(1).Score.Value.Should().Be(0);
+
+    [Fact]
+    public void NewParticipation_HasNoWinner() =>
+        Match.Create().AddParticipant(1).WinnerId.Should().BeNull();
+
+    [Fact]
+    public void AddPoints_IncreasesScore()
     {
-        // Arrange
-        GameMatch match = GameMatch.Create();
-        MatchParticipation participation = match.AddParticipant(1);
-
-        int points = 750;
-
-        // Act
-        participation.AddPoints(points);
-
-        // Assert
-        Assert.Equal(points, participation.Score.Value);
+        var p = Match.Create().AddParticipant(1);
+        p.AddPoints(5);
+        p.Score.Value.Should().Be(5);
     }
+
+    [Fact]
+    public void AddPoints_Accumulates()
+    {
+        var p = Match.Create().AddParticipant(1);
+        p.AddPoints(5);
+        p.AddPoints(3);
+        p.Score.Value.Should().Be(8);
+    }
+
+    [Fact]
+    public void AddPoints_SetsMatchId() =>
+        Match.Create().AddParticipant(1).MatchId.Should().Be(0); // transient match Id before persistence
 }

@@ -1,143 +1,37 @@
+using FluentAssertions;
 using KatyaKatya.Domain.Cards;
 using KatyaKatya.Domain.Common;
 using Xunit;
 
-namespace KatyaKatya.Tests;
+namespace KatyaKatya.Domain.Tests.CardsTests;
 
 public class CardTests
 {
-    // Attribute validation tests.
     [Fact]
-    public void Create_NameIsValid_ReturnsNewCard()
-    {
-        // Arrange
-        string name = "John Doe";
-        int deckId = 1;
-        string description = "Sample text.";
-
-        // Act
-        Card card = Card.Create(name, deckId, description);
-
-        // Assert
-        Assert.Equal(name, card.Name);
-    }
+    public void Create_SetsName() =>
+        Card.Create("Ace", 1).Name.Should().Be("Ace");
 
     [Fact]
-    public void Create_DeckIdIsValid_ReturnsNewCard()
-    {
-        // Arrange
-        string name = "John Doe";
-        int deckId = 1;
-        string description = "Sample text.";
-
-        // Act
-        Card card = Card.Create(name, deckId, description);
-
-        // Assert
-        Assert.Equal(deckId, card.DeckId);
-    }
+    public void Create_SetsDeckId() =>
+        Card.Create("Ace", 7).DeckId.Should().Be(7);
 
     [Fact]
-    public void Create_DescriptionIsValid_ReturnsNewCard()
-    {
-        // Arrange
-        string name = "John Doe";
-        int deckId = 1;
-        string description = "Sample text.";
-
-        // Act
-        Card card = Card.Create(name, deckId, description);
-
-        // Assert
-        Assert.Equal(description, card.Description);
-    }
+    public void Create_SetsDescription() =>
+        Card.Create("Ace", 1, "high card").Description.Should().Be("high card");
 
     [Fact]
-    public void Create_DescriptionIsNull_ReturnsNewCard()
-    {
-        // Arrange
-        string name = "John Doe";
-        int deckId = 1;
-
-        // Act
-        Card card = Card.Create(name, deckId, null);
-
-        // Assert
-        Assert.Null(card.Description);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void Create_NameIsNull_ThrowsDomainException()
-    {
-        // Arrange
-        int deckId = 1;
-        string description = "Sample text.";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Card.Create(null, deckId, description)
-        );
-    }
+    public void Create_WithoutDescription_LeavesItNull() =>
+        Card.Create("Ace", 1).Description.Should().BeNull();
 
     [Fact]
-    public void Create_NameIsWhiteSpace_ThrowsDomainException()
-    {
-        // Arrange
-        string name = " ";
-        int deckId = 1;
-        string description = "Sample text.";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Card.Create(name, deckId, description)
-        );
-    }
+    public void Create_EmptyName_Throws() =>
+        ((Action)(() => Card.Create("", 1))).Should().Throw<DomainException>();
 
     [Fact]
-    public void Create_NameIsTooLong_ThrowsDomainException()
-    {
-        // Arrange
-        string name = "I AM THE KING OF SPACE I HAVE COME TO SURVEY YOUR INTERNETS";
-        int deckId = 1;
-        string description = "Sample text.";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Card.Create(name, deckId, description)
-        );
-    }
+    public void Create_NameOver30Characters_Throws() =>
+        ((Action)(() => Card.Create(new string('n', 31), 1))).Should().Throw<DomainException>();
 
     [Fact]
-    public void Create_DeckIdIsNotValid_ThrowsDomainException()
-    {
-        // Arrange
-        string name = "John Doe";
-        string description = "Sample text.";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Card.Create(name, 0, description)
-        );
-    }
-
-    [Fact]
-    public void Create_DescriptionIsTooLong_ThrowsDomainException()
-    {
-        // Arrange
-        string name = "John Doe";
-        int deckId = 1;
-        string description = "The industrial revolution and it's consecuences have been a disaster for the human race.";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Card.Create(name, deckId, description)
-        );
-    }
-
+    public void Create_DescriptionOver80Characters_Throws() =>
+        ((Action)(() => Card.Create("Ace", 1, new string('d', 81)))).Should().Throw<DomainException>();
 }

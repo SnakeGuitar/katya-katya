@@ -1,174 +1,123 @@
+using FluentAssertions;
+using KatyaKatya.Domain.Common;
 using KatyaKatya.Domain.Common.Enums;
 using KatyaKatya.Domain.Matches;
-using GameMatch = KatyaKatya.Domain.Matches.Match;
 using Xunit;
-using KatyaKatya.Domain.Common;
 
-namespace KatyaKatya.Tests;
+namespace KatyaKatya.Domain.Tests.MatchesTests;
 
 public class MatchTests
 {
-    // Method Create()
-    // Attribute validation tests.
     [Fact]
-    public void Create_StatusIsInProgress_ReturnNewMatch()
-    {
-        // Act
-        GameMatch match = GameMatch.Create();
+    public void Create_StatusIsInProgress() =>
+        Match.Create().Status.Should().Be(MatchStatus.InProgress);
 
-        // Assert
-        Assert.Equal(MatchStatus.InProgress, match.Status);
-    }
-
-
-    // Method Finish()
-    // Attribute validation tests.
     [Fact]
-    public void Finish_WinnerIdIsValid_SetMatchStatusAsFinished()
-    {
-        // Arrange
-        GameMatch match = GameMatch.Create();
+    public void Create_SetsStartDateTime() =>
+        Match.Create().StartDateTime.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
 
-        int userId = 1;
-        match.AddParticipant(userId);
-
-        // Act
-        match.Finish(userId);
-
-        // Assert
-        Assert.Equal(MatchStatus.Finished, match.Status);
-    }
-
-    // Exception throw tests.
     [Fact]
-    public void Finish_MatchStatusIsNotInProgress_ThrowDomainException()
+    public void Create_EndDateTimeIsNull() =>
+        Match.Create().EndDateTime.Should().BeNull();
+
+    [Fact]
+    public void Create_HasNoParticipations() =>
+        Match.Create().Participations.Should().BeEmpty();
+
+    [Fact]
+    public void AddParticipant_AddsOneParticipation()
     {
-        // Arrange
-        GameMatch match = GameMatch.Create();
-
-        int winnerUserId = 1;
-        match.AddParticipant(winnerUserId);
-        
-        match.Finish(winnerUserId);
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            match.Finish(2)
-        );
+        var match = Match.Create();
+        match.AddParticipant(1);
+        match.Participations.Should().HaveCount(1);
     }
 
     [Fact]
-    public void Finish_UserIdIsNotParticipant_ThrowDomainException()
+    public void AddParticipant_ReturnsParticipationWithUserId() =>
+        Match.Create().AddParticipant(99).UserId.Should().Be(99);
+
+    [Fact]
+    public void AddParticipant_SameUserTwice_Throws()
     {
-        // Arrange
-        GameMatch match = GameMatch.Create();
-
-        int userId = 1;
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            match.Finish(userId)
-        );
+        var match = Match.Create();
+        match.AddParticipant(1);
+        ((Action)(() => match.AddParticipant(1))).Should().Throw<DomainException>();
     }
 
-
-    // Method Cancel()
-    // Attribute validation tests.
     [Fact]
-    public void Cancel_CancelIsValid_SetMatchStatusAsCancelled()
+    public void AddParticipant_AfterFinish_Throws()
     {
-        // Arrange
-        GameMatch match = GameMatch.Create();
+        var match = Match.Create();
+        match.AddParticipant(1);
+        match.Finish(1);
+        ((Action)(() => match.AddParticipant(2))).Should().Throw<DomainException>();
+    }
 
-        // Act
+    [Fact]
+    public void Finish_SetsStatusFinished()
+    {
+        var match = Match.Create();
+        match.AddParticipant(1);
+        match.Finish(1);
+        match.Status.Should().Be(MatchStatus.Finished);
+    }
+
+    [Fact]
+    public void Finish_SetsEndDateTime()
+    {
+        var match = Match.Create();
+        match.AddParticipant(1);
+        match.Finish(1);
+        match.EndDateTime.Should().NotBeNull();
+    }
+
+    [Fact]
+    public void Finish_AssignsWinnerToParticipations()
+    {
+        var match = Match.Create();
+        var p = match.AddParticipant(1);
+        match.Finish(1);
+        p.WinnerId.Should().Be(1);
+    }
+
+    [Fact]
+    public void Finish_WithWinnerNotParticipant_Throws()
+    {
+        var match = Match.Create();
+        match.AddParticipant(1);
+        ((Action)(() => match.Finish(999))).Should().Throw<DomainException>();
+    }
+
+    [Fact]
+    public void Finish_WhenAlreadyFinished_Throws()
+    {
+        var match = Match.Create();
+        match.AddParticipant(1);
+        match.Finish(1);
+        ((Action)(() => match.Finish(1))).Should().Throw<DomainException>();
+    }
+
+    [Fact]
+    public void Cancel_SetsStatusCancelled()
+    {
+        var match = Match.Create();
         match.Cancel();
-
-        // Assert
-        Assert.Equal(MatchStatus.Cancelled, match.Status);
+        match.Status.Should().Be(MatchStatus.Cancelled);
     }
 
-    // Exception throw tests.
     [Fact]
-    public void Cancel_MatchStatusIsNotInProgress_ThrowDomainException()
+    public void Cancel_SetsEndDateTime()
     {
-        // Arrange
-        GameMatch match = GameMatch.Create();
-
+        var match = Match.Create();
         match.Cancel();
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            match.Cancel()
-        );
-    }
-
-    // Method AddParticipant()
-    // Attribute validation tests.
-    [Fact]
-    public void AddParticipant_UserIdIsValid_ReturnNewMatchParticipation()
-    {
-        // Arrange
-        GameMatch match = GameMatch.Create();
-
-        int userId = 1;
-
-        // Act
-        MatchParticipation participation = match.AddParticipant(userId);
-
-        // Assert
-        Assert.Equal(userId, participation.UserId);
+        match.EndDateTime.Should().NotBeNull();
     }
 
     [Fact]
-    public void AddParticipant_MatchIdIsValid_ReturnNewMatchParticipation()
+    public void Cancel_WhenNotInProgress_Throws()
     {
-        // Arrange
-        GameMatch match = GameMatch.Create();
-
-        int userId = 1;
-
-        // Act
-        MatchParticipation participation = match.AddParticipant(userId);
-
-        // Assert
-        Assert.Equal(1, participation.MatchId);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void AddParticipant_MatchStatusIsNotInProgress_ThrowDomainException()
-    {
-        // Arrange
-        GameMatch match = GameMatch.Create();
-
-        int winnerUserId = 1;
-        match.AddParticipant(winnerUserId);
-
-        match.Finish(winnerUserId);
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            match.AddParticipant(2)
-        );
-    }
-
-    [Fact]
-    public void AddParticipant_ParticipantIsAlreadyInMatch_ThrowDomainException()
-    {
-        // Arrange
-        GameMatch match = GameMatch.Create();
-
-        int userId = 1;
-        match.AddParticipant(userId);
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            match.AddParticipant(userId)
-        );
+        var match = Match.Create();
+        match.Cancel();
+        ((Action)match.Cancel).Should().Throw<DomainException>();
     }
 }

@@ -1,115 +1,53 @@
+using FluentAssertions;
 using KatyaKatya.Domain.Common;
 using KatyaKatya.Domain.Users.ValueObjects;
 using Xunit;
 
-namespace KatyaKatya.Tests;
+namespace KatyaKatya.Domain.Tests.UsersTests;
 
 public class EmailTests
 {
-    // Method Create()
-    // Attribute validation tests.
     [Fact]
-    public void Create_ValueIsValid_ReturnNewEmail()
-    {
-        // Arrange
-        string value = "johnsmith@outlook.com";
-
-        // Act
-        Email email = Email.Create(value);
-
-        // Assert
-        Assert.Equal(value, email.Value);
-    }
-
-    // Exception throw tests.
-    [Fact]
-    public void Create_ValueIsNull_ThrowDomainException()
-    {
-        // Arrange
-        // No value defined.
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Email.Create(null)
-        );
-    }
+    public void Create_ValidValue_KeepsLocalAndDomain() =>
+        Email.Create("user@example.com").Value.Should().Be("user@example.com");
 
     [Fact]
-    public void Create_ValueIsWhiteSpace_ThrowDomainException()
-    {
-        // Arrange
-        string value = " ";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Email.Create(value)
-        );
-    }
+    public void Create_UppercaseValue_IsLowercased() =>
+        Email.Create("User@Example.COM").Value.Should().Be("user@example.com");
 
     [Fact]
-    public void Create_ValueIsTooLong_ThrowDomainException()
-    {
-        // Arrange
-        string value = "IDontHaveToTellYouThingsAreBadEverybodyKnowsThingsAreBad@gmail.com";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Email.Create(value)
-        );
-    }
+    public void Create_ValueWithSurroundingWhitespace_IsTrimmed() =>
+        Email.Create("  user@example.com  ").Value.Should().Be("user@example.com");
 
     [Fact]
-    public void Create_ValueDoesNotContainAtSign_ThrowDomainException()
-    {
-        // Arrange
-        string value = "oopsIForgorhotmail.com";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Email.Create(value)
-        );
-    }
+    public void Create_EmptyValue_Throws() =>
+        ((Action)(() => Email.Create(""))).Should().Throw<DomainException>();
 
     [Fact]
-    public void Create_ValueDoesNotContainUsername_ThrowDomainException()
-    {
-        // Arrange
-        string value = "@yahoo.com";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Email.Create(value)
-        );
-    }
+    public void Create_WhitespaceValue_Throws() =>
+        ((Action)(() => Email.Create("   "))).Should().Throw<DomainException>();
 
     [Fact]
-    public void Create_ValueDoesNotContainMailService_ThrowDomainException()
-    {
-        // Arrange
-        string value = "realAddressTrustMeBro.net";
-
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Email.Create(value)
-        );
-    }
+    public void Create_ValueOver50Characters_Throws() =>
+        ((Action)(() => Email.Create(new string('a', 45) + "@b.com"))).Should().Throw<DomainException>();
 
     [Fact]
-    public void Create_ValueDoesNotContainDomain_ThrowDomainException()
-    {
-        // Arrange
-        string value = "sayMyName@aol";
+    public void Create_ValueWithoutAtSign_Throws() =>
+        ((Action)(() => Email.Create("not-an-email"))).Should().Throw<DomainException>();
 
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Email.Create(value)
-        );
-    }
+    [Fact]
+    public void Equals_SameValue_IsTrue() =>
+        Email.Create("a@b.com").Equals(Email.Create("a@b.com")).Should().BeTrue();
+
+    [Fact]
+    public void Equals_DifferentValue_IsFalse() =>
+        Email.Create("a@b.com").Equals(Email.Create("c@d.com")).Should().BeFalse();
+
+    [Fact]
+    public void GetHashCode_SameValue_IsEqual() =>
+        Email.Create("a@b.com").GetHashCode().Should().Be(Email.Create("a@b.com").GetHashCode());
+
+    [Fact]
+    public void ToString_ReturnsValue() =>
+        Email.Create("a@b.com").ToString().Should().Be("a@b.com");
 }

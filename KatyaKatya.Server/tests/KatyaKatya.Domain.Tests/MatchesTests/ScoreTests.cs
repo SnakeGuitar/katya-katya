@@ -1,68 +1,56 @@
+using FluentAssertions;
 using KatyaKatya.Domain.Common;
 using KatyaKatya.Domain.Matches.ValueObjects;
 using Xunit;
 
-namespace KatyaKatya.Tests;
+namespace KatyaKatya.Domain.Tests.MatchesTests;
 
 public class ScoreTests
 {
-    // Method Create()
-    // Attribute validation tests.
     [Fact]
-    public void Create_ValueIsValid_ReturnNewScore()
+    public void Zero_HasValueZero() =>
+        Score.Zero.Value.Should().Be(0);
+
+    [Fact]
+    public void Create_PositiveValue_SetsValue() =>
+        Score.Create(42).Value.Should().Be(42);
+
+    [Fact]
+    public void Create_Zero_SetsValue() =>
+        Score.Create(0).Value.Should().Be(0);
+
+    [Fact]
+    public void Create_NegativeValue_Throws() =>
+        ((Action)(() => Score.Create(-1))).Should().Throw<DomainException>();
+
+    [Fact]
+    public void Add_IncreasesValue() =>
+        Score.Create(10).Add(5).Value.Should().Be(15);
+
+    [Fact]
+    public void Add_ReturnsNewInstance()
     {
-        // Arrange
-        int value = 700;
-
-        // Act
-        Score score = Score.Create(value);
-
-        // Assert
-        Assert.Equal(value, score.Value);
+        var original = Score.Create(10);
+        original.Add(5).Should().NotBeSameAs(original);
     }
 
-    // Exception throw tests.
     [Fact]
-    public void Create_ValueIsNotValid_ThrowDomainException()
-    {
-        // Arrange
-        int value = -40000;
+    public void Add_ResultingInNegative_Throws() =>
+        ((Action)(() => Score.Zero.Add(-1))).Should().Throw<DomainException>();
 
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            Score.Create(value)
-        );
-    }
-
-
-    // Method Add()
-    // Attribute validation tests.
     [Fact]
-    public void Add_PointsAreValid_ReturnUpdatedScore()
-    {
-        // Arrange
-        Score score = Score.Create(700);
+    public void Equals_SameValue_IsTrue() =>
+        Score.Create(7).Equals(Score.Create(7)).Should().BeTrue();
 
-        // Act
-        score = score.Add(50);
-
-        // Assert
-        Assert.Equal(750, score.Value);
-    }
-
-    // Exception throw tests.
     [Fact]
-    public void Add_PointsAreNotValid_ThrowDomainException()
-    {
-        // Arrange
-        Score score = Score.Create(700);
-        int points = -50;
+    public void Equals_DifferentValue_IsFalse() =>
+        Score.Create(7).Equals(Score.Create(8)).Should().BeFalse();
 
-        // Assert
-        Assert.Throws<DomainException>(() =>
-            // Act
-            score.Add(points)
-        );
-    }
+    [Fact]
+    public void GetHashCode_SameValue_IsEqual() =>
+        Score.Create(7).GetHashCode().Should().Be(Score.Create(7).GetHashCode());
+
+    [Fact]
+    public void ToString_ReturnsValueString() =>
+        Score.Create(7).ToString().Should().Be("7");
 }
