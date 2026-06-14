@@ -1,4 +1,5 @@
 using FluentAssertions;
+using KatyaKatya.Application.Lobbies.DTOs;
 using KatyaKatya.Application.Lobbies.Models;
 using KatyaKatya.Infrastructure.Lobbies;
 using Xunit;
@@ -7,165 +8,121 @@ namespace KatyaKatya.Infrastructure.Tests.Lobbies;
 
 public class LobbyManagerTests
 {
-    private static LobbyPlayer MakeHost(string connectionId)
-        => new(connectionId, userId: 1, username: "alice", isGuest: false, isHost: true);
-
-    // -----------------------------------------------------------------------
-    // CreateLobby
-    // -----------------------------------------------------------------------
+    private static LobbyPlayer Player(string conn, int userId, string name, bool isHost = false) =>
+        new(conn, userId, name, isGuest: false, isHost: isHost);
 
     [Fact]
-    public void CreateLobby_NewCode_ReturnsLobby()
-    {
-        var manager = new LobbyManager();
+    public void CreateLobby_ReturnsLobby() =>
+        new LobbyManager().CreateLobby("ABC", isPublic: true).Should().NotBeNull();
 
-        var lobby = manager.CreateLobby("ABCD", isPublic: true);
-
-        lobby.Should().NotBeNull();
-        lobby!.GameCode.Should().Be("ABCD");
-    }
+    [Fact]
+    public void CreateLobby_SetsGameCode() =>
+        new LobbyManager().CreateLobby("ABC", true)!.GameCode.Should().Be("ABC");
 
     [Fact]
     public void CreateLobby_DuplicateCode_ReturnsNull()
     {
         var manager = new LobbyManager();
-        manager.CreateLobby("ABCD", isPublic: true);
-
-        var second = manager.CreateLobby("ABCD", isPublic: false);
-
-        second.Should().BeNull();
+        manager.CreateLobby("ABC", true);
+        manager.CreateLobby("ABC", true).Should().BeNull();
     }
-
-    // -----------------------------------------------------------------------
-    // GetLobby
-    // -----------------------------------------------------------------------
 
     [Fact]
     public void GetLobby_ExistingCode_ReturnsLobby()
     {
         var manager = new LobbyManager();
-        manager.CreateLobby("ABCD", isPublic: true);
-
-        var lobby = manager.GetLobby("ABCD");
-
-        lobby.Should().NotBeNull();
+        manager.CreateLobby("ABC", true);
+        manager.GetLobby("ABC").Should().NotBeNull();
     }
 
     [Fact]
-    public void GetLobby_NonExistingCode_ReturnsNull()
-    {
-        var manager = new LobbyManager();
-
-        var lobby = manager.GetLobby("XXXX");
-
-        lobby.Should().BeNull();
-    }
-
-    // -----------------------------------------------------------------------
-    // RemoveLobby
-    // -----------------------------------------------------------------------
+    public void GetLobby_UnknownCode_ReturnsNull() =>
+        new LobbyManager().GetLobby("NOPE").Should().BeNull();
 
     [Fact]
-    public void RemoveLobby_ExistingCode_ReturnsTrueAndRemoves()
+    public void RemoveLobby_ExistingCode_ReturnsTrue()
     {
         var manager = new LobbyManager();
-        manager.CreateLobby("ABCD", isPublic: true);
-
-        var result = manager.RemoveLobby("ABCD");
-
-        result.Should().BeTrue();
-        manager.GetLobby("ABCD").Should().BeNull();
+        manager.CreateLobby("ABC", true);
+        manager.RemoveLobby("ABC").Should().BeTrue();
     }
 
     [Fact]
-    public void RemoveLobby_NonExistingCode_ReturnsFalse()
-    {
-        var manager = new LobbyManager();
-
-        var result = manager.RemoveLobby("XXXX");
-
-        result.Should().BeFalse();
-    }
-
-    // -----------------------------------------------------------------------
-    // FindLobbyByConnection
-    // -----------------------------------------------------------------------
+    public void RemoveLobby_UnknownCode_ReturnsFalse() =>
+        new LobbyManager().RemoveLobby("NOPE").Should().BeFalse();
 
     [Fact]
-    public void FindLobbyByConnection_KnownConnectionId_ReturnsCorrectLobby()
+    public void RemoveLobby_ActuallyRemovesLobby()
     {
         var manager = new LobbyManager();
-        var lobby   = manager.CreateLobby("ABCD", isPublic: true)!;
-        lobby.TryAddPlayer(MakeHost("conn-1"));
-
-        var found = manager.FindLobbyByConnection("conn-1");
-
-        found.Should().Be(lobby);
+        manager.CreateLobby("ABC", true);
+        manager.RemoveLobby("ABC");
+        manager.GetLobby("ABC").Should().BeNull();
     }
 
     [Fact]
-    public void FindLobbyByConnection_UnknownConnectionId_ReturnsNull()
+    public void GetPublicLobbies_IncludesAvailablePublicLobby()
     {
         var manager = new LobbyManager();
-        manager.CreateLobby("ABCD", isPublic: true);
-
-        var found = manager.FindLobbyByConnection("unknown");
-
-        found.Should().BeNull();
-    }
-
-    // -----------------------------------------------------------------------
-    // GetPublicLobbies
-    // -----------------------------------------------------------------------
-
-    [Fact]
-    public void GetPublicLobbies_ExcludesPrivateLobbies()
-    {
-        var manager = new LobbyManager();
-        manager.CreateLobby("PUB1", isPublic: true)!.TryAddPlayer(MakeHost("c1"));
-        manager.CreateLobby("PRI1", isPublic: false)!.TryAddPlayer(MakeHost("c2"));
-
-        var result = manager.GetPublicLobbies();
-
-        result.Should().ContainSingle(l => l.GameCode == "PUB1");
-        result.Should().NotContain(l => l.GameCode == "PRI1");
+        manager.CreateLobby("PUB", isPublic: true);
+        manager.GetPublicLobbies().Should().ContainSingle(s => s.GameCode == "PUB");
     }
 
     [Fact]
-    public void GetPublicLobbies_ExcludesFullLobbies()
+    public void GetPublicLobbies_ExcludesPrivateLobby()
     {
         var manager = new LobbyManager();
-        var lobby   = manager.CreateLobby("FULL", isPublic: true)!;
+        manager.CreateLobby("PRIV", isPublic: false);
+        manager.GetPublicLobbies().Should().NotContain(s => s.GameCode == "PRIV");
+    }
 
+    [Fact]
+    public void GetPublicLobbies_ExcludesFullLobby()
+    {
+        var manager = new LobbyManager();
+        var lobby = manager.CreateLobby("FULL", isPublic: true)!;
         for (var i = 0; i < Lobby.MaxPlayers; i++)
-            lobby.TryAddPlayer(new LobbyPlayer($"conn-{i}", i, $"player{i}", false, i == 0));
-
-        var result = manager.GetPublicLobbies();
-
-        result.Should().NotContain(l => l.GameCode == "FULL");
+            lobby.TryAddPlayer(Player($"c{i}", i + 1, $"p{i}"));
+        manager.GetPublicLobbies().Should().NotContain(s => s.GameCode == "FULL");
     }
 
     [Fact]
-    public void GetPublicLobbies_ExcludesLobbiesWithGameInProgress()
+    public void GetPublicLobbies_ExcludesLobbyWithGameInProgress()
     {
         var manager = new LobbyManager();
-        var lobby   = manager.CreateLobby("INGAME", isPublic: true)!;
-        lobby.TryAddPlayer(new LobbyPlayer("c1", 1, "alice", false, true));
-        lobby.TryAddPlayer(new LobbyPlayer("c2", 2, "bob",   false, false));
-        lobby.StartGame(new Application.Lobbies.DTOs.GameSettingsDto(CardCount: 4, TurnTimeSeconds: 30));
-
-        var result = manager.GetPublicLobbies();
-
-        result.Should().NotContain(l => l.GameCode == "INGAME");
+        var lobby = manager.CreateLobby("PLAYING", isPublic: true)!;
+        lobby.TryAddPlayer(Player("c1", 1, "alice", isHost: true));
+        lobby.StartGame(new GameSettingsDto(4, 30));
+        manager.GetPublicLobbies().Should().NotContain(s => s.GameCode == "PLAYING");
     }
 
     [Fact]
-    public void GetPublicLobbies_EmptyManager_ReturnsEmpty()
+    public void FindLobbyByConnection_ReturnsLobbyContainingConnection()
     {
         var manager = new LobbyManager();
-
-        var result = manager.GetPublicLobbies();
-
-        result.Should().BeEmpty();
+        var lobby = manager.CreateLobby("ABC", true)!;
+        lobby.TryAddPlayer(Player("conn-1", 1, "alice", isHost: true));
+        manager.FindLobbyByConnection("conn-1")!.GameCode.Should().Be("ABC");
     }
+
+    [Fact]
+    public void FindLobbyByConnection_UnknownConnection_ReturnsNull() =>
+        new LobbyManager().FindLobbyByConnection("nope").Should().BeNull();
+
+    [Fact]
+    public void FindLobbyByUserId_ReturnsLobbyContainingUser()
+    {
+        var manager = new LobbyManager();
+        var lobby = manager.CreateLobby("ABC", true)!;
+        lobby.TryAddPlayer(Player("conn-1", 42, "alice", isHost: true));
+        manager.FindLobbyByUserId(42)!.GameCode.Should().Be("ABC");
+    }
+
+    [Fact]
+    public void FindLobbyByUserId_NonPositiveId_ReturnsNull() =>
+        new LobbyManager().FindLobbyByUserId(0).Should().BeNull();
+
+    [Fact]
+    public void FindLobbyByUserId_UnknownUser_ReturnsNull() =>
+        new LobbyManager().FindLobbyByUserId(999).Should().BeNull();
 }
